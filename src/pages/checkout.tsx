@@ -52,9 +52,10 @@ const Checkout = () => {
                         <label className="text-[13px] ">Company Name (optional)</label>
                         <input type="text" className="w-full h-11 bg-gray-100 rounded-md mt-2 mb-4" />
 
-                        <div><label className="text-[13px] ">Country / Region *</label>
+                        <div className="flex flex-col space-y-2  mb-4">
+                            <label className="text-[13px] ">Country / Region *</label>
                         {/* <input type="text" className="w-full h-11 bg-gray-100 rounded-md mt-2 mb-4" /> */}
-                        <select value={selectedCountry} onChange={handleCountryChange}>
+                        <select value={selectedCountry} onChange={handleCountryChange} className="w-full h-11 bg-gray-100 rounded-md">
                             {Object.entries(Country).map(([code, name]) => (
                                 <option key={code} value={code}>
                                     {name}
@@ -71,8 +72,18 @@ const Checkout = () => {
                         <label className="text-[13px] ">Town / City *</label>
                         <input type="text" className="w-full h-11 bg-gray-100 rounded-md mt-2 mb-4" />
 
-                        <label className="text-[13px] ">State *</label>
-                        <input type="text" className="w-full h-11 bg-gray-100 rounded-md mt-2 mb-4" />
+                        {/* <label className="text-[13px] ">State *</label>
+                        <input type="text" className="w-full h-11 bg-gray-100 rounded-md mt-2 mb-4" /> */}
+                        <div className="flex flex-col space-y-2  mb-4">
+                            <label className="text-[13px] ">State *</label>
+                        <select value={selectedCountry} onChange={handleCountryChange} className="w-full h-11 bg-gray-100 rounded-md">
+                            {Object.entries(Country).map(([code, name]) => (
+                                <option key={code} value={code}>
+                                    {name}
+                                </option>
+                            ))}
+                        </select>
+                        </div>
 
                         <label className="text-[13px] ">Zip Code *</label>
                         <input type="text" className="w-full h-11 bg-gray-100 rounded-md mt-2 mb-4" />
@@ -295,7 +306,7 @@ const Checkout = () => {
                         <p className="text-xs">I have read and agree to the website <span className="text-[#ed174a] underline underline-offset-1">terms and conditions* </span></p>
                     </div>
 
-                    <button className="bg-[#ed174a] text-white py-2.5 rounded-md text-sm h-[50px] w-full text-center mt-6 font-semibold">Place order</button>
+                    <button className="bg-[#ed174a] text-white py-2.5 rounded-md text-sm h-[50px] w-full text-center mt-6 font-semibold" >Place order</button>
 
                 </div>
             </div>

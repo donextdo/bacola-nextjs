@@ -9,7 +9,7 @@ import AccountDetails from '../AccountList/AccountDetails';
 const MyAccount = () => {
     const [modal, setModal] = useState(false)
     const [selected, setSelected] = useState(null);
-    const [isColor, setIsColor] = useState(null);
+    const [isColor, setIsColor] = useState(1);
     
 
     const handlePopup = () => {
@@ -18,12 +18,11 @@ const MyAccount = () => {
 
     const handleChange = (id:any) => {
         setIsColor(id); 
-
     }
 
     return (
-        <div >
-            <div className='mx-3 lg:hidden'>
+        <div className='container mx-auto mb-36'>
+            <div className='px-3 lg:hidden'>
                 <div className='flex border border-gray-200 bg-gray-100 py-4 rounded-t-md px-2 space-x-4 items-center mt-2 shadow-sm'>
                     <button onClick={handlePopup}>
                         <SlMenu className='text-lg' />

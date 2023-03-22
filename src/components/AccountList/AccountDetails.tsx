@@ -1,4 +1,8 @@
+import { useState } from "react";
+
 const AccountDetails = () => {
+    const [modal, setModal] = useState(false)
+
     return ( 
         <div>
             <label className="text-sm">First Name *</label>

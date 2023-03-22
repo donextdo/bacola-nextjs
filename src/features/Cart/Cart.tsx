@@ -4,6 +4,7 @@ import { FaPlus, FaMinus } from "react-icons/fa";
 import item1 from "../../../assets/item/item1.jpg";
 import { GrFormClose } from "react-icons/gr";
 import { IoCloseSharp } from "react-icons/io5";
+import Link from "next/link";
 
 
 const Cart = () => {
@@ -14,7 +15,7 @@ const Cart = () => {
     }
 
     return (
-        <div className="px-3.5 container mx-auto">
+        <div className="px-3.5 container mx-auto mt-4">
             <section className="flex justify-between h-full">
                 <div className="w-full h-full pb-10">
                     <div className="border border-[#e4e5ee] rounded-md space-y-4 py-4 px-4">
@@ -122,7 +123,7 @@ const Cart = () => {
                             </tbody>
                         </table>
 
-                        <button className="bg-[#ed174a] text-white py-2.5  rounded-md text-sm h-[50px] w-full text-center mt-4">Proceed to checkout</button>
+                        <Link href="/checkout">   <button className="bg-[#ed174a] text-white py-2.5  rounded-md text-sm h-[50px] w-full text-center mt-4">Proceed to checkout</button></Link>
 
                     </div>
                 </div>
@@ -170,7 +171,7 @@ const Cart = () => {
                     </tbody>
                 </table>
 
-                <button className="bg-[#ed174a] text-white py-2.5  rounded-md text-sm h-[50px] w-full text-center mt-4">Proceed to checkout</button>
+                <Link href="/checkout"><button className="bg-[#ed174a] text-white py-2.5  rounded-md text-sm h-[50px] w-full text-center mt-4">Proceed to checkout</button></Link>
 
             </div>
 
