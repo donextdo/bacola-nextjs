@@ -11,7 +11,9 @@ module.exports = {
     fontFamily: {
       'ff-headings' : ['Dosis', 'sans-serif']
     },
-    extend: {},
+    extend: {
+      placeItems: ['hover', 'focus'],
+    },
   },
   plugins: [],
 }
