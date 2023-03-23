@@ -15,7 +15,7 @@ export default function Home() {
 
   return (
     <div>
-      <div className="m-8  search-bar">
+      <div className="m-8 search-bar ">
         <SearchItem />
       </div>
       <div>
