@@ -103,11 +103,9 @@ export const CartItem: FC<ComponentProps> = ({
         />
       </div>
       <div className="mx-5 mb-1 max-h-[155.29px] max-w-[212.95] ">
-        <h3 className="font-[.875rem] tracking-[0em]">
-          <div className="text-sm font-medium text-black hover:text-indigo-400  capitalize leading-tight hover:cursor-pointer line-clamp-2">
-            {title}
-          </div>
-        </h3>
+        <div className="text-sm font-medium text-black hover:text-indigo-400  capitalize leading-tight hover:cursor-pointer line-clamp-2">
+          {title}
+        </div>
         <div className="my-1 font-[.6875rem] text-xs pt-2 text-green-600 uppercase font-semibold tracking-[.005em]">
           {isAvailable ? "In Stock" : "Out of Stock"}
         </div>

@@ -28,7 +28,6 @@ export const SearchItem = () => {
         placeholder="Search for product..."
         value={searchItem}
         onChange={(e) => setSearchItem(e.target.value)}
-        onClick={handleSubmit}
       />
       {isLoading ? (
         <Spinner />
