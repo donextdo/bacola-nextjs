@@ -4,7 +4,7 @@ const Categories = () => {
   return (
     <div className="box-border max-h-[97px] max-w-[270px] p-4 m-8">
       <h4 className="max-h-[18px] max-w-[270px] uppercase tracking-[0] font-[600] text-[.9375rem] mb-[1.25rem]">
-        Product Status
+        PRODUCT CATEGORIES
       </h4>
       <CheckBoxRow inputId="category1" htmlForId="category1" name="beverages" />
       <CheckBoxRow
