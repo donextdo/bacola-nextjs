@@ -11,13 +11,13 @@ const CheckBoxRow: FC<ComponentProps> = ({ inputId, htmlForId, name }) => {
 
   return (
     <div className="relative max-h-[59px] max-w-[270px] flex items-center hover:cursor-pointer">
-      <div className="flex flex-row">
+      <div className="flex flex-row mb-3">
         <input
           type="checkbox"
           id={inputId as string}
           checked={isChecked}
           onChange={() => setIsChecked(!isChecked)}
-          className="mr-2 min-h-[14px] min-w-[14px] hover:cursor-pointer accent-blue-900 hover:bg-blue-900"
+          className="mr-4  min-h-[14px] min-w-[14px] hover:cursor-pointer accent-blue-900 hover:bg-blue-900"
         />
         <label
           htmlFor={htmlForId as string}

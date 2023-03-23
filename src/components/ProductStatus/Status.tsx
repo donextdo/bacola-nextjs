@@ -6,8 +6,8 @@ const Status = () => {
       <h4 className="max-h-[18px] max-w-[270px] uppercase tracking-[0] font-[600] text-[.9375rem] mb-[1.25rem]">
         Product Status
       </h4>
-      <CheckBoxRow inputId="checkbox1" htmlForId="checkbox1" name="in stock" />
-      <CheckBoxRow inputId="checkbox2" htmlForId="checkbox2" name="on sate" />
+      <CheckBoxRow inputId="status1" htmlForId="status1" name="in stock" />
+      <CheckBoxRow inputId="status2" htmlForId="status2" name="on sate" />
     </div>
   );
 };
