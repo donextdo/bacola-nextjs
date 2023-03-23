@@ -2,10 +2,10 @@ import Link from "next/link";
 import React, { useState } from "react";
 
 //icons
-import { GiChickenOven } from "react-icons/Gi";
-import { MdOutlineBakeryDining } from "react-icons/Md";
+import { GiChickenOven } from "react-icons/gi";
+import { MdOutlineBakeryDining } from "react-icons/md";
 import { FaMugHot } from "react-icons/fa";
-import { MdKeyboardArrowDown } from "react-icons/Md";
+import { MdKeyboardArrowDown } from "react-icons/md";
 
 const Navbar = () => {
   const [homeOpen, setHomeOpen] = useState(false);
@@ -19,13 +19,13 @@ const Navbar = () => {
   };
   return (
     <div className="container mx-auto">
-      <nav className="hidden px-4 xl:block xl:py-5 xl:px-24">
+      <nav className="hidden px-4 xl:block xl:py-5 xl:px-24 ">
         <div className="xl:justify-between xl:items-center xl:flex">
           <div></div>
           <ul className="xl:space-x-1 xl:flex">
             {/* Home */}
             <li className="hoverable hover:bg-[#F0FAFF] hover:rounded-full ">
-              <button className="xl:py-2 xl:px-5 " onMouseEnter={toggleHome}>
+              <button className="xl:py-2 xl:px-5" onMouseEnter={toggleHome}>
                 <div>
                   <Link
                     href="#"
@@ -37,7 +37,7 @@ const Navbar = () => {
                 </div>
               </button>
               {homeOpen && (
-                <div className="text-[13px] absolute w-40 py-2 mt-2 shadow-md font-medium bg-white rounded-lg z-50">
+                <div className="text-[13px] absolute w-40 py-2 mt-2 shadow-md font-medium bg-white rounded-lg ">
                   <Link
                     href="#"
                     className="block px-4 py-2 text-gray-800 hover:text-[#2bbef9] "
@@ -125,7 +125,7 @@ const Navbar = () => {
                     href="#"
                     className="text-black hover:text-[#2bbef9] flex text-[15px]"
                   >
-                    <FaMugHot className="mr-2 text-xl" />
+                    <FaMugHot className="mr-2 text-xl " />
                     BEVERAGES
                   </Link>
                 </div>
@@ -155,8 +155,8 @@ const Navbar = () => {
 
       {/* Shop DropDown */}
       {shopOpen && (
-        <div className="">
-          <div className="w-full text-[13px] absolute grid grid-flow-col py-2 mt-2 font-medium  rounded-lg grid-col-5 z-50 bg-white">
+        <div>
+          <div className="w-full xl:px-16   text-[13px] absolute grid grid-flow-col py-2 mt-2 font-medium  rounded-lg grid-col-5">
             <div className="relative mx-5">
               <p className="font-bold px-4 text-[#233a95] hover:text-[#2bbef9]">
                 Shop Lists

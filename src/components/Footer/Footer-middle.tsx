@@ -1,12 +1,11 @@
 import React from "react";
-import BottomFooter from "./bottom-footer";
+import BottomFooter from "./Footer-bottom";
 
 function MainFooter() {
   return (
     <>
-      
-      <div className="grid grid-col xl:grid-flow-col xl:grid-col-4 xl:grid-rows-1 sm:grid-col-2 sm:grid-rows-3 sm:grid-flow-col xl:mx-10 w-full pt-10 bg-gray-50 ">
-        <div className="p-5 flex">
+      <div className="grid w-full pt-10 grid-col xl:grid-flow-col xl:grid-col-4 xl:grid-rows-1 sm:grid-col-2 sm:grid-rows-3 sm:grid-flow-col xl:mx-10 bg-gray-50 ">
+        <div className="flex p-5">
           <ul>
             <p className="pb-4 font-semibold font-ff-headings text-gray-800 text-[15px]">
               FRUIT & VEGETABLES

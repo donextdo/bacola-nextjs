@@ -1,7 +1,10 @@
 import React, {ReactNode} from "react";
-import MainFooter from "../Footer/MainFooter";
+import Footer from "../Footer/Footer-top"
 import Message from "../Message/Message";
-import NewsLetter from "../NewsLetter/NewsLetter";
+import Navbar from "../Navbar/Navbar";
+import NewsLetter from "../NewsLetter/Newsletter";
+import TopHeader from "../TopHeader/TopHeader";
+
 
 
 type Props = {
@@ -12,9 +15,11 @@ const Layout : React.FC<Props> = ({children}) => {
     return ( 
         <div className="">
         <Message />
+        <TopHeader />
+        <Navbar />
         {children}
-        <NewsLetter />
-         <MainFooter />   
+        <NewsLetter/>
+        <Footer />
         </div>
      );
 }

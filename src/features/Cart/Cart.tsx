@@ -3,16 +3,28 @@ import { useState } from "react";
 import { FaPlus, FaMinus } from "react-icons/fa";
 import item1 from "../../../assets/item/item1.jpg";
 import { GrFormClose } from "react-icons/gr";
-import { IoCloseSharp } from "react-icons/io5";
+import { IoCloseSharp ,IoClose} from "react-icons/io5";
 import Link from "next/link";
+import {RootState} from "../../redux/store"
+import { useDispatch, useSelector } from "react-redux";
+import { decrement, increment } from "@/redux/counter";
 
 
 const Cart = () => {
-    const [count, setCount] = useState(99);
+    // const [count, setCount] = useState(99);
+    const {count} = useSelector((state: RootState)=>state.counter);
+    const dispatch = useDispatch()
 
     const handleCheckboxChange = () => {
 
     }
+    const handleIncrement = () => {
+        dispatch(increment());
+      };
+    
+      const handleDecrement = () => {
+        dispatch(decrement());
+      };
 
     return (
         <div className="px-3.5 container mx-auto mt-4">
@@ -57,11 +69,11 @@ const Cart = () => {
                                 Encore Seafoods Stuffed Alaskan Salmon
                             </div>
                             <div className="flex sm:col-span-3">
-                                <button className="p-2.5 bg-[#edeef5] rounded-full w-[30px] flex items-center">
+                                <button className="p-2.5 bg-[#edeef5] rounded-full w-[30px] flex items-center" onClick={handleDecrement}>
                                     <FaMinus className="text-xs" />
                                 </button>
                                 <p className="text-sm flex items-center justify-center w-7">{count}</p>
-                                <button className="p-2.5 bg-[#edeef5] rounded-full w-[30px] flex items-center">
+                                <button className="p-2.5 bg-[#edeef5] rounded-full w-[30px] flex items-center" onClick={handleIncrement}>
                                     <FaPlus className="text-xs " />
                                 </button>
                             </div>
@@ -69,7 +81,7 @@ const Cart = () => {
                             <div className="col-span-1 hidden sm:block">
                                 <button className="bg-white rounded-full p-1"><IoCloseSharp className="text-xl font-semibold text-black" /></button>
                             </div>
-                            <button className="absolute bg-[#ed174a] rounded-full p-1 text-white sm:hidden"><GrFormClose className="text-white" /></button>
+                            <button className="absolute bg-[#ed174a] rounded-full p-1 text-white sm:hidden"><IoClose className="text-white" /></button>
                         </div>
                     </div>
 
