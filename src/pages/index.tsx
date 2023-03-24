@@ -6,6 +6,7 @@ import Status from "@/components/ProductStatus/Status";
 import Categories from "@/components/ProductCategories/Categories";
 import Brands from "@/components/Brands/Brands";
 import { RangeSlider } from "@/components/RangeSlider/RangeSlider";
+import { FilterSideBar } from "@/components/FilterSideBar/FilterSideBar";
 
 export default function Home() {
   const [items, setItems] = useState<Array<Object>>([]);
@@ -25,15 +26,9 @@ export default function Home() {
       <div>
         <ItemList itemsList={items} />
       </div>
-      <div className="mt-2 mx-4 grid lg:grid-cols-4">
-        <Status />
-        <Categories />
-        <Brands />
-        <RangeSlider />
+      <div className="mt-2 mx-4">
+        <FilterSideBar />
       </div>
-      {/* <div className="mt-100 ml-4">
-        <RangeSlider />
-      </div> */}
     </div>
   );
 }
