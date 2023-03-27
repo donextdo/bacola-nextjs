@@ -10,12 +10,12 @@ import { MdKeyboardArrowDown } from "react-icons/md";
 const Navbar = () => {
   const [homeOpen, setHomeOpen] = useState(false);
   const toggleHome = () => {
-    setHomeOpen(!homeOpen);
+    // setHomeOpen(!homeOpen);
   };
   const [shopOpen, setShopOpen] = useState(false);
 
   const toggleShop = () => {
-    setShopOpen(!shopOpen);
+    // setShopOpen(!shopOpen);
   };
   return (
     <div className="container mx-auto">

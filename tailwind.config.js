@@ -4,16 +4,16 @@ module.exports = {
     "./app/**/*.{js,ts,jsx,tsx}",
     "./pages/**/*.{js,ts,jsx,tsx}",
     "./components/**/*.{js,ts,jsx,tsx}",
- 
+
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
     fontFamily: {
-      'ff-headings' : ['Dosis', 'sans-serif']
+      "ff-headings": ["Dosis", "sans-serif"],
     },
     extend: {
-      placeItems: ['hover', 'focus'],
+      placeItems: ["hover", "focus"],
     },
   },
-  plugins: [],
-}
+  plugins: [require("@tailwindcss/line-clamp")],
+};

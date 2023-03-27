@@ -1,5 +1,6 @@
 import React, {ReactNode} from "react";
 import Footer from "../Footer/Footer-top"
+import Header from "../Header/Header";
 import Message from "../Message/Message";
 import Navbar from "../Navbar/Navbar";
 import NewsLetter from "../NewsLetter/Newsletter";
@@ -16,6 +17,7 @@ const Layout : React.FC<Props> = ({children}) => {
         <div className="">
         <Message />
         <TopHeader />
+        <Header />
         <Navbar />
         {children}
         <NewsLetter/>

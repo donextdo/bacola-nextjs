@@ -17,7 +17,7 @@ import Image from "next/image";
 export default function HomeSlider() {
     return (
       <>
-      <div className="px-5 mt-16 md:mb-40 md:px-60 h-1/2">
+      <div className="px-5 mt-4 md:mb-10 md:px-60 h-1/2">
         
       <Swiper
        
