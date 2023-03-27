@@ -4,6 +4,13 @@ import { SlSizeFullscreen } from "react-icons/sl";
 import { FiHeart } from "react-icons/fi";
 import { FC, useState } from "react";
 import Image from "next/image";
+import { addItem } from '../../redux/cartItems';
+import {RootState} from "../../redux/store"
+import { useDispatch, useSelector } from "react-redux";
+import { decrement, increment } from "@/redux/counter";
+import { addToCart, removeFromCart } from "@/redux/AddCartButton";
+
+
 
 interface ComponentProps {
   isRecommended: Boolean;
@@ -13,7 +20,7 @@ interface ComponentProps {
   title: String;
   isAvailable: Boolean;
   rating: Number;
-  price: Number;
+  price: number;
   discount: Number;
   isFavourite: Boolean;
 }
@@ -30,23 +37,37 @@ export const CartItem: FC<ComponentProps> = ({
   discount,
   isFavourite,
 }) => {
-  const [quantity, setQuantity] = useState(1);
-  const [isAddToCart, setIsAddToCart] = useState(false);
+  // const [quantity, setQuantity] = useState(1);
+  // const [isAddToCart, setIsAddToCart] = useState(false);
+  const {count} = useSelector((state: RootState)=>state.counter);
+  const isAddToCart = useSelector((state: RootState) => state.cartbutton.isAddToCart);
+    const dispatch = useDispatch()
 
   const handleIncrement: () => void = () => {
-    setQuantity(quantity + 1);
+    // setQuantity(quantity + 1);
+    dispatch(increment());
   };
 
   const handleDecrement: () => void = () => {
-    setQuantity(quantity - 1);
-    if (quantity === 1) {
-      setIsAddToCart(false);
-      setQuantity(1);
+    // setQuantity(quantity - 1);
+    dispatch(decrement());
+    if (count === 1) {
+      dispatch(removeFromCart())
     }
   };
 
-  const addToCart: () => void = () => {
-    setIsAddToCart(true);
+  const handleaddToCart: () => any = () => {
+    
+    const item = {
+      image: image,
+      title:title,
+      price:price,
+      count:count,
+      subtotal: (price) * (count)
+    } 
+    console.log(item.subtotal)
+    dispatch(addToCart())
+    dispatch(addItem(item));
   };
 
   const stars = Array.from({ length: 5 }, (_, i) => (
@@ -128,7 +149,7 @@ export const CartItem: FC<ComponentProps> = ({
           <button
             type="button"
             className=" bg-blue-900 text-white min-h-[34px] min-w-[180.8px] rounded-full w-full "
-            onClick={addToCart}
+            onClick={handleaddToCart}
           >
             Add to cart
           </button>
@@ -144,7 +165,7 @@ export const CartItem: FC<ComponentProps> = ({
               -
             </button>
             <div className="max-h-[34px] flex items-center justify-center w-full text-center border-y">
-              {quantity}
+              {count}
             </div>
             <button
               type="button"

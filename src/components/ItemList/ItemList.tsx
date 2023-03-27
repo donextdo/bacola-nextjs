@@ -7,7 +7,7 @@ interface ComponentProps {
 
 export const ItemList: FC<ComponentProps> = ({ itemsList }) => {
   return (
-    <div className="container lg:max-w-[885px] md:max-w-[670px]">
+    <div className="container mx-auto lg:max-w-[885px] md:max-w-[670px]">
       <div className="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 px-4 ">
         {itemsList.map((item: any, index) => {
           return (

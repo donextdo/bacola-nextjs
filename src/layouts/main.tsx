@@ -1,15 +1,15 @@
 import React, { ReactNode } from 'react'
 
 interface Props {
-    children: ReactNode
+  children: ReactNode
 }
 
 const main: React.FC<Props> = (
-    { children }
+  { children }
 ) => {
   return (
     <>
-        {children}
+      {children}
     </>
   )
 }
