@@ -4,7 +4,9 @@ import BottomFooter from "./Footer-bottom";
 function MainFooter() {
   return (
     <>
-      <div className="grid w-full pt-10 grid-col xl:grid-flow-col xl:grid-col-4 xl:grid-rows-1 sm:grid-col-2 sm:grid-rows-3 sm:grid-flow-col xl:mx-10 bg-gray-50 ">
+
+      <div className="grid w-full pt-10 grid-col xl:grid-flow-col xl:grid-col-4 xl:grid-rows-1 sm:grid-col-2 sm:grid-rows-3 sm:grid-flow-col xl:px-10 bg-gray-50 ">
+
         <div className="flex p-5">
           <ul>
             <p className="pb-4 font-semibold font-ff-headings text-gray-800 text-[15px]">
@@ -164,7 +166,8 @@ function MainFooter() {
           </ul>
         </div>
       </div>
-      <div>
+      <div className="xl:px-5 2xl:px-10">
+
         <BottomFooter />
       </div>
     </>
