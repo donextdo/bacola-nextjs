@@ -14,6 +14,11 @@ import HomeSlider from '@/components/Homeslider';
 import { SearchItem } from "@/components/Search/Search";
 import { ItemList } from "@/components/ItemList/ItemList";
 import { data } from "@/dummy_data/Items";
+import Status from "@/components/ProductStatus/Status";
+import Categories from "@/components/ProductCategories/Categories";
+import Brands from "@/components/Brands/Brands";
+import { RangeSlider } from "@/components/RangeSlider/RangeSlider";
+import { FilterSideBar } from "@/components/FilterSideBar/FilterSideBar";
 
 export default function Home() {
   const [items, setItems] = useState<Array<Object>>([]);
@@ -35,9 +40,15 @@ export default function Home() {
       <div>
         <ItemList itemsList={items} />
       </div>
+      <div>
+        <FilterSideBar />
+      </div>
+    </div>
+
     
     <CartList />
     </>
+
 
   );
 }
