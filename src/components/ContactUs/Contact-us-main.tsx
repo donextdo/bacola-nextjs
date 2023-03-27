@@ -1,8 +1,7 @@
-import Form from "./contact-us-form";
-
+import ContactForm from "./Contact-us-form";
 //import icons
-import { FiMail } from "react-icons/Fi";
-import { FiPhoneCall } from "react-icons/Fi";
+import { FiMail } from "react-icons/fi";
+import { FiPhoneCall } from "react-icons/fi";
 import { IoLocationSharp } from "react-icons/io5";
 
 function ContactUs() {
@@ -19,7 +18,7 @@ function ContactUs() {
       </div>
 
       {/* Section -02 */}
-      <div className=" md:flex sm:mx-2.5 mx-2.5 xl:mx-10 2xl:mx-24">
+      <div className=" md:flex sm:mx-2.5 mx-2.5 xl:mx-10 2xl:mx-60 relative">
         <div className="mt-10  bg-[#f3f4f7] container md:mx-2.5">
           <div className="py-10 text-center sm:py-10 md:py-10">
             <p className="text-3xl sm:text-4xl   sm:px-[50%] px-[48%]  md:px-24 lg:px-[45%] text-[#233a95]">
@@ -55,13 +54,13 @@ function ContactUs() {
             <p className="mt-5 text-gray-900 text-[15px] sm:font-medium ">
               info@example.com
             </p>
-            <p className="mt-3 text-gray-600 text-[13px]">
+            <p className="mt-3 text-gray-600 text-[13px] md:px-5">
               Lorem ipsum dolar site amet discont
             </p>
           </div>
         </div>
       </div>
-      <Form
+      <ContactForm
         onSubmit={function (values: {
           name: string;
           email: string;

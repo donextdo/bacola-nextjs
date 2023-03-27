@@ -11,7 +11,7 @@ type Props = {
   onSubmit: (values: FormValues) => void;
 };
 
-const Form: React.FC<Props> = () => {
+const ContactForm: React.FC<Props> = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [subject, setSubject] = useState("");
@@ -27,7 +27,7 @@ const Form: React.FC<Props> = () => {
   };
   return (
     <>
-      <div className="mx-5 lg:border lg:shadow-lg lg:m-16 md:mx-5 lg:mx-2 xl:mx-10 2xl:mx-24">
+      <div className="relative mx-5 lg:border lg:shadow-lg lg:m-16 md:mx-5 lg:mx-2 xl:mx-10 2xl:mx-60">
         <div className="max-w-3xl mx-5 mt-16 text-center md:mx-auto">
           <h2 className="text-[40px] text-gray-900 sm:text-4xl lg:text-[40px]">
             Send Us
@@ -123,4 +123,4 @@ const Form: React.FC<Props> = () => {
     </>
   );
 };
-export default Form;
+export default ContactForm;

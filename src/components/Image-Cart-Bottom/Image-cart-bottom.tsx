@@ -6,7 +6,7 @@ interface CartBottomItem {
   quantity: string;
 }
 
-const CartBottomItems: CartBottomItem [] = [
+const CartBottomItems: CartBottomItem[] = [
   { id: 1, name: "Biscuits & Snacks", quantity: "6 Items" },
   { id: 2, name: "Fruits & Vegetables", quantity: "12 Items" },
   { id: 3, name: "Breads & Bakery", quantity: "6 Items" },
@@ -28,7 +28,9 @@ const images: string[] = [
   "https://k4j3j2s7.rocketcdn.me/bacola/wp-content/uploads/2021/05/meat-1.jpg",
 ];
 
-const MyList: React.FC<{ CartBottomItems:CartBottomItem[] }> = ({ CartBottomItems }) => (
+const MyList: React.FC<{ CartBottomItems: CartBottomItem[] }> = ({
+  CartBottomItems,
+}) => (
   <div className="grid grid-flow-col grid-rows-4 gap-0 mx-5 mt-16 border sm:grid-rows-4 lg:mx-16 lg:grid-rows-2">
     {CartBottomItems.map((CartBottomItem, index) => (
       <div key={CartBottomItem.id} className="py-10 md:py-5 lg:border">
@@ -43,7 +45,9 @@ const MyList: React.FC<{ CartBottomItems:CartBottomItem[] }> = ({ CartBottomItem
               {CartBottomItem.name}
             </p>
             <div className="flex flex-col text-center lg:text-left ">
-              <p className="text-[12px] mt-1 text-gray-400">{CartBottomItem.quantity}</p>
+              <p className="text-[12px] mt-1 text-gray-400">
+                {CartBottomItem.quantity}
+              </p>
             </div>
           </div>
         </div>
@@ -51,7 +55,6 @@ const MyList: React.FC<{ CartBottomItems:CartBottomItem[] }> = ({ CartBottomItem
     ))}
   </div>
 );
-
 const CartList: React.FC = () => (
   <div>
     <MyList CartBottomItems={CartBottomItems} />

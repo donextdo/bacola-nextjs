@@ -2,7 +2,7 @@ import { SetStateAction, useState } from "react";
 import Login from "./Login";
 import Register from "./Register";
 
-const IndexPage = () => {
+const LoginRegisterPage = () => {
   const [activeTab, setActiveTab] = useState("tab1");
 
   const handleTabClick = (tab: SetStateAction<string>) => {
@@ -10,7 +10,7 @@ const IndexPage = () => {
   };
 
   return (
-    <div className="max-w-lg mx-auto mt-5 mb-10 border-2 border-b-0 md:shadow-sm">
+    <div className="max-w-lg mx-auto mt-5 mb-10 border b-0 border- md:shadow-lg">
       <div className="mt-16 mb-10 tabs">
         <div className="container flex justify-center max-w-lg mx-auto">
           <div className="pr-5">
@@ -65,4 +65,4 @@ const IndexPage = () => {
   );
 };
 
-export default IndexPage;
+export default LoginRegisterPage;

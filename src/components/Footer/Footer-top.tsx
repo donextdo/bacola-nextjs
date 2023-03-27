@@ -1,17 +1,17 @@
 //import icons
-import { MdProductionQuantityLimits } from "react-icons/Md";
-import { TbTruckDelivery } from "react-icons/Tb";
-import { TbDiscount2 } from "react-icons/Tb";
-import { CiDollar } from "react-icons/Ci";
+import { MdProductionQuantityLimits } from "react-icons/md";
+import { TbTruckDelivery } from "react-icons/tb";
+import { TbDiscount2 } from "react-icons/tb";
+import { CiDollar } from "react-icons/ci";
 
-import MainFooter from "./footer";
+import MainFooter from "./Footer-middle";
 
 export default function Footer() {
   return (
     <>
-      <div className="bg-[#f7f8fd] w-[100%] xl:mt-40 h-1/2">
+      <div className="bg-[#f7f8fd] w-[100%] h-1/2">
         <div className="container justify-center pt-10 mx-auto xl:py-10 xl:flex">
-          <div className="px-3 border-b-0 border-l-0 border-r-2 xl:px-3 borer-t-0">
+          <div className="px-3 border-t-0 border-b-0 border-l-0 border-r-2 xl:px-3">
             <div className="flex ">
               <p className="xl:mx-2 text-[24px]">
                 <MdProductionQuantityLimits />

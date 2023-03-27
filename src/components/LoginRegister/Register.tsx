@@ -1,7 +1,8 @@
+import Link from "next/link";
 import React, { useState } from "react";
 
 type FormValues = {
-  usernameoremail: string;
+  email: string;
   password: string;
 };
 
@@ -9,34 +10,33 @@ type Props = {
   onSubmit: (values: FormValues) => void;
 };
 
-const Login: React.FC<Props> = () => {
-  const [usernameoremail, setUsernameoremail] = useState("");
+const Register: React.FC<Props> = () => {
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log({ usernameoremail, password });
-    setUsernameoremail("");
+    console.log({ email, password });
+    setEmail("");
     setPassword("");
   };
   return (
     <>
-      <div className="border border-t-0 max-w-lg md:shadow-sm mx-auto ">
+      <div className="max-w-lg mx-auto border-t-0">
         <form onSubmit={handleSubmit} className="max-w-md mx-auto mt-5 mb-16">
           <div className="mx-2 gap-y-6 gap-x-8 ">
             <div>
-              <label
-                htmlFor="username-email"
-                className="block text-sm text-gray-900 "
-              >
-                Username or email address *
+              <label htmlFor="email" className="block text-sm text-gray-900 ">
+                Email address *
               </label>
-              <div className="mt-2.5">
+              <div className="mt-3">
                 <input
-                  type="text"
-                  name="username-email"
-                  id="username-email"
-                  autoComplete="given-username-email"
+                  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                  type="email"
+                  name="email"
+                  id="email"
+                  autoComplete="email"
+                  required 
                   className="block w-full border-0 py-2 px-3.5 text-gray-900 bg-[#f3f4f7] "
                 />
               </div>
@@ -45,21 +45,25 @@ const Login: React.FC<Props> = () => {
               <label htmlFor="password" className="block text-sm text-gray-900">
                 Password *
               </label>
-              <div className="mt-2.5">
+              <div className="mt-3">
                 <input
                   type="password"
                   name="password"
                   id="password"
                   autoComplete="password"
+                  required 
                   className="block w-full border-0 py-2 px-3.5 text-gray-900 bg-[#f3f4f7]"
                 />
               </div>
             </div>
           </div>
 
-          <div className="mt-5 pl-3 flex ">
-            <input type="checkbox" className="bg-[#f3f4f7]" />
-            <p className="px-3">Remember me</p>
+          <div className="pl-3 mt-5">
+            <span className="justify-center  text-[12px] text-gray-600">
+              Your personal data will be used to support your experience
+              throughout this website, to manage access to your account, and for
+              other purposes described in our privacy policy.
+            </span>
           </div>
 
           <div className="mx-2 mt-5 mb-10 ">
@@ -67,7 +71,7 @@ const Login: React.FC<Props> = () => {
               type="submit"
               className=" rounded-md w-full block bg-[#233a95] px-3.5 py-2.5 text-center text-sm font-semibold text-white"
             >
-              Login
+              Register
             </button>
           </div>
         </form>
@@ -75,4 +79,4 @@ const Login: React.FC<Props> = () => {
     </>
   );
 };
-export default Login;
+export default Register;
