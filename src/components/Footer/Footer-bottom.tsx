@@ -25,13 +25,17 @@ export default function BottomFooter() {
                 <FiPhoneCall />
               </button>
             </div>
+
             <div className="px-2 xl:px-5 lg:mr-0 xl:mr-32 2xl:mr-40">
+
               <h2 className="font-semibold text-[20px] flex">8 800 555-55</h2>
               <p className="text-gray-400 text-[11px]">Working 8:00 - 22:00</p>
             </div>
           </div>
 
+
           <div className="ml-7 xl:ml-40 2xl:ml-96  sm:mx-10 xl:mx-0 lg:ml-16 md:ml-40">
+
             <p className="font-semibold text-[14px] xl:ml-7 md:ml-7 ">
               Download App on Mobile :
             </p>
@@ -79,13 +83,17 @@ export default function BottomFooter() {
         <div className="xl:flex ">
           <div className="lg:flex lg:mb-5 xl:mb-0">
             <div>
+
               <p className="text-gray-400 text-[12px] pl-5 xl:mr-7">
+
                 Copyright 2022 © Bacola WordPress Theme. All rights reserved.
                 Powered by KlbTheme.
               </p>
             </div>
 
+
             <div className="flex mt-5 lg:mt-0 lg:pl-32 xl:pl-5 2xl:ml-60">
+
               <p className="text-gray-400 text-[12px]  pl-5 lg:pl-2">
                 <Link
                   href=""

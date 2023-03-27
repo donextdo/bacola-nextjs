@@ -11,7 +11,9 @@ export default function Footer() {
     <>
       <div className="bg-[#f7f8fd] w-[100%] h-1/2">
         <div className="container justify-center pt-10 mx-auto xl:py-10 xl:flex">
+
           <div className="px-3 border-t-0 border-b-0 border-l-0 border-r-2 xl:px-3">
+
             <div className="flex ">
               <p className="xl:mx-2 text-[24px]">
                 <MdProductionQuantityLimits />
