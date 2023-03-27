@@ -20,13 +20,13 @@ export default function Home() {
 
   return (
     <div>
-      <div className="m-8 search-bar ">
+      {/* <div className="m-8 search-bar ">
         <SearchItem />
       </div>
       <div>
         <ItemList itemsList={items} />
-      </div>
-      <div className="mt-2 mx-4">
+      </div> */}
+      <div>
         <FilterSideBar />
       </div>
     </div>

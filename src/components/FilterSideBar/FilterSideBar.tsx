@@ -5,7 +5,7 @@ import { RangeSlider } from "../RangeSlider/RangeSlider";
 
 export const FilterSideBar = () => {
   return (
-    <div className="grid md:grid-cols-1 grid-cols-1 px-4 ">
+    <div className="grid md:grid-cols-1 grid-cols-1 px-4  mx-4 ">
       <Categories />
       <RangeSlider />
       <Status />
