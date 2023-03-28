@@ -4,13 +4,12 @@ import { SlSizeFullscreen } from "react-icons/sl";
 import { FiHeart } from "react-icons/fi";
 import { FC, useState } from "react";
 import Image from "next/image";
-import { addItem } from '../../redux/cartItems';
-import {RootState} from "../../redux/store"
+import { addItem } from "../../redux/cartItems";
+import { RootState } from "../../redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import { decrement, increment } from "@/redux/counter";
 import { addToCart, removeFromCart } from "@/redux/AddCartButton";
-
-
+import { useRouter } from "next/router";
 
 interface ComponentProps {
   isRecommended: Boolean;
@@ -39,9 +38,12 @@ export const CartItem: FC<ComponentProps> = ({
 }) => {
   // const [quantity, setQuantity] = useState(1);
   // const [isAddToCart, setIsAddToCart] = useState(false);
-  const {count} = useSelector((state: RootState)=>state.counter);
-  const isAddToCart = useSelector((state: RootState) => state.cartbutton.isAddToCart);
-    const dispatch = useDispatch()
+  const { count } = useSelector((state: RootState) => state.counter);
+  const isAddToCart = useSelector(
+    (state: RootState) => state.cartbutton.isAddToCart
+  );
+  const dispatch = useDispatch();
+  const router = useRouter();
 
   const handleIncrement: () => void = () => {
     // setQuantity(quantity + 1);
@@ -52,21 +54,20 @@ export const CartItem: FC<ComponentProps> = ({
     // setQuantity(quantity - 1);
     dispatch(decrement());
     if (count === 1) {
-      dispatch(removeFromCart())
+      dispatch(removeFromCart());
     }
   };
 
   const handleaddToCart: () => any = () => {
-    
     const item = {
       image: image,
-      title:title,
-      price:price,
-      count:count,
-      subtotal: (price) * (count)
-    } 
-    console.log(item.subtotal)
-    dispatch(addToCart())
+      title: title,
+      price: price,
+      count: count,
+      subtotal: price * count,
+    };
+    console.log(item.subtotal);
+    dispatch(addToCart());
     dispatch(addItem(item));
   };
 
@@ -77,6 +78,23 @@ export const CartItem: FC<ComponentProps> = ({
       />
     </span>
   ));
+
+  const handleClick = () => {
+    router.push("/viewcart");
+    const myObject = {
+      title: title,
+      image: image,
+      isRecommended: isRecommended,
+      isDiscount: isDiscount,
+      isOrganic: isOrganic,
+      isAvailable: isAvailable,
+      rating: rating,
+      price: price,
+      discount: discount,
+      count: count,
+    };
+    localStorage.setItem("item", JSON.stringify(myObject));
+  };
 
   return (
     <div className="md:max-w-[212.95px] md:max-h-[370.24px] min-w-[212.95px] min-h-[350.24px] mx-auto bg-white border border-gray-200  overflow-hidden relative group hover:drop-shadow-lg rounded-sm">
@@ -121,10 +139,14 @@ export const CartItem: FC<ComponentProps> = ({
           height={154.95}
           src={image as string}
           alt="Man looking at item at a store"
+          onClick={handleClick}
         />
       </div>
       <div className="mx-5 mb-1 max-h-[155.29px] max-w-[212.95] ">
-        <div className="text-sm font-medium text-black hover:text-indigo-400  capitalize leading-tight hover:cursor-pointer line-clamp-2">
+        <div
+          className="text-sm font-medium text-black hover:text-indigo-400  capitalize leading-tight hover:cursor-pointer line-clamp-2"
+          onClick={handleClick}
+        >
           {title}
         </div>
         <div className="my-1 font-[.6875rem] text-xs pt-2 text-green-600 uppercase font-semibold tracking-[.005em]">

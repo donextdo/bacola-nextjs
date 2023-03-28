@@ -1,11 +1,11 @@
 import MyAccount from "@/components/MyAccount/MyAccount";
 
 const Account = () => {
-    return ( 
-        <div>
-            <MyAccount />
-        </div>
-     );
-}
- 
+  // return (
+  //     <div>
+  //         <MyAccount />
+  //     </div>
+  //  );
+};
+
 export default Account;
