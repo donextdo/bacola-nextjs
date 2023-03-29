@@ -16,6 +16,8 @@ interface ComponentProps {
   isDiscount: Boolean;
   isOrganic: Boolean;
   image: String;
+  sideimage: String;
+  backside: String;
   title: String;
   isAvailable: Boolean;
   rating: Number;
@@ -29,6 +31,8 @@ export const CartItem: FC<ComponentProps> = ({
   isDiscount,
   isOrganic,
   image,
+  sideimage,
+  backside,
   title,
   isAvailable,
   rating,
@@ -84,6 +88,8 @@ export const CartItem: FC<ComponentProps> = ({
     const myObject = {
       title: title,
       image: image,
+      sideimage: sideimage,
+      backside: backside,
       isRecommended: isRecommended,
       isDiscount: isDiscount,
       isOrganic: isOrganic,

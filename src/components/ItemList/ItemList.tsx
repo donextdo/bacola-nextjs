@@ -1,4 +1,4 @@
-import React, { useState, useEffect, FC } from "react";
+import React, { FC } from "react";
 import { CartItem } from "@/components/CartItem/CartItem";
 
 interface ComponentProps {
@@ -20,6 +20,8 @@ export const ItemList: FC<ComponentProps> = ({ itemsList }) => {
               discount={item?.discount}
               rating={item?.rating}
               image={item?.image}
+              sideimage={item?.sideimage}
+              backside={item?.backside}
               title={item?.title}
               isAvailable={item?.isAvailable}
               price={item?.price}
