@@ -15,31 +15,19 @@ import { HiOutlineCurrencyDollar } from "react-icons/hi";
 import { GiMedicinePills } from "react-icons/gi";
 import { TbArrowsDownUp } from "react-icons/tb";
 import { BsCheckLg } from "react-icons/bs";
-import { Swiper, SwiperSlide } from "Swiper/react";
-import SwiperCore, { Navigation, Pagination } from "swiper";
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
-import "swiper/css/scrollbar";
-
-SwiperCore.use([Navigation, Pagination]);
 
 export const ViewItem = () => {
   const [newCount, setNewCount] = useState(1);
   const [isClick, setIsClick] = useState(false);
   const [myObject, setMyObject] = useState(null);
-  // const [currentImage, setCurrentImage] = useState("");
+
   useEffect(() => {
     const storedObject = localStorage.getItem("item");
-    //setCurrentImage(myObject?.image);
+
     if (storedObject) {
       setMyObject(JSON.parse(storedObject));
     }
   }, [newCount]);
-
-  // const handleImageClick = (imageSet) => {
-  //   setCurrentImage(imageSet);
-  // };
 
   const increment = () => {
     setIsClick(true);
@@ -66,17 +54,6 @@ export const ViewItem = () => {
 
   return (
     <div className="container mx-auto m-8 p-6 bg-white drop-shadow-2xl">
-      {/* <Swiper
-        spaceBetween={50}
-        slidesPerView={3}
-        onSlideChange={() => console.log("slide change")}
-        onSwiper={(swiper) => console.log(swiper)}
-      >
-        <SwiperSlide>Slide 1</SwiperSlide>
-        <SwiperSlide>Slide 2</SwiperSlide>
-        <SwiperSlide>Slide 3</SwiperSlide>
-        <SwiperSlide>Slide 4</SwiperSlide>
-      </Swiper> */}
       <div className="min-h-[67.8px] max-w-[757px] mb-[1.875rem]">
         <h1 className="min-h-[28.8px] max-w-[757px] capitalize text-[1.5rem] font-semibold">
           {myObject?.title}
@@ -127,47 +104,13 @@ export const ViewItem = () => {
               <Image
                 width={390}
                 height={436}
-                //src={currentImage}
                 src={myObject?.image}
                 alt="Man looking at item at a store"
               />
-              {/* <Swiper
-                navigation
-                pagination={{ clickable: true }}
-                className="mySwiper"
-              >
-                <SwiperSlide>
-                  <Image
-                    width={390}
-                    height={436}
-                    src={myObject?.image}
-                    alt="Man looking at item at a store"
-                  />
-                </SwiperSlide>
-                <SwiperSlide>
-                  <Image
-                    width={390}
-                    height={436}
-                    src={myObject?.sideimage}
-                    alt="Man looking at item at a store"
-                  />
-                </SwiperSlide>
-                <SwiperSlide>
-                  <Image
-                    width={390}
-                    height={436}
-                    src={myObject?.image}
-                    alt="Man looking at item at a store"
-                  />
-                </SwiperSlide>
-              </Swiper> */}
             </div>
 
             <div className="flex items-center justify-center row min-h-[63px] max-w-[421.2px] md:min-h-[67px] md:max-w-[444.66px]">
-              <div
-                className="flex items-center justify-center min-w-[67px] min-h-[67px] lg:min-w-[67px] lg:min-h-[67px] md:min-w-[94.4px] md:min-h-[94.4px]  border border-gray-400 mr-2 hover:cursor-pointer"
-                // onClick={() => handleImageClick(myObject?.image)}
-              >
+              <div className="flex items-center justify-center min-w-[67px] min-h-[67px] lg:min-w-[67px] lg:min-h-[67px] md:min-w-[94.4px] md:min-h-[94.4px]  border border-gray-400 mr-2 hover:cursor-pointer">
                 <Image
                   width={67}
                   height={67}
@@ -175,10 +118,7 @@ export const ViewItem = () => {
                   alt="Man looking at item at a store"
                 />
               </div>
-              <div
-                className="flex items-center justify-center min-w-[67px] min-h-[67px] lg:min-w-[67px] lg:min-h-[67px] md:min-w-[94.4px] md:min-h-[94.4px]   border border-gray-400 mr-2 hover:cursor-pointer"
-                //onClick={() => handleImageClick(myObject?.sideimage)}
-              >
+              <div className="flex items-center justify-center min-w-[67px] min-h-[67px] lg:min-w-[67px] lg:min-h-[67px] md:min-w-[94.4px] md:min-h-[94.4px]   border border-gray-400 mr-2 hover:cursor-pointer">
                 <Image
                   width={67}
                   height={67}
@@ -186,10 +126,7 @@ export const ViewItem = () => {
                   alt="Man looking at item at a store"
                 />
               </div>
-              <div
-                className="flex items-center justify-center min-w-[67px] min-h-[67px] lg:min-w-[67px] lg:min-h-[67px] md:min-w-[94.4px] md:min-h-[94.4px]   border border-gray-400 hover:cursor-pointer"
-                //onClick={() => handleImageClick(myObject?.backside)}
-              >
+              <div className="flex items-center justify-center min-w-[67px] min-h-[67px] lg:min-w-[67px] lg:min-h-[67px] md:min-w-[94.4px] md:min-h-[94.4px]   border border-gray-400 hover:cursor-pointer">
                 <Image
                   width={67}
                   height={67}
