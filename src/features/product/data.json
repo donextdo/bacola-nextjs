@@ -1,0 +1,58 @@
+[
+  {
+    "id": 1,
+    "isRecommended": true,
+    "isDiscount": true,
+    "isOrganic": false,
+    "isFavourite": true,
+    "discount": 23,
+    "rating": 4,
+    "image": "/images/meal1.jpg",
+    "title": "All Natural Italian-Style Chicken Meatballs",
+    "isAvailable": true,
+    "price": 49.99,
+    "quantity": 0
+  },
+  {
+    "id": 2,
+    "isRecommended": false,
+    "isDiscount": true,
+    "isOrganic": false,
+    "isFavourite": true,
+    "discount": 24,
+    "rating": 4,
+    "image": "/images/meal2.jpg",
+    "title": "Angie’s Boomchickapop Sweet & Salty Kettle Corn",
+    "isAvailable": true,
+    "price": 49.99,
+    "quantity": 0
+  },
+  {
+    "id": 3,
+    "isRecommended": false,
+    "isDiscount": true,
+    "isOrganic": true,
+    "isFavourite": false,
+    "discount": 19,
+    "rating": 4,
+    "image": "/images/meal3.jpg",
+    "title": "Field Roast Chao Cheese Creamy Original",
+    "isAvailable": true,
+    "price": 49.99,
+    "quantity": 0
+  },
+  {
+    "id": 4,
+    "isRecommended": false,
+    "isDiscount": false,
+    "isOrganic": false,
+    "isFavourite": false,
+    "discount": 0,
+    "rating": 4,
+    "image": "/images/meal4.png",
+    "title": "Foster Farms Takeout Crispy Classic Buffalo Wings",
+    "isAvailable": true,
+    "price": 49.99,
+    "quantity": 0
+  }
+]

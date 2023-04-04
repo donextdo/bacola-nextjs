@@ -1,5 +1,5 @@
 import { useState } from "react";
-import CartPopup from "../Popup/CartPopup";
+import CartPopup from "../../features/cart/popup-cart/CartPopup";
 import { SearchItem } from "../Search/Search";
 import { AiOutlineUser } from "react-icons/ai";
 import { SlHandbag } from "react-icons/sl";
@@ -18,7 +18,7 @@ const handleClick = () => {
             <div className="flex gap-4">
             <div><Link href="/account"><button className="border rounded-full p-2"><AiOutlineUser className="text-2xl"/></button></Link></div>
             <div className="relative">
-            <button className="border border-[#fff1ee] bg-[#fff1ee] rounded-full p-2" onClick={handleClick}><SlHandbag className="text-2xl text-[#ea2b0f]"/></button>
+            <button className="border border-[#fff1ee] bg-[#fff1ee] rounded-full p-2" onClick={handleClick} ><SlHandbag className="text-2xl text-[#ea2b0f]"/></button>
             {
                 cart && <CartPopup setCart={setCart}/>
             }

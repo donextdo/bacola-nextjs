@@ -6,22 +6,23 @@ import { GiChickenOven } from "react-icons/gi";
 import { MdOutlineBakeryDining } from "react-icons/md";
 import { FaMugHot } from "react-icons/fa";
 import { MdKeyboardArrowDown } from "react-icons/md";
+import Allcategories from "../AllCategories/Allcategories";
 
 const Navbar = () => {
   const [homeOpen, setHomeOpen] = useState(false);
   const toggleHome = () => {
-    // setHomeOpen(!homeOpen);
+    setHomeOpen(homeOpen);
   };
   const [shopOpen, setShopOpen] = useState(false);
 
   const toggleShop = () => {
-    // setShopOpen(!shopOpen);
+    setShopOpen(shopOpen);
   };
   return (
-    <div className="container mx-auto">
-      <nav className="hidden px-4 xl:block xl:py-5 xl:px-24 ">
+    <div>
+      <nav className="hidden px-4 xl:block xl:py-5 xl:px-16 ">
         <div className="xl:justify-between xl:items-center xl:flex">
-          <div></div>
+          <div><Allcategories/></div>
           <ul className="xl:space-x-1 xl:flex">
             {/* Home */}
             <li className="hoverable hover:bg-[#F0FAFF] hover:rounded-full ">

@@ -1,8 +1,9 @@
-import Cart from "@/features/Cart/Cart";
+import Cart from "@/features/cart/main-cart/Cart";
+
 
 const CartPage = () => {
     return ( 
-        <div><Cart /></div>
+        <div><Cart image={""} title={""} subtotal={0} /></div>
      );
 }
  

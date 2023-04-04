@@ -1,14 +1,14 @@
 import { SlMenu } from 'react-icons/sl';
 import { useState } from 'react'
-import MyAccountPopup from '../Popup/MyAccountPopup';
-import Dashboard from '../AccountList/Dashborad';
-import Orders from '../AccountList/Orders';
-import Address from '../AccountList/Address';
-import AccountDetails from '../AccountList/AccountDetails';
+import MyAccountPopup from './MyAccountPopup';
+import Dashboard from './AccountList/Dashborad';
+import Orders from './AccountList/Orders';
+import Address from './AccountList/Address';
+import AccountDetails from './AccountList/AccountDetails';
 
 const MyAccount = () => {
     const [modal, setModal] = useState(false)
-    const [selected, setSelected] = useState(null);
+    const [selected, setSelected] = useState(1);
     const [isColor, setIsColor] = useState(1);
     
 

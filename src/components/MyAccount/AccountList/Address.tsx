@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { useState } from "react";
-import Bill from "../Bill/Bill";
+import Bill from "../../Bill/Bill";
 
 const Address = () => {
     const [modal, setModal] = useState(false)

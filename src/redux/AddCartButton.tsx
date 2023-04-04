@@ -11,7 +11,7 @@ export const cartbuttonSlice = createSlice({
   name: 'cartbutton',
   initialState,
   reducers: {
-    addToCart: (state) => {
+    addQuantity: (state) => {
       state.isAddToCart = true;
     },
     removeFromCart: (state) => {
@@ -20,6 +20,6 @@ export const cartbuttonSlice = createSlice({
   },
 });
 
-export const { addToCart, removeFromCart } = cartbuttonSlice.actions;
+export const { addQuantity, removeFromCart } = cartbuttonSlice.actions;
 
 export default cartbuttonSlice.reducer;
