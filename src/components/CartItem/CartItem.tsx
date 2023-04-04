@@ -155,9 +155,16 @@ export const CartItem: FC<ComponentProps> = ({
         >
           {title}
         </div>
-        <div className="my-1 font-[.6875rem] text-xs pt-2 text-green-600 uppercase font-semibold tracking-[.005em]">
-          {isAvailable ? "In Stock" : "Out of Stock"}
-        </div>
+        {isAvailable ? (
+          <div className="my-1 font-[.6875rem] text-xs pt-2 text-green-600 uppercase font-semibold tracking-[.005em]">
+            In Stock
+          </div>
+        ) : (
+          <div className="my-1 font-[.6875rem] text-xs pt-2 text-red-600 uppercase font-semibold tracking-[.005em]">
+            Out of Stock
+          </div>
+        )}
+
         <div className="text-xs pt-2 flex flex-row items-center my-1">
           {stars}
         </div>

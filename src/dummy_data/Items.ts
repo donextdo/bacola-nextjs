@@ -17,7 +17,7 @@ export const data: Array<Object> = [
       sideimage : sideimage,
       backside: backside,
       title: "All Natural Italian-Style Chicken Meatballs",
-      isAvailable: true,
+      isAvailable: false,
       price: 49.99,
     },
     {

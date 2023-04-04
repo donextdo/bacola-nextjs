@@ -212,9 +212,16 @@ export const ViewItem = () => {
                   $7.25
                 </span>
               </div>
-              <div className="font-medium py-2 px-2 mt-2 max-h-[26px] max-w-[68.35px] bg-emerald-100 text-green-600 rounded-full text-[.75rem] flex items-center justify-center uppercase tracking-tighter">
-                {myObject?.isAvailable ? "In Stock" : "Out of Stock"}
-              </div>
+              {myObject?.isAvailable ? (
+                <div className="font-medium py-2 px-2 mt-2 max-h-[26px] max-w-[68.35px] bg-emerald-100 text-green-600 rounded-full text-[.75rem] flex items-center justify-center uppercase tracking-tighter">
+                  In Stock
+                </div>
+              ) : (
+                <div className="font-medium py-2 px-2 mt-2 max-h-[26px] w-[100px] bg-red-100 text-red-600 rounded-full text-[.75rem] flex items-center justify-center uppercase tracking-tighter">
+                  Out of Stock
+                </div>
+              )}
+
               <div className="mt-6 text-[.8125rem]">
                 <p className=" ">
                   Vivamus adipiscing nisl ut dolor dignissim semper. Nulla
