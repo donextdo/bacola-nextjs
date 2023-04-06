@@ -1,65 +1,65 @@
-import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
-import { Product } from './product';
-import productList from '../product/data.json';
-import baseUrl from '../../../utils/baseUrl';
-import axios from 'axios';
-
+import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
+import { Product } from "./product";
+import productList from "../product/data.json";
+import baseUrl from "../../../utils/baseUrl";
+import axios from "axios";
 
 interface ProductsState {
   products: Product[];
-  status: 'idle' | 'loading' | 'succeeded' | 'failed';
+  status: "idle" | "loading" | "succeeded" | "failed";
   error: string | null;
-
 }
 
 const initialState: ProductsState = {
-  products: productList,
-  status: 'idle',
+  products: [],
+  status: "idle",
   error: null,
 };
-const PRODUCTS_URL = `${baseUrl}/products`;
+const PRODUCTS_URL = `${baseUrl}/products/`;
 
 export const fetchProducts = createAsyncThunk(
-  'product/fetchProducts',
+  "product/fetchProducts",
   async () => {
-    // const response = await axios.get(PRODUCTS_URL);
-    // return response.data;
+    const response = await axios.get(PRODUCTS_URL);
+    return response.data;
   }
 );
 
-
 export const productSlice = createSlice({
-  name: 'product',
+  name: "product",
   initialState,
   reducers: {
     setProducts: (state, action: PayloadAction<Product[]>) => {
       state.products = action.payload;
     },
-    updateProductQuantity: (state, action: PayloadAction<{ productId: number; quantity: number }>
+    updateProductQuantity: (
+      state,
+      action: PayloadAction<{ productId: number; quantity: number }>
     ) => {
-      const product = state.products.find( (p) => p.id === action.payload.productId);
+      const product = state.products.find(
+        (p) => p.id === action.payload.productId
+      );
       if (product) {
         product.quantity = action.payload.quantity;
       }
     },
-  
   },
   extraReducers: (builder) => {
     builder
       .addCase(fetchProducts.pending, (state) => {
-        state.status = 'loading';
+        state.status = "loading";
       })
       .addCase(fetchProducts.fulfilled, (state, action) => {
-        state.status = 'succeeded';
-        // state.products = action.payload;
+        state.status = "succeeded";
+        state.products = action.payload;
       })
       .addCase(fetchProducts.rejected, (state, action) => {
-        state.status = 'failed';
-        state.error = action.error.message ?? 'Unknown error';
+        state.status = "failed";
+        state.error = action.error.message ?? "Unknown error";
       });
   },
 });
 
-export const { setProducts, updateProductQuantity, } = productSlice.actions;
+export const { setProducts, updateProductQuantity } = productSlice.actions;
 
 export default productSlice.reducer;

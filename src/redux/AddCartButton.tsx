@@ -1,14 +1,14 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 interface cartbuttonState {
-    isAddToCart: boolean;
-  }
-  const initialState: cartbuttonState = {
-    isAddToCart: false,
-  };
+  isAddToCart: boolean;
+}
+const initialState: cartbuttonState = {
+  isAddToCart: false,
+};
 
 export const cartbuttonSlice = createSlice({
-  name: 'cartbutton',
+  name: "cartbutton",
   initialState,
   reducers: {
     addQuantity: (state) => {

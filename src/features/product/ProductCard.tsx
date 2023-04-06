@@ -1,66 +1,77 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, useEffect } from "react";
 import { FaStar, FaHeart } from "react-icons/fa";
 import { SlSizeFullscreen } from "react-icons/sl";
 import { FiHeart } from "react-icons/fi";
 import { FC, useState } from "react";
 import Image from "next/image";
-import { RootState } from "../../redux/store"
+import { RootState } from "../../redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import { addItem, updateItemQuantity } from "../cart/cartSlice";
-import {  updateProductQuantity } from "./productSlice";
+import { updateProductQuantity } from "./productSlice";
 import { Product } from "./product";
-
-
-
 
 interface Props {
   product: Product;
 }
 
-export const ProductCard: FC<Props> = ({product}) => {
+export const ProductCard: FC<Props> = ({ product }) => {
+  const [isDiscount, setIsdiscount] = useState(false);
+  const dispatch = useDispatch();
 
-  const dispatch = useDispatch()
+  useEffect(() => {
+    if (parseInt(product.discount) >= 0) {
+      setIsdiscount(true);
+    }
+  }, []);
 
-
-  const handleIncrement = (product:Product) => {
+  const handleIncrement = (product: Product) => {
     // setQuantity(quantity + 1);
     const newQuantity = (product.quantity || 0) + 1;
     dispatch(updateItemQuantity({ itemId: product.id, quantity: newQuantity }));
-    dispatch(updateProductQuantity({ productId:product.id, quantity: newQuantity }));
-    
+    dispatch(
+      updateProductQuantity({ productId: product.id, quantity: newQuantity })
+    );
   };
 
-  const handleDecrement = (product:Product) => {
+  const handleDecrement = (product: Product) => {
     // setQuantity(quantity - 1);
     const newQuantity = Math.max((product.quantity || 0) - 1, 0);
-    dispatch(updateItemQuantity({ itemId:product.id, quantity: newQuantity }));
-    dispatch(updateProductQuantity({ productId: product.id, quantity: newQuantity }));
+    dispatch(updateItemQuantity({ itemId: product.id, quantity: newQuantity }));
+    dispatch(
+      updateProductQuantity({ productId: product.id, quantity: newQuantity })
+    );
     if (product.quantity === 1) {
       // dispatch(removeFromCart(id))
       // setIsAddToCart(false)
     }
   };
 
-  const handleaddToCart= (product: Product) => {
-
-    dispatch(addItem(product))
+  const handleaddToCart = (product: Product) => {
+    dispatch(addItem(product));
     const newQuantity = (product.quantity || 0) + 1;
-    dispatch(updateProductQuantity({ productId:product.id, quantity: newQuantity }));
-    console.log(product.id)
+    dispatch(
+      updateProductQuantity({ productId: product.id, quantity: newQuantity })
+    );
+    console.log(product.id);
   };
 
   const stars = Array.from({ length: 5 }, (_, i) => (
     <span key={i}>
       <FaStar
-        className={i < (product.rating as number) ? "text-yellow-500" : "text-gray-400"}
+        className={
+          i < (product.rating as number) ? "text-yellow-500" : "text-gray-400"
+        }
       />
     </span>
   ));
 
   return (
-    <div className="md:max-w-[212.95px] md:max-h-[370.24px] min-w-[212.95px] min-h-[350.24px] mx-auto bg-white border border-gray-200  overflow-hidden relative group hover:drop-shadow-lg rounded-sm" key={product.id}>
+    <div
+      className="md:max-w-[212.95px] md:max-h-[370.24px] min-w-[212.95px] min-h-[350.24px] mx-auto bg-white border border-gray-200  overflow-hidden relative group hover:drop-shadow-lg rounded-sm"
+      key={product.id}
+    >
       <div className="absolute max-w-[88.41px] max-h-[49px] flex flex-col items-start gap-1 p-2">
-        {product.isDiscount && (
+        {isDiscount && (
           <div className=" font-semibold max-w-[45.39px] max-h-[24px] px-4 py-1 bg-sky-400 text-white rounded text-[10px] flex items-center justify-center">
             {(product.discount as unknown as ReactElement) != undefined
               ? (product.discount as unknown as ReactElement)
@@ -98,7 +109,7 @@ export const ProductCard: FC<Props> = ({product}) => {
         <Image
           width={172.95}
           height={154.95}
-          src={product.image as string}
+          src={product.image.front as string}
           alt="Man looking at item at a store"
         />
       </div>
@@ -113,7 +124,7 @@ export const ProductCard: FC<Props> = ({product}) => {
           {stars}
         </div>
         <div className=" flex flex-row items-center">
-          {product.isDiscount && (
+          {isDiscount && (
             <span className="text-gray-400 text-sm line-through mr-2 my-1 font-[1.125rem]">
               ${product.price as unknown as ReactElement}
             </span>
@@ -124,22 +135,22 @@ export const ProductCard: FC<Props> = ({product}) => {
         </div>
       </div>
       <div className="mx-1 border-black text-black py-2 px-4 mt-1 rounded-full md:invisible group-hover:visible md:group-hover:-translate-y-3 md:group-hover:ease-in transition duration-150">
-        {product.quantity<1 &&(
+        {product.quantity < 1 && (
           <button
             type="button"
             className=" bg-blue-900 text-white min-h-[34px] min-w-[180.8px] rounded-full w-full "
-            onClick={() => handleaddToCart (product)}
+            onClick={() => handleaddToCart(product)}
           >
             Add to cart
           </button>
         )}
 
-        {product.quantity>=1 && (
+        {product.quantity >= 1 && (
           <div className="max-h-[34px] w-full flex grid-cols-3 h-10">
             <button
               type="button"
               className="px-4 max-h-[34px] border-gray-500 bg-slate-500 rounded-tl-3xl rounded-bl-3xl "
-              onClick={()=>handleDecrement(product)}
+              onClick={() => handleDecrement(product)}
             >
               -
             </button>
