@@ -1,4 +1,6 @@
+import axios from "axios";
 import React, { useState } from "react";
+import baseUrl from "../../../utils/baseUrl";
 
 type FormValues = {
   usernameoremail: string;
@@ -13,11 +15,22 @@ const Login: React.FC<Props> = () => {
   const [usernameoremail, setUsernameoremail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log({ usernameoremail, password });
-    setUsernameoremail("");
-    setPassword("");
+    // console.log({ usernameoremail, password });
+    // setUsernameoremail("");
+    // setPassword("");
+    const details = {
+      email:usernameoremail,
+      password:password,
+      
+  }
+    try {
+      const response = await axios.post(`${baseUrl}/users/login`, details);
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <>
@@ -40,6 +53,8 @@ const Login: React.FC<Props> = () => {
                   autoComplete="given-username-email"
                   required 
                   className="block w-full border-0 py-2 px-3.5 text-gray-900 bg-[#f3f4f7] "
+                  value={usernameoremail}
+                  onChange={(e) => setUsernameoremail(e.target.value)}
                 />
               </div>
             </div>
@@ -55,6 +70,8 @@ const Login: React.FC<Props> = () => {
                   autoComplete="password"
                   required 
                   className="block w-full border-0 py-2 px-3.5 text-gray-900 bg-[#f3f4f7]"
+                  value={password}
+                   onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
             </div>
