@@ -16,7 +16,7 @@ const initialState: CartState = {
 };
 const PRODUCTS_URL = `${baseUrl}/orders/place`;
 
-export const featureCart = createAsyncThunk("cart/featureCart", async () => {
+export const fetchCart = createAsyncThunk("cart/fetchCart", async () => {
   const response = await axios.post(PRODUCTS_URL);
   return response.data;
 });
@@ -57,14 +57,14 @@ export const cartSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(featureCart.pending, (state) => {
+      .addCase(fetchCart.pending, (state) => {
         state.status = "loading";
       })
-      .addCase(featureCart.fulfilled, (state, action) => {
+      .addCase(fetchCart.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.items = action.payload;
       })
-      .addCase(featureCart.rejected, (state, action) => {
+      .addCase(fetchCart.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message ?? "Unknown error";
       });
