@@ -15,7 +15,7 @@ const initialState: ProductsState = {
   status: "idle",
   error: null,
 };
-const PRODUCTS_URL = `${baseUrl}/products/`;
+const PRODUCTS_URL = `${baseUrl}/products/getAll/`;
 
 export const fetchProducts = createAsyncThunk(
   "product/fetchProducts",

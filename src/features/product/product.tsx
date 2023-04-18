@@ -6,11 +6,9 @@ export interface Product {
   isFavourite: boolean;
   discount: string;
   rating: number;
-  image: {
-    front: string;
-    side: string;
-    back: string;
-  };
+  front: string;
+  back: string;
+  side: string;
   title: string;
   isAvailable: boolean;
   price: number;

@@ -109,8 +109,10 @@ export const ProductCard: FC<Props> = ({ product }) => {
         <Image
           width={172.95}
           height={154.95}
-          src={product.image.front as string}
-          alt="Man looking at item at a store"
+          //src={product.front as string}
+          src={product.front}
+          alt={product.title}
+          //alt="Man looking at item at a store"
         />
       </div>
       <div className="mx-5 mb-1 max-h-[155.29px] max-w-[212.95] ">
