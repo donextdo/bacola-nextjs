@@ -106,11 +106,14 @@ export const SearchItem = () => {
             })
             .slice(0, 7)
             .map((item) => (
-              <div className="flex flex-row items-center">
-                <li key={item.id} className="cursor-pointer text-start ml-2">
+              <div className="flex flex-row items-center py-1">
+                <li
+                  key={item.id}
+                  className="cursor-pointer text-start ml-2 border border-gray-400 py-1"
+                >
                   <Image
-                    width={50}
-                    height={50}
+                    width={40}
+                    height={40}
                     src={item.front}
                     alt={item.title}
                   />
@@ -122,9 +125,20 @@ export const SearchItem = () => {
                 >
                   {item.title}
                 </li>
-                <li key={item.id} className="cursor-pointer text-end ">
-                  {item.price}
-                </li>
+                <div className="flex flex-col">
+                  <li
+                    key={item.id}
+                    className="cursor-pointer text-end text-gray-400 font-semibold line-through mr-2 text-[14px]"
+                  >
+                    {item.price}
+                  </li>
+                  <li
+                    key={item.id}
+                    className="cursor-pointer text-end text-red-700 text-lg font-semibold mr-2"
+                  >
+                    {item.price}
+                  </li>
+                </div>
               </div>
             ))}
         </ul>
