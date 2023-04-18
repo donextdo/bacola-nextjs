@@ -6,20 +6,19 @@ import { RootState } from "@/redux/store";
 import { Product } from "./product";
 import { fetchProducts } from "@/features/product/productSlice";
 import Image from "next/image";
+import { useRouter } from "next/router";
 
 export const SearchItem = () => {
   const [searchItem, setSearchItem] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
+  const router = useRouter();
+
   const dispatch = useDispatch();
   const products = useSelector(
     (state: RootState) => state.product.products
   ) as Product[];
-  // useEffect(() => {
-  //   dispatch(fetchProducts());
-  //   console.log("search data ", products);
-  // }, [dispatch]);
 
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     setIsLoading(true);
@@ -36,10 +35,10 @@ export const SearchItem = () => {
     // }
   };
 
-  const onSearch = (searchItem: string) => {
-    console.log("search == ", searchItem);
-    dispatch(fetchProducts());
-    console.log("search data ", products[0].front);
+  const onSearch = (searchTerm: string) => {
+    setSearchItem(searchTerm);
+    console.log("search == ", searchTerm);
+    router.push("/viewcart");
   };
 
   // useEffect(() => {
@@ -94,24 +93,41 @@ export const SearchItem = () => {
       </div>
 
       <div className="bg-white flex flex-col border-solid border-2 border-gray-200 ">
-        {/* <ul>
-          {products.filter().map((item) => (
-            <div className="flex flex-row items-center">
-              <li className="cursor-pointer text-start ml-2">
-                <Image
-                  width={50}
-                  height={50}
-                  src={item.front}
-                  alt={item.title}
-                />
-              </li>
-              <li className="cursor-pointer text-start ml-2 flex-1  ">
-                {item.title}
-              </li>
-              <li className="cursor-pointer text-end ">{item.price}</li>
-            </div>
-          ))}
-        </ul> */}
+        <ul>
+          {products
+            .filter((item) => {
+              const searchTerm = searchItem.toLowerCase();
+              const title = item.title.toLowerCase();
+              return (
+                searchTerm &&
+                title.startsWith(searchTerm) &&
+                title !== searchTerm
+              );
+            })
+            .slice(0, 7)
+            .map((item) => (
+              <div className="flex flex-row items-center">
+                <li key={item.id} className="cursor-pointer text-start ml-2">
+                  <Image
+                    width={50}
+                    height={50}
+                    src={item.front}
+                    alt={item.title}
+                  />
+                </li>
+                <li
+                  key={item.id}
+                  className="cursor-pointer text-start ml-2 flex-1 hover:underline"
+                  onClick={() => onSearch(item.title)}
+                >
+                  {item.title}
+                </li>
+                <li key={item.id} className="cursor-pointer text-end ">
+                  {item.price}
+                </li>
+              </div>
+            ))}
+        </ul>
       </div>
     </div>
   );
