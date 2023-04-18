@@ -1,10 +1,12 @@
 import Link from "next/link";
 import { useState } from "react";
 import Bill from "../../Bill/Bill";
+import Ship from "@/components/Bill/Ship";
 
 const Address = () => {
     const [modal, setModal] = useState(false)
     const [modal1, setModal1] = useState(false)
+    
 
 
     const handleClick = () => {
@@ -42,7 +44,7 @@ const Address = () => {
             }
 
 {
-                modal1 && <Bill />
+                modal1 && <Ship />
             }
         </div >
     );

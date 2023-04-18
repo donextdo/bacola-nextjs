@@ -1,6 +1,8 @@
 import axios from "axios";
 import React, { useState } from "react";
 import baseUrl from "../../../utils/baseUrl";
+import { useRouter } from 'next/router';
+
 
 type FormValues = {
   usernameoremail: string;
@@ -14,12 +16,11 @@ type Props = {
 const Login: React.FC<Props> = () => {
   const [usernameoremail, setUsernameoremail] = useState("");
   const [password, setPassword] = useState("");
+  const router = useRouter();
+
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // console.log({ usernameoremail, password });
-    // setUsernameoremail("");
-    // setPassword("");
     const details = {
       email:usernameoremail,
       password:password,
@@ -28,6 +29,16 @@ const Login: React.FC<Props> = () => {
     try {
       const response = await axios.post(`${baseUrl}/users/login`, details);
       console.log(response.data);
+      localStorage.setItem('token', response.data.token)
+      // localStorage.setItem('token', response.data.token)
+      localStorage.setItem('id', response.data._id)
+
+
+      if(response.status==200){
+        // location.reload(); 
+        router.push('/account');
+      }
+
     } catch (error) {
       console.log(error);
     }

@@ -10,14 +10,14 @@ const MyAccount = () => {
     const [modal, setModal] = useState(false)
     const [selected, setSelected] = useState(1);
     const [isColor, setIsColor] = useState(1);
-    
+
 
     const handlePopup = () => {
         setModal(!modal)
     }
 
-    const handleChange = (id:any) => {
-        setIsColor(id); 
+    const handleChange = (id: any) => {
+        setIsColor(id);
     }
 
     return (
@@ -42,14 +42,15 @@ const MyAccount = () => {
                         selected === 2 ?
                             <Orders /> :
                             selected === 3 ?
-                                <Address /> :
-                                <AccountDetails />
+                                <AccountDetails /> :
+                                <Address />
                     }
                 </div>
             </div>
 
+                    {/* full screen */}
             <section className='mx-3 hidden lg:block'>
-            <div className=' flex space-x-8 justify-center text-gray-400'>
+                <div className=' flex space-x-8 justify-center text-gray-400'>
                     <button className={`px-4 py-3 border-b-2  ${isColor === 1 ? 'border-blue-500' : 'border-white'}`}
                         onClick={() => handleChange(1)}>DASHBOARD</button>
                     <button className={`px-4 py-3 border-b-2  ${isColor === 2 ? 'border-blue-500' : 'border-white'}`}
@@ -58,18 +59,18 @@ const MyAccount = () => {
                         onClick={() => handleChange(3)}>ACCOUNT DETAILS</button>
                     <button className={`px-4 py-3 border-b-2  ${isColor === 4 ? 'border-blue-500' : 'border-white'}`}
                         onClick={() => handleChange(4)}>ADDRESSES</button>
-            </div>
-            <hr />
+                </div>
+                <hr />
 
-            <div className='mt-8'>
+                <div className='mt-8'>
                     {isColor === 1 ?
                         <Dashboard />
                         :
                         isColor === 2 ?
                             <Orders /> :
                             isColor === 3 ?
-                                <Address /> :
-                                <AccountDetails />
+                                <AccountDetails /> :
+                                <Address />
                     }
                 </div>
             </section>

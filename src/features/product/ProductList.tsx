@@ -12,10 +12,10 @@ export const ProductList: FC<ComponentProps> = () => {
   const products = useSelector(
     (state: RootState) => state.product.products
   ) as Product[];
-  useEffect(() => {
-    dispatch(fetchProducts());
-    console.log("data ", products);
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(fetchProducts());
+  //   console.log("data ", products);
+  // }, [dispatch]);
 
   // useEffect(() => {
   //   // Fetch products data from the API or use the dummy data from the JSON file
