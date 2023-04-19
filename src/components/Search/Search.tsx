@@ -37,7 +37,7 @@ export const SearchItem = () => {
 
   const onSearch = (searchTerm: string) => {
     setSearchItem(searchTerm);
-    console.log("search == ", searchTerm);
+    // console.log("search == ", searchTerm);
     router.push("/viewcart");
   };
 

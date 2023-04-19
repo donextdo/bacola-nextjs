@@ -19,7 +19,7 @@ const CartPopupCard = ({ item }: any) => {
         <div className=" grid grid-cols-3 w-[258px] mb-4 pt-2 relative">
             <div className="text-left h-20  border-b border-[#e3e4e6] ">
                 <Image
-                    src={item.image}
+                    src={item.front}
                     alt="product"
                     style={{ objectFit: "contain", backgroundColor: "white", width: "100%", height: "100%" }}
                     width={450}

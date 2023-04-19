@@ -18,10 +18,7 @@ const CartPopup = ({ setCart }: any) => {
   // )
   console.log(totalSubtotal);
 
-  function placeOrder() {
-    // dispatch(fetchCart());
-    // console.log("data ", cartItems);
-  }
+  
 
   return (
     <div className="absolute w-[300px] max-h-[540px] bg-white right-0 z-50 px-5 py-4 shadow-lg">
@@ -44,7 +41,7 @@ const CartPopup = ({ setCart }: any) => {
       <Link href="/checkout">
         <button
           className="bg-[#ed174a] text-white py-1.5 rounded-md text-sm h-[50px] w-full text-center mt-1"
-          onClick={placeOrder()}
+          
         >
           Checkout
         </button>

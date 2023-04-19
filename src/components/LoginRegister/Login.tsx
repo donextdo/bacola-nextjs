@@ -32,7 +32,8 @@ const Login: React.FC<Props> = () => {
       localStorage.setItem('token', response.data.token)
       // localStorage.setItem('token', response.data.token)
       localStorage.setItem('id', response.data._id)
-
+      localStorage.setItem('email', response.data.email)
+      
 
       if(response.status==200){
         // location.reload(); 
