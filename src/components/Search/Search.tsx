@@ -56,11 +56,11 @@ export const SearchItem = () => {
   // }, [searchItem]);
 
   return (
-    <div className=" flex flex-col min-h-[60px] min-w-[557.51px] place-content-center">
-      <div className="flex">
+    <div className=" flex flex-col w-full md:w-full lg:w-96 place-content-center relative">
+      <div className="flex relative lg:w-[40rem]">
         <input
           type="search"
-          className="bg-gray-200 rounded-tl rounded-bl min-h-[60px] min-w-[557.51px] pl-5 text-sm focus:outline-none"
+          className="bg-gray-200 rounded-tl rounded-bl min-h-[60px] md:w-full lg-w-full w-1/2 pl-5 text-sm focus:outline-none "
           placeholder="Search for product..."
           value={searchItem}
           onChange={(e) => setSearchItem(e.target.value)}
@@ -92,43 +92,59 @@ export const SearchItem = () => {
         )}
       </div>
 
-      <div className="bg-white flex flex-col border-solid border-2 border-gray-200 ">
-        <ul>
-          {products
-            .filter((item) => {
-              const searchTerm = searchItem.toLowerCase();
-              const title = item.title.toLowerCase();
-              return (
-                searchTerm &&
-                title.startsWith(searchTerm) &&
-                title !== searchTerm
-              );
-            })
-            .slice(0, 7)
-            .map((item) => (
-              <div className="flex flex-row items-center">
-                <li key={item.id} className="cursor-pointer text-start ml-2">
-                  <Image
-                    width={50}
-                    height={50}
-                    src={item.front}
-                    alt={item.title}
-                  />
-                </li>
-                <li
-                  key={item.id}
-                  className="cursor-pointer text-start ml-2 flex-1 hover:underline"
-                  onClick={() => onSearch(item.title)}
-                >
-                  {item.title}
-                </li>
-                <li key={item.id} className="cursor-pointer text-end ">
-                  {item.price}
-                </li>
-              </div>
-            ))}
-        </ul>
-      </div>
+      {searchItem !== "" && (
+        <div className=" flex flex-col">
+          <ul className="absolute bg-white border-2 border-gray-200 min-w-[40rem] z-10">
+            {products
+              .filter((item) => {
+                const searchTerm = searchItem.toLowerCase();
+                const title = item.title.toLowerCase();
+                return (
+                  searchTerm &&
+                  title.startsWith(searchTerm) &&
+                  title !== searchTerm
+                );
+              })
+              .slice(0, 7)
+              .map((item) => (
+                <div className="flex flex-row items-center py-1">
+                  <li
+                    key={item.id}
+                    className="cursor-pointer text-start ml-2 border border-gray-400 py-1"
+                  >
+                    <Image
+                      width={50}
+                      height={50}
+                      src={item.front}
+                      alt={item.title}
+                    />
+                  </li>
+                  <li
+                    key={item.id}
+                    className="cursor-pointer text-start ml-2 flex-1 hover:underline"
+                    onClick={() => onSearch(item.title)}
+                  >
+                    {item.title}
+                  </li>
+                  <div className="flex flex-col">
+                    <li
+                      key={item.id}
+                      className="cursor-pointer text-end text-gray-400 font-semibold line-through mr-2 text-[14px]"
+                    >
+                      ${item.price}
+                    </li>
+                    <li
+                      key={item.id}
+                      className="cursor-pointer text-end text-red-700 text-lg font-semibold mr-2"
+                    >
+                      ${item.price}
+                    </li>
+                  </div>
+                </div>
+              ))}
+          </ul>
+        </div>
+      )}
     </div>
   );
 };
