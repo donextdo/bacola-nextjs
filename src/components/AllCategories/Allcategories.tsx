@@ -34,12 +34,21 @@ const Allcategories = () => {
   }, []);
 
   const handleCategoryHover = (categoryId) => {
-    console.log(categoryId);
+    //console.log(categoryId);
     setActiveCategory(categoryId);
   };
 
   const handleCategoryLeave = () => {
     setActiveCategory(null);
+  };
+
+  const handleSubCategoryHover = (subcategory) => {
+    //console.log(subcategory);
+  };
+
+  const getProductByCategory = async (categoryId) => {
+    const response = await axios.get(`${baseUrl}/products/${categoryId}`);
+    console.log("view product", response.data);
   };
 
   return (
@@ -83,6 +92,7 @@ const Allcategories = () => {
                           : "text-gray-500"
                       }`}
                       onMouseEnter={() => handleCategoryHover(category?._id)}
+                      onClick={() => getProductByCategory(category?._id)}
                     >
                       <div className=" flex flex-row items-center justify-between">
                         <div>{category?.name} </div>
@@ -104,16 +114,19 @@ const Allcategories = () => {
                         onMouseEnter={() => setIsHover(true)}
                         onMouseLeave={() => setIsHover(false)}
                       >
-                        {category.subcategories.map((subcategory) => (
-                          <li>
+                        {category.subcategories.map((subcategory, index) => (
+                          <li key={index}>
                             {" "}
-                            <Link
+                            <a
                               href="#"
                               className="block px-2 py-2 pt-5 text-gray-500 hover:text-[#2bbef9]  "
                               key={subcategory.id}
+                              onMouseEnter={() =>
+                                handleSubCategoryHover(subcategory?._id)
+                              }
                             >
                               {subcategory.name}
-                            </Link>
+                            </a>
                           </li>
                         ))}
                       </ul>
