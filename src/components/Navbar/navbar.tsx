@@ -20,7 +20,7 @@ const Navbar = () => {
   };
   return (
     <div>
-      <div className="xl:px-40">
+      <div className="">
         <nav className="hidden px-4 xl:block xl:py-5 xl:px-16 ">
           <div className="xl:justify-between xl:items-center xl:flex">
             <div>

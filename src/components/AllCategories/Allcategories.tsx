@@ -44,7 +44,7 @@ const Allcategories = () => {
 
   return (
     <>
-      <div className=""></div>
+      {/* <div className="bg-pink-400"></div> */}
       {/* <div className="mr-24">
        */}
       <div>
@@ -70,7 +70,7 @@ const Allcategories = () => {
         </button>
 
         {homeOpen && (
-          <div className="text-[15px] w-64 py-2 min-w-[17rem] min-h-[33rem]  bg-white mt-5 border border-gray m-auto absolute p-3 z-10">
+          <div className="text-[13px] w-64 py-2 min-w-[17rem] min-h-[32rem]  bg-white mt-5 border border-gray m-auto absolute p-3 z-10">
             <ul className="relative">
               {viewCategory.map((category, index) => {
                 return (
@@ -83,16 +83,15 @@ const Allcategories = () => {
                           : "text-gray-500"
                       }`}
                       onMouseEnter={() => handleCategoryHover(category?._id)}
-                      // onMouseLeave={() => handleCategoryLeave()}
                     >
                       <div className=" flex flex-row items-center justify-between">
                         <div>{category?.name} </div>
                         {category?.subcategories?.length > 0 && (
                           <div>
                             {activeCategory === category._id ? (
-                              <IoIosArrowForward className=" text-gray-500  group-hover:text-[#2bbef9]  md:font-medium"></IoIosArrowForward>
+                              <IoIosArrowForward className=" text-gray-500  group-hover:text-[#2bbef9]  "></IoIosArrowForward>
                             ) : (
-                              <IoIosArrowForward className="  text-gray-500  group-hover:text-[#2bbef9]  md:font-medium"></IoIosArrowForward>
+                              <IoIosArrowForward className="  text-gray-500  group-hover:text-[#2bbef9]  "></IoIosArrowForward>
                             )}
                           </div>
                         )}
@@ -101,7 +100,7 @@ const Allcategories = () => {
                     {activeCategory === category._id &&
                     category.subcategories.length > 0 ? (
                       <ul
-                        className="text-[15px] py-2  p-3  bg-white border border-gray absolute ml-[258px] top-[-0.52rem] z-10 min-w-[17rem] min-h-[34.6rem]"
+                        className="text-[13px] py-2  p-3  bg-white border border-gray absolute ml-[258px] top-[-0.52rem] z-10 min-w-[17rem] min-h-[32.5rem]"
                         onMouseEnter={() => setIsHover(true)}
                         onMouseLeave={() => setIsHover(false)}
                       >
@@ -110,7 +109,7 @@ const Allcategories = () => {
                             {" "}
                             <Link
                               href="#"
-                              className="block px-2 py-2 pt-5 text-gray-500 hover:text-[#2bbef9] md:font-medium "
+                              className="block px-2 py-2 pt-5 text-gray-500 hover:text-[#2bbef9]  "
                               key={subcategory.id}
                             >
                               {subcategory.name}

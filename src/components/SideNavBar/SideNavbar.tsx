@@ -35,7 +35,7 @@ const SideNavBar = () => {
             </div>
             {/* Location */}
             <div>
-              <Allcategories />
+              {/* <Allcategories /> */}
             </div>
             {/* <div>
               <AllcategoriesSideNavbar />

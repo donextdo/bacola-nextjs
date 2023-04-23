@@ -9,15 +9,26 @@ import Header from "@/components/Header/Header";
 import CartList from "@/components/Image-Cart-Bottom/Image-cart-bottom";
 import HomeSlider from "@/components/Homeslider";
 import { ProductList } from "@/features/product/ProductList";
+import {
+  RedDiv,
+  AdditionalDiv,
+  BestSeller,
+  TakeCare,
+  NewProduct,
+} from "@/components/Common/redDiv";
+import { AllImage } from "@/components/Common/AllImage";
+import { ImageFour, ImageThree } from "@/components/Common/ImageList";
+import { MainDiv } from "@/components/Common/MainDiv";
+import HomePage from "@/components/Common/Home";
 
 export default function Home() {
   return (
-    <div className="lg:px-40 md:px-10 px-10">
+    <div className="xl:px-40 lg:px-5 md:px-5 px-5 ">
       {/* <Header /> */}
-      <HomeSlider />
       <div>
-        <ProductList />
+        <HomeSlider />
       </div>
+      <HomePage />
       <CartList />
     </div>
   );
