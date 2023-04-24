@@ -10,9 +10,9 @@ import banner from "../../../assets/home/banner-box2.png";
 export const RedDiv = () => {
   return (
     <div>
-      <div className="lg:w-1/4"></div>
+      {/* <div className="lg:w-1/4"></div> */}
 
-      <div className="flex flex-col rounded-md items-center justify-between mt-9 bg-red-100 p-6 mb-9">
+      <div className="flex flex-col rounded-md items-center justify-between mt-9 bg-red-100 p-6 mb-9 cursor-pointer">
         <div className="flex flex-col lg:flex-row items-center justify-center">
           <div className="text-[15px] text-red-600 flex flex-row items-center mb-2 lg:mb-0 lg:mr-4">
             Super discount for your&nbsp;
@@ -75,7 +75,9 @@ export const BestSeller = () => {
   return (
     <div className="flex flex-row items-center justify-between mb-9 ">
       <div className="flex flex-col">
-        <div className="uppercase font-semibold text-lg">Best Seller</div>
+        <div className="uppercase font-semibold text-lg font-ff-headings lg:text-xl">
+          Best Seller
+        </div>
         <div className="text-xs text-gray-400">
           Do not miss the current offers until the end of March.
         </div>
@@ -94,7 +96,9 @@ export const NewProduct = () => {
   return (
     <div className="flex flex-row items-center justify-between mb-9 ">
       <div className="flex flex-col">
-        <div className="uppercase font-semibold text-lg">NEW PRODUCTS</div>
+        <div className="uppercase font-semibold text-lg lg:text-xl  font-ff-headings">
+          NEW PRODUCTS
+        </div>
         <div className="text-xs text-gray-400">
           New products with updated stocks.
         </div>
@@ -111,7 +115,7 @@ export const NewProduct = () => {
 
 export const TakeCare = () => {
   return (
-    <div className="container mt-7 relative bg-[#f7efea] w-full h-[340px] flex flex-col items-center rounded-md lg:h-[130px] overflow-hidden">
+    <div className="container mt-7 relative bg-[#f7efea] w-full h-[340px] flex flex-col items-center rounded-md lg:h-[130px] overflow-hidden cursor-pointer">
       <div className="lg:flex lg:flex-row lg:items-start lg:w-full justify-between">
         <div className="relative flex flex-col items-start justify-start md:mt-14 lg:ml-10 lg:mt-10 ">
           <h1 className="text-gray-400 text-sm capitalize">

@@ -8,7 +8,7 @@ import { BsArrowRight } from "react-icons/bs";
 export const ImageOne = () => {
   return (
     <div>
-      <div className="mt-9 relative">
+      <div className="mt-9 relative cursor-pointer">
         <Image
           src={banner1}
           alt="banner - Image"
@@ -38,7 +38,7 @@ export const ImageOne = () => {
 
 export const ImageTwo = () => {
   return (
-    <div className="mt-9 relative">
+    <div className="mt-9 relative cursor-pointer">
       <Image
         src={banner2}
         alt="banner - Image"
@@ -68,7 +68,7 @@ export const ImageTwo = () => {
 
 export const ImageThree = () => {
   return (
-    <div className="mt-9 relative lg:mt-0">
+    <div className="mt-9 relative lg:mt-0 cursor-pointer">
       <Image
         src={banner3}
         alt="banner - Image"
@@ -100,7 +100,7 @@ export const ImageThree = () => {
 
 export const ImageFour = () => {
   return (
-    <div className="mt-9 relative lg:mt-9">
+    <div className="mt-9 relative lg:mt-9 cursor-pointer">
       <Image
         src={banner4}
         alt="banner - Image"

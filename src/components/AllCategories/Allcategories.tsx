@@ -13,14 +13,17 @@ import { BsCupHot, BsEgg } from "react-icons/bs";
 import { IoFastFoodSharp } from "react-icons/io5";
 import axios from "axios";
 import baseUrl from "../../../utils/baseUrl";
+import { FilterSideBar } from "../FilterSideBar/FilterSideBar";
+import { useRouter } from "next/router";
 
 const Allcategories = () => {
   const [homeOpen, setHomeOpen] = useState(false);
   const [viewCategory, setviewCategory] = useState([]);
   const [activeCategory, setActiveCategory] = useState(null);
+  const [isClicked, setIsClicked] = useState(true);
 
   const [isHover, setIsHover] = useState(false);
-
+  const router = useRouter();
   const toggleHome = () => {
     setHomeOpen(!homeOpen);
   };
@@ -47,15 +50,22 @@ const Allcategories = () => {
   };
 
   const getProductByCategory = async (categoryId) => {
-    const response = await axios.get(`${baseUrl}/products/${categoryId}`);
-    console.log("view product", response.data);
+    setHomeOpen(false);
+    router.push({
+      pathname: "/filterProduct",
+      query: { categoryId: categoryId },
+    });
   };
-
+  useEffect(() => {
+    // Detect current URL and set homeOpen state
+    if (router.pathname === "/") {
+      setHomeOpen(true);
+    } else {
+      setHomeOpen(false);
+    }
+  }, [router.pathname]);
   return (
     <>
-      {/* <div className="bg-pink-400"></div> */}
-      {/* <div className="mr-24">
-       */}
       <div>
         <button
           className="w-[214px] h-[50px] rounded-full bg-[#2bbef9] "
@@ -123,6 +133,9 @@ const Allcategories = () => {
                               key={subcategory.id}
                               onMouseEnter={() =>
                                 handleSubCategoryHover(subcategory?._id)
+                              }
+                              onClick={() =>
+                                getProductByCategory(subcategory?._id)
                               }
                             >
                               {subcategory.name}

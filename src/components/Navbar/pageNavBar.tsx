@@ -5,7 +5,7 @@ import { MdOutlineBakeryDining } from "react-icons/md";
 import { FaMugHot } from "react-icons/fa";
 import { MdKeyboardArrowDown } from "react-icons/md";
 
-const Demo = () => {
+const PageNavBar = () => {
   const [homeOpen, setHomeOpen] = useState(false);
   const toggleHome = () => {
     setHomeOpen(homeOpen);
@@ -375,4 +375,4 @@ const Demo = () => {
   );
 };
 
-export default Demo;
+export default PageNavBar;

@@ -1,16 +1,47 @@
+import { useEffect, useState } from "react";
 import CheckBoxRow from "../CheckBox/CheckBox";
+import axios from "axios";
+import baseUrl from "../../../utils/baseUrl";
 
-const Brands = () => {
+const Brands = ({ categoryId }) => {
+  const [brand, setBrand] = useState([]);
+  const [isEmpty, setIsEmpty] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      // const response = await axios.get(
+      //   `${baseUrl}/products/brands/${categoryId}`
+      // );
+      const response = await axios.get(`${baseUrl}/products/${categoryId}`);
+
+      setBrand(response.data);
+      setIsEmpty(response.data.length === 0);
+      console.log("Brands? ", response.data);
+    };
+    fetchData().catch((error) => {
+      console.log(error);
+    });
+  }, [categoryId]);
+
   return (
-    <div className="box-border max-h-[106px] max-w-[270px] p-4 ml-8 mb-8">
-      <h4 className="max-h-[18px] max-w-[270px] uppercase tracking-[0] font-[600] text-[.9375rem] mb-[1.25rem]">
-        brands
-      </h4>
-      <CheckBoxRow inputId="brand1" htmlForId="brand1" name="frito lay" />
-      <CheckBoxRow inputId="brand2" htmlForId="brand2" name="nespresso" />
-      <CheckBoxRow inputId="brand3" htmlForId="brand3" name="oreo" />
-      <CheckBoxRow inputId="brand4" htmlForId="brand4" name="quaker" />
-      <CheckBoxRow inputId="brand5" htmlForId="brand5" name="welch's" />
+    <div>
+      {!isEmpty && (
+        <div className="box-border max-h-[106px] max-w-[270px] lg:mt-12">
+          <h4 className="max-h-[18px] max-w-[270px] uppercase tracking-[0] font-[600] text-[.9375rem] mb-[1.25rem] font-ff-headings">
+            brands
+          </h4>
+          {brand.map((category: any, index) => {
+            return (
+              <CheckBoxRow
+                key={category.id}
+                inputId={`category${category.id}`}
+                htmlForId={`category${category.id}`}
+                name={category.brand}
+              />
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 };

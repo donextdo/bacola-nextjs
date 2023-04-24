@@ -23,37 +23,12 @@ export const SearchItem = () => {
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     setIsLoading(true);
     e.preventDefault();
-    // const response = await fetch(
-    //   `https://example.com/api/search?q=${searchItem}`
-    // );
-    // const data = await response.json();
-    // if(response.ok){
-    //   setIsLoading(false);
-    //   setSearchResults(data);
-    //   console.log(data);
-    //   alert("Search button clicked! " + searchItem);
-    // }
   };
 
   const onSearch = (searchTerm: string) => {
     setSearchItem(searchTerm);
-    // console.log("search == ", searchTerm);
     router.push("/viewcart");
   };
-
-  // useEffect(() => {
-  //   setIsLoading(true);
-  //   // const response = await fetch(
-  //   //   `https://example.com/api/search?q=${searchItem}`
-  //   // );
-  //   // const data = await response.json();
-  //   // if(response.ok){
-  //   //   setIsLoading(false);
-  //   //   setSearchResults(data);
-  //   //   console.log(data);
-  //   //   alert("Search button clicked! " + searchItem);
-  //   // }
-  // }, [searchItem]);
 
   return (
     <div className=" flex flex-col w-full md:w-full lg:w-96 place-content-center relative">
@@ -80,15 +55,6 @@ export const SearchItem = () => {
               className="min-h-[36px] min-w-[24px] text-blue-900 "
             />
           </div>
-          /* {searchResults.length > 0 ? (
-        <ul>
-          {searchResults.map((result) => (
-            <li key={result.id}>{result.title}</li>
-          ))}
-        </ul>
-      ) : (
-        <p>No results found.</p>
-      )} */
         )}
       </div>
 

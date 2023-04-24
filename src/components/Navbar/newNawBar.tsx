@@ -2,18 +2,9 @@ import Link from "next/link";
 import React, { useState } from "react";
 
 import Allcategories from "../AllCategories/Allcategories";
-import Demo from "./Demo";
+import PageNavBar from "./pageNavBar";
 
 const NavbarNew = () => {
-  const [homeOpen, setHomeOpen] = useState(false);
-  const toggleHome = () => {
-    setHomeOpen(homeOpen);
-  };
-  const [shopOpen, setShopOpen] = useState(false);
-
-  const toggleShop = () => {
-    setShopOpen(shopOpen);
-  };
   return (
     <div>
       <div className="xl:px-40 lg:px-5 lg:py-5  hidden md:hidden lg:block">
@@ -22,7 +13,7 @@ const NavbarNew = () => {
             <Allcategories />
           </div>
           <div className="lg:flex lg:flex-col  ">
-            <Demo />
+            <PageNavBar />
           </div>
         </div>
       </div>

@@ -30,7 +30,7 @@ export default function HomeSlider() {
     <>
       <div className="flex flex-row mb-9">
         <div className="lg:w-1/4"></div>
-        <div className="mt-4 lg:w-3/4 md:w-full w-full">
+        <div className="mt-4 lg:w-3/4 md:w-full w-full cursor-pointer">
           <Swiper
             spaceBetween={30}
             pagination={{
