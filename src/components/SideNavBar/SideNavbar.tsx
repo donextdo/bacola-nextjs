@@ -33,13 +33,13 @@ const SideNavBar = () => {
                 height={50}
               />
             </div>
-
             {/* Location */}
-            <div></div>
-            {/* AllCategories */}
             <div>
-              <AllcategoriesSideNavbar />
+              {/* <Allcategories /> */}
             </div>
+            {/* <div>
+              <AllcategoriesSideNavbar />
+            </div> */}
             <nav>
               <div>
                 <div className="px-5 text-[#d3d4d7] mt-10">
@@ -88,7 +88,7 @@ const SideNavBar = () => {
                     <div>
                       <Link
                         href="#"
-                        className=" relative flex text-black text-[15px]  font-ff-headings"
+                        className=" flex text-black text-[15px]  font-ff-headings"
                       >
                         SHOP
                         <MdKeyboardArrowDown className="text-xl ml-[280px] text-[#d3d4d7]" />

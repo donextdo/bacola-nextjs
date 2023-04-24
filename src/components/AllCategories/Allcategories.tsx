@@ -1,6 +1,7 @@
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { CiApple } from "react-icons/ci";
+import { IoIosArrowForward } from "react-icons/io";
 import { GiChickenOven, GiThreeLeaves } from "react-icons/gi";
 import {
   MdKeyboardArrowDown,
@@ -10,17 +11,62 @@ import {
 } from "react-icons/md";
 import { BsCupHot, BsEgg } from "react-icons/bs";
 import { IoFastFoodSharp } from "react-icons/io5";
+import axios from "axios";
+import baseUrl from "../../../utils/baseUrl";
+import { FilterSideBar } from "../FilterSideBar/FilterSideBar";
+import { useRouter } from "next/router";
 
 const Allcategories = () => {
   const [homeOpen, setHomeOpen] = useState(false);
+  const [viewCategory, setviewCategory] = useState([]);
+  const [activeCategory, setActiveCategory] = useState(null);
+  const [isClicked, setIsClicked] = useState(true);
+
+  const [isHover, setIsHover] = useState(false);
+  const router = useRouter();
   const toggleHome = () => {
     setHomeOpen(!homeOpen);
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await axios.get(`${baseUrl}/categories`);
+      setviewCategory(response.data);
+    };
+    fetchData();
+  }, []);
+
+  const handleCategoryHover = (categoryId) => {
+    //console.log(categoryId);
+    setActiveCategory(categoryId);
+  };
+
+  const handleCategoryLeave = () => {
+    setActiveCategory(null);
+  };
+
+  const handleSubCategoryHover = (subcategory) => {
+    //console.log(subcategory);
+  };
+
+  const getProductByCategory = async (categoryId) => {
+    setHomeOpen(false);
+    router.push({
+      pathname: "/filterProduct",
+      query: { categoryId: categoryId },
+    });
+  };
+  useEffect(() => {
+    // Detect current URL and set homeOpen state
+    if (router.pathname === "/") {
+      setHomeOpen(true);
+    } else {
+      setHomeOpen(false);
+    }
+  }, [router.pathname]);
   return (
     <>
-    
-      <div className=""></div>
-      <div className="mr-24">
+      <div>
         <button
           className="w-[214px] h-[50px] rounded-full bg-[#2bbef9] "
           onClick={toggleHome}
@@ -41,64 +87,68 @@ const Allcategories = () => {
             </Link>
           </div>
         </button>
-       
+
         {homeOpen && (
-          <div className="text-[13px] absolute w-[268px] py-2  mt-2 shadow-md font-medium bg-white rounded-lg  ">
-            <div className="flex  ">
-              <CiApple className="py-2 text-4xl text-gray-400 " />
-              <Link href="#" className="block px-2 py-2 text-gray-500  hover:text-[#2bbef9] md:font-medium ">
-                Fruits & Vegetables
-              </Link>
-            </div>
+          <div className="text-[13px] w-64 py-2 min-w-[17rem] min-h-[32rem]  bg-white mt-5 border border-gray m-auto absolute p-3 z-10">
+            <ul className="relative">
+              {viewCategory.map((category, index) => {
+                return (
+                  <li key={index} className="list-item w-full flex-row pt-3">
+                    <a
+                      href="#"
+                      className={`block px-2 py-2  hover:text-[#2bbef9] group ${
+                        activeCategory === category._id && isHover
+                          ? "text-[#2bbef9]"
+                          : "text-gray-500"
+                      }`}
+                      onMouseEnter={() => handleCategoryHover(category?._id)}
+                      onClick={() => getProductByCategory(category?._id)}
+                    >
+                      <div className=" flex flex-row items-center justify-between">
+                        <div>{category?.name} </div>
+                        {category?.subcategories?.length > 0 && (
+                          <div>
+                            {activeCategory === category._id ? (
+                              <IoIosArrowForward className=" text-gray-500  group-hover:text-[#2bbef9]  "></IoIosArrowForward>
+                            ) : (
+                              <IoIosArrowForward className="  text-gray-500  group-hover:text-[#2bbef9]  "></IoIosArrowForward>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    </a>
+                    {activeCategory === category._id &&
+                    category.subcategories.length > 0 ? (
+                      <ul
+                        className="text-[13px] py-2  p-3  bg-white border border-gray absolute ml-[258px] top-[-0.52rem] z-10 min-w-[17rem] min-h-[32.5rem]"
+                        onMouseEnter={() => setIsHover(true)}
+                        onMouseLeave={() => setIsHover(false)}
+                      >
+                        {category.subcategories.map((subcategory, index) => (
+                          <li key={index}>
+                            {" "}
+                            <a
+                              href="#"
+                              className="block px-2 py-2 pt-5 text-gray-500 hover:text-[#2bbef9]  "
+                              key={subcategory.id}
+                              onMouseEnter={() =>
+                                handleSubCategoryHover(subcategory?._id)
+                              }
+                              onClick={() =>
+                                getProductByCategory(subcategory?._id)
+                              }
+                            >
+                              {subcategory.name}
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    ) : null}
+                  </li>
+                );
+              })}
+            </ul>
 
-            <div className="flex">
-              <GiChickenOven className="py-2 text-4xl text-gray-400" />
-              <Link href="#" className="block px-2 py-2 text-gray-500  hover:text-[#2bbef9]  md:font-medium">
-                Meats & SeaFood
-              </Link>
-            </div>
-
-            <div className="flex">
-              <BsEgg className="py-2 text-4xl text-gray-400" />
-              <Link href="#" className="block px-2 py-2 text-gray-500  hover:text-[#2bbef9]  md:font-medium">
-                Breakfast & Diary
-              </Link>
-            </div>
-
-            <div className="flex">
-              <BsCupHot className="py-2 text-4xl text-gray-400" />
-              <Link href="#" className="block px-2 py-2 text-gray-500  hover:text-[#2bbef9]  md:font-medium">
-                Beverages
-              </Link>
-            </div>
-
-            <div className="flex">
-              <MdOutlineBakeryDining className="py-2 text-4xl text-gray-400" />
-              <Link href="#" className="block px-2 py-2 text-gray-500  hover:text-[#2bbef9]  md:font-medium">
-                Breads & Bakery
-              </Link>
-            </div>
-
-            <div className="flex">
-              <IoFastFoodSharp className="py-2 text-4xl text-gray-400" />
-              <Link href="#" className="block px-2 py-2 text-gray-500  hover:text-[#2bbef9] md:font-medium">
-                Frozen Foods
-              </Link>
-            </div>
-
-            <div className="flex">
-              <MdOutlineFastfood className="py-2 text-4xl text-gray-400" />
-              <Link href="#" className="block px-2 py-2 text-gray-500  hover:text-[#2bbef9]  md:font-medium">
-                Biscuits and Snacks
-              </Link>
-            </div>
-
-            <div className="flex">
-              <GiThreeLeaves className="py-2 text-4xl text-gray-400" />
-              <Link href="#" className="block px-2 py-2 text-gray-500 hover:text-[#2bbef9] md:font-medium">
-                Grocery & Staples
-              </Link>
-            </div>
             <hr className="my-2" />
 
             <div className="py-2 px-2">
@@ -113,8 +163,6 @@ const Allcategories = () => {
           </div>
         )}
       </div>
-     
-      
     </>
   );
 };

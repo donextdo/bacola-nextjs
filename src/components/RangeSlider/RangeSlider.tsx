@@ -39,8 +39,8 @@ export const RangeSlider = () => {
   }, [minValue, maxValue]);
 
   return (
-    <div className="box-border max-h-[85px] max-w-[270px] p-4 ml-8 mb-8">
-      <h4 className="max-h-[18px] max-w-[270px] uppercase tracking-[0] font-[600] text-[.9375rem] mb-[1.25rem]">
+    <div className="box-border max-h-[85px] max-w-[270px] lg:mt-12  ">
+      <h4 className="max-h-[18px] max-w-[270px] uppercase tracking-[0] font-[600] text-[.9375rem] mb-[1.25rem] font-ff-headings">
         filter by price
       </h4>
 

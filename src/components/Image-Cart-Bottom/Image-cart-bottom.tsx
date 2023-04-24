@@ -31,9 +31,7 @@ const images: string[] = [
 const MyList: React.FC<{ CartBottomItems: CartBottomItem[] }> = ({
   CartBottomItems,
 }) => (
-
-  <div className="grid grid-flow-col grid-rows-4 gap-0 mx-5 mt-16 border sm:grid-rows-4 lg:mx-16 lg:grid-rows-2">
-
+  <div className="grid grid-flow-col grid-rows-4 gap-0 mt-16 mb-9 border sm:grid-rows-4 lg:mx-16 lg:grid-rows-2 rounded-md">
     {CartBottomItems.map((CartBottomItem, index) => (
       <div key={CartBottomItem.id} className="py-10 md:py-5 lg:border">
         <div className="lg:flex">

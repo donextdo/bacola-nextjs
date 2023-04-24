@@ -5,21 +5,21 @@ import styles from "@/styles/Home.module.css";
 
 //Components
 const inter = Inter({ subsets: ["latin"] });
-import React, { useState, useEffect } from "react";
-import Header from "@/components/Header/Header";
+
 import CartList from "@/components/Image-Cart-Bottom/Image-cart-bottom";
 import HomeSlider from "@/components/Homeslider";
-import { ProductList } from "@/features/product/ProductList";
+
+import HomePage from "@/components/Common/Home";
 
 export default function Home() {
   return (
-    <>
+    <div className="xl:px-40 lg:px-5 md:px-5 px-5 ">
       {/* <Header /> */}
-      <HomeSlider />
       <div>
-        <ProductList />
+        <HomeSlider />
       </div>
+      <HomePage />
       <CartList />
-    </>
+    </div>
   );
 }
