@@ -34,13 +34,13 @@ export const productSlice = createSlice({
     },
     updateProductQuantity: (
       state,
-      action: PayloadAction<{ productId: number; quantity: number }>
+      action: PayloadAction<{ productId: number; count: number }>
     ) => {
       const product = state.products.find(
-        (p) => p.id === action.payload.productId
+        (p) => p._id === action.payload.productId
       );
       if (product) {
-        product.quantity = action.payload.quantity;
+        product.count = action.payload.count;
       }
     },
   },

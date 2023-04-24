@@ -18,7 +18,7 @@ const TopHeader = () => {
                                 </Link>
                             </li>
                             <li>
-                                <Link href="#">
+                                <Link href="/wishlist">
                                     <p>Wishlist</p>
                                 </Link>
                             </li>

@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addItem, updateItemQuantity } from "../cart/cartSlice";
 import { updateProductQuantity } from "./productSlice";
 import { Product } from "./product";
+import Link from "next/link";
 
 interface Props {
   product: Product;
@@ -26,21 +27,21 @@ export const ProductCard: FC<Props> = ({ product }) => {
 
   const handleIncrement = (product: Product) => {
     // setQuantity(quantity + 1);
-    const newQuantity = (product.quantity || 0) + 1;
-    dispatch(updateItemQuantity({ itemId: product.id, quantity: newQuantity }));
+    const newQuantity = (product.count || 0) + 1;
+    dispatch(updateItemQuantity({ itemId: product._id, count: newQuantity }));
     dispatch(
-      updateProductQuantity({ productId: product.id, quantity: newQuantity })
+      updateProductQuantity({ productId: product._id, count: newQuantity })
     );
   };
 
   const handleDecrement = (product: Product) => {
     // setQuantity(quantity - 1);
-    const newQuantity = Math.max((product.quantity || 0) - 1, 0);
-    dispatch(updateItemQuantity({ itemId: product.id, quantity: newQuantity }));
+    const newQuantity = Math.max((product.count || 0) - 1, 0);
+    dispatch(updateItemQuantity({ itemId: product._id, count: newQuantity }));
     dispatch(
-      updateProductQuantity({ productId: product.id, quantity: newQuantity })
+      updateProductQuantity({ productId: product._id, count: newQuantity })
     );
-    if (product.quantity === 1) {
+    if (product.count === 1) {
       // dispatch(removeFromCart(id))
       // setIsAddToCart(false)
     }
@@ -48,11 +49,11 @@ export const ProductCard: FC<Props> = ({ product }) => {
 
   const handleaddToCart = (product: Product) => {
     dispatch(addItem(product));
-    const newQuantity = (product.quantity || 0) + 1;
+    const newQuantity = (product.count || 0) + 1;
     dispatch(
-      updateProductQuantity({ productId: product.id, quantity: newQuantity })
+      updateProductQuantity({ productId: product._id, count: newQuantity })
     );
-    console.log(product.id);
+    console.log(product._id);
   };
 
   const stars = Array.from({ length: 5 }, (_, i) => (
@@ -68,7 +69,7 @@ export const ProductCard: FC<Props> = ({ product }) => {
   return (
     <div
       className="md:max-w-[212.95px] md:max-h-[370.24px] min-w-[212.95px] min-h-[350.24px] mx-auto bg-white border border-gray-200  overflow-hidden relative group hover:drop-shadow-lg rounded-sm"
-      key={product.id}
+      key={product._id}
     >
       <div className="absolute max-w-[88.41px] max-h-[49px] flex flex-col items-start gap-1 p-2">
         {isDiscount && (
@@ -106,6 +107,7 @@ export const ProductCard: FC<Props> = ({ product }) => {
       </div>
 
       <div className=" max-h-[172.95px] min-h-[172.95px] min-w-[154.95px] w-full  hover:cursor-pointer my-2 flex items-center justify-center">
+      <Link href={`/item-preview/${product._id}`}>  
         <Image
           width={172.95}
           height={154.95}
@@ -114,13 +116,15 @@ export const ProductCard: FC<Props> = ({ product }) => {
           alt={product.title}
           //alt="Man looking at item at a store"
         />
+          </Link>
+
       </div>
       <div className="mx-5 mb-1 max-h-[155.29px] max-w-[212.95] ">
         <div className="text-sm font-medium text-black hover:text-indigo-400  capitalize leading-tight hover:cursor-pointer line-clamp-2">
           {product.title}
         </div>
         <div className="my-1 font-[.6875rem] text-xs pt-2 text-green-600 uppercase font-semibold tracking-[.005em]">
-          {product.isAvailable ? "In Stock" : "Out of Stock"}
+          {product.quantity>0 ? "In Stock" : "Out of Stock"}
         </div>
         <div className="text-xs pt-2 flex flex-row items-center my-1">
           {stars}
@@ -137,7 +141,7 @@ export const ProductCard: FC<Props> = ({ product }) => {
         </div>
       </div>
       <div className="mx-1 border-black text-black py-2 px-4 mt-1 rounded-full md:invisible group-hover:visible md:group-hover:-translate-y-3 md:group-hover:ease-in transition duration-150">
-        {product.quantity < 1 && (
+        { (product.count ==undefined || product.count<1) && (
           <button
             type="button"
             className=" bg-blue-900 text-white min-h-[34px] min-w-[180.8px] rounded-full w-full "
@@ -147,7 +151,7 @@ export const ProductCard: FC<Props> = ({ product }) => {
           </button>
         )}
 
-        {product.quantity >= 1 && (
+        {product.count >= 1 && (
           <div className="max-h-[34px] w-full flex grid-cols-3 h-10">
             <button
               type="button"
@@ -157,7 +161,7 @@ export const ProductCard: FC<Props> = ({ product }) => {
               -
             </button>
             <div className="max-h-[34px] flex items-center justify-center w-full text-center border-y">
-              {product.quantity || 0}
+              {product.count || 0}
             </div>
             <button
               type="button"

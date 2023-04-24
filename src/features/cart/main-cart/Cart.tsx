@@ -29,7 +29,7 @@ const Cart: FC<CartType> = () => {
     let totalAmount = 0
     for (let i = 0; i < cartItems.length; i++) {
        let item = cartItems[i];
-       let subtotal = item.quantity * item.price;
+       let subtotal = item.count * item.price;
        totalAmount += subtotal;
      }
      

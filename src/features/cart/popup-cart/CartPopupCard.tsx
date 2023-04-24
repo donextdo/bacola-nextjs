@@ -11,8 +11,8 @@ import { removeItem } from "../cartSlice";
 const CartPopupCard = ({ item }: any) => {
     const dispatch = useDispatch()
 
-    const handleRemove = (id:any) => {
-        dispatch(removeItem(id))
+    const handleRemove = (_id:any) => {
+        dispatch(removeItem(_id))
     }
     
     return (
@@ -28,9 +28,9 @@ const CartPopupCard = ({ item }: any) => {
             </div>
             <div className="col-span-2 text-left py-2 h-20 border-b border-[#e3e4e6]">
                 <p className="text-xs ">{item.title}</p>
-                <p className="text-xs mt-2">{item.quantity || 0} × <span className="text-[#d51243]"> {item.price}</span></p>
+                <p className="text-xs mt-2">{item.count || 0} × <span className="text-[#d51243]"> {item.price}</span></p>
             </div>
-            <button className="absolute bg-[#ff6048] rounded-full p-0.5 text-white left-4 top-4" onClick={() =>handleRemove(item.id)}><IoClose className="text-white text-xs" /></button>
+            <button className="absolute bg-[#ff6048] rounded-full p-0.5 text-white left-4 top-4" onClick={() =>handleRemove(item._id)}><IoClose className="text-white text-xs" /></button>
         </div>
     );
 }

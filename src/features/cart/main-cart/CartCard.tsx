@@ -20,28 +20,28 @@ const CartCard = ({item, index}:any) => {
 
     }
     const handleIncrement = (item: Product) => {
-        const newQuantity = (item.quantity || 0) + 1;
-    dispatch(updateItemQuantity({ itemId: item.id, quantity: newQuantity }));
-    dispatch(updateProductQuantity({ productId: item.id, quantity: newQuantity }))
+        const newQuantity = (item.count || 0) + 1;
+    dispatch(updateItemQuantity({ itemId: item._id, count: newQuantity }));
+    dispatch(updateProductQuantity({ productId: item._id, count: newQuantity }))
     };
 
     const handleDecrement = (item: Product) => {
-        const newQuantity = Math.max((item.quantity || 0) - 1, 0);
-    dispatch(updateItemQuantity({ itemId: item.id, quantity: newQuantity }));
-    dispatch(updateProductQuantity({ productId: item.id, quantity: newQuantity }))
+        const newQuantity = Math.max((item.count || 0) - 1, 0);
+    dispatch(updateItemQuantity({ itemId: item._id, count: newQuantity }));
+    dispatch(updateProductQuantity({ productId: item._id, count: newQuantity }))
     };
     useEffect(() => {
         console.log(cartItems)
         
     });
     
-    const handleDelete = (id: number) => {
-        dispatch(removeItem(id));
+    const handleDelete = (_id: number) => {
+        dispatch(removeItem(_id));
 
         
     }
 
- let subtotal = (item.quantity) * (item.price)
+ let subtotal = (item.count) * (item.price)
 
 
     return ( 
@@ -69,7 +69,7 @@ const CartCard = ({item, index}:any) => {
                                         <button className="p-2.5 bg-[#edeef5] rounded-full w-[30px] flex items-center" onClick={()=>handleDecrement(item)}>
                                             <FaMinus className="text-xs" />
                                         </button>
-                                        <p className="text-sm flex items-center justify-center w-7">{item.quantity 
+                                        <p className="text-sm flex items-center justify-center w-7">{item.count 
                                         || 0}</p>
                                         <button className="p-2.5 bg-[#edeef5] rounded-full w-[30px] flex items-center" onClick={()=>handleIncrement(item)}>
                                             <FaPlus className="text-xs " />
@@ -77,7 +77,7 @@ const CartCard = ({item, index}:any) => {
                                     </div>
                                     <div className="col-span-2 hidden sm:block">{subtotal}</div>
                                     <div className="col-span-1 hidden sm:block">
-                                        <button className="bg-white rounded-full p-1" onClick={()=>handleDelete(item.id)}><IoCloseSharp className="text-xl font-semibold text-black" /></button>
+                                        <button className="bg-white rounded-full p-1" onClick={()=>handleDelete(item._id)}><IoCloseSharp className="text-xl font-semibold text-black" /></button>
                                     </div>
                                     <button className="absolute bg-[#ed174a] rounded-full p-1 text-white sm:hidden"><IoClose className="text-white" /></button>
                                 </div>

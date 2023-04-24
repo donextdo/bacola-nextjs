@@ -1,5 +1,5 @@
 export interface Product {
-  id: number;
+  _id: number;
   isRecommended: boolean;
   isDiscount: boolean;
   isOrganic: boolean;
@@ -17,4 +17,5 @@ export interface Product {
   description: string;
   productQuantity: number;
   skuNumber: string;
+  count:number;
 }

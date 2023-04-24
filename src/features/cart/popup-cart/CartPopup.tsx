@@ -9,6 +9,7 @@ import { fetchCart } from "../cartSlice";
 
 const CartPopup = ({ setCart }: any) => {
   const cartItems = useSelector((state: RootState) => state.cart.items);
+  console.log(cartItems)
   const dispatch = useDispatch();
 
   let totalSubtotal = 0;
@@ -17,6 +18,13 @@ const CartPopup = ({ setCart }: any) => {
   // }
   // )
   console.log(totalSubtotal);
+
+  let totalAmount = 0
+    for (let i = 0; i < cartItems.length; i++) {
+       let item = cartItems[i];
+       let subtotal = item.count * item.price;
+       totalAmount += subtotal;
+     }
 
   
 
@@ -29,7 +37,7 @@ const CartPopup = ({ setCart }: any) => {
       </div>
       <div className="flex justify-between mt-6 mb-4">
         <p className="text-[#c2c2d3] font-semibold text-[13px]">Subtotal:</p>
-        <p className="text-lg text-[#d51243]">${totalSubtotal}</p>
+        <p className="text-lg text-[#d51243]">${totalAmount}</p>
       </div>
 
       <Link href="/cart">
