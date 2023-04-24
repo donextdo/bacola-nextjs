@@ -24,7 +24,7 @@ export const FilteredProduct = ({ categoryId }) => {
     <div>
       {product.length != 0 ? (
         <div className="mx-auto ">
-          <div className="flex lg:flex-cols-4 md:flex-cols-3 flex-cols-2 ">
+          <div className="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 ">
             {product.map((product: any, index) => {
               return (
                 <Link href={`/item-preview/${product._id}`}>
