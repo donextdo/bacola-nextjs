@@ -2,26 +2,40 @@ import { useEffect, useState } from "react";
 import CheckBoxRow from "../CheckBox/CheckBox";
 import axios from "axios";
 import baseUrl from "../../../utils/baseUrl";
+import { useRouter } from "next/router";
 
-const Brands = ({ categoryId }) => {
+const Brands = ({ categoryId, onBrandChange }) => {
   const [brand, setBrand] = useState([]);
   const [isEmpty, setIsEmpty] = useState(false);
+  const [checkedBrands, setCheckedBrands] = useState({});
 
   useEffect(() => {
+    setCheckedBrands([]);
     const fetchData = async () => {
-      // const response = await axios.get(
-      //   `${baseUrl}/products/brands/${categoryId}`
-      // );
-      const response = await axios.get(`${baseUrl}/products/${categoryId}`);
-
-      setBrand(response.data);
-      setIsEmpty(response.data.length === 0);
-      console.log("Brands? ", response.data);
+      try {
+        const response = await axios.get(`${baseUrl}/products/${categoryId}`);
+        setBrand(response.data);
+        setIsEmpty(response.data.length === 0);
+      } catch (error) {
+        console.log(error);
+      }
     };
-    fetchData().catch((error) => {
-      console.log(error);
-    });
+    fetchData();
   }, [categoryId]);
+
+  const handleBrandClick = (brandId) => {
+    const newCheckedBrands = { ...checkedBrands };
+    newCheckedBrands[brandId] = !checkedBrands[brandId];
+    setCheckedBrands(newCheckedBrands);
+    const selectedBrands = Object.keys(newCheckedBrands).filter(
+      (key) => newCheckedBrands[key]
+    );
+
+    console.log("category id ", brandId);
+    console.log("checkedBrands", checkedBrands);
+    console.log("selectedBrands ", selectedBrands);
+    onBrandChange(selectedBrands);
+  };
 
   return (
     <div>
@@ -31,13 +45,30 @@ const Brands = ({ categoryId }) => {
             brands
           </h4>
           {brand.map((category: any, index) => {
+            const isChecked = checkedBrands[category._id];
             return (
-              <CheckBoxRow
-                key={category.id}
-                inputId={`category${category.id}`}
-                htmlForId={`category${category.id}`}
-                name={category.brand}
-              />
+              <div
+                className="relative max-h-[59px] max-w-[270px] flex items-center hover:cursor-pointer"
+                key={category._id}
+              >
+                <div className="flex flex-row mb-3">
+                  <input
+                    type="checkbox"
+                    id={category._id}
+                    checked={isChecked}
+                    onChange={() => handleBrandClick(category._id)}
+                    className="mr-4  min-h-[14px] min-w-[14px] hover:cursor-pointer accent-blue-900 hover:bg-blue-900"
+                  />
+                  <label
+                    htmlFor={category._id}
+                    className={`select-none text-[.8125rem]  font-medium hover:cursor-pointer capitalize ${
+                      isChecked ? "text-blue-900" : "text-gray-500"
+                    }`}
+                  >
+                    {category.brand}
+                  </label>
+                </div>
+              </div>
             );
           })}
         </div>
@@ -47,3 +78,120 @@ const Brands = ({ categoryId }) => {
 };
 
 export default Brands;
+
+// const Brands = ({ categoryId, onBrandChange }) => {
+//   const [brand, setBrand] = useState([]);
+//   const [isEmpty, setIsEmpty] = useState(false);
+//   const [checkedBrands, setCheckedBrands] = useState({});
+//   const router = useRouter();
+//   useEffect(() => {
+//     const fetchData = async () => {
+//       const response = await axios.get(`${baseUrl}/products/${categoryId}`);
+
+//       setBrand(response.data);
+//       setIsEmpty(response.data.length === 0);
+//       console.log("Brands? ", response.data);
+//     };
+//     fetchData().catch((error) => {
+//       console.log(error);
+//     });
+//   }, [categoryId]);
+
+//   const handleBrandClick = (brandId: String, brandname: String) => {
+//     const newCheckedBrands = { ...checkedBrands };
+//     newCheckedBrands[brandId] = !checkedBrands[brandId];
+//     setCheckedBrands(newCheckedBrands);
+
+//     const selectedBrands = Object.keys(newCheckedBrands).filter(
+//       (key) => newCheckedBrands[key]
+//     );
+
+//     if (selectedBrands.length === brand.length) {
+//       sessionStorage.setItem("selectedBrand", selectedBrands);
+//     } else {
+//       sessionStorage.setItem("selectedBrand", selectedBrands);
+//     }
+
+//     if (newCheckedBrands[brandId]) {
+//       const brandsInStorage = JSON.parse(
+//         sessionStorage.getItem("selectedBrands") || "[]"
+//       );
+//       brandsInStorage.push(brandname);
+//       sessionStorage.setItem("selectedBrands", JSON.stringify(brandsInStorage));
+//     } else {
+//       const brandsInStorage = JSON.parse(
+//         sessionStorage.getItem("selectedBrands") || "[]"
+//       );
+//       const index = brandsInStorage.indexOf(brandname);
+//       if (index !== -1) {
+//         brandsInStorage.splice(index, 1);
+//         sessionStorage.setItem(
+//           "selectedBrands",
+//           JSON.stringify(brandsInStorage)
+//         );
+//       }
+//     }
+//     onBrandChange(newCheckedBrands);
+//   };
+
+//   return (
+//     <div>
+//       {!isEmpty && (
+//         <div className="box-border max-h-[106px] max-w-[270px] lg:mt-12">
+//           <h4 className="max-h-[18px] max-w-[270px] uppercase tracking-[0] font-[600] text-[.9375rem] mb-[1.25rem] font-ff-headings">
+//             brands
+//           </h4>
+//           {brand.map((category: any, index) => {
+//             const isChecked = checkedBrands[category._id] || false;
+//             return (
+//               <div
+//                 className="relative max-h-[59px] max-w-[270px] flex items-center hover:cursor-pointer"
+//                 key={category._id}
+//               >
+//                 <div className="flex flex-row mb-3">
+//                   <input
+//                     type="checkbox"
+//                     id={category._id}
+//                     checked={isChecked}
+//                     onChange={() =>
+//                       handleBrandClick(category._id, category.brand)
+//                     }
+//                     className="mr-4  min-h-[14px] min-w-[14px] hover:cursor-pointer accent-blue-900 hover:bg-blue-900"
+//                   />
+//                   <label
+//                     htmlFor={category._id}
+//                     className={`select-none text-[.8125rem]  font-medium hover:cursor-pointer capitalize ${
+//                       isChecked ? "text-blue-900" : "text-gray-500"
+//                     }`}
+//                   >
+//                     {category.brand}
+//                   </label>
+//                 </div>
+//               </div>
+//             );
+//           })}
+//         </div>
+//       )}
+//     </div>
+//   );
+// };
+// export default Brands;
+
+{
+  /* <div className="box-border max-h-[106px] max-w-[270px] lg:mt-12">
+  <h4 className="max-h-[18px] max-w-[270px] uppercase tracking-[0] font-[600] text-[.9375rem] mb-[1.25rem] font-ff-headings">
+    brands
+  </h4>
+  {brand.map((category: any, index) => {
+    return (
+      <CheckBoxRow
+        key={category.id}
+        inputId={`category${category?._id}`}
+        htmlForId={`category${category?._id}`}
+        name={category.brand}
+        onClick={() => handleBrandClick()}
+      />
+    );
+  })}
+</div>; */
+}

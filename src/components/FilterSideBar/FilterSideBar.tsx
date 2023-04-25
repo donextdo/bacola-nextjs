@@ -6,9 +6,32 @@ import { ImageProductFilter } from "./Image";
 import { FilteredProduct } from "../FilterSideBar/FilteredProduct";
 import bacolaBannergif from "../../../assets/home/sidebar-banner.gif";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 
 export const FilterSideBar = ({ categoryId }) => {
   //console.log("data enawad? ", categoryId);
+  useEffect(() => {
+    setSelectedBrands([]);
+    console.log("Subcategory prop:", categoryId);
+  }, [categoryId]);
+
+  const [selectedBrands, setSelectedBrands] = useState([]);
+
+  const handleBrandChange = (brands) => {
+    setSelectedBrands(brands);
+    //console.log("Brand Data coming for FilterSide Bar  ", selectedBrands);
+  };
+  useEffect(() => {
+    console.log("selectedBrands updated: ", selectedBrands);
+  }, [selectedBrands]);
+
+  useEffect(() => {
+    const storedBrands = localStorage.getItem("selectedBrands");
+    if (storedBrands) {
+      const parsedBrands = JSON.parse(storedBrands);
+      setSelectedBrands(parsedBrands);
+    }
+  }, []);
 
   return (
     <div className="flex flex-row mb-9">
@@ -17,7 +40,7 @@ export const FilterSideBar = ({ categoryId }) => {
           <Categories categoryId={categoryId} />
           <RangeSlider />
           <Status />
-          <Brands categoryId={categoryId} />
+          <Brands categoryId={categoryId} onBrandChange={handleBrandChange} />
         </div>
         <div className="lg:mt-12">
           <Image
@@ -32,7 +55,11 @@ export const FilterSideBar = ({ categoryId }) => {
           <ImageProductFilter />
         </div>
         <div className="lg:mt-12 md:mt-12 mt-12">
-          <FilteredProduct categoryId={categoryId} />
+          <FilteredProduct
+            categoryId={categoryId}
+            selectedBrands={selectedBrands}
+            setSelectedBrands={setSelectedBrands}
+          />
         </div>
       </div>
     </div>

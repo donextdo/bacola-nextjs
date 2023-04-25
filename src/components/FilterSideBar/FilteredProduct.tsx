@@ -8,17 +8,51 @@ import { ProductCard } from "@/features/product/ProductCard";
 import baseUrl from "../../../utils/baseUrl";
 import axios from "axios";
 
-export const FilteredProduct = ({ categoryId }) => {
+export const FilteredProduct = ({
+  categoryId,
+  selectedBrands,
+  setSelectedBrands,
+}) => {
   const [product, setProduct] = useState([]);
   useEffect(() => {
+    setSelectedBrands([]);
     const fetchData = async () => {
-      const response = await axios.get(`${baseUrl}/products/${categoryId}`);
-      setProduct(response.data);
+      if (categoryId) {
+        const response = await axios.get(`${baseUrl}/products/${categoryId}`);
+        setProduct(response.data);
+        console.log("filter product Subcategory prop:", categoryId);
+      }
     };
     fetchData().catch((error) => {
       console.log(error);
     });
+  }, [categoryId]);
+
+  useEffect(() => {
+    console.log("passed brand id", selectedBrands);
   });
+
+  useEffect(() => {
+    console.log("passed brand id", selectedBrands);
+    if (selectedBrands.length > 0) {
+      const filteredProducts = product.filter((product) =>
+        selectedBrands.includes(product?._id)
+      );
+      setProduct(filteredProducts);
+    } else {
+      // If no brands are selected, load all products for the selected category
+      const fetchData = async () => {
+        if (categoryId) {
+          const response = await axios.get(`${baseUrl}/products/${categoryId}`);
+          setProduct(response.data);
+          console.log("filter product Subcategory prop:", categoryId);
+        }
+      };
+      fetchData().catch((error) => {
+        console.log(error);
+      });
+    }
+  }, [selectedBrands]);
 
   return (
     <div>
@@ -26,11 +60,7 @@ export const FilteredProduct = ({ categoryId }) => {
         <div className="mx-auto ">
           <div className="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 ">
             {product.map((product: any, index) => {
-              return (
-                <Link href={`/item-preview/${product._id}`}>
-                  <ProductCard key={product.id} product={product} />
-                </Link>
-              );
+              return <ProductCard key={product.id} product={product} />;
             })}
           </div>
         </div>
