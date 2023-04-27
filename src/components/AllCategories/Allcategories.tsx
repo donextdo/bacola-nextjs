@@ -50,6 +50,7 @@ const Allcategories = () => {
   };
 
   const getProductByCategory = async (categoryId) => {
+    sessionStorage.clear();
     setHomeOpen(false);
     router.push({
       pathname: "/filterProduct",

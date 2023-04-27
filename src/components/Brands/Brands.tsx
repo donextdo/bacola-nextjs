@@ -9,8 +9,11 @@ const Brands = ({ categoryId, onBrandChange }) => {
   const [isEmpty, setIsEmpty] = useState(false);
   const [checkedBrands, setCheckedBrands] = useState({});
 
+  const router = useRouter();
+
   useEffect(() => {
     setCheckedBrands([]);
+
     const fetchData = async () => {
       try {
         const response = await axios.get(`${baseUrl}/products/${categoryId}`);
@@ -31,9 +34,14 @@ const Brands = ({ categoryId, onBrandChange }) => {
       (key) => newCheckedBrands[key]
     );
 
-    console.log("category id ", brandId);
-    console.log("checkedBrands", checkedBrands);
-    console.log("selectedBrands ", selectedBrands);
+    router.push({
+      pathname: router.pathname,
+      query: { ...router.query, brands: selectedBrands.join(",") },
+    });
+
+    //console.log("category id ", brandId);
+    // console.log("checkedBrands", checkedBrands);
+    // console.log("selectedBrands ", selectedBrands);
     onBrandChange(selectedBrands);
   };
 

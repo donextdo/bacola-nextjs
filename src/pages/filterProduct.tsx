@@ -4,15 +4,14 @@ import { useEffect } from "react";
 const FilterProduct = () => {
   const router = useRouter();
   const { categoryId } = router.query;
-  //console.log("data coming ", categoryId);
 
-  useEffect(() => {
-    console.log("Query parameter: ", categoryId);
-  }, [categoryId]);
+  const { query } = useRouter();
+
+  const brand = query?.brands;
 
   return (
     <div className="xl:px-40 lg:px-5 md:px-5 px-5 ">
-      <FilterSideBar categoryId={categoryId} />
+      <FilterSideBar categoryId={categoryId} brand={brand} />
     </div>
   );
 };
