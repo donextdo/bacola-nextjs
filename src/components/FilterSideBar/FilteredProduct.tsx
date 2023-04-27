@@ -12,7 +12,7 @@ import { useRouter } from "next/router";
 export const FilteredProduct = ({
   categoryId,
   selectedBrands,
-  //setSelectedBrands,
+  selectedSubCat,
 }) => {
   const [product, setProduct] = useState([]);
 
@@ -24,40 +24,33 @@ export const FilteredProduct = ({
       if (categoryId) {
         const response = await axios.get(`${baseUrl}/products/${categoryId}`);
         setProduct(response.data);
-        //console.log("filter product Subcategory prop:", categoryId);
+
         const brands: Array<String> =
           sessionStorage.getItem("brands") != null
             ? sessionStorage.getItem("brands")
             : [];
         const brandsLoad = brands && brands.length > 0 ? brands.split(",") : [];
-        //console.log("session storage brand id", brands);
-        console.log("session storage brandsLoad", brandsLoad);
+
         if (selectedBrands.length > 0) {
           const filteredProducts = response.data.filter((product) =>
             selectedBrands.includes(product?._id)
           );
-          console.log("filteredProducts ", filteredProducts);
+
           setProduct(filteredProducts);
         } else if (brandsLoad.length > 0) {
-          console.log("productttttttttt ", response.data);
-          product.forEach((item) => {
-            console.log("item ", item);
-          });
+          product.forEach((item) => {});
           const filteredProducts = response.data.filter((product) =>
             brandsLoad.includes(product?._id)
           );
-          console.log("filteredProducts brandsLoad", filteredProducts);
+
           setProduct(filteredProducts);
         } else {
-          sessionStorage.clear();
-          // If no brands are selected, load all products for the selected category
           const fetchData = async () => {
             if (categoryId) {
               const response = await axios.get(
                 `${baseUrl}/products/${categoryId}`
               );
               setProduct(response.data);
-              //console.log("filter product Subcategory prop:", categoryId);
             }
           };
           fetchData().catch((error) => {
@@ -72,8 +65,8 @@ export const FilteredProduct = ({
   }, [categoryId, selectedBrands]);
 
   useEffect(() => {
-    console.log("passed brand id", selectedBrands);
-  }, [selectedBrands]);
+    console.log("passed selectedSubCat id", selectedSubCat);
+  }, [selectedSubCat]);
 
   useEffect(() => {
     const brands: Array<String> =
@@ -81,22 +74,18 @@ export const FilteredProduct = ({
         ? sessionStorage.getItem("brands")
         : [];
     const brandsLoad = brands && brands.length > 0 ? brands.split(",") : [];
+
     if (selectedBrands.length > 0) {
       const filteredProducts = product.filter((product) =>
         selectedBrands.includes(product?._id)
       );
-      console.log("filteredProducts ", filteredProducts);
+
       setProduct(filteredProducts);
     } else if (brandsLoad.length == 0) {
-      sessionStorage.clear();
-
-      // If no brands are selected, load all products for the selected category
       const fetchData = async () => {
         if (categoryId) {
-          sessionStorage.clear();
           const response = await axios.get(`${baseUrl}/products/${categoryId}`);
           setProduct(response.data);
-          //console.log("filter product Subcategory prop:", categoryId);
         }
       };
       fetchData().catch((error) => {

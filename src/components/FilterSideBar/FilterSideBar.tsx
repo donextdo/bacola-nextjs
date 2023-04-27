@@ -9,56 +9,59 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
-export const FilterSideBar = ({ categoryId, brand }) => {
+export const FilterSideBar = ({ categoryId, brand, subcategory }) => {
   const [selectedBrands, setSelectedBrands] = useState([]);
+  const [selectedSubCat, setSelectedSubCat] = useState([]);
   const router = useRouter();
   let brandId = [];
-
-  // const selectedBrands = query.brands
-  // ? Array.isArray(query.brands)
-  //   ? query.brands
-  //   : [query.brands]
-  // : [];
-  // const { query } = useRouter();
-
-  // const brand = query?.brands;
+  let subcategorySelected = [];
 
   useEffect(() => {
     if (brand) {
       const brands = brand.split(",");
       sessionStorage.setItem("brands", brands);
-      console.log("brand coming", brands);
       brandId = brands;
-      // setSelectedBrands(brands);
     }
   }, [brand]);
 
-  // useEffect(() => {
-  //   const storedCategoryId = sessionStorage.getItem("categoryId");
-  //   if (storedCategoryId && storedCategoryId !== categoryId) {
-  //     sessionStorage.clear();
-  //   }
-  //   sessionStorage.setItem("categoryId", categoryId);
-  // }, [categoryId]);
-
   useEffect(() => {
-    //setSelectedBrands([]);
-    console.log("selectedBrands:", brandId);
-  }, [brandId, Brands]);
+    if (subcategory) {
+      const subCategories = subcategory.split(",");
+      sessionStorage.setItem("subCategories", subCategories);
+      console.log("category coming", subCategories);
+      subcategorySelected = subCategories;
+
+      //ghj
+      const categories: Array<String> =
+        sessionStorage.getItem("subCategories") != null
+          ? sessionStorage.getItem("subCategories")
+          : [];
+      const subcatLoad =
+        categories && categories.length > 0 ? categories.split(",") : [];
+      console.log("categories", categories);
+      console.log("subcatLoad", subcatLoad);
+      console.log("passed selectedSubCat id", subcategory);
+    }
+  }, [subcategory]);
 
   const handleBrandChange = (brands) => {
     setSelectedBrands(brands);
-    //console.log("Brand Data coming for FilterSide Bar  ", selectedBrands);
+    console.log("kkkkkkkkkkkkkk ", brands);
   };
-  // useEffect(() => {
-  //   console.log("selectedBrands updated: ", selectedBrands);
-  // }, [selectedBrands]);
+
+  const handleSubCatChange = (subCate) => {
+    setSelectedSubCat(subCate);
+    console.log("gehwyhjdkwjd ", subCate);
+  };
 
   return (
     <div className="flex flex-row mb-9">
       <div className="lg:w-1/4 hidden lg:block">
         <div className="grid md:grid-cols-1 grid-cols-1 ">
-          <Categories categoryId={categoryId} />
+          <Categories
+            categoryId={categoryId}
+            onSuCatChange={handleSubCatChange}
+          />
           <RangeSlider />
           <Status />
           <Brands categoryId={categoryId} onBrandChange={handleBrandChange} />
@@ -81,7 +84,9 @@ export const FilterSideBar = ({ categoryId, brand }) => {
             selectedBrands={
               selectedBrands.length > 0 ? selectedBrands : brandId
             }
-            //setSelectedBrands={setSelectedBrands}
+            selectedSubCat={
+              selectedSubCat.length > 0 ? selectedSubCat : subcategorySelected
+            }
           />
         </div>
       </div>

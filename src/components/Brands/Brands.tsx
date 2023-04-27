@@ -24,6 +24,15 @@ const Brands = ({ categoryId, onBrandChange }) => {
       }
     };
     fetchData();
+    const queryBrands = router.query.brands;
+    if (queryBrands) {
+      const selectedBrands = queryBrands.split(",");
+      const newCheckedBrands = {};
+      selectedBrands.forEach((brandId) => {
+        newCheckedBrands[brandId] = true;
+      });
+      setCheckedBrands(newCheckedBrands);
+    }
   }, [categoryId]);
 
   const handleBrandClick = (brandId) => {
@@ -39,9 +48,6 @@ const Brands = ({ categoryId, onBrandChange }) => {
       query: { ...router.query, brands: selectedBrands.join(",") },
     });
 
-    //console.log("category id ", brandId);
-    // console.log("checkedBrands", checkedBrands);
-    // console.log("selectedBrands ", selectedBrands);
     onBrandChange(selectedBrands);
   };
 

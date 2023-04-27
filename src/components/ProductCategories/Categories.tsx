@@ -2,36 +2,50 @@ import { useEffect, useState } from "react";
 import CheckBoxRow from "../CheckBox/CheckBox";
 import axios from "axios";
 import baseUrl from "../../../utils/baseUrl";
+import { useRouter } from "next/router";
 
-const Categories = ({ categoryId }) => {
+const Categories = ({ categoryId, onSuCatChange }) => {
   const [subCategory, setSubCategory] = useState([]);
   const [isEmpty, setIsEmpty] = useState(false);
   const [checkedCategory, setCheckedCategory] = useState({});
+  const [isHidden, setIshidden] = useState(false);
+
+  const router = useRouter();
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await axios.get(`${baseUrl}/categories/${categoryId}`);
-      setSubCategory(response.data);
-      setIsEmpty(response.data.length === 0);
-      console.log("data awad? ", response.data);
+      try {
+        const response = await axios.get(`${baseUrl}/categories/${categoryId}`);
+        setSubCategory(response.data);
+        setIsEmpty(response.data.length === 0);
+        console.log("data awad? ", response.data);
+      } catch (error) {
+        console.log(error);
+      }
     };
-    fetchData().catch((error) => {
-      console.log(error);
-    });
+    fetchData();
   }, [categoryId]);
 
-  const handleCtegoryClick = (categoryId) => {
-    const newCheckedCategory = {};
-    newCheckedCategory[categoryId] = !checkedCategory[categoryId];
+  const handleCtegoryClick = (categoryId, name) => {
+    let updatedCheckedCategory = {};
 
-    // uncheck all other categories
-    Object.keys(checkedCategory).forEach((key) => {
-      if (key !== categoryId) {
-        newCheckedCategory[key] = false;
-      }
-    });
+    if (checkedCategory === categoryId) {
+      // if the clicked category is already checked, uncheck it
+      router.push({
+        pathname: router.pathname,
+        query: { ...router.query, sub_category: undefined },
+      });
+    } else {
+      updatedCheckedCategory = categoryId;
+      // if the clicked category is not checked, check it
+      router.push({
+        pathname: router.pathname,
+        query: { ...router.query, sub_category: categoryId },
+      });
+    }
 
-    setCheckedCategory(newCheckedCategory);
+    setCheckedCategory(updatedCheckedCategory);
+    onSuCatChange([updatedCheckedCategory]);
   };
 
   return (
@@ -44,7 +58,8 @@ const Categories = ({ categoryId }) => {
 
           {Array.isArray(subCategory) &&
             subCategory.map((category: any, index) => {
-              const isChecked = checkedCategory[category._id];
+              // const isChecked = checkedCategory[category._id];
+              const isChecked = checkedCategory === category._id;
               return (
                 <div
                   className="relative max-h-[59px] max-w-[270px] flex items-center hover:cursor-pointer"
@@ -55,7 +70,9 @@ const Categories = ({ categoryId }) => {
                       type="checkbox"
                       id={category._id}
                       checked={isChecked}
-                      onChange={() => handleCtegoryClick(category._id)}
+                      onChange={() =>
+                        handleCtegoryClick(category._id, category.name)
+                      }
                       className="mr-4  min-h-[14px] min-w-[14px] hover:cursor-pointer accent-blue-900 hover:bg-blue-900"
                     />
                     <label
