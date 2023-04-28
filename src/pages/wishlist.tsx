@@ -4,8 +4,20 @@ import { useEffect, useState } from "react";
 import { IoClose } from "react-icons/io5";
 import { useDispatch } from "react-redux";
 
+interface WIshlist {
+    address: string;
+    date: string;
+    price: number;
+    title:string;
+    id: string;
+    image:string;
+    checked: boolean;
+    quantity: number;
+
+    // any other properties
+  }
 const Wishlist = () => {
-    const [data, setData] = useState([
+    const [data, setData] = useState<Array<WIshlist>>([
         // { id: 1, name: "John", age: 25, email: "john@example.com", phone: "1234567890", address: "123 Main St", city: "New York" },
         // { id: 2, name: "Jane", age: 30, email: "jane@example.com", phone: "2345678901", address: "456 Broadway", city: "Los Angeles" },
         // { id: 3, name: "Bob", age: 40, email: "bob@example.com", phone: "3456789012", address: "789 5th Ave", city: "Chicago" },
@@ -29,7 +41,7 @@ const Wishlist = () => {
         setCheckAll(!checkAll);
     };
 
-    const handleCheck = (id) => {
+    const handleCheck = (id:any) => {
         const newData = [...data];
         newData.forEach(item => {
             if (item.id === id) {
@@ -127,7 +139,7 @@ const Wishlist = () => {
                             <td className="border px-4 py-2">{item.title}</td>
                             <td className="border px-4 py-2">{item.price}</td>
                             <td className="border px-4 py-2">{item.date}</td>
-                            <td className="border px-4 py-2">{item.address}</td>
+                            <td className="border px-4 py-2">{item.quantity>0 ? "In Stock": "Out of Stock"}</td>
                             <td className="border px-4 py-2">
                                 <button
                                     className=" bg-blue-900 text-white text-xs rounded-md px-5 py-3 " onClick={() => handleCart(item)}

@@ -20,7 +20,7 @@ export const ProductCard: FC<Props> = ({ product }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (parseInt(product.discount) >= 0) {
+    if ((product.discount) >= 0) {
       setIsdiscount(true);
     }
   }, []);
@@ -66,6 +66,9 @@ export const ProductCard: FC<Props> = ({ product }) => {
     </span>
   ));
 
+  let discountprice;
+  discountprice = product.price * (product.discount/100)
+let newprice=product.price-discountprice
   return (
     <div
       className="md:max-w-[212.95px] md:max-h-[370.24px] min-w-[212.95px] min-h-[350.24px] mx-auto bg-white border border-gray-200  overflow-hidden relative group hover:drop-shadow-lg rounded-sm"
@@ -136,7 +139,7 @@ export const ProductCard: FC<Props> = ({ product }) => {
             </span>
           )}
           <span className="my-1 text-red-700 text-lg font-semibold">
-            $39.99
+            ${newprice}
           </span>
         </div>
       </div>

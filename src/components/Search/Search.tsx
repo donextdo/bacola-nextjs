@@ -32,7 +32,7 @@ export const SearchItem = () => {
 
   return (
     <div className=" flex flex-col w-full md:w-full lg:w-96 place-content-center relative">
-      <div className="flex relative lg:w-[40rem]">
+      <div className="flex relative xl:w-[600px] ">
         <input
           type="search"
           className="bg-gray-200 rounded-tl rounded-bl min-h-[60px] md:w-full lg-w-full w-1/2 pl-5 text-sm focus:outline-none "

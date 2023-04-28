@@ -1,10 +1,10 @@
 export interface Product {
-  _id: number;
+  _id: string;
   isRecommended: boolean;
   isDiscount: boolean;
   isOrganic: boolean;
   isFavourite: boolean;
-  discount: string;
+  discount: number;
   rating: number;
   front: string;
   back: string;
@@ -18,4 +18,5 @@ export interface Product {
   productQuantity: number;
   skuNumber: string;
   count:number;
+  newprice:number;
 }

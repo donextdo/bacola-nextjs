@@ -1,4 +1,8 @@
+import CheckoutSidebar from "@/components/Checkout/CheckoutSidebar";
+import { addOrder, insertOrderAsync } from "@/components/Checkout/orderSlice";
+import { RootState } from "@/redux/store";
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 const Country = {
     USA: 'United States',
@@ -10,6 +14,22 @@ const Country = {
 
 
 const Checkout = () => {
+    const [orderItem, setOrderItem] = useState([])
+  const cartItems = useSelector((state: RootState) => state.cart.items);
+  const orderList = useSelector((state: RootState) => state.order.orders);
+  const dispatch = useDispatch();
+  let id = localStorage.getItem("id");  
+
+  let totalAmount = 0
+    for (let i = 0; i < cartItems.length; i++) {
+       let item = cartItems[i];
+       let subtotal = item.count * item.price;
+       totalAmount += subtotal;
+     }
+
+    //  const orderString = localStorage.getItem('order');
+    // const order = orderString ? JSON.parse(orderString) : [];
+
     const [selectedRadio, setSelectedRadio] = useState('');
     const handleCheckboxChange = (e: any) => {
         setSelectedRadio(e.target.value)
@@ -21,6 +41,37 @@ const Checkout = () => {
         setSelectedCountry(e.target.value);
     };
 
+    const handleOrder = () => {
+        const newObj = {
+            userId:id,
+            totalprice: totalAmount,
+            status: "processing",
+            date: new Date().toLocaleDateString("en-US", {
+                month: "long",
+                day: "numeric",
+                year: "numeric"
+            }),
+            items: cartItems.map(item => ({
+                productId: item._id,
+                orderquantity: item.count
+              }))
+        };
+
+        console.log(newObj)
+
+        dispatch(insertOrderAsync(newObj));
+
+        
+    // dispatch(addOrder(newObj))
+
+        // // Modify the array by pushing the new object
+        // order.push(newObj);
+
+        // // Store the modified array back in local storage
+        // localStorage.setItem('order', JSON.stringify(order));
+        // localStorage.setItem('order', JSON.stringify([])); 
+
+    }
 
     return (
         <div className="container mx-auto px-[15px]  ">
@@ -125,14 +176,13 @@ const Checkout = () => {
                         {/* load items and total  map method*/}
                         <table className="w-full">
                             <tbody>
-                                <tr>
-                                    <td className=" py-3 text-[13px] w-[50%]">Pepsi Cola Soda - 2 L Bottle <span className="font-semibold">× 1</span> </td>
-                                    <td className=" py-3 text-[15px] text-right">$5.05</td>
-                                </tr>
-                                <tr>
+                            {cartItems.map((item) => (
+                               <CheckoutSidebar item={item} orderItem={orderItem} setOrderItem={setOrderItem}/>
+                            ))}
+                                {/* <tr>
                                     <td className=" py-3 text-[13px] w-[50%]">Pepsi Cola Soda - 2 L Bottle <span className="font-semibold">× 2</span> </td>
                                     <td className=" py-3 text-[15px] text-right">$5.05</td>
-                                </tr>
+                                </tr> */}
                             </tbody>
                         </table>
 
@@ -140,7 +190,7 @@ const Checkout = () => {
                             <tbody>
                                 <tr>
                                     <td className="text-[13px] font-semibold border-y border-[#e4e5ee] text-[#71778e]">Subtotal</td>
-                                    <td className=" py-3 text-[15px] text-right border-y border-[#e4e5ee]">$5.05</td>
+                                    <td className=" py-3 text-[15px] text-right border-y border-[#e4e5ee]">${totalAmount}</td>
 
                                 </tr>
                                 <tr>
@@ -163,7 +213,7 @@ const Checkout = () => {
                                 </tr>
                                 <tr>
                                     <td className="border-b border-[#e4e5ee] text-[13px] font-semibold py-4 text-[#71778e]">Total</td>
-                                    <td className="border-b border-[#e4e5ee] text-right font-semibold text-xl py-4 ">$35.78</td>
+                                    <td className="border-b border-[#e4e5ee] text-right font-semibold text-xl py-4 ">${totalAmount}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -204,7 +254,7 @@ const Checkout = () => {
                             <p className="text-xs">I have read and agree to the website <span className="text-[#ed174a] underline underline-offset-1">terms and conditions* </span></p>
                         </div>
 
-                        <button className="bg-[#ed174a] text-white py-2.5 rounded-md text-sm h-[50px] w-full text-center mt-6 font-semibold">Place order</button>
+                        <button className="bg-[#ed174a] text-white py-2.5 rounded-md text-sm h-[50px] w-full text-center mt-6 font-semibold" onClick={handleOrder}>Place order</button>
 
                     </div>
                 </div>

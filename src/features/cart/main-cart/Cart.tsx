@@ -7,6 +7,7 @@ import Link from "next/link";
 import { RootState } from "../../../redux/store"
 import { useDispatch, useSelector } from "react-redux";
 import CartCard from "./CartCard";
+import { removeAll } from "../cartSlice";
 
 
 interface CartType {
@@ -18,6 +19,8 @@ interface CartType {
 const Cart: FC<CartType> = () => {
     const  cartItems  = useSelector((state: RootState) => state.cart.items);
     const [selectedValue, setSelectedValue] = useState("Ship");
+  const dispatch = useDispatch();
+
     // let total = 0;
    
     useEffect(() => {
@@ -43,7 +46,9 @@ const Cart: FC<CartType> = () => {
         setTotal(total - 5);
       }
      
-    
+    const handleClear = () => {
+        dispatch(removeAll())
+    }
 
     return (
         <div className="px-3.5 container mx-auto mt-4 mb-20">
@@ -85,7 +90,7 @@ const Cart: FC<CartType> = () => {
                                 <button className="bg-[#233a95] text-white py-2.5 px-4 rounded-md text-xs h-11 w-40">Apply coupon</button>
                             </div>
 
-                            <div><button className="bg-[#233a95] text-white py-2.5 px-4 rounded-md text-xs h-11 w-[104px] hidden md:block">Remove All</button></div>
+                            <div><button className="bg-[#233a95] text-white py-2.5 px-4 rounded-md text-xs h-11 w-[104px] hidden md:block" onChange={handleClear}>Remove All</button></div>
                         </section>
                     </div>
                     <div>

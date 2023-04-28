@@ -8,7 +8,7 @@ import { ProductCard } from "@/features/product/ProductCard";
 import baseUrl from "../../../utils/baseUrl";
 import axios from "axios";
 
-export const FilteredProduct = ({ categoryId }) => {
+export const FilteredProduct = ({ categoryId }:any) => {
   const [product, setProduct] = useState([]);
   useEffect(() => {
     const fetchData = async () => {

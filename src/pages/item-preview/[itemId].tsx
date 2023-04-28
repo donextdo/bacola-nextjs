@@ -27,10 +27,16 @@ import { RootState } from "@/redux/store";
 import { addItem, updateItemQuantity } from "@/features/cart/cartSlice";
 import { updateProductQuantity } from "@/features/product/productSlice";
 
-
+// interface ItemData {
+//     description: string;
+//     quantity: number;
+//     price: number;
+//     title:string;
+//     // any other properties
+//   }
 
 const ItemPages = () => {
-    const [data, setData] = useState<Product | {}>({})
+    const [data, setData] = useState<Product>({})
     const [myObject, setMyObject] = useState(null);
     const [isColor, setIsColor] = useState(1);
 
@@ -55,7 +61,7 @@ const ItemPages = () => {
             console.log(err);
         }
     }
-    const item = products.find((item) => item._id === itemId);
+    const item:Product | undefined = products.find((item) => item._id === itemId);
 
     const handleIncrement = (data: Product) => {
         const newQuantity = (item.count || 0) + 1;
@@ -73,7 +79,7 @@ const ItemPages = () => {
         <span key={i}>
             <FaStar
                 className={
-                    i < (myObject?.rating as number) ? "text-yellow-500" : "text-gray-400"
+                    i < (data?.rating as number) ? "text-yellow-500" : "text-gray-400"
                 }
             />
         </span>
@@ -98,7 +104,8 @@ const ItemPages = () => {
                 month: "long",
                 day: "numeric",
                 year: "numeric"
-            })
+            }),
+            quantity: data.quantity
         };
 
         // Modify the array by pushing the new object

@@ -2,7 +2,7 @@ import React, { ReactNode } from "react";
 import Footer from "../Footer/Footer-top";
 import Header from "../Header/Header";
 import Message from "../Message/Message";
-import Navbar from "../Navbar/Navbar";
+// import Navbar from "../Navbar/Navbar";
 import NewsLetter from "../NewsLetter/Newsletter";
 import TopHeader from "../TopHeader/TopHeader";
 import NavbarNew from "../Navbar/newNawBar";

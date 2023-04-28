@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { JSXElementConstructor, ReactElement, ReactFragment, useEffect, useState } from "react";
+import { FC, JSXElementConstructor, ReactElement, ReactFragment, useEffect, useState } from "react";
 import propic from "../../../../assets/66bb43111be7a320df1ed27c2945483c.jpg"
 import axios from "axios";
 import baseUrl from "../../../../utils/baseUrl";
@@ -8,12 +8,20 @@ import { FaStar } from "react-icons/fa";
 import StartRating from "./ReviewDetails/StartRating";
 import DateFormatChange from "./ReviewDetails/DateFormatChange";
 
-const Review = ({ itemId }: any) => {
+interface Review {
+    rating: number;
+    name:string;
+    body:string;
+    submittedDate: string;
+    // other properties
+  }
+
+const Review: FC<Review>  = ({ itemId }: any) => {
     const [rating, setRating] = useState(0);
     const [text, setText] = useState("");
     const [savedText, setSavedText] = useState("");
     const [review, setReview] = useState<Array<any>>([]);
-    const [data, setData] = useState([])
+    const [data, setData] = useState<Array<Review>>([])
     let id = localStorage.getItem("id");
 
 

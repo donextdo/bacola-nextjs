@@ -1,4 +1,4 @@
-import { ImageOne, ImageTwo, ImageThree, ImageFour } from "./ImageList";
+import { ImageOne, ImageTwo, ImageThree, ImageFour, CustomerComment } from "./ImageList";
 import { AdditionalDiv } from "./redDiv";
 
 export const MainDiv = () => {
@@ -7,6 +7,8 @@ export const MainDiv = () => {
       <ImageThree />
       <ImageFour />
       <AdditionalDiv />
+      <CustomerComment />
+      
     </div>
   );
 };

@@ -3,6 +3,7 @@ import banner1 from "../../../assets/home/bacola-banner-01.jpg";
 import banner2 from "../../../assets/home/bacola-banner-02.jpg";
 import banner3 from "../../../assets/home/banner-box.jpg";
 import banner4 from "../../../assets/home/bacola-banner-04.jpg";
+import avatar from "../../../assets/avatar.jpg"
 import { BsArrowRight } from "react-icons/bs";
 
 export const ImageOne = () => {
@@ -126,6 +127,30 @@ export const ImageFour = () => {
         </span>
         <div className="bg-cyan-500 py-2  flex flex-row rounded-full text-[13px] w-[100px] text-white font-bold px-4 justify-between mt-3 lg:mt-6">
           Shop Now
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export const CustomerComment = () => {
+  return (
+    <div className="bg-[#fffbec] p-4 mt-9 w-[270px]">
+      <h1 className="font-bold text-sm">The Best Marketplace</h1>
+      <p className="mt-2 text-[13px]">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut.
+      </p>
+      <div className="flex items-center mt-4">
+        <Image
+          src={avatar}
+          alt="Profile pic"
+          width={50}
+          height={50}
+          className="rounded-full"
+        />
+        <div className="flex flex-col ml-2">
+          <span className="text-sm">Your Name</span>
+          <span className="text-xs">Sales Manager</span>
         </div>
       </div>
     </div>

@@ -34,9 +34,11 @@ const Login: React.FC<Props> = () => {
       localStorage.setItem('id', response.data._id)
       localStorage.setItem('email', response.data.email)
       localStorage.setItem('wishlist', JSON.stringify([]));
+      localStorage.setItem('order', JSON.stringify([]));
+
 
       if(response.status==200){
-        // location.reload(); 
+        location.reload(); 
         router.push('/account');
       }
 

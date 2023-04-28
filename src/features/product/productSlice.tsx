@@ -34,7 +34,7 @@ export const productSlice = createSlice({
     },
     updateProductQuantity: (
       state,
-      action: PayloadAction<{ productId: number; count: number }>
+      action: PayloadAction<{ productId: string; count: number }>
     ) => {
       const product = state.products.find(
         (p) => p._id === action.payload.productId

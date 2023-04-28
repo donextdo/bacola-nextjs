@@ -15,7 +15,7 @@ const HomePage = () => {
           <ProductList />
         </div>
         <TakeCare />
-        <RedDiv />
+        {/* <RedDiv /> */}
         <div>
           <NewProduct />
           <ProductList />

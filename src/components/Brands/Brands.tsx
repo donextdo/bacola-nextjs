@@ -3,7 +3,7 @@ import CheckBoxRow from "../CheckBox/CheckBox";
 import axios from "axios";
 import baseUrl from "../../../utils/baseUrl";
 
-const Brands = ({ categoryId }) => {
+const Brands = ({ categoryId }:any) => {
   const [brand, setBrand] = useState([]);
   const [isEmpty, setIsEmpty] = useState(false);
 

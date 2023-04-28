@@ -16,9 +16,16 @@ import baseUrl from "../../../utils/baseUrl";
 import { FilterSideBar } from "../FilterSideBar/FilterSideBar";
 import { useRouter } from "next/router";
 
+interface Category {
+  _id: string;
+    name: string;
+    subcategories:any;
+    // any other properties
+  }
+
 const Allcategories = () => {
   const [homeOpen, setHomeOpen] = useState(false);
-  const [viewCategory, setviewCategory] = useState([]);
+  const [viewCategory, setviewCategory] = useState<Array<Category>>([]);
   const [activeCategory, setActiveCategory] = useState(null);
   const [isClicked, setIsClicked] = useState(true);
 
@@ -36,20 +43,20 @@ const Allcategories = () => {
     fetchData();
   }, []);
 
-  const handleCategoryHover = (categoryId) => {
+  const handleCategoryHover = (_id:any) => {
     //console.log(categoryId);
-    setActiveCategory(categoryId);
+    setActiveCategory(_id);
   };
 
   const handleCategoryLeave = () => {
     setActiveCategory(null);
   };
 
-  const handleSubCategoryHover = (subcategory) => {
+  const handleSubCategoryHover = (subcategory:string) => {
     //console.log(subcategory);
   };
 
-  const getProductByCategory = async (categoryId) => {
+  const getProductByCategory = async (categoryId:string) => {
     setHomeOpen(false);
     router.push({
       pathname: "/filterProduct",
@@ -124,7 +131,7 @@ const Allcategories = () => {
                         onMouseEnter={() => setIsHover(true)}
                         onMouseLeave={() => setIsHover(false)}
                       >
-                        {category.subcategories.map((subcategory, index) => (
+                        {category.subcategories.map((subcategory:any, index:any) => (
                           <li key={index}>
                             {" "}
                             <a

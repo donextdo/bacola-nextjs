@@ -115,7 +115,7 @@ export const NewProduct = () => {
 
 export const TakeCare = () => {
   return (
-    <div className="container mt-7 relative bg-[#f7efea] w-full h-[340px] flex flex-col items-center rounded-md lg:h-[130px] overflow-hidden cursor-pointer">
+    <div className="container mt-7 relative bg-[#f7efea] w-full h-[340px] flex flex-col items-center rounded-md lg:h-[130px] overflow-hidden cursor-pointer mb-9">
       <div className="lg:flex lg:flex-row lg:items-start lg:w-full justify-between">
         <div className="relative flex flex-col items-start justify-start md:mt-14 lg:ml-10 lg:mt-10 ">
           <h1 className="text-gray-400 text-sm capitalize">

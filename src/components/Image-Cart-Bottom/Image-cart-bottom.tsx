@@ -1,4 +1,5 @@
 import React from "react";
+import OneItem from "./OneItem";
 
 interface CartBottomItem {
   id: number;
@@ -31,7 +32,7 @@ const images: string[] = [
 const MyList: React.FC<{ CartBottomItems: CartBottomItem[] }> = ({
   CartBottomItems,
 }) => (
-  <div className="grid grid-flow-col grid-rows-4 gap-0 mt-16 mb-9 border sm:grid-rows-4 lg:mx-16 lg:grid-rows-2 rounded-md">
+  <div className="grid grid-flow-col grid-rows-4 gap-0 mt-16 mb-9 border sm:grid-rows-4 lg:grid-rows-2 rounded-md">
     {CartBottomItems.map((CartBottomItem, index) => (
       <div key={CartBottomItem.id} className="py-10 md:py-5 lg:border">
         <div className="lg:flex">
@@ -56,7 +57,8 @@ const MyList: React.FC<{ CartBottomItems: CartBottomItem[] }> = ({
   </div>
 );
 const CartList: React.FC = () => (
-  <div>
+  <div className="flex flex-col md:flex-row">
+    <OneItem />
     <MyList CartBottomItems={CartBottomItems} />
   </div>
 );

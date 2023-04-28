@@ -7,7 +7,7 @@ import { FilteredProduct } from "../FilterSideBar/FilteredProduct";
 import bacolaBannergif from "../../../assets/home/sidebar-banner.gif";
 import Image from "next/image";
 
-export const FilterSideBar = ({ categoryId }) => {
+export const FilterSideBar = ({ categoryId }:any) => {
   //console.log("data enawad? ", categoryId);
 
   return (

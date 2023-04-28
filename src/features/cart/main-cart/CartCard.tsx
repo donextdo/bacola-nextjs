@@ -48,7 +48,7 @@ const CartCard = ({item, index}:any) => {
         <div className="grid grid-cols-4 sm:grid-cols-12 grid-2 gap-1 border-b border-[#e4e5ee] py-3 h-28 items-center relative" key={index}>
                                     <div className="h-[95px] sm:col-span-2">
                                         <Image
-                                            src={item.image}
+                                            src={item.front}
                                             alt="item1"
                                             style={{
                                                 objectFit: "contain",
