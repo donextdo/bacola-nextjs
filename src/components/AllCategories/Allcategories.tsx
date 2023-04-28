@@ -56,7 +56,8 @@ const Allcategories = () => {
     //console.log(subcategory);
   };
 
-  const getProductByCategory = async (categoryId:string) => {
+  const getProductByCategory = async (categoryId) => {
+    sessionStorage.clear();
     setHomeOpen(false);
     router.push({
       pathname: "/filterProduct",

@@ -6,18 +6,53 @@ import { ImageProductFilter } from "./Image";
 import { FilteredProduct } from "../FilterSideBar/FilteredProduct";
 import bacolaBannergif from "../../../assets/home/sidebar-banner.gif";
 import Image from "next/image";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 
-export const FilterSideBar = ({ categoryId }:any) => {
-  //console.log("data enawad? ", categoryId);
+export const FilterSideBar = ({ categoryId, brand, subcategory }) => {
+  const [selectedBrands, setSelectedBrands] = useState([]);
+  const [selectedSubCat, setSelectedSubCat] = useState([]);
+  const router = useRouter();
+  let brandId = [];
+  let subcategorySelected = [];
+
+  useEffect(() => {
+    if (brand) {
+      const brands = brand.split(",");
+      sessionStorage.setItem("brands", brands);
+      brandId = brands;
+    }
+  }, [brand]);
+
+  useEffect(() => {
+    if (subcategory) {
+      const subCategories = subcategory.split(",");
+      sessionStorage.setItem("subCategories", subCategories);
+      console.log("category coming", subCategories);
+      subcategorySelected = subCategories;
+    }
+  }, [subcategory]);
+
+  const handleBrandChange = (brands) => {
+    setSelectedBrands(brands);
+  };
+
+  const handleSubCatChange = (subCate) => {
+    setSelectedSubCat(subCate);
+    console.log("gehwyhjdkwjd ", subCate);
+  };
 
   return (
     <div className="flex flex-row mb-9">
       <div className="lg:w-1/4 hidden lg:block">
         <div className="grid md:grid-cols-1 grid-cols-1 ">
-          <Categories categoryId={categoryId} />
+          <Categories
+            categoryId={categoryId}
+            onSuCatChange={handleSubCatChange}
+          />
           <RangeSlider />
           <Status />
-          <Brands categoryId={categoryId} />
+          <Brands categoryId={categoryId} onBrandChange={handleBrandChange} />
         </div>
         <div className="lg:mt-12">
           <Image
@@ -32,9 +67,26 @@ export const FilterSideBar = ({ categoryId }:any) => {
           <ImageProductFilter />
         </div>
         <div className="lg:mt-12 md:mt-12 mt-12">
-          <FilteredProduct categoryId={categoryId} />
+          <FilteredProduct
+            categoryId={categoryId}
+            selectedBrands={
+              selectedBrands.length > 0 ? selectedBrands : brandId
+            }
+            selectedSubCat={
+              selectedSubCat.length > 0 ? selectedSubCat : subcategorySelected
+            }
+          />
         </div>
       </div>
     </div>
   );
 };
+// useEffect(() => {
+//   const storedBrands = localStorage.getItem("selectedBrands");
+//   if (storedBrands) {
+//     const parsedBrands = JSON.parse(storedBrands);
+//     setSelectedBrands(parsedBrands);
+//   }
+// }, []);
+
+//console.log("data enawad? ", categoryId);
