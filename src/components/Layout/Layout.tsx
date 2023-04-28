@@ -13,7 +13,7 @@ type Props = {
 
 const Layout: React.FC<Props> = ({ children }) => {
   return (
-    <div className="">
+    <div className="container mx-auto">
       <Message />
       <TopHeader />
       <Header />

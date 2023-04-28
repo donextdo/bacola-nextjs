@@ -19,4 +19,5 @@ export interface Product {
   skuNumber: string;
   count:number;
   newprice:number;
+  type: string;
 }

@@ -106,11 +106,13 @@ const Cart: FC<CartType> = () => {
                                     </tr>
                                     <tr>
                                         <td rowSpan={4} className="text-[13px] font-semibold border-b border-[#e4e5ee]">Shipping</td>
-                                        <td className="text-right text-[13px] py-3">Flat rate: <span className="inline-flex text-[#d51243] text-sm gap-2">$5.00
+                                        <td className="text-right text-[13px] py-3">
+                                            {/* Flat rate: <span className="inline-flex text-[#d51243] text-sm gap-2">$5.00
                                         <input type="radio" name="cart"  
                                         // onClick={handleClickRadioAdd5} 
                                         />
-                                        </span></td>
+                                        </span> */}
+                                        </td>
                                     </tr>
                                     <tr>
 
@@ -130,7 +132,7 @@ const Cart: FC<CartType> = () => {
                                     </tr>
                                     <tr>
                                         <td className="border-b border-[#e4e5ee] text-[13px] font-semibold pb-4">Total</td>
-                                        <td className="border-b border-[#e4e5ee] text-right font-semibold text-xl py-4">${total}</td>
+                                        <td className="border-b border-[#e4e5ee] text-right font-semibold text-xl py-4">${totalAmount}</td>
                                     </tr>
                                 </tbody>
                             </table>

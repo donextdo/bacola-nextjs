@@ -7,7 +7,7 @@ import Link from "next/link";
 import CartPopupCard from "@/features/cart/popup-cart/CartPopupCard";
 import { fetchCart } from "../cartSlice";
 
-const CartPopup = ({ setCart }: any) => {
+const CartPopup = ({ setCart, }: any) => {
   const cartItems = useSelector((state: RootState) => state.cart.items);
   console.log(cartItems)
   const dispatch = useDispatch();
@@ -26,7 +26,6 @@ const CartPopup = ({ setCart }: any) => {
        totalAmount += subtotal;
      }
 
-  
 
   return (
     <div className="absolute w-[300px] max-h-[540px] bg-white right-0 z-50 px-5 py-4 shadow-lg">
@@ -55,9 +54,9 @@ const CartPopup = ({ setCart }: any) => {
         </button>
       </Link>
       <hr className="mt-3" />
-      <p className="text-xs text-center text-[#3e445a] mt-4">
+      {/* <p className="text-xs text-center text-[#3e445a] mt-4">
         We reduce shipping prices to only 2.49 €!
-      </p>
+      </p> */}
     </div>
   );
 };

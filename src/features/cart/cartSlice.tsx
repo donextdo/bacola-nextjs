@@ -5,12 +5,14 @@ import axios from "axios";
 
 interface CartState {
   items: Product[];
+  totalCount: number;
   status: "idle" | "loading" | "succeeded" | "failed";
   error: string | null;
 }
 
 const initialState: CartState = {
   items: [],
+  totalCount: 0,
   status: "idle",
   error: null,
 };
@@ -34,13 +36,16 @@ export const cartSlice = createSlice({
       } else {
         state.items[itemIndex].count++;
       }
+      state.totalCount++;
     },
     removeItem: (state, action: PayloadAction<string>) => {
       const itemIndex = state.items.findIndex(
         (item) => item._id === action.payload
       );
       if (itemIndex !== -1) {
+        const count = state.items[itemIndex].count;
         state.items.splice(itemIndex, 1);
+        state.totalCount -= count;
       }
     },
     updateItemQuantity: (
@@ -51,11 +56,14 @@ export const cartSlice = createSlice({
         (item) => item._id === action.payload.itemId
       );
       if (item) {
+        const countDiff = action.payload.count - item.count;
         item.count = action.payload.count;
+        state.totalCount += countDiff;
       }
     },
     removeAll: (state) => {
       state.items = [];
+      state.totalCount = 0;
     },
   },
   extraReducers: (builder) => {
@@ -72,8 +80,9 @@ export const cartSlice = createSlice({
         state.error = action.error.message ?? "Unknown error";
       });
   },
+ 
 });
 
-export const { addItem, removeItem, updateItemQuantity, removeAll  } = cartSlice.actions;
+export const { addItem, removeItem, updateItemQuantity, removeAll } = cartSlice.actions;
 
 export default cartSlice.reducer;

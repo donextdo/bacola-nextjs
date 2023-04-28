@@ -6,13 +6,15 @@ import Ship from "@/components/Bill/Ship";
 const Address = () => {
     const [modal, setModal] = useState(false)
     const [modal1, setModal1] = useState(false)
-    
+
 
 
     const handleClick = () => {
         setModal(true)
+        setModal1(false)
     }
     const handleClick1 = () => {
+        setModal(false)
         setModal1(true)
     }
     return (
@@ -23,29 +25,33 @@ const Address = () => {
                 <div>
                     <h2 className="font-semibold mb-2">BILLING ADDRESS</h2>
                     <hr />
-                   {/* <Link href="/bill"><h2 className="text-[#2bbef9] mt-4">Add</h2></Link>  */}
-                   <button className="text-[#2bbef9] mt-4" onClick={handleClick}>Add</button>
-                   
+                    {/* <Link href="/bill"><h2 className="text-[#2bbef9] mt-4">Add</h2></Link>  */}
+                    <button className="text-[#2bbef9] mt-4" onClick={handleClick}>Add</button>
+
                     <h2>You have not set up this type of address yet.</h2>
-                    
+
                 </div>
                 <div>
                     <h2 className="font-semibold mb-2">SHIPPING ADDRESS</h2>
                     <hr />
                     {/* <h2 className="text-[#2bbef9] mt-4">Add</h2> */}
-                   <button className="text-[#2bbef9] mt-4" onClick={handleClick1}>Add</button>
+                    <button className="text-[#2bbef9] mt-4" onClick={handleClick1}>Add</button>
 
                     <h2>You have not set up this type of address yet.</h2>
                 </div>
             </div>
 
-            {
-                modal && <Bill />
-            }
+            {/* {
+                modal ? <Bill /> : <Ship />
+            } */}
 
 {
-                modal1 && <Ship />
-            }
+                    modal && <Bill />
+                }
+
+            {
+                    modal1 && <Ship />
+                }
         </div >
     );
 }

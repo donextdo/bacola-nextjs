@@ -1,6 +1,6 @@
 const AdditionalInformation = () => {
     return ( 
-        <div>hi</div>
+        <div>No Additional Information</div>
      );
 }
  

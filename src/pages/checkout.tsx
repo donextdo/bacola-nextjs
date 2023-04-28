@@ -202,14 +202,16 @@ const Checkout = () => {
                                 </tr>
                                 <tr>
 
-                                    <td className="text-[13px] pb-5 text-right border-b border-[#e4e5ee]"><label className="inline-flex -gap-1"><span className="mr-2">Local pickup</span>
+                                    <td className="text-[13px] pb-5 text-right border-b border-[#e4e5ee]">
+                                        {/* <label className="inline-flex -gap-1"><span className="mr-2">Local pickup</span>
                                         <input
                                             type="radio"
                                             name="vendor"
                                             value="Vendor 1"
                                         // onChange={handleCheckboxChange}
                                         />
-                                    </label></td>
+                                    </label> */}
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td className="border-b border-[#e4e5ee] text-[13px] font-semibold py-4 text-[#71778e]">Total</td>

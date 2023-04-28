@@ -98,6 +98,7 @@ const Bill = () => {
                 className="w-full h-10 bg-gray-100 rounded-md mt-2 mb-4"
                 value={companyName}
                 onChange={(e) => setCompanyName(e.target.value)}
+                required
             />
 
             <label className="text-sm">Country / Region *</label>

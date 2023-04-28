@@ -5,11 +5,11 @@ export const ImageProductFilter = () => {
   return (
     <div>
       <div className="relative">
-        <div className="lg:h-[240px] w-full rounded-md lg:w-[855px] h-[200px]">
+        <div className="lg:h-[240px] w-full rounded-md  h-[200px]">
           <Image
             src={bacolaBanner}
             alt="Slider- Image"
-            className="lg:h-[240px] w-full rounded-md lg:w-[855px] h-[200px]"
+            className="lg:h-[240px] w-full rounded-md  h-[200px]"
           />
         </div>
 

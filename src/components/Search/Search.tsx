@@ -7,6 +7,7 @@ import { Product } from "./product";
 import { fetchProducts } from "@/features/product/productSlice";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 export const SearchItem = () => {
   const [searchItem, setSearchItem] = useState("");
@@ -27,7 +28,7 @@ export const SearchItem = () => {
 
   const onSearch = (searchTerm: string) => {
     setSearchItem(searchTerm);
-    router.push("/viewcart");
+    // router.push("/viewcart");
   };
 
   return (
@@ -60,7 +61,7 @@ export const SearchItem = () => {
 
       {searchItem !== "" && (
         <div className=" flex flex-col">
-          <ul className="absolute bg-white border-2 border-gray-200 min-w-[40rem] z-10">
+          <ul className="absolute bg-white border-2 border-gray-200 min-w-[37.5rem] z-10">
             {products
               .filter((item) => {
                 const searchTerm = searchItem.toLowerCase();
@@ -73,7 +74,7 @@ export const SearchItem = () => {
               })
               .slice(0, 7)
               .map((item) => (
-                <div className="flex flex-row items-center py-1">
+                <div className="flex flex-row items-center justify-between py-1">
                   <li
                     key={item.id}
                     className="cursor-pointer text-start ml-2 border border-gray-400 py-1"
@@ -85,13 +86,16 @@ export const SearchItem = () => {
                       alt={item.title}
                     />
                   </li>
+
+                  <Link href={`/item-preview/${item._id}`}>
                   <li
                     key={item.id}
                     className="cursor-pointer text-start ml-2 flex-1 hover:underline"
-                    onClick={() => onSearch(item.title)}
+                    // onClick={() => onSearch(item.title)}
                   >
                     {item.title}
                   </li>
+                  </Link>
                   <div className="flex flex-col">
                     <li
                       key={item.id}

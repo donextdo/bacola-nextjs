@@ -1,10 +1,12 @@
 import { addItem } from "@/features/cart/cartSlice";
+import { updateProductQuantity } from "@/features/product/productSlice";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { IoClose } from "react-icons/io5";
 import { useDispatch } from "react-redux";
 
 interface WIshlist {
+    selected: boolean;
     address: string;
     date: string;
     price: number;
@@ -72,6 +74,10 @@ const Wishlist = () => {
 
     const handleCart = (item: any) => {
         dispatch(addItem(item))
+        const newQuantity = (item.count || 0) + 1;
+    dispatch(
+      updateProductQuantity({ productId: item.id, count: newQuantity })
+    );
     }
 
     const handleAddSelectedToCart = () => {
@@ -80,6 +86,8 @@ const Wishlist = () => {
             dispatch(addItem(item));
         });
     }
+
+    
 
     const handleAddCart = () => {
         const selectedItems = data.filter(item => item.checked);

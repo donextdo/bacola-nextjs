@@ -58,7 +58,7 @@ const MyList: React.FC<{ CartBottomItems: CartBottomItem[] }> = ({
 );
 const CartList: React.FC = () => (
   <div className="flex flex-col md:flex-row">
-    <OneItem />
+    {/* <OneItem /> */}
     <MyList CartBottomItems={CartBottomItems} />
   </div>
 );

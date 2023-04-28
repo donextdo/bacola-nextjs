@@ -58,7 +58,7 @@ const AccountDetails = () => {
             <label className="text-sm">First Name *</label>
             <input
                 type="text"
-                className="w-full h-10 bg-gray-100 rounded-md mt-2 mb-4"
+                className="w-full px-4 h-10 bg-gray-100 rounded-md mt-2 mb-4"
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
             />
@@ -66,7 +66,7 @@ const AccountDetails = () => {
             <label className="text-sm">Last Name *</label>
             <input
                 type="text"
-                className="w-full h-10 bg-gray-100 rounded-md mt-2 mb-4"
+                className="w-full px-4 h-10 bg-gray-100 rounded-md mt-2 mb-4"
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
             />
@@ -74,7 +74,7 @@ const AccountDetails = () => {
             <label className="text-sm">Display Name *</label>
             <input
                 type="text"
-                className="w-full h-10 bg-gray-100 rounded-md mt-2 mb-1"
+                className="w-full px-4 h-10 bg-gray-100 rounded-md mt-2 mb-1"
                 value={displayName}
                 onChange={(e) => setDisplayName(e.target.value)}
             />
@@ -87,7 +87,7 @@ const AccountDetails = () => {
             <label className="text-sm">Email address *</label>
             <input
                 type="text"
-                className="w-full h-10 bg-gray-100 rounded-md mt-2 mb-5"
+                className="w-full px-4 h-10 bg-gray-100 rounded-md mt-2 mb-5"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
             />
@@ -99,7 +99,7 @@ const AccountDetails = () => {
             </label>
             <input
                 type="text"
-                className="w-full h-10 bg-gray-100 rounded-md mt-2 mb-4"
+                className="w-full px-4 h-10 bg-gray-100 rounded-md mt-2 mb-4"
                 value={currentPassword}
                 onChange={(e) => setCurrentPassword(e.target.value)}
             />
@@ -109,7 +109,7 @@ const AccountDetails = () => {
             </label>
             <input
                 type="text"
-                className="w-full h-10 bg-gray-100 rounded-md mt-2 mb-4"
+                className="w-full px-4 h-10 bg-gray-100 rounded-md mt-2 mb-4"
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
             />
@@ -117,7 +117,7 @@ const AccountDetails = () => {
             <label className="text-sm">Confirm new password</label>
             <input
                 type="text"
-                className="w-full h-10 bg-gray-100 rounded-md mt-2 mb-4"
+                className="w-full px-4 h-10 bg-gray-100 rounded-md mt-2 mb-4"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
             />

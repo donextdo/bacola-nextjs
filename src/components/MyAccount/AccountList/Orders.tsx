@@ -16,14 +16,14 @@ const Orders = () => {
     } else { }
     const dispatch = useDispatch
 
-    useEffect(() => {
-        const orderString = localStorage.getItem('order');
-        const order = orderString ? JSON.parse(orderString) : [];
-        console.log(order)
-        setData(order);
-        dispatch(getOrdersByUserIdAsync(id));
+    // useEffect(() => {
+    //     const orderString = localStorage.getItem('order');
+    //     const order = orderString ? JSON.parse(orderString) : [];
+    //     console.log(order)
+    //     setData(order);
+    //     dispatch(getOrdersByUserIdAsync(id));
 
-    }, []);
+    // }, []);
     return (
         // <div className="border border-gray-200 p-4 ">
         //     <p className="leading-loose"><Link href="#" className="bg-[#233a95] text-white p-2 rounded-md">Browse Products</Link> No Order has been made yet.</p>

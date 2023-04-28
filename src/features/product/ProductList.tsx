@@ -33,7 +33,7 @@ export const ProductList: FC<ComponentProps> = ({}) => {
   return (
     <div>
       <div className="mx-auto ">
-        <div className="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 ">
+        <div className="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-y-4 ">
           {products.map((product: any, index) => {
             return (
                 <ProductCard key={product.id} product={product} />

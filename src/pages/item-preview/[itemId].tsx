@@ -39,6 +39,8 @@ const ItemPages = () => {
     const [data, setData] = useState<Product>({})
     const [myObject, setMyObject] = useState(null);
     const [isColor, setIsColor] = useState(1);
+    const [mainImage, setMainImage] = useState(data?.front);
+
 
     const router = useRouter();
     const { itemId } = router.query;
@@ -107,7 +109,7 @@ const ItemPages = () => {
             }),
             quantity: data.quantity
         };
-
+        // console.log(newObj)
         // Modify the array by pushing the new object
         wishlist.push(newObj);
 
@@ -126,8 +128,12 @@ const ItemPages = () => {
         console.log(data._id);
     };
 
-
     // console.log(item)
+
+    const handleClick = (image:any) => {
+        setMainImage(image);
+      };
+  
 
     return (
         <div className="bg-[#f7f8fd]">
@@ -142,7 +148,7 @@ const ItemPages = () => {
                         </h1>
                         <div className="flex flex-row bg-white text-[0.75rem] ">
                             <span className="text-gray-400 ">Brands: </span>
-                            <span className="ml-1"> Welch's</span>
+                            <span className="ml-1"> {data.brand}</span>
 
                             <div className="text-gray-400 mx-3">|</div>
                             <span className="text-gray-400 ">
@@ -158,7 +164,7 @@ const ItemPages = () => {
 
                             <div className="text-gray-400 mx-3">|</div>
                             <span className="text-gray-400 ">SKU: </span>
-                            <span className="ml-1">ZU49VOR</span>
+                            <span className="ml-1">{data.skuNumber}</span>
                         </div>
                     </div>
 
@@ -178,7 +184,7 @@ const ItemPages = () => {
                                     )}
                                     {data?.isOrganic && (
                                         <div className=" font-semibold px-2 py-1 bg-emerald-100 text-green-600 rounded-full text-[10px] flex items-center justify-center uppercase tracking-tighter">
-                                            organic
+                                            {data.type}
                                         </div>
                                     )}
                                 </div>
@@ -186,13 +192,15 @@ const ItemPages = () => {
                                     <Image
                                         width={390}
                                         height={436}
-                                        src={data?.front}
-                                        alt="Man looking at item at a store"
+                                        src={mainImage || data?.front }
+                                        alt="mainImage"
                                     />
                                 </div>
 
                                 <div className="flex items-center justify-center row min-h-[63px] max-w-[421.2px] md:min-h-[67px] md:max-w-[444.66px]">
-                                    <div className="flex items-center justify-center min-w-[67px] min-h-[67px] lg:min-w-[67px] lg:min-h-[67px] md:min-w-[94.4px] md:min-h-[94.4px]  border border-gray-400 mr-2 hover:cursor-pointer">
+                                    <div className="flex items-center justify-center min-w-[67px] min-h-[67px] lg:min-w-[67px] lg:min-h-[67px] md:min-w-[94.4px] md:min-h-[94.4px]  border border-gray-400 mr-2 hover:cursor-pointer"
+                                    onClick={() => handleClick(data?.side)}
+                                    >
                                         <Image
                                             width={67}
                                             height={67}
@@ -200,7 +208,8 @@ const ItemPages = () => {
                                             alt="Man looking at item at a store"
                                         />
                                     </div>
-                                    <div className="flex items-center justify-center min-w-[67px] min-h-[67px] lg:min-w-[67px] lg:min-h-[67px] md:min-w-[94.4px] md:min-h-[94.4px]   border border-gray-400 mr-2 hover:cursor-pointer">
+                                    <div className="flex items-center justify-center min-w-[67px] min-h-[67px] lg:min-w-[67px] lg:min-h-[67px] md:min-w-[94.4px] md:min-h-[94.4px]   border border-gray-400 mr-2 hover:cursor-pointer"
+                                    onClick={() => handleClick(data?.front)}>
                                         <Image
                                             width={67}
                                             height={67}
@@ -208,7 +217,8 @@ const ItemPages = () => {
                                             alt="Man looking at item at a store"
                                         />
                                     </div>
-                                    <div className="flex items-center justify-center min-w-[67px] min-h-[67px] lg:min-w-[67px] lg:min-h-[67px] md:min-w-[94.4px] md:min-h-[94.4px]   border border-gray-400 hover:cursor-pointer">
+                                    <div className="flex items-center justify-center min-w-[67px] min-h-[67px] lg:min-w-[67px] lg:min-h-[67px] md:min-w-[94.4px] md:min-h-[94.4px]   border border-gray-400 hover:cursor-pointer"
+                                    onClick={() => handleClick(data?.back)}>
                                         <Image
                                             width={67}
                                             height={67}
@@ -296,12 +306,12 @@ const ItemPages = () => {
                                         </button>
                                     </div>
                                     <div className="ml-4 flex flex-row items-center justify-center">
-                                        <button type="button" className="flex flex-row ">
+                                        {/* <button type="button" className="flex flex-row ">
                                             <TbArrowsDownUp className="h-[15px] w-[15px] text-gray-500"></TbArrowsDownUp>
                                             <span className="text-[11px] ml-2 tracking-[-0.05em] text-gray-500 font-semibold uppercase">
                                                 compare
                                             </span>
-                                        </button>
+                                        </button> */}
                                     </div>
                                 </div>
                                 <div className="max-h-[66px] max-w-[113.66px] mt-6">

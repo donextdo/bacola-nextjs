@@ -12,6 +12,7 @@ module.exports = {
       "sangabrielcomidas.com",
       "spoonfulapp.com",
       "klbtheme.com",
+      "ongolemart.com",
     ],
   },
 };
