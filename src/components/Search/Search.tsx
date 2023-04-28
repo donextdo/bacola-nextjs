@@ -13,6 +13,7 @@ export const SearchItem = () => {
   const [searchItem, setSearchItem] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isHide, setIsHide] = useState(false);
 
   const router = useRouter();
 
@@ -28,7 +29,16 @@ export const SearchItem = () => {
 
   const onSearch = (searchTerm: string) => {
     setSearchItem(searchTerm);
-    // router.push("/viewcart");
+  };
+
+  const sendView = (itemId) => {
+    setIsHide(true);
+    router.push({
+      pathname: "/viewProduct",
+      query: { itemId: itemId },
+    });
+    setSearchItem("");
+    setIsHide(false);
   };
 
   return (
@@ -59,7 +69,7 @@ export const SearchItem = () => {
         )}
       </div>
 
-      {searchItem !== "" && (
+      {searchItem !== "" && !isHide && (
         <div className=" flex flex-col">
           <ul className="absolute bg-white border-2 border-gray-200 min-w-[37.5rem] z-10">
             {products
@@ -75,27 +85,29 @@ export const SearchItem = () => {
               .slice(0, 7)
               .map((item) => (
                 <div className="flex flex-row items-center justify-between py-1">
-                  <li
-                    key={item.id}
-                    className="cursor-pointer text-start ml-2 border border-gray-400 py-1"
-                  >
-                    <Image
-                      width={50}
-                      height={50}
-                      src={item.front}
-                      alt={item.title}
-                    />
-                  </li>
+                  <div className="flex items-center">
+                    <li
+                      key={item.id}
+                      className="cursor-pointer text-start ml-2 border border-gray-400 py-1"
+                    >
+                      <Image
+                        width={50}
+                        height={50}
+                        src={item.front}
+                        alt={item.title}
+                      />
+                    </li>
 
-                  <Link href={`/item-preview/${item._id}`}>
-                  <li
-                    key={item.id}
-                    className="cursor-pointer text-start ml-2 flex-1 hover:underline"
-                    // onClick={() => onSearch(item.title)}
-                  >
-                    {item.title}
-                  </li>
-                  </Link>
+                    {/* <Link href={`/item-preview/${item._id}`}> */}
+                    <li
+                      key={item.id}
+                      className="cursor-pointer text-start ml-2 flex-1 hover:underline"
+                      onClick={() => sendView(item._id)}
+                    >
+                      {item.title}
+                    </li>
+                    {/* </Link> */}
+                  </div>
                   <div className="flex flex-col">
                     <li
                       key={item.id}
