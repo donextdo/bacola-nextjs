@@ -30,23 +30,11 @@ export const FilterSideBar = ({ categoryId, brand, subcategory }) => {
       sessionStorage.setItem("subCategories", subCategories);
       console.log("category coming", subCategories);
       subcategorySelected = subCategories;
-
-      //ghj
-      const categories: Array<String> =
-        sessionStorage.getItem("subCategories") != null
-          ? sessionStorage.getItem("subCategories")
-          : [];
-      const subcatLoad =
-        categories && categories.length > 0 ? categories.split(",") : [];
-      console.log("categories", categories);
-      console.log("subcatLoad", subcatLoad);
-      console.log("passed selectedSubCat id", subcategory);
     }
   }, [subcategory]);
 
   const handleBrandChange = (brands) => {
     setSelectedBrands(brands);
-    console.log("kkkkkkkkkkkkkk ", brands);
   };
 
   const handleSubCatChange = (subCate) => {

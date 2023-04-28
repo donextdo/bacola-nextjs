@@ -17,40 +17,103 @@ export const FilteredProduct = ({
   const [product, setProduct] = useState([]);
 
   const router = useRouter();
-  const { query } = router;
 
   useEffect(() => {
+    console.log("passed categoryId id", categoryId);
+    console.log("passed selectedSubCat id", selectedSubCat);
+    console.log("passed selectedBrands id", selectedBrands);
+  }, [categoryId, selectedSubCat, selectedBrands]);
+
+  useEffect(() => {
+    const categories: Array<String> =
+      sessionStorage.getItem("subCategories") != null
+        ? sessionStorage.getItem("subCategories")
+        : [];
+    const subcatLoad =
+      categories && categories.length > 0 ? categories.split(",") : [];
+
     const fetchData = async () => {
       if (categoryId) {
         const response = await axios.get(`${baseUrl}/products/${categoryId}`);
         setProduct(response.data);
+        if (selectedSubCat.length > 0) {
+          const fetchData = async () => {
+            if (selectedSubCat) {
+              const response = await axios.get(
+                `${baseUrl}/products/${selectedSubCat}`
+              );
+              if (response.data.length > 0) {
+                setProduct(response.data);
+                const brands: Array<String> =
+                  sessionStorage.getItem("brands") != null
+                    ? sessionStorage.getItem("brands")
+                    : [];
+                const brandsLoad =
+                  brands && brands.length > 0 ? brands.split(",") : [];
 
-        const brands: Array<String> =
-          sessionStorage.getItem("brands") != null
-            ? sessionStorage.getItem("brands")
-            : [];
-        const brandsLoad = brands && brands.length > 0 ? brands.split(",") : [];
+                if (selectedBrands.length > 0) {
+                  const filteredProducts = product.filter((product) =>
+                    selectedBrands.includes(product?._id)
+                  );
 
-        if (selectedBrands.length > 0) {
-          const filteredProducts = response.data.filter((product) =>
-            selectedBrands.includes(product?._id)
-          );
-
-          setProduct(filteredProducts);
-        } else if (brandsLoad.length > 0) {
-          product.forEach((item) => {});
-          const filteredProducts = response.data.filter((product) =>
-            brandsLoad.includes(product?._id)
-          );
-
-          setProduct(filteredProducts);
-        } else {
+                  setProduct(filteredProducts);
+                } else if (brandsLoad.length == 0) {
+                  const fetchData = async () => {
+                    if (selectedSubCat) {
+                      const response = await axios.get(
+                        `${baseUrl}/products/${selectedSubCat}`
+                      );
+                      setProduct(response.data);
+                    } else if (categoryId) {
+                      const response = await axios.get(
+                        `${baseUrl}/products/${selectedSubCat}`
+                      );
+                      setProduct(response.data);
+                    }
+                  };
+                  fetchData().catch((error) => {
+                    console.log(error);
+                  });
+                }
+              }
+            }
+          };
+          fetchData().catch((error) => {
+            console.log(error);
+          });
+        } else if (subcatLoad.length == 0) {
           const fetchData = async () => {
             if (categoryId) {
               const response = await axios.get(
                 `${baseUrl}/products/${categoryId}`
               );
               setProduct(response.data);
+              const brands: Array<String> =
+                sessionStorage.getItem("brands") != null
+                  ? sessionStorage.getItem("brands")
+                  : [];
+              const brandsLoad =
+                brands && brands.length > 0 ? brands.split(",") : [];
+
+              if (selectedBrands.length > 0) {
+                const filteredProducts = product.filter((product) =>
+                  selectedBrands.includes(product?._id)
+                );
+
+                setProduct(filteredProducts);
+              } else if (brandsLoad.length == 0) {
+                const fetchData = async () => {
+                  if (categoryId) {
+                    const response = await axios.get(
+                      `${baseUrl}/products/${categoryId}`
+                    );
+                    setProduct(response.data);
+                  }
+                };
+                fetchData().catch((error) => {
+                  console.log(error);
+                });
+              }
             }
           };
           fetchData().catch((error) => {
@@ -62,37 +125,7 @@ export const FilteredProduct = ({
     fetchData().catch((error) => {
       console.log(error);
     });
-  }, [categoryId, selectedBrands]);
-
-  useEffect(() => {
-    console.log("passed selectedSubCat id", selectedSubCat);
-  }, [selectedSubCat]);
-
-  useEffect(() => {
-    const brands: Array<String> =
-      sessionStorage.getItem("brands") != null
-        ? sessionStorage.getItem("brands")
-        : [];
-    const brandsLoad = brands && brands.length > 0 ? brands.split(",") : [];
-
-    if (selectedBrands.length > 0) {
-      const filteredProducts = product.filter((product) =>
-        selectedBrands.includes(product?._id)
-      );
-
-      setProduct(filteredProducts);
-    } else if (brandsLoad.length == 0) {
-      const fetchData = async () => {
-        if (categoryId) {
-          const response = await axios.get(`${baseUrl}/products/${categoryId}`);
-          setProduct(response.data);
-        }
-      };
-      fetchData().catch((error) => {
-        console.log(error);
-      });
-    }
-  }, [selectedBrands, categoryId]);
+  }, [categoryId, selectedSubCat, selectedBrands]);
 
   return (
     <div>
