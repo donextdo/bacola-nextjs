@@ -11,17 +11,20 @@ interface OrderState {
 }
 
 const initialState: OrderState = {
-  orders: orderList,
+  orders: [],
   status: "idle",
   error: null,
 };
 
-const PRODUCTS_URL = `${baseUrl}/products`;
+const PRODUCTS_URL = `${baseUrl}/orders/get`;
+const PRODUCTS_URL_SET = `${baseUrl}/orders/place`;
+
 
 export const insertOrderAsync = createAsyncThunk(
   "order/insertOrderAsync",
   async (newObj: OrderItem) => {
-    const response = await axios.post(PRODUCTS_URL, newObj);
+    console.log('Response object:', newObj);
+    const response = await axios.post(PRODUCTS_URL_SET, newObj);
     return response.data;
   }
 );
@@ -29,8 +32,10 @@ export const insertOrderAsync = createAsyncThunk(
 export const getOrdersByUserIdAsync = createAsyncThunk(
   "order/getOrdersByUserIdAsync",
   async (id: string) => {
-    const response = await axios.get(`${PRODUCTS_URL}?userId=${id}`);
-    return response.data;
+    console.log('Response data:', id);
+    const res = await axios.get(`${PRODUCTS_URL}/${id}`);
+    console.log('Response data:', res.data);
+    return res.data;
   }
 );
 
@@ -57,6 +62,7 @@ const orderSlice = createSlice({
         state.error = action.error.message ?? "Failed to insert order";
         state.status = "failed";
       })
+
       .addCase(getOrdersByUserIdAsync.pending, (state) => {
         state.status = "loading";
       })
