@@ -44,6 +44,7 @@ const ItemPages = () => {
 
     const router = useRouter();
     const { itemId } = router.query;
+    console.log(itemId)
 
     const dispatch = useDispatch()
     const products = useSelector((state: RootState) => state.product.products) as Product[];

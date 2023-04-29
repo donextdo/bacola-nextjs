@@ -40,7 +40,7 @@ export const SearchItem = () => {
           placeholder="Search for product..."
           value={searchItem}
           onChange={(e) => setSearchItem(e.target.value)}
-          // onClick={handleSubmit}
+        // onClick={handleSubmit}
         />
         {isLoading ? (
           <div className="bg-gray-200 rounded-br rounded-tr min-h-[60px] min-w-[60px]  flex items-center justify-center hover:cursor-pointer">
@@ -75,27 +75,29 @@ export const SearchItem = () => {
               .slice(0, 7)
               .map((item) => (
                 <div className="flex flex-row items-center justify-between py-1">
-                  <li
-                    key={item.id}
-                    className="cursor-pointer text-start ml-2 border border-gray-400 py-1"
-                  >
-                    <Image
-                      width={50}
-                      height={50}
-                      src={item.front}
-                      alt={item.title}
-                    />
-                  </li>
+                  <div className="flex items-center">
+                    <li
+                      key={item.id}
+                      className="cursor-pointer text-start ml-2 border border-gray-400 py-1"
+                    >
+                      <Image
+                        width={50}
+                        height={50}
+                        src={item.front}
+                        alt={item.title}
+                      />
+                    </li>
 
-                  <Link href={`/item-preview/${item._id}`}>
-                  <li
-                    key={item.id}
-                    className="cursor-pointer text-start ml-2 flex-1 hover:underline"
-                    // onClick={() => onSearch(item.title)}
-                  >
-                    {item.title}
-                  </li>
-                  </Link>
+                    <Link href={`/item-preview/${item._id}`}>
+                      <li
+                        key={item.id}
+                        className="cursor-pointer text-start ml-2 flex-1 hover:underline"
+                      // onClick={() => onSearch(item.title)}
+                      >
+                        {item.title}
+                      </li>
+                    </Link>
+                  </div>
                   <div className="flex flex-col">
                     <li
                       key={item.id}
