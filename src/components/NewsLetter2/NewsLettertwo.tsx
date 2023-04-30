@@ -1,9 +1,9 @@
 import Image from "next/image";
 import { CiMail } from "react-icons/ci";
 
-export default function NewsLetter() {
-  return (
-    <div className="relative bg-[#233a95]">
+const NewsLettertwo = () => {
+    return ( 
+        <div className="relative bg-[#233a95]">
       <div className="px-5 mx-auto sm:px-5 lg:px-10 2xl:px-40">
         <div className="grid lg:grid-cols-2">
           <div className="max-w-5xl lg:max-w-md lg:self-center">
@@ -55,5 +55,7 @@ export default function NewsLetter() {
         </div>
       </div>
     </div>
-  );
+     );
 }
+ 
+export default NewsLettertwo;
