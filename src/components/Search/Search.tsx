@@ -3,11 +3,12 @@ import { FiSearch } from "react-icons/fi";
 import Spinner from "../Spinner/Spinner";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
-import { Product } from "./product";
+// import { Product } from "./product";
 import { fetchProducts } from "@/features/product/productSlice";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { Product } from "@/features/product/product";
 
 export const SearchItem = () => {
   const [searchItem, setSearchItem] = useState("");
@@ -21,6 +22,7 @@ export const SearchItem = () => {
   const products = useSelector(
     (state: RootState) => state.product.products
   ) as Product[];
+  console.log(products)
 
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     setIsLoading(true);
@@ -31,7 +33,7 @@ export const SearchItem = () => {
     setSearchItem(searchTerm);
   };
 
-  const sendView = (itemId) => {
+  const sendView = (itemId:any) => {
     setIsHide(true);
     router.push({
       pathname: "/viewProduct",
@@ -83,11 +85,11 @@ export const SearchItem = () => {
                 );
               })
               .slice(0, 7)
-              .map((item) => (
-                <div className="flex flex-row items-center justify-between py-1">
+              .map((item, index) => (
+                <div className="flex flex-row items-center justify-between py-1" key={index}>
                   <div className="flex items-center">
                     <li
-                      key={item.id}
+                      // key={item.id}
                       className="cursor-pointer text-start ml-2 border border-gray-400 py-1"
                     >
                       <Image
@@ -100,7 +102,7 @@ export const SearchItem = () => {
 
                     {/* <Link href={`/item-preview/${item._id}`}> */}
                     <li
-                      key={item.id}
+                      // key={item.id}
                       className="cursor-pointer text-start ml-2 flex-1 hover:underline"
                       onClick={() => sendView(item._id)}
                     >
@@ -110,13 +112,13 @@ export const SearchItem = () => {
                   </div>
                   <div className="flex flex-col">
                     <li
-                      key={item.id}
+                      // key={item.id}
                       className="cursor-pointer text-end text-gray-400 font-semibold line-through mr-2 text-[14px]"
                     >
                       ${item.price}
                     </li>
                     <li
-                      key={item.id}
+                      // key={item.id}
                       className="cursor-pointer text-end text-red-700 text-lg font-semibold mr-2"
                     >
                       ${item.price}

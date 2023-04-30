@@ -35,7 +35,7 @@ const CartCard = ({item, index}:any) => {
         
     });
     
-    const handleDelete = (_id: number) => {
+    const handleDelete = (_id: string) => {
         dispatch(removeItem(_id));
 
         

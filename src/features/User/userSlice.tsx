@@ -19,8 +19,8 @@ const USER_URL = `${baseUrl}/users`;
 
 export const createUserAsync = createAsyncThunk(
   'user/createUserAsync',
-  async ({userData,userId}: User) => {
-    const response = await axios.post(`${USER_URL}/${userId}`, userData);
+  async (userData: User) => {
+    const response = await axios.post(USER_URL, userData);
     return response.data;
   }
 );
@@ -39,7 +39,7 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     updateUser: (state, action: PayloadAction<Partial<User>>) => {
-      state.user = { ...state.user, ...action.payload };
+      // state.user = { ...state.user, ...action.payload };
     },
   },
   extraReducers: (builder) => {

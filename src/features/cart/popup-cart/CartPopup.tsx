@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Link from "next/link";
 import CartPopupCard from "@/features/cart/popup-cart/CartPopupCard";
 import { fetchCart } from "../cartSlice";
+import cart from "../../../../assets/cart/Untitled.jpg"
 
 const CartPopup = ({ setCart, }: any) => {
   const cartItems = useSelector((state: RootState) => state.cart.items);
@@ -28,10 +29,12 @@ const CartPopup = ({ setCart, }: any) => {
 
 
   return (
+    <>
+    {cartItems.length>0 ?
     <div className="absolute w-[300px] max-h-[540px] bg-white right-0 z-50 px-5 py-4 shadow-lg">
       <div className="max-h-[260px] overflow-y-auto overflow-x-hidden">
-        {cartItems.map((item) => (
-          <CartPopupCard item={item} />
+        {cartItems.map((item, index) => (
+          <CartPopupCard item={item} key={index}/>
         ))}
       </div>
       <div className="flex justify-between mt-6 mb-4">
@@ -58,6 +61,26 @@ const CartPopup = ({ setCart, }: any) => {
         We reduce shipping prices to only 2.49 €!
       </p> */}
     </div>
+    :
+    <div className="absolute w-[300px] max-h-[540px] min-h-[220px] bg-white right-0 z-50 px-5 py-4 shadow-lg">
+       <div className="h-[160px] sm:col-span-2">
+                                        <Image
+                                            src={cart}
+                                            alt="item1"
+                                            style={{
+                                                objectFit: "contain",
+                                                backgroundColor: "white",
+                                                width: "100%",
+                                                height: "100%",
+                                            }}
+                                            width={450}
+                                            height={400}
+                                        />
+
+                                    </div>
+    </div>
+}
+    </>
   );
 };
 

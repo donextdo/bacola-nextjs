@@ -4,10 +4,10 @@ import axios from "axios";
 import baseUrl from "../../../utils/baseUrl";
 import { useRouter } from "next/router";
 
-const Brands = ({ categoryId, onBrandChange }) => {
+const Brands = ({ categoryId, onBrandChange }:any) => {
   const [brand, setBrand] = useState([]);
   const [isEmpty, setIsEmpty] = useState(false);
-  const [checkedBrands, setCheckedBrands] = useState({});
+  const [checkedBrands, setCheckedBrands] = useState<any>({});
 
   const router = useRouter();
 
@@ -25,17 +25,17 @@ const Brands = ({ categoryId, onBrandChange }) => {
     };
     fetchData();
     const queryBrands = router.query.brands;
-    if (queryBrands) {
+    if (typeof queryBrands === "string") {
       const selectedBrands = queryBrands.split(",");
-      const newCheckedBrands = {};
-      selectedBrands.forEach((brandId) => {
+      const newCheckedBrands: {[key: string]: boolean} = {}
+      selectedBrands.forEach((brandId:any) => {
         newCheckedBrands[brandId] = true;
       });
       setCheckedBrands(newCheckedBrands);
     }
   }, [categoryId]);
 
-  const handleBrandClick = (brandId) => {
+  const handleBrandClick = (brandId:any) => {
     const newCheckedBrands = { ...checkedBrands };
     newCheckedBrands[brandId] = !checkedBrands[brandId];
     setCheckedBrands(newCheckedBrands);

@@ -13,10 +13,11 @@ interface Review {
     name:string;
     body:string;
     submittedDate: string;
+    _id:string;
     // other properties
   }
 
-const Review: FC<Review>  = ({ itemId }: any) => {
+const Review = ({ itemId }: any) => {
     const [rating, setRating] = useState(0);
     const [text, setText] = useState("");
     const [savedText, setSavedText] = useState("");
@@ -67,13 +68,14 @@ const Review: FC<Review>  = ({ itemId }: any) => {
         const data = {
             body: savedText,
             name: extractedUsername,
-            // rating: getStarRating(),
+            rating: 4,
             userId: id,
-            email: email,
+            productId:itemId
         }
-        setReview([...review, data])
+        console.log(data)
+        // setReview([...review, data])
         try {
-            const response = await axios.post(`${baseUrl}/reviews/insert`, review);
+            const response = await axios.post(`${baseUrl}/reviews/insert`, data);
             console.log(response.data); // do something with the response data
         } catch (error) {
             console.log(error); // handle the error
@@ -98,7 +100,7 @@ const Review: FC<Review>  = ({ itemId }: any) => {
         <div>
             <h1> REVIEW FOR ALL NATURAL ITALIAN-STYLE CHICKEN MEATBALLS</h1>
             {data.map((review) => (
-                <div className="flex mt-4">
+                <div className="flex mt-4" key={review._id}>
                     <div className="h-10 w-10 rounded-full bg-[#233a95] flex items-center justify-center text-white text-xl">
                         {/* <Image
                         src={propic}
@@ -138,6 +140,7 @@ const Review: FC<Review>  = ({ itemId }: any) => {
             value={ratingValue}
             checked={ratingValue === rating}
             onChange={handleRatingChange}
+            className="hidden"
           />
           <FaStar
             className="star"

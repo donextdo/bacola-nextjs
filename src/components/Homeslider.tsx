@@ -14,12 +14,12 @@ import { Pagination } from "swiper";
 
 import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
+import { AppDispatch, RootState } from "@/redux/store";
 import { Product } from "@/features/product/product";
 import { fetchProducts } from "@/features/product/productSlice";
 
 export default function HomeSlider() {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const products = useSelector(
     (state: RootState) => state.product.products
   ) as Product[];
@@ -63,7 +63,7 @@ export default function HomeSlider() {
                     Specialist in the grocery store
                   </h2>
                   <h1 className="text-black text-base mt-3 lg:mt-6">
-                    Only this week. Don't miss...
+                  Only this week. Don&apos;t miss...
                   </h1>
 
                   <h1 className="text-black text-base mt-3 lg:mt-6">
@@ -104,7 +104,7 @@ export default function HomeSlider() {
                   Feed your family the best
                 </h2>
                 <h1 className="text-black text-base mt-3 lg:mt-6">
-                  Only this week. Don't miss...
+                  Only this week. Don&apos;t miss...
                 </h1>
 
                 <h1 className="text-black text-base mt-3 lg:mt-6">
@@ -144,7 +144,7 @@ export default function HomeSlider() {
                   Grocery full of inspiration
                 </h2>
                 <h1 className="text-black text-base mt-3 lg:mt-6">
-                  Only this week. Don't miss...
+                  Only this week. Don&apos;t miss...
                 </h1>
 
                 <h1 className="text-black text-base mt-3 lg:mt-6">

@@ -56,7 +56,7 @@ const Allcategories = () => {
     //console.log(subcategory);
   };
 
-  const getProductByCategory = async (categoryId) => {
+  const getProductByCategory = async (categoryId:any) => {
     sessionStorage.clear();
     setHomeOpen(false);
     router.push({

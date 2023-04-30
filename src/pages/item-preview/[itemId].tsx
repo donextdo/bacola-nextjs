@@ -19,13 +19,13 @@ import axios from "axios";
 import baseUrl from "../../../utils/baseUrl";
 import Description from "@/components/ViewItem/Details/Description";
 import AdditionalInformation from "@/components/ViewItem/Details/AdditionalInformation";
-import Review from "@/components/ViewItem/Details/Review";
 import { Product } from "@/features/product/product";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { addItem, updateItemQuantity } from "@/features/cart/cartSlice";
 import { updateProductQuantity } from "@/features/product/productSlice";
+import Review from "@/components/ViewItem/Details/Review";
 
 // interface ItemData {
 //     description: string;
@@ -36,7 +36,29 @@ import { updateProductQuantity } from "@/features/product/productSlice";
 //   }
 
 const ItemPages = () => {
-    const [data, setData] = useState<Product>({})
+    const [data, setData] = useState<Product>({
+        _id: '',
+        isRecommended: false,
+        isDiscount: false,
+        isOrganic: false,
+        isFavourite: false,
+        discount: 0,
+        rating: 0,
+        front: '',
+        back: '',
+        side: '',
+        title: '',
+        isAvailable: false,
+        price: 0,
+        quantity: 0,
+        brand: '',
+        description: '',
+        productQuantity: 0,
+        skuNumber: '',
+        count: 0,
+        newprice: 0,
+        type: ''
+    })
     const [myObject, setMyObject] = useState(null);
     const [isColor, setIsColor] = useState(1);
     const [mainImage, setMainImage] = useState(data?.front);
@@ -64,16 +86,16 @@ const ItemPages = () => {
             console.log(err);
         }
     }
-    const item:Product | undefined = products.find((item) => item._id === itemId);
+    const item: Product | undefined = products.find((item) => item._id === itemId);
 
     const handleIncrement = (data: Product) => {
-        const newQuantity = (item.count || 0) + 1;
+        const newQuantity = (item?.count || 0) + 1;
         dispatch(updateItemQuantity({ itemId: data._id, count: newQuantity }));
         dispatch(updateProductQuantity({ productId: data._id, count: newQuantity }))
     };
 
     const handleDecrement = (data: Product) => {
-        const newQuantity = Math.max((item.count || 0) - 1, 0);
+        const newQuantity = Math.max((item?.count || 0) - 1, 0);
         dispatch(updateItemQuantity({ itemId: data._id, count: newQuantity }));
         dispatch(updateProductQuantity({ productId: data._id, count: newQuantity }))
     };
@@ -131,10 +153,10 @@ const ItemPages = () => {
 
     // console.log(item)
 
-    const handleClick = (image:any) => {
+    const handleClick = (image: any) => {
         setMainImage(image);
-      };
-  
+    };
+
 
     return (
         <div className="bg-[#f7f8fd]">
@@ -193,14 +215,14 @@ const ItemPages = () => {
                                     <Image
                                         width={390}
                                         height={436}
-                                        src={mainImage || data?.front }
+                                        src={mainImage || data?.front}
                                         alt="mainImage"
                                     />
                                 </div>
 
                                 <div className="flex items-center justify-center row min-h-[63px] max-w-[421.2px] md:min-h-[67px] md:max-w-[444.66px]">
                                     <div className="flex items-center justify-center min-w-[67px] min-h-[67px] lg:min-w-[67px] lg:min-h-[67px] md:min-w-[94.4px] md:min-h-[94.4px]  border border-gray-400 mr-2 hover:cursor-pointer"
-                                    onClick={() => handleClick(data?.side)}
+                                        onClick={() => handleClick(data?.side)}
                                     >
                                         <Image
                                             width={67}
@@ -210,7 +232,7 @@ const ItemPages = () => {
                                         />
                                     </div>
                                     <div className="flex items-center justify-center min-w-[67px] min-h-[67px] lg:min-w-[67px] lg:min-h-[67px] md:min-w-[94.4px] md:min-h-[94.4px]   border border-gray-400 mr-2 hover:cursor-pointer"
-                                    onClick={() => handleClick(data?.front)}>
+                                        onClick={() => handleClick(data?.front)}>
                                         <Image
                                             width={67}
                                             height={67}
@@ -219,7 +241,7 @@ const ItemPages = () => {
                                         />
                                     </div>
                                     <div className="flex items-center justify-center min-w-[67px] min-h-[67px] lg:min-w-[67px] lg:min-h-[67px] md:min-w-[94.4px] md:min-h-[94.4px]   border border-gray-400 hover:cursor-pointer"
-                                    onClick={() => handleClick(data?.back)}>
+                                        onClick={() => handleClick(data?.back)}>
                                         <Image
                                             width={67}
                                             height={67}
@@ -273,7 +295,7 @@ const ItemPages = () => {
 
                                             <div className=" flex items-center justify-center w-full text-center ">
 
-                                                {item.count || 1}
+                                                {item?.count || 1}
                                             </div>
 
                                             {/* <div className=" flex items-center justify-center w-full text-center ">
@@ -475,7 +497,7 @@ const ItemPages = () => {
                             :
                             isColor === 2 ?
                                 <AdditionalInformation /> :
-                                <Review itemId={itemId}/>
+                                <Review itemId={itemId} />
 
                         }
                     </div>

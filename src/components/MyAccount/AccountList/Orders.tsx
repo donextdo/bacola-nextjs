@@ -3,13 +3,13 @@ import Link from "next/link";
 import pic from "../../../../assets/item/item2.jpg"
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
+import { AppDispatch, RootState } from "@/redux/store";
 import { OrderItem } from "@/components/Checkout/orderItem";
 import { getOrdersByUserIdAsync } from "@/components/Checkout/orderSlice";
 
 const Orders = () => {
     const [data, setData] = useState([])
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<AppDispatch>();
     const orderList = useSelector((state: RootState) => state.order.orders);
     console.log(orderList)
 
@@ -19,8 +19,8 @@ const Orders = () => {
     } else { }
 
     useEffect(() => {
-        dispatch(getOrdersByUserIdAsync(id));
-      }, [dispatch,id]);
+        dispatch(getOrdersByUserIdAsync(id!));
+      }, [dispatch,id!]);
 
     // useEffect(() => {
     //     const orderString = localStorage.getItem('order');
@@ -36,7 +36,7 @@ const Orders = () => {
         // </div>
         <div className="">
             {orderList.map((order) => (
-                <div className="mb-8">
+                <div className="mb-8" key={order.orderId}>
                     <div className="border border-gray-200 p-5 grid grid-cols-5">
                         <div>
                             <h1 className="text-sm font-semibold">Order</h1>
@@ -59,7 +59,7 @@ const Orders = () => {
                         </div>
                     </div>
                     {order.items.map((item) => (
-                        <div className="border border-gray-200 p-5 space-y-3" >
+                        <div className="border border-gray-200 p-5 space-y-3" key={item.productId}>
                             <div className="flex justify-between border border-gray-200 items-center px-5 py-[15px]">
                                 <p className="text-sm">{item.productDetails.name} <span className="text-sm font-semibold">x {item.orderquantity}</span> </p>
                                 <div className="h-[60px] w-[60px] ">

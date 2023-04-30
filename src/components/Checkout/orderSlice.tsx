@@ -3,6 +3,7 @@ import { OrderItem } from './orderItem';
 import axios from 'axios';
 import baseUrl from '../../../utils/baseUrl';
 import orderList from "./data.json"
+import { OrderObj } from './ordertest';
 
 
 interface OrderState {
@@ -23,9 +24,9 @@ const PRODUCTS_URL_SET = `${baseUrl}/orders/place`;
 
 export const insertOrderAsync = createAsyncThunk(
   "order/insertOrderAsync",
-  async (newObj: OrderItem) => {
-    console.log('Response object:', newObj);
-    const response = await axios.post(PRODUCTS_URL_SET, newObj);
+  async (orderObj: OrderObj) => {
+    console.log('Response object:', orderObj);
+    const response = await axios.post(PRODUCTS_URL_SET, orderObj);
     return response.data;
   }
 );

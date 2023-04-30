@@ -1,8 +1,12 @@
 import CheckoutSidebar from "@/components/Checkout/CheckoutSidebar";
 import { addOrder, insertOrderAsync } from "@/components/Checkout/orderSlice";
-import { RootState } from "@/redux/store";
+import { AppDispatch, RootState } from "@/redux/store";
+import axios from "axios";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import baseUrl from "../../utils/baseUrl";
+import { useRouter } from "next/router";
+
 
 const Country = {
     USA: 'United States',
@@ -12,13 +16,28 @@ const Country = {
     ARG: 'Argentina',
 };
 
-
+export interface OrderObj {
+    userId: string;
+    totalprice: number;
+    date:string;
+    status:string;
+    items: {
+      
+      orderquantity: number;
+      
+      productId:number;
+    }[];
+  }
 const Checkout = () => {
     const [orderItem, setOrderItem] = useState([])
+    const router=useRouter();
   const cartItems = useSelector((state: RootState) => state.cart.items);
   const orderList = useSelector((state: RootState) => state.order.orders);
-  const dispatch = useDispatch();
-  let id = localStorage.getItem("id");  
+  const dispatch = useDispatch<AppDispatch>();
+  let id:any;
+  if (typeof localStorage !== 'undefined') {
+     id = localStorage.getItem("id"); 
+  }
 
   let totalAmount = 0
     for (let i = 0; i < cartItems.length; i++) {
@@ -43,9 +62,11 @@ const Checkout = () => {
 
   
 
-    const handleOrder = () => {
-        const newObj = {
-            userId:id,
+    const handleOrder = async (event:any) => {
+        event.preventDefault()
+        
+        const orderObj = {
+            userId:id ? id : "",
             totalprice: totalAmount,
             status: "processing",
             date: new Date().toLocaleDateString("en-US", {
@@ -59,16 +80,27 @@ const Checkout = () => {
               }))
         };
 
-        console.log(newObj)
+        try {
+            const response = await axios.post(`${baseUrl}/orders/place`, orderObj);
+            console.log(response.data); // do something with the response data
+            if(response.status==201){
+                router.push('/orderMessage');
 
-        dispatch(insertOrderAsync(newObj));
-
-
+            }
+        } catch (error) {
+            console.log(error); // handle the error
+        
+       
+        // if(orderObj!=null){
+        //     dispatch(insertOrderAsync(orderObj));
+           
+        // }
     }
+}
 
     return (
         <div className="container mx-auto px-[15px]  ">
-            <h1 className="text-center text-xl font-bold">Checkout Page</h1>
+            {/* <h1 className="text-center text-xl font-bold">Checkout Page</h1> */}
             <div className="border border-[#e4e5ee] rounded-md space-y-4 py-4 px-4 mt-2">
                 <p className="text-[13px]">
                     Add <span className="text-[#ed174a] font-semibold">$15.93</span> to
@@ -169,8 +201,8 @@ const Checkout = () => {
                         {/* load items and total  map method*/}
                         <table className="w-full">
                             <tbody>
-                            {cartItems.map((item) => (
-                               <CheckoutSidebar item={item} orderItem={orderItem} setOrderItem={setOrderItem}/>
+                            {cartItems.map((item, index) => (
+                               <CheckoutSidebar item={item} orderItem={orderItem} setOrderItem={setOrderItem} key={index}/>
                             ))}
                                 {/* <tr>
                                     <td className=" py-3 text-[13px] w-[50%]">Pepsi Cola Soda - 2 L Bottle <span className="font-semibold">× 2</span> </td>
