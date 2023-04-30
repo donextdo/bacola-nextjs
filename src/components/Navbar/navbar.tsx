@@ -40,6 +40,7 @@ const Navbar = () => {
                     </Link>
                   </div>
                 </button>
+                {/*  */}
                 {homeOpen && (
                   <div className="text-[13px] absolute w-40 py-2 mt-2 shadow-md font-medium bg-white rounded-lg ">
                     <Link
