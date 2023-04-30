@@ -1,7 +1,7 @@
 import Link from "next/link";
 import React, { useState } from "react";
 
-//icons
+//icons  icons
 import { GiChickenOven } from "react-icons/gi";
 import { MdOutlineBakeryDining } from "react-icons/md";
 import { FaMugHot } from "react-icons/fa";
