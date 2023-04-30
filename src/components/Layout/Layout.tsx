@@ -4,7 +4,8 @@ import Header from "../Header/Header";
 import Message from "../Message/Message";
 import TopHeader from "../TopHeader/TopHeader";
 import NavbarNew from "../Navbar/newNawBar";
-import NewsLetter from "../NewsLetter/NewsLetter";
+import NewsLettertwo from "../NewsLetter2/NewsLettertwo";
+
 
 
 type Props = {
@@ -20,7 +21,7 @@ const Layout: React.FC<Props> = ({ children }) => {
       {/* <Navbar /> */}
       <NavbarNew />
       {children}
-      <NewsLetter />
+      <NewsLettertwo />
       <Footer />
     </div>
   );
