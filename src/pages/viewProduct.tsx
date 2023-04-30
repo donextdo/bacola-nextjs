@@ -36,7 +36,29 @@ import { updateProductQuantity } from "@/features/product/productSlice";
 //   }
 
 const ItemPages = () => {
-  const [data, setData] = useState<Product>({});
+  const [data, setData] = useState<Product>({
+    _id: '',
+    isRecommended: false,
+    isDiscount: false,
+    isOrganic: false,
+    isFavourite: false,
+    discount: 0,
+    rating: 0,
+    front: '',
+    back: '',
+    side: '',
+    title: '',
+    isAvailable: false,
+    price: 0,
+    quantity: 0,
+    brand: '',
+    description: '',
+    productQuantity: 0,
+    skuNumber: '',
+    count: 0,
+    newprice: 0,
+    type: ''
+  });
   const [myObject, setMyObject] = useState(null);
   const [isColor, setIsColor] = useState(1);
   const [mainImage, setMainImage] = useState(data?.front);
@@ -71,7 +93,7 @@ const ItemPages = () => {
   );
 
   const handleIncrement = (data: Product) => {
-    const newQuantity = (item.count || 0) + 1;
+    const newQuantity = (item?.count || 0) + 1;
     dispatch(updateItemQuantity({ itemId: data._id, count: newQuantity }));
     dispatch(
       updateProductQuantity({ productId: data._id, count: newQuantity })
@@ -79,7 +101,7 @@ const ItemPages = () => {
   };
 
   const handleDecrement = (data: Product) => {
-    const newQuantity = Math.max((item.count || 0) - 1, 0);
+    const newQuantity = Math.max((item?.count || 0) - 1, 0);
     dispatch(updateItemQuantity({ itemId: data._id, count: newQuantity }));
     dispatch(
       updateProductQuantity({ productId: data._id, count: newQuantity })
@@ -276,7 +298,7 @@ const ItemPages = () => {
                       </button>
 
                       <div className=" flex items-center justify-center w-full text-center ">
-                        {item.count || 1}
+                        {item?.count || 1}
                       </div>
 
                       {/* <div className=" flex items-center justify-center w-full text-center ">
@@ -465,9 +487,8 @@ const ItemPages = () => {
         <div className="bg-white drop-shadow rounded-md mt-10 pb-5">
           <div className=" flex flex-col sm:flex-row gap-4 sm:gap-8  justify-start text-left text-gray-400 py-5 px-6">
             <button
-              className={`   ${
-                isColor === 1 ? "text-black" : "text-[#c2c2d3]"
-              }`}
+              className={`   ${isColor === 1 ? "text-black" : "text-[#c2c2d3]"
+                }`}
               onClick={() => handleChange(1)}
             >
               DESCRIPTION
@@ -479,9 +500,8 @@ const ItemPages = () => {
               ADDITIONAL INFORMATION
             </button>
             <button
-              className={`   ${
-                isColor === 3 ? "text-black" : "text-[#c2c2d3]"
-              }`}
+              className={`   ${isColor === 3 ? "text-black" : "text-[#c2c2d3]"
+                }`}
               onClick={() => handleChange(3)}
             >
               REVIEW

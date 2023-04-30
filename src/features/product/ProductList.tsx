@@ -2,7 +2,7 @@ import React, { useState, useEffect, FC } from "react";
 import { ProductCard } from "./ProductCard";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts, setProducts } from "./productSlice";
-import { RootState } from "@/redux/store";
+import { AppDispatch, RootState } from "@/redux/store";
 import { Product } from "./product";
 import Link from "next/link";
 import { BsArrowRight } from "react-icons/bs";
@@ -13,7 +13,7 @@ import { ImageFour, ImageOne, ImageThree } from "@/components/Common/ImageList";
 interface ComponentProps {}
 
 export const ProductList: FC<ComponentProps> = ({}) => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const products = useSelector(
     (state: RootState) => state.product.products
   ) as Product[];

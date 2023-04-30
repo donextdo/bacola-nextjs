@@ -78,7 +78,7 @@ const Cart: FC<CartType> = () => {
                             <div>
                                 {cartItems.map((item, index) => (
 
-                                    <CartCard item={item} index={index} />
+                                    <CartCard item={item} key={index} />
                                 ))}
 
                             </div>

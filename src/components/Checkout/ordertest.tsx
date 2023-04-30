@@ -1,11 +1,9 @@
-export interface OrderItem {
-    userId: string | null;
-    orderId:string | null;
+export interface OrderObj {
+    userId: string;
     totalprice: number;
     date:string;
     status:string;
     items: {
-      productDetails: any;
       
       orderquantity: number;
       

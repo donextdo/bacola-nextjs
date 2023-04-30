@@ -61,7 +61,7 @@ const Wishlist = () => {
         const wishlist = wishlistString ? JSON.parse(wishlistString) : [];
 
         // Find the index of the item you want to remove
-        const index = wishlist.findIndex(item => item.id === id);
+        const index = wishlist.findIndex((item:any) => item.id === id);
 
         // Use the splice method to remove the item from the array
         wishlist.splice(index, 1);
@@ -82,7 +82,7 @@ const Wishlist = () => {
 
     const handleAddSelectedToCart = () => {
         const selectedItems = data.filter(item => item.checked);
-        selectedItems.forEach(item => {
+        selectedItems.forEach((item:any) => {
             dispatch(addItem(item));
         });
     }
@@ -91,7 +91,7 @@ const Wishlist = () => {
 
     const handleAddCart = () => {
         const selectedItems = data.filter(item => item.checked);
-        selectedItems.forEach(item => {
+        selectedItems.forEach((item:any) => {
             dispatch(addItem(item));
         });
     }

@@ -13,7 +13,7 @@ export const FilteredProduct = ({
   categoryId,
   selectedBrands,
   selectedSubCat,
-}) => {
+}:any) => {
   const [product, setProduct] = useState([]);
 
   const router = useRouter();
@@ -27,10 +27,10 @@ export const FilteredProduct = ({
   useEffect(() => {
     const categories: Array<String> =
       sessionStorage.getItem("subCategories") != null
-        ? sessionStorage.getItem("subCategories")
+        ? JSON.parse(sessionStorage.getItem("subCategories")!)
         : [];
     const subcatLoad =
-      categories && categories.length > 0 ? categories.split(",") : [];
+      categories && categories.length > 0 ? categories.join(",").split(",") : [];
 
     const fetchData = async () => {
       if (categoryId) {
@@ -46,13 +46,13 @@ export const FilteredProduct = ({
                 setProduct(response.data);
                 const brands: Array<String> =
                   sessionStorage.getItem("brands") != null
-                    ? sessionStorage.getItem("brands")
+                    ? JSON.parse(sessionStorage.getItem("brands")!)
                     : [];
                 const brandsLoad =
-                  brands && brands.length > 0 ? brands.split(",") : [];
+                  brands && brands.length > 0 ? brands.join(",").split(",") : [];
 
                 if (selectedBrands.length > 0) {
-                  const filteredProducts = product.filter((product) =>
+                  const filteredProducts = product.filter((product:any) =>
                     selectedBrands.includes(product?._id)
                   );
 
@@ -90,13 +90,13 @@ export const FilteredProduct = ({
               setProduct(response.data);
               const brands: Array<String> =
                 sessionStorage.getItem("brands") != null
-                  ? sessionStorage.getItem("brands")
+                ? JSON.parse(sessionStorage.getItem("brands")!)
                   : [];
               const brandsLoad =
-                brands && brands.length > 0 ? brands.split(",") : [];
+                brands && brands.length > 0 ? brands.join(",").split(",") : [];
 
               if (selectedBrands.length > 0) {
-                const filteredProducts = product.filter((product) =>
+                const filteredProducts = product.filter((product:any) =>
                   selectedBrands.includes(product?._id)
                 );
 

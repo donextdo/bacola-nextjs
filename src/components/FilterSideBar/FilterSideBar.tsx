@@ -9,12 +9,12 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
-export const FilterSideBar = ({ categoryId, brand, subcategory }) => {
+export const FilterSideBar = ({ categoryId, brand, subcategory }:any) => {
   const [selectedBrands, setSelectedBrands] = useState([]);
   const [selectedSubCat, setSelectedSubCat] = useState([]);
   const router = useRouter();
-  let brandId = [];
-  let subcategorySelected = [];
+  let brandId:any = [];
+  let subcategorySelected:any = [];
 
   useEffect(() => {
     if (brand) {
@@ -33,11 +33,11 @@ export const FilterSideBar = ({ categoryId, brand, subcategory }) => {
     }
   }, [subcategory]);
 
-  const handleBrandChange = (brands) => {
+  const handleBrandChange = (brands:any) => {
     setSelectedBrands(brands);
   };
 
-  const handleSubCatChange = (subCate) => {
+  const handleSubCatChange = (subCate:any) => {
     setSelectedSubCat(subCate);
     console.log("gehwyhjdkwjd ", subCate);
   };
