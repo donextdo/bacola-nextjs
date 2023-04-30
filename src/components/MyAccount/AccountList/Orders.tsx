@@ -11,6 +11,7 @@ const Orders = () => {
     const [data, setData] = useState([])
     const dispatch = useDispatch();
     const orderList = useSelector((state: RootState) => state.order.orders);
+    console.log(orderList)
 
     let id: string | null;
     if (localStorage.getItem('id') !== null) {

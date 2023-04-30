@@ -1,6 +1,6 @@
 export interface OrderItem {
     userId: string;
-    id: number;
+    _Id: string;
     totalprice: number;
     date:string;
     status:string;

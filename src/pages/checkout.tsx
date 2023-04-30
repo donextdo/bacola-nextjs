@@ -41,6 +41,8 @@ const Checkout = () => {
         setSelectedCountry(e.target.value);
     };
 
+  
+
     const handleOrder = () => {
         const newObj = {
             userId:id,
@@ -61,15 +63,6 @@ const Checkout = () => {
 
         dispatch(insertOrderAsync(newObj));
 
-        
-    // dispatch(addOrder(newObj))
-
-        // // Modify the array by pushing the new object
-        // order.push(newObj);
-
-        // // Store the modified array back in local storage
-        // localStorage.setItem('order', JSON.stringify(order));
-        // localStorage.setItem('order', JSON.stringify([])); 
 
     }
 

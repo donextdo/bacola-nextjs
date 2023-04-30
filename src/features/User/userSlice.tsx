@@ -4,13 +4,13 @@ import baseUrl from '../../../utils/baseUrl';
 import { User } from './user';
 
 interface UserState {
-  user: User;
+  user: User | null;
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
   error: string | null;
 }
 
 const initialState: UserState = {
-  user: {},
+  user: null,
   status: 'idle',
   error: null,
 };
@@ -19,8 +19,8 @@ const USER_URL = `${baseUrl}/users`;
 
 export const createUserAsync = createAsyncThunk(
   'user/createUserAsync',
-  async (userData: { name: string; email: string }) => {
-    const response = await axios.post(USER_URL, userData);
+  async ({userData,userId}: User) => {
+    const response = await axios.post(`${USER_URL}/${userId}`, userData);
     return response.data;
   }
 );
@@ -29,6 +29,7 @@ export const getUserAsync = createAsyncThunk(
   'user/getUserAsync',
   async (userId: string) => {
     const response = await axios.get(`${USER_URL}/${userId}`);
+    console.log('Response data:', response.data);
     return response.data;
   }
 );
@@ -37,7 +38,7 @@ const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    updateUser: (state, action: PayloadAction<Partial<{ name: string; email: string }>>) => {
+    updateUser: (state, action: PayloadAction<Partial<User>>) => {
       state.user = { ...state.user, ...action.payload };
     },
   },
