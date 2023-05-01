@@ -7,15 +7,15 @@ const FilterProduct = () => {
 
   const { query } = useRouter();
 
-  const brand = query?.brands;
+  //const brand = query?.brands;
   const subcategory = query?.sub_category;
-  console.log("heeeeeeeeeeeeeeee ", subcategory);
+  console.log("sub category ", subcategory);
 
   return (
     <div className="xl:px-40 lg:px-5 md:px-5 px-5 ">
       <FilterSideBar
         categoryId={categoryId}
-        brand={brand}
+        //brand={brand}
         subcategory={subcategory}
       />
     </div>

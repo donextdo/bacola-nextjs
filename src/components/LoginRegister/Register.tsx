@@ -34,11 +34,11 @@ const Register: React.FC<Props> = () => {
       setIsLoading(false);
     } catch (error) {
       console.log(error); // handle the error
-      if (error.response) {
-        const errorData = error.response.data;
-        if (errorData.message) {
+      if (error) {
+        const errorData = error;
+        if (errorData) {
           // Update error message
-          setErrorMsg(errorData.message);
+          setErrorMsg(errorData.toString());
         }
       }
     }
@@ -49,7 +49,7 @@ const Register: React.FC<Props> = () => {
     // ... send your request
   }
 
-  function handlePasswordChange(e) {
+  function handlePasswordChange(e: any) {
     const value = e.target.value;
     setPassword(value);
 
@@ -126,7 +126,7 @@ const Register: React.FC<Props> = () => {
                     <p className="justify-center  text-[12px] text-gray-600 mt-3">
                       Hint: The password should be at least twelve characters
                       long. To make it stronger, use upper and lower case
-                      letters, numbers, and symbols like ! " ? $ % ^ &amp; *.
+                      letters, numbers, and symbols like ! ? $ % ^ ; *.
                     </p>
                   </div>
                 )}

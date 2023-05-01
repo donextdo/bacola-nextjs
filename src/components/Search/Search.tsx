@@ -43,32 +43,24 @@ export const SearchItem = () => {
     setIsHide(false);
   };
 
-  let discountprice = products.price * (products.discount / 100);
-  let newPrice = products.price - products.discountprice;
-
-  useEffect(() => {
-    console.log(discountprice);
-    console.log(newPrice);
-  }, [searchItem]);
-
   return (
     <div className=" flex flex-col w-full md:w-full lg:w-96 place-content-center relative">
       <div className="flex relative xl:w-[600px] ">
         <input
           type="search"
-          className="bg-gray-200 rounded-tl rounded-bl min-h-[60px] md:w-full lg-w-full w-1/2 pl-5 text-sm focus:outline-none "
+          className="bg-gray-100 rounded-tl rounded-bl min-h-[60px] md:w-full lg-w-full w-1/2 pl-5 text-sm focus:outline-none "
           placeholder="Search for product..."
           value={searchItem}
           onChange={(e) => setSearchItem(e.target.value)}
           // onClick={handleSubmit}
         />
         {isLoading ? (
-          <div className="bg-gray-200 rounded-br rounded-tr min-h-[60px] min-w-[60px]  flex items-center justify-center hover:cursor-pointer">
+          <div className="bg-gray-100 rounded-br rounded-tr min-h-[60px] min-w-[60px]  flex items-center justify-center hover:cursor-pointer">
             <Spinner />
           </div>
         ) : (
           <div
-            className="bg-gray-200 rounded-br rounded-tr min-h-[60px] min-w-[60px]  flex items-center justify-center hover:cursor-pointer"
+            className="bg-gray-100 rounded-br rounded-tr min-h-[60px] min-w-[60px]  flex items-center justify-center hover:cursor-pointer"
             onClick={() => onSearch(searchItem)}
           >
             <FiSearch
@@ -81,7 +73,7 @@ export const SearchItem = () => {
 
       {searchItem !== "" && !isHide && (
         <div className=" flex flex-col">
-          <ul className="absolute bg-white border-2 border-gray-200 min-w-[37.5rem] z-10">
+          <ul className="absolute bg-white border-2 border-gray-100 min-w-[37.5rem] z-10">
             {products
               .filter((item) => {
                 const searchTerm = searchItem.toLowerCase();
@@ -101,7 +93,7 @@ export const SearchItem = () => {
                   <div className="flex items-center">
                     <li
                       // key={item.id}
-                      className="cursor-pointer text-start ml-2 border border-gray-300 py-1"
+                      className="cursor-pointer text-start ml-2 border border-gray-100 py-1"
                     >
                       <Image
                         width={40}
@@ -124,13 +116,13 @@ export const SearchItem = () => {
                   <div className="flex flex-col">
                     <li
                       // key={item.id}
-                      className="cursor-pointer text-end text-gray-400 font-semibold line-through mr-2 text-[14px] font-ff-headings"
+                      className="cursor-pointer text-end text-sm text-gray-400 font-semibold line-through mr-2 text-[14px] font-ff-headings"
                     >
                       ${item.price}
                     </li>
                     <li
                       // key={item.id}
-                      className="cursor-pointer text-end text-red-700 text-lg font-semibold mr-2 font-ff-headings"
+                      className="cursor-pointer text-end text-red-600 text-sm font-semibold mr-2 font-ff-headings"
                     >
                       $
                       {(

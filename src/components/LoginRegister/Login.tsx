@@ -40,11 +40,15 @@ const Login: React.FC<Props> = () => {
       }
     } catch (error) {
       console.log(error);
-      if (error.response) {
-        const errorData = error.response.data;
-        if (errorData.message) {
+      if (error) {
+        const errorData = error;
+        if (errorData) {
+          if (errorData.toString() == "404") {
+            setErrorMsg("Such user does not exist check your credentials");
+          } else {
+            setErrorMsg(errorData.toString());
+          }
           // Update error message
-          setErrorMsg(errorData.message);
         }
       }
     }
@@ -98,8 +102,8 @@ const Login: React.FC<Props> = () => {
           </div>
 
           <div className="flex pl-3 mt-5 ">
-            <input type="checkbox" className="bg-[#f3f4f7]" />
-            <p className="px-3 text-sm">Remember me</p>
+            {/* <input type="checkbox" className="bg-[#f3f4f7]" /> */}
+            {/* <p className="px-3 text-sm">Remember me</p> */}
           </div>
 
           <div className="mx-2 mt-5 mb-10 ">
