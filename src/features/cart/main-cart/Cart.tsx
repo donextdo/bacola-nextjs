@@ -7,7 +7,7 @@ import Link from "next/link";
 import { RootState } from "../../../redux/store"
 import { useDispatch, useSelector } from "react-redux";
 import CartCard from "./CartCard";
-import { removeAll } from "../cartSlice";
+import { calSubTotal, removeAll } from "../cartSlice";
 
 
 interface CartType {
@@ -25,6 +25,7 @@ const Cart: FC<CartType> = () => {
    
     useEffect(() => {
         console.log(cartItems)
+        dispatch(calSubTotal(totalAmount))
     });
 
     
@@ -35,6 +36,11 @@ const Cart: FC<CartType> = () => {
        let subtotal = item.count * item.price;
        totalAmount += subtotal;
      }
+     useEffect(() => {
+        console.log(cartItems)
+        dispatch(calSubTotal(totalAmount))
+    });
+
      
      const [total, setTotal] = useState(totalAmount+5);
 
@@ -81,7 +87,7 @@ const Cart: FC<CartType> = () => {
                             <div>
                                 {cartItems.map((item, index) => (
 
-                                    <CartCard item={item} key={index} />
+                                    <CartCard item={item} key={index} totalAmount={totalAmount}/>
                                 ))}
 
                             </div>

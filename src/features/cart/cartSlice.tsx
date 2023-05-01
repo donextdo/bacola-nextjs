@@ -6,6 +6,7 @@ import axios from "axios";
 interface CartState {
   items: Product[];
   totalCount: number;
+  totalAmount:number;
   status: "idle" | "loading" | "succeeded" | "failed";
   error: string | null;
 }
@@ -13,6 +14,7 @@ interface CartState {
 const initialState: CartState = {
   items: [],
   totalCount: 0,
+  totalAmount: 0,
   status: "idle",
   error: null,
 };
@@ -64,6 +66,12 @@ export const cartSlice = createSlice({
     removeAll: (state) => {
       state.items = [];
       state.totalCount = 0;
+      state.totalAmount = 0;
+    },
+    calSubTotal: (state, action) => {
+      console.log('Order inserted:', action.payload);
+      state.totalAmount = action.payload 
+      
     },
   },
   extraReducers: (builder) => {
@@ -83,6 +91,6 @@ export const cartSlice = createSlice({
  
 });
 
-export const { addItem, removeItem, updateItemQuantity, removeAll } = cartSlice.actions;
+export const { addItem, removeItem, updateItemQuantity, removeAll, calSubTotal } = cartSlice.actions;
 
 export default cartSlice.reducer;
