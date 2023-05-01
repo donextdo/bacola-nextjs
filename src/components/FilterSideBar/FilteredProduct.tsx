@@ -13,7 +13,7 @@ export const FilteredProduct = ({
   categoryId,
   selectedBrands,
   selectedSubCat,
-}:any) => {
+}: any) => {
   const [product, setProduct] = useState([]);
 
   const router = useRouter();
@@ -30,7 +30,9 @@ export const FilteredProduct = ({
         ? JSON.parse(sessionStorage.getItem("subCategories")!)
         : [];
     const subcatLoad =
-      categories && categories.length > 0 ? categories.join(",").split(",") : [];
+      categories && categories.length > 0
+        ? categories.join(",").split(",")
+        : [];
 
     const fetchData = async () => {
       if (categoryId) {
@@ -49,10 +51,12 @@ export const FilteredProduct = ({
                     ? JSON.parse(sessionStorage.getItem("brands")!)
                     : [];
                 const brandsLoad =
-                  brands && brands.length > 0 ? brands.join(",").split(",") : [];
+                  brands && brands.length > 0
+                    ? brands.join(",").split(",")
+                    : [];
 
                 if (selectedBrands.length > 0) {
-                  const filteredProducts = product.filter((product:any) =>
+                  const filteredProducts = product.filter((product: any) =>
                     selectedBrands.includes(product?._id)
                   );
 
@@ -90,13 +94,13 @@ export const FilteredProduct = ({
               setProduct(response.data);
               const brands: Array<String> =
                 sessionStorage.getItem("brands") != null
-                ? JSON.parse(sessionStorage.getItem("brands")!)
+                  ? JSON.parse(sessionStorage.getItem("brands")!)
                   : [];
               const brandsLoad =
                 brands && brands.length > 0 ? brands.join(",").split(",") : [];
 
               if (selectedBrands.length > 0) {
-                const filteredProducts = product.filter((product:any) =>
+                const filteredProducts = product.filter((product: any) =>
                   selectedBrands.includes(product?._id)
                 );
 

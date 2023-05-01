@@ -1,8 +1,7 @@
 import axios from "axios";
 import React, { useState } from "react";
 import baseUrl from "../../../utils/baseUrl";
-import { useRouter } from 'next/router';
-
+import { useRouter } from "next/router";
 
 type FormValues = {
   usernameoremail: string;
@@ -16,34 +15,38 @@ type Props = {
 const Login: React.FC<Props> = () => {
   const [usernameoremail, setUsernameoremail] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
   const router = useRouter();
-
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const details = {
-      email:usernameoremail,
-      password:password,
-      
-  }
+      email: usernameoremail,
+      password: password,
+    };
     try {
       const response = await axios.post(`${baseUrl}/users/login`, details);
       console.log(response.data);
-      localStorage.setItem('token', response.data.token)
+      localStorage.setItem("token", response.data.token);
       // localStorage.setItem('token', response.data.token)
-      localStorage.setItem('id', response.data._id)
-      localStorage.setItem('email', response.data.email)
-      localStorage.setItem('wishlist', JSON.stringify([]));
-      localStorage.setItem('order', JSON.stringify([]));
+      localStorage.setItem("id", response.data._id);
+      localStorage.setItem("email", response.data.email);
+      localStorage.setItem("wishlist", JSON.stringify([]));
+      localStorage.setItem("order", JSON.stringify([]));
 
-
-      if(response.status==200){
-        location.reload(); 
-        router.push('/account');
+      if (response.status == 200) {
+        location.reload();
+        router.push("/account");
       }
-
     } catch (error) {
       console.log(error);
+      if (error.response) {
+        const errorData = error.response.data;
+        if (errorData.message) {
+          // Update error message
+          setErrorMsg(errorData.message);
+        }
+      }
     }
   };
   return (
@@ -65,7 +68,7 @@ const Login: React.FC<Props> = () => {
                   name="username-email"
                   id="username-email"
                   autoComplete="given-username-email"
-                  required 
+                  required
                   className="block w-full border-0 py-2 px-3.5 text-gray-900 bg-[#f3f4f7] "
                   value={usernameoremail}
                   onChange={(e) => setUsernameoremail(e.target.value)}
@@ -73,7 +76,10 @@ const Login: React.FC<Props> = () => {
               </div>
             </div>
             <div className="sm:col-span-2">
-              <label htmlFor="password" className="block text-sm text-gray-900">
+              <label
+                htmlFor="password"
+                className="block text-sm text-gray-900 mt-5"
+              >
                 Password *
               </label>
               <div className="mt-2.5">
@@ -82,10 +88,10 @@ const Login: React.FC<Props> = () => {
                   name="password"
                   id="password"
                   autoComplete="password"
-                  required 
+                  required
                   className="block w-full border-0 py-2 px-3.5 text-gray-900 bg-[#f3f4f7]"
                   value={password}
-                   onChange={(e) => setPassword(e.target.value)}
+                  onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
             </div>
@@ -93,7 +99,7 @@ const Login: React.FC<Props> = () => {
 
           <div className="flex pl-3 mt-5 ">
             <input type="checkbox" className="bg-[#f3f4f7]" />
-            <p className="px-3">Remember me</p>
+            <p className="px-3 text-sm">Remember me</p>
           </div>
 
           <div className="mx-2 mt-5 mb-10 ">
@@ -104,6 +110,12 @@ const Login: React.FC<Props> = () => {
               Login
             </button>
           </div>
+
+          {errorMsg && (
+            <div className="border border-gray-300 p-3 text-sm ">
+              Error : <div className="text-black text-sm"> {errorMsg}</div>
+            </div>
+          )}
         </form>
       </div>
     </>

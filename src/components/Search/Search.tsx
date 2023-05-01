@@ -22,7 +22,7 @@ export const SearchItem = () => {
   const products = useSelector(
     (state: RootState) => state.product.products
   ) as Product[];
-  console.log(products)
+  console.log(products);
 
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     setIsLoading(true);
@@ -33,7 +33,7 @@ export const SearchItem = () => {
     setSearchItem(searchTerm);
   };
 
-  const sendView = (itemId:any) => {
+  const sendView = (itemId: any) => {
     setIsHide(true);
     router.push({
       pathname: "/viewProduct",
@@ -42,6 +42,14 @@ export const SearchItem = () => {
     setSearchItem("");
     setIsHide(false);
   };
+
+  let discountprice = products.price * (products.discount / 100);
+  let newPrice = products.price - products.discountprice;
+
+  useEffect(() => {
+    console.log(discountprice);
+    console.log(newPrice);
+  }, [searchItem]);
 
   return (
     <div className=" flex flex-col w-full md:w-full lg:w-96 place-content-center relative">
@@ -52,7 +60,7 @@ export const SearchItem = () => {
           placeholder="Search for product..."
           value={searchItem}
           onChange={(e) => setSearchItem(e.target.value)}
-        // onClick={handleSubmit}
+          // onClick={handleSubmit}
         />
         {isLoading ? (
           <div className="bg-gray-200 rounded-br rounded-tr min-h-[60px] min-w-[60px]  flex items-center justify-center hover:cursor-pointer">
@@ -86,15 +94,18 @@ export const SearchItem = () => {
               })
               .slice(0, 7)
               .map((item, index) => (
-                <div className="flex flex-row items-center justify-between py-1" key={index}>
+                <div
+                  className="flex flex-row items-center justify-between py-1"
+                  key={index}
+                >
                   <div className="flex items-center">
                     <li
                       // key={item.id}
-                      className="cursor-pointer text-start ml-2 border border-gray-400 py-1"
+                      className="cursor-pointer text-start ml-2 border border-gray-300 py-1"
                     >
                       <Image
-                        width={50}
-                        height={50}
+                        width={40}
+                        height={40}
                         src={item.front}
                         alt={item.title}
                       />
@@ -103,7 +114,7 @@ export const SearchItem = () => {
                     {/* <Link href={`/item-preview/${item._id}`}> */}
                     <li
                       // key={item.id}
-                      className="cursor-pointer text-start ml-2 flex-1 hover:underline"
+                      className="cursor-pointer text-start ml-2 flex-1 hover:underline text-sm font-medium"
                       onClick={() => sendView(item._id)}
                     >
                       {item.title}
@@ -113,15 +124,19 @@ export const SearchItem = () => {
                   <div className="flex flex-col">
                     <li
                       // key={item.id}
-                      className="cursor-pointer text-end text-gray-400 font-semibold line-through mr-2 text-[14px]"
+                      className="cursor-pointer text-end text-gray-400 font-semibold line-through mr-2 text-[14px] font-ff-headings"
                     >
                       ${item.price}
                     </li>
                     <li
                       // key={item.id}
-                      className="cursor-pointer text-end text-red-700 text-lg font-semibold mr-2"
+                      className="cursor-pointer text-end text-red-700 text-lg font-semibold mr-2 font-ff-headings"
                     >
-                      ${item.price}
+                      $
+                      {(
+                        item.price -
+                        item.price * (item.discount / 100)
+                      ).toFixed(2)}
                     </li>
                   </div>
                 </div>
