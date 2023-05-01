@@ -47,7 +47,10 @@ const Cart: FC<CartType> = () => {
       }
      
     const handleClear = () => {
+      
         dispatch(removeAll())
+
+       
     }
 
     return (
@@ -90,7 +93,7 @@ const Cart: FC<CartType> = () => {
                                 <button className="bg-[#233a95] text-white py-2.5 px-4 rounded-md text-xs h-11 w-40">Apply coupon</button>
                             </div>
 
-                            <div><button className="bg-[#233a95] text-white py-2.5 px-4 rounded-md text-xs h-11 w-[104px] hidden md:block" onChange={handleClear}>Remove All</button></div>
+                            <div><button className="bg-[#233a95] text-white py-2.5 px-4 rounded-md text-xs h-11 w-[104px] hidden md:block" onClick={handleClear}>Remove All</button></div>
                         </section>
                     </div>
                     <div>
@@ -143,7 +146,7 @@ const Cart: FC<CartType> = () => {
                     </div>
                 </section>
 
-                <button className="bg-[#233a95] text-white py-2.5 px-4 rounded-md text-xs h-11 w-full text-left mt-2 md:hidden">Remove All</button>
+                <button className="bg-[#233a95] text-white py-2.5 px-4 rounded-md text-xs h-11 w-full text-left mt-2 md:hidden" onClick={handleClear}>Remove All</button>
 
                 {/* Cart Totals */}
                 <div className="w-full border border-[#e4e5ee] mt-10 p-4 rounded-md xl:hidden">

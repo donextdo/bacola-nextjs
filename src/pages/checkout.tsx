@@ -235,10 +235,10 @@ const Checkout = () => {
                             </div>
                         </div>
 
-                        <div className="flex gap-1 border-b border-[#e4e5ee] py-3">
+                        {/* <div className="flex gap-1 border-b border-[#e4e5ee] py-3">
                             <input type="checkbox" name="address" id="address" />
                             <p className="text-[13px] font-semibold">SHIP TO A DIFFERENT ADDRESS?</p>
-                        </div>
+                        </div> */}
 
                         <p className="text-[13px] mt-6">Order notes (optional)</p>
 
@@ -338,7 +338,19 @@ const Checkout = () => {
                             <p className="text-xs">I have read and agree to the website <span className="text-[#ed174a] underline underline-offset-1">terms and conditions* </span></p>
                         </div>
 
-                        <button className="bg-[#ed174a] text-white py-2.5 rounded-md text-sm h-[50px] w-full text-center mt-6 font-semibold" onClick={handleOrder}>Place order</button>
+                        {(firstName=="" || lastName=="" || 
+                    companyName=="" ||
+                    country=="" ||
+                    streetAddress=="" ||
+                    apartment=="" ||
+                    townCity=="" ||
+                    state=="" ||
+                    zipCode=="" ||
+                    phone=="" ||
+                    email=="" )
+                    
+                    ?<button className="bg-[#ed174a] opacity-50 text-white py-2.5 rounded-md text-sm h-[50px] w-full text-center mt-6 font-semibold" onClick={handleOrder} disabled={true}>Place order</button>
+                    : <button className="bg-[#ed174a] text-white py-2.5 rounded-md text-sm h-[50px] w-full text-center mt-6 font-semibold" onClick={handleOrder}>Place order</button>}
 
                     </div>
                 </div>

@@ -2,6 +2,7 @@ import axios from "axios";
 import Link from "next/link";
 import React, { useState } from "react";
 import baseUrl from "../../../utils/baseUrl";
+import { useRouter } from "next/router";
 
 type FormValues = {
   email: string;
@@ -19,19 +20,49 @@ const Register: React.FC<Props> = () => {
   const [validationMsg, setValidationMsg] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const [isDisabled, setIsDisabled] = useState(false);
+  const router = useRouter();
+
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setIsLoading(true);
 
     const data = {
       email: email,
       password: password,
       userName: email,
     };
+    const details = {
+      email: email,
+      password: password,
+    };
     try {
       const response = await axios.post(`${baseUrl}/users/register`, data);
       console.log(response.data); // do something with the response data
-      setIsLoading(false);
+    if(response.status==201){
+      // location.reload();
+      // setIsLoading(false);
+
+      try {
+        const response = await axios.post(`${baseUrl}/users/login`, details);
+        console.log(response.data);
+        localStorage.setItem("token", response.data.token);
+        // localStorage.setItem('token', response.data.token)
+        localStorage.setItem("id", response.data._id);
+        localStorage.setItem("email", response.data.email);
+        localStorage.setItem("wishlist", JSON.stringify([]));
+        localStorage.setItem("order", JSON.stringify([]));
+  
+        if (response.status == 200) {
+          
+          location.reload();
+          router.push("/account");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+      // router.push("/account");
+    }
     } catch (error) {
       console.log(error); // handle the error
       if (error) {
@@ -41,6 +72,8 @@ const Register: React.FC<Props> = () => {
           setErrorMsg(errorData.toString());
         }
       }
+    }finally {
+      setIsLoading(false);
     }
   };
 
