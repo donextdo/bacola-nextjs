@@ -11,27 +11,54 @@ import { useRouter } from "next/router";
 
 export const FilteredProduct = ({
   categoryId,
-  selectedBrands,
+  //selectedBrands,
   selectedSubCat,
-}:any) => {
+}: any) => {
   const [product, setProduct] = useState([]);
 
   const router = useRouter();
 
+  // useEffect(() => {
+  //   const data = {
+  //     categories: categoryId,
+  //     subCategories: selectedSubCat,
+  //     brand: selectedBrands,
+  //   };
+  //   console.log("categories data come into filter product? ", data);
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await axios.post(`${baseUrl}/products/filter`, data);
+  //       console.log("response? ", response);
+  //       const products = response.data;
+  //       setProduct(products);
+  //       console.log("product awada? ", products);
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, [categoryId, selectedSubCat, selectedBrands]);
+
   useEffect(() => {
     console.log("passed categoryId id", categoryId);
     console.log("passed selectedSubCat id", selectedSubCat);
-    console.log("passed selectedBrands id", selectedBrands);
-  }, [categoryId, selectedSubCat, selectedBrands]);
+  }, [categoryId, selectedSubCat]);
 
   useEffect(() => {
-    const categories: Array<String> =
-      sessionStorage.getItem("subCategories") != null
-        ? JSON.parse(sessionStorage.getItem("subCategories")!)
+    const categories: Array<string> =
+      sessionStorage.getItem("subCategories") !== null
+        ? JSON.parse(sessionStorage.getItem("subCategories") as string)
         : [];
-    const subcatLoad =
-      categories && categories.length > 0 ? categories.join(",").split(",") : [];
 
+    const subcatLoad =
+      categories && categories.length > 0
+        ? categories.join(",").split(",")
+        : [];
+    console.log(
+      "sessionStorage.getItem",
+      sessionStorage.getItem("subCategories")
+    );
     const fetchData = async () => {
       if (categoryId) {
         const response = await axios.get(`${baseUrl}/products/${categoryId}`);
@@ -44,37 +71,39 @@ export const FilteredProduct = ({
               );
               if (response.data.length > 0) {
                 setProduct(response.data);
-                const brands: Array<String> =
-                  sessionStorage.getItem("brands") != null
-                    ? JSON.parse(sessionStorage.getItem("brands")!)
-                    : [];
-                const brandsLoad =
-                  brands && brands.length > 0 ? brands.join(",").split(",") : [];
+                // const brands: Array<String> =
+                //   sessionStorage.getItem("brands") != null
+                //     ? JSON.parse(sessionStorage.getItem("brands")!)
+                //     : [];
+                // const brandsLoad =
+                //   brands && brands.length > 0
+                //     ? brands.join(",").split(",")
+                //     : [];
+                //brand
+                // if (selectedBrands.length > 0) {
+                //   const filteredProducts = product.filter((product: any) =>
+                //     selectedBrands.includes(product?._id)
+                //   );
 
-                if (selectedBrands.length > 0) {
-                  const filteredProducts = product.filter((product:any) =>
-                    selectedBrands.includes(product?._id)
-                  );
-
-                  setProduct(filteredProducts);
-                } else if (brandsLoad.length == 0) {
-                  const fetchData = async () => {
-                    if (selectedSubCat) {
-                      const response = await axios.get(
-                        `${baseUrl}/products/${selectedSubCat}`
-                      );
-                      setProduct(response.data);
-                    } else if (categoryId) {
-                      const response = await axios.get(
-                        `${baseUrl}/products/${selectedSubCat}`
-                      );
-                      setProduct(response.data);
-                    }
-                  };
-                  fetchData().catch((error) => {
-                    console.log(error);
-                  });
-                }
+                //   setProduct(filteredProducts);
+                // } else if (brandsLoad.length == 0) {
+                //   const fetchData = async () => {
+                //     if (selectedSubCat) {
+                //       const response = await axios.get(
+                //         `${baseUrl}/products/${selectedSubCat}`
+                //       );
+                //       setProduct(response.data);
+                //     } else if (categoryId) {
+                //       const response = await axios.get(
+                //         `${baseUrl}/products/${selectedSubCat}`
+                //       );
+                //       setProduct(response.data);
+                //     }
+                //   };
+                //   fetchData().catch((error) => {
+                //     console.log(error);
+                //   });
+                // }
               }
             }
           };
@@ -88,32 +117,32 @@ export const FilteredProduct = ({
                 `${baseUrl}/products/${categoryId}`
               );
               setProduct(response.data);
-              const brands: Array<String> =
-                sessionStorage.getItem("brands") != null
-                ? JSON.parse(sessionStorage.getItem("brands")!)
-                  : [];
-              const brandsLoad =
-                brands && brands.length > 0 ? brands.join(",").split(",") : [];
+              // const brands: Array<String> =
+              //   sessionStorage.getItem("brands") != null
+              //     ? JSON.parse(sessionStorage.getItem("brands")!)
+              //     : [];
+              // const brandsLoad =
+              //   brands && brands.length > 0 ? brands.join(",").split(",") : [];
 
-              if (selectedBrands.length > 0) {
-                const filteredProducts = product.filter((product:any) =>
-                  selectedBrands.includes(product?._id)
-                );
+              // if (selectedBrands.length > 0) {
+              //   const filteredProducts = product.filter((product: any) =>
+              //     selectedBrands.includes(product?._id)
+              //   );
 
-                setProduct(filteredProducts);
-              } else if (brandsLoad.length == 0) {
-                const fetchData = async () => {
-                  if (categoryId) {
-                    const response = await axios.get(
-                      `${baseUrl}/products/${categoryId}`
-                    );
-                    setProduct(response.data);
-                  }
-                };
-                fetchData().catch((error) => {
-                  console.log(error);
-                });
-              }
+              //   setProduct(filteredProducts);
+              // } else if (brandsLoad.length == 0) {
+              //   const fetchData = async () => {
+              //     if (categoryId) {
+              //       const response = await axios.get(
+              //         `${baseUrl}/products/${categoryId}`
+              //       );
+              //       setProduct(response.data);
+              //     }
+              //   };
+              //   fetchData().catch((error) => {
+              //     console.log(error);
+              //   });
+              // }
             }
           };
           fetchData().catch((error) => {
@@ -125,7 +154,7 @@ export const FilteredProduct = ({
     fetchData().catch((error) => {
       console.log(error);
     });
-  }, [categoryId, selectedSubCat, selectedBrands]);
+  }, [categoryId, selectedSubCat]);
 
   return (
     <div>

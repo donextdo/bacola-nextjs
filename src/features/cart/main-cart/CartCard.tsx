@@ -43,7 +43,9 @@ const CartCard = ({item, index}:any) => {
 
  let subtotal = (item.count) * (item.price)
 
-
+ let discountprice;
+ discountprice = item.price * (item.discount/100)
+let newprice=item.price-discountprice
     return ( 
         <div className="grid grid-cols-4 sm:grid-cols-12 grid-2 gap-1 border-b border-[#e4e5ee] py-3 h-28 items-center relative" key={index}>
                                     <div className="h-[95px] sm:col-span-2">
@@ -64,7 +66,7 @@ const CartCard = ({item, index}:any) => {
                                     <div className="col-span-2 sm:col-span-4 text-sm  ">
                                         {item.title}
                                     </div>
-                                    <div className="col-span-1 hidden sm:block">{item.price}</div>
+                                    <div className="col-span-1 hidden sm:block">{newprice.toFixed(2)}</div>
                                     <div className="flex sm:col-span-2">
                                         <button className="p-2.5 bg-[#edeef5] rounded-full w-[30px] flex items-center" onClick={()=>handleDecrement(item)}>
                                             <FaMinus className="text-xs" />
@@ -75,7 +77,7 @@ const CartCard = ({item, index}:any) => {
                                             <FaPlus className="text-xs " />
                                         </button>
                                     </div>
-                                    <div className="col-span-2 hidden sm:block">{subtotal}</div>
+                                    <div className="col-span-2 hidden sm:block">{subtotal.toFixed(2)}</div>
                                     <div className="col-span-1 hidden sm:block">
                                         <button className="bg-white rounded-full p-1" onClick={()=>handleDelete(item._id)}><IoCloseSharp className="text-xl font-semibold text-black" /></button>
                                     </div>

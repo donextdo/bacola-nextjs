@@ -4,9 +4,11 @@ import Register from "./Register";
 
 const LoginRegisterPage = () => {
   const [activeTab, setActiveTab] = useState("tab1");
+  const [isActive, setIsActive] = useState(true);
 
   const handleTabClick = (tab: SetStateAction<string>) => {
     setActiveTab(tab);
+    setIsActive(true);
   };
 
   return (
@@ -15,7 +17,9 @@ const LoginRegisterPage = () => {
         <div className="container flex justify-center max-w-lg mx-auto">
           <div className="pr-5">
             <button
-              className={`text-xl font-semi-bold  text-gray-400 active:text-gray-800 focus:outline-none focus:text-gray-800 tab ${
+              className={`font-ff-headings text-lg font-semibold text-${
+                activeTab === "tab1" && isActive ? "black" : "gray-400"
+              } active:text-gray-800 focus:outline-none focus:text-gray-800 tab ${
                 activeTab === "tab1" ? "active" : ""
               }`}
               onClick={() => handleTabClick("tab1")}
@@ -25,7 +29,9 @@ const LoginRegisterPage = () => {
           </div>
           <div>
             <button
-              className={`text-xl font-semi-bold text-gray-400 active:text-gray-800 focus:outline-none focus:text-gray-800  tab ${
+              className={`font-ff-headings text-lg font-semibold text-${
+                activeTab === "tab2" && isActive ? "black" : "gray-400"
+              } active:text-gray-800 focus:outline-none focus:text-gray-800  tab ${
                 activeTab === "tab2" ? "active" : ""
               }`}
               onClick={() => handleTabClick("tab2")}

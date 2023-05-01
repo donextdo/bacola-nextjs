@@ -39,7 +39,7 @@ const CartPopup = ({ setCart, }: any) => {
       </div>
       <div className="flex justify-between mt-6 mb-4">
         <p className="text-[#c2c2d3] font-semibold text-[13px]">Subtotal:</p>
-        <p className="text-lg text-[#d51243]">${totalAmount}</p>
+        <p className="text-lg text-[#d51243]">${totalAmount.toFixed(2)}</p>
       </div>
 
       <Link href="/cart">

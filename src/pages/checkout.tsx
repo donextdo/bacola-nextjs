@@ -8,44 +8,82 @@ import baseUrl from "../../utils/baseUrl";
 import { useRouter } from "next/router";
 
 
-const Country = {
-    USA: 'United States',
-    CAN: 'Canada',
-    MEX: 'Mexico',
-    BRA: 'Brazil',
-    ARG: 'Argentina',
-};
+
 
 export interface OrderObj {
     userId: string;
     totalprice: number;
-    date:string;
-    status:string;
+    date: string;
+    status: string;
     items: {
-      
-      orderquantity: number;
-      
-      productId:number;
+
+        orderquantity: number;
+
+        productId: number;
     }[];
-  }
+
+}
 const Checkout = () => {
-    const [orderItem, setOrderItem] = useState([])
-    const router=useRouter();
-  const cartItems = useSelector((state: RootState) => state.cart.items);
-  const orderList = useSelector((state: RootState) => state.order.orders);
-  const dispatch = useDispatch<AppDispatch>();
-  let id:any;
-  if (typeof localStorage !== 'undefined') {
-     id = localStorage.getItem("id"); 
-  }
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [companyName, setCompanyName] = useState('');
+    const [country, setCountry] = useState('');
+    const [streetAddress, setStreetAddress] = useState('');
+    const [apartment, setApartment] = useState('');
+    const [townCity, setTownCity] = useState('');
+    const [state, setState] = useState('');
+    const [zipCode, setZipCode] = useState('');
+    const [phone, setPhone] = useState('');
+    const [email, setEmail] = useState('');
+    const [note, setNote] = useState('');
 
-  let totalAmount = 0
+    const router = useRouter();
+    const cartItems = useSelector((state: RootState) => state.cart.items);
+    const orderList = useSelector((state: RootState) => state.order.orders);
+    const dispatch = useDispatch<AppDispatch>();
+    let id: any;
+    if (typeof localStorage !== 'undefined') {
+        id = localStorage.getItem("id");
+    }
+
+//     let discountprice;
+//     discountprice = item.price * (item.discount/100)
+//   let newprice=item.price-discountprice
+//   item.price - (item.price * (item.discount/100))
+
+    let totalAmount = 0
     for (let i = 0; i < cartItems.length; i++) {
-       let item = cartItems[i];
-       let subtotal = item.count * item.price;
-       totalAmount += subtotal;
-     }
+        let item = cartItems[i];
+        let subtotal = item.count * (item.price - (item.price * (item.discount/100)));
+        totalAmount += subtotal;
+    }
 
+    useEffect(() => {
+        fetchData()
+    }, []);
+
+    async function fetchData() {
+        try {
+            const res = await axios.get(`${baseUrl}/users/${id}`);
+            console.log(res.data)
+            const data = res.data;
+            setFirstName(data.billingAddress.billingFirstName);
+            setLastName(data.billingAddress.billingLastName);
+            setCompanyName(data.billingAddress.billingCompanyName);
+            setCountry(data.billingAddress.country)
+            setStreetAddress(data.billingAddress.street)
+            setApartment(data.billingAddress.apartment)
+            setTownCity(data.billingAddress.town)
+            setState(data.billingAddress.state)
+            setZipCode(data.billingAddress.zipCode)
+            setPhone(data.billingAddress.billingPhone)
+            setEmail(data.billingAddress.billingEmail);
+
+
+        } catch (err) {
+            console.log(err);
+        }
+    }
     //  const orderString = localStorage.getItem('order');
     // const order = orderString ? JSON.parse(orderString) : [];
 
@@ -54,19 +92,11 @@ const Checkout = () => {
         setSelectedRadio(e.target.value)
     }
 
-    const [selectedCountry, setSelectedCountry] = useState('USA');
-
-    const handleCountryChange = (e:any) => {
-        setSelectedCountry(e.target.value);
-    };
-
-  
-
-    const handleOrder = async (event:any) => {
+    const handleOrder = async (event: any) => {
         event.preventDefault()
         
         const orderObj = {
-            userId:id ? id : "",
+            userId: id ? id : "",
             totalprice: totalAmount,
             status: "processing",
             date: new Date().toLocaleDateString("en-US", {
@@ -77,37 +107,57 @@ const Checkout = () => {
             items: cartItems.map(item => ({
                 productId: item._id,
                 orderquantity: item.count
-              }))
+            })),
+            "billingAddress": {
+                billingFirstName: firstName,
+                billingLastName: lastName,
+                billingCompanyName: companyName,
+                country: country,
+                street: streetAddress,
+                apartment: apartment,
+                town: townCity,
+                state: state,
+                zipCode: zipCode,
+                billingPhone: phone,
+                billingEmail: email,
+                note: note,
+            }
         };
 
+        console.log(orderObj)
         try {
             const response = await axios.post(`${baseUrl}/orders/place`, orderObj);
             console.log(response.data); // do something with the response data
-            if(response.status==201){
-                router.push('/orderMessage');
+            if (response.status == 201) {
+                const orderData = { orderId: response.data.orderId, message: response.data.messsage };
+                router.push({
+                    pathname: '/orderMessage',
+                    query: orderData,
+                  });
 
             }
         } catch (error) {
             console.log(error); // handle the error
-        
-       
-        // if(orderObj!=null){
-        //     dispatch(insertOrderAsync(orderObj));
-           
-        // }
-    }
-}
 
+
+            // if(orderObj!=null){
+            //     dispatch(insertOrderAsync(orderObj));
+
+            // }
+        }
+    }
+
+    
     return (
         <div className="container mx-auto px-[15px]  ">
-            {/* <h1 className="text-center text-xl font-bold">Checkout Page</h1> */}
-            <div className="border border-[#e4e5ee] rounded-md space-y-4 py-4 px-4 mt-2">
+
+            {/* <div className="border border-[#e4e5ee] rounded-md space-y-4 py-4 px-4 mt-2">
                 <p className="text-[13px]">
                     Add <span className="text-[#ed174a] font-semibold">$15.93</span> to
                     cart and get free shipping!
                 </p>
                 <hr className="h-2 rounded-md bg-[#ed174a]" />
-            </div>
+            </div> */}
 
             <section className=" my-5 flex justify-between">
                 <div className="border border-[#e4e5ee] px-7 py-3.5 rounded-md lg:px-10 ">
@@ -116,62 +166,72 @@ const Checkout = () => {
                     <div className="mt-3">
                         <div className="grid grid-cols-1 gap-5 md:grid-cols-2 mb-4">
                             <div>
-                                <label className="text-[13px] ">First Name *</label>
-                                <input type="text" className="w-full h-11 bg-gray-100 rounded-md mt-2" />
+                                <label className="text-[13px]">First Name *</label>
+                                <input
+                                    type="text"
+                                    className="w-full px-4 h-11 bg-gray-100 rounded-md mt-2 "
+                                    value={firstName}
+                                    onChange={(e) => setFirstName(e.target.value)}
+                                    required
+                                />
+
                             </div>
                             <div>
                                 <label className="text-[13px] ">Last Name *</label>
-                                <input type="text" className="w-full h-11 bg-gray-100 rounded-md mt-2 " />
+                                <input
+                                    type="text"
+                                    className="w-full px-4 h-11 bg-gray-100 rounded-md mt-2"
+                                    value={lastName}
+                                    onChange={(e) => setLastName(e.target.value)}
+                                />
                             </div>
                         </div>
 
-                        <label className="text-[13px] ">Company Name (optional)</label>
-                        <input type="text" className="w-full h-11 bg-gray-100 rounded-md mt-2 mb-4" />
+                        <label className="text-[13px] ">Company Name </label>
+                        <input
+                            type="text"
+                            className="w-full px-4 h-11 bg-gray-100 rounded-md mt-2 mb-4"
+                            value={companyName}
+                            onChange={(e) => setCompanyName(e.target.value)}
+
+                        />
 
                         <div className="flex flex-col space-y-2  mb-4">
                             <label className="text-[13px] ">Country / Region *</label>
-                        {/* <input type="text" className="w-full h-11 bg-gray-100 rounded-md mt-2 mb-4" /> */}
-                        <select value={selectedCountry} onChange={handleCountryChange} className="w-full h-11 bg-gray-100 rounded-md">
-                            {Object.entries(Country).map(([code, name]) => (
-                                <option key={code} value={code}>
-                                    {name}
-                                </option>
-                            ))}
-                        </select>
+                            <input
+                                type="text"
+                                className="w-full px-4 h-11 bg-gray-100 rounded-md mt-2 mb-4"
+                                value={country}
+                                onChange={(e) => setCountry(e.target.value)}
+                            />
                         </div>
 
                         <label className="text-[13px] ">Street address *</label>
-                        <input type="text" className="w-full h-11 bg-gray-100 rounded-md mt-2 mb-2 pl-4 text-sm" placeholder="House number and street name" />
-                        <input type="text" className="w-full h-11 bg-gray-100 rounded-md mt-2 mb-4 pl-4 text-sm" placeholder="Apartment, suite, unite, etc. (optional)" />
+                        <input type="text" className="w-full h-11 px-4 bg-gray-100 rounded-md mt-2 mb-2 pl-4 text-sm" placeholder="House number and street name" value={streetAddress} onChange={(e) => setStreetAddress(e.target.value)} />
+                        <input type="text" className="w-full px-4 h-11 bg-gray-100 rounded-md mt-2 mb-4 pl-4 text-sm" placeholder="Apartment, suite, unite, etc. (optional)" value={apartment} onChange={(e) => setApartment(e.target.value)} />
 
 
                         <label className="text-[13px] ">Town / City *</label>
-                        <input type="text" className="w-full h-11 bg-gray-100 rounded-md mt-2 mb-4" />
+                        <input type="text" className="w-full px-4 h-11 bg-gray-100 rounded-md mt-2 mb-4" value={townCity} onChange={(e) => setTownCity(e.target.value)} />
 
-                        {/* <label className="text-[13px] ">State *</label>
-                        <input type="text" className="w-full h-11 bg-gray-100 rounded-md mt-2 mb-4" /> */}
+                        
                         <div className="flex flex-col space-y-2  mb-4">
                             <label className="text-[13px] ">State *</label>
-                        <select value={selectedCountry} onChange={handleCountryChange} className="w-full h-11 bg-gray-100 rounded-md">
-                            {Object.entries(Country).map(([code, name]) => (
-                                <option key={code} value={code}>
-                                    {name}
-                                </option>
-                            ))}
-                        </select>
+                            <input type="text" className="w-full px-4 h-11 bg-gray-100 rounded-md mt-2 mb-4" value={state} onChange={(e) => setState(e.target.value)} />
+
                         </div>
 
                         <label className="text-[13px] ">Zip Code *</label>
-                        <input type="text" className="w-full h-11 bg-gray-100 rounded-md mt-2 mb-4" />
+                        <input type="text" className="w-full px-4 h-11 bg-gray-100 rounded-md mt-2 mb-4" value={zipCode} onChange={(e) => setZipCode(e.target.value)} />
 
                         <div className="grid grid-cols-1 gap-5 md:grid-cols-2 mb-2">
                             <div>
                                 <label className="text-[13px] ">Phone *</label>
-                                <input type="text" className="w-full h-11 bg-gray-100 rounded-md mt-2" />
+                                <input type="text" className="w-full px-4 h-11 bg-gray-100 rounded-md mt-2 mb-4" value={phone} onChange={(e) => setPhone(e.target.value)} />
                             </div>
                             <div>
                                 <label className="text-[13px] ">Email address *</label>
-                                <input type="text" className="w-full h-11 bg-gray-100 rounded-md mt-2 " />
+                                <input type="text" className="w-full px-4 h-11 bg-gray-100 rounded-md mt-2 mb-4" value={email} onChange={(e) => setEmail(e.target.value)} />
                             </div>
                         </div>
 
@@ -182,7 +242,7 @@ const Checkout = () => {
 
                         <p className="text-[13px] mt-6">Order notes (optional)</p>
 
-                        <textarea className="w-full h-[120px] bg-gray-100 rounded-md mt-2 mb-4 pl-4 pr-10 pt-5 text-sm" placeholder="Notes about your order, e.g special notes for delivery." />
+                        <textarea className="w-full h-[120px] bg-gray-100 rounded-md mt-2 mb-4 pl-4 pr-10 pt-5 text-sm" value={note} placeholder="Notes about your order, e.g special notes for delivery." onChange={(e) => setNote(e.target.value)} />
                     </div>
                 </div>
                 {/* sidebar checkout cart */}
@@ -201,13 +261,10 @@ const Checkout = () => {
                         {/* load items and total  map method*/}
                         <table className="w-full">
                             <tbody>
-                            {cartItems.map((item, index) => (
-                               <CheckoutSidebar item={item} orderItem={orderItem} setOrderItem={setOrderItem} key={index}/>
-                            ))}
-                                {/* <tr>
-                                    <td className=" py-3 text-[13px] w-[50%]">Pepsi Cola Soda - 2 L Bottle <span className="font-semibold">× 2</span> </td>
-                                    <td className=" py-3 text-[15px] text-right">$5.05</td>
-                                </tr> */}
+                                {cartItems.map((item, index) => (
+                                    <CheckoutSidebar item={item} key={index}/>
+                                ))}
+                               
                             </tbody>
                         </table>
 
@@ -215,7 +272,7 @@ const Checkout = () => {
                             <tbody>
                                 <tr>
                                     <td className="text-[13px] font-semibold border-y border-[#e4e5ee] text-[#71778e]">Subtotal</td>
-                                    <td className=" py-3 text-[15px] text-right border-y border-[#e4e5ee]">${totalAmount}</td>
+                                    <td className=" py-3 text-[15px] text-right border-y border-[#e4e5ee]">${totalAmount.toFixed(2)}</td>
 
                                 </tr>
                                 <tr>
@@ -240,7 +297,7 @@ const Checkout = () => {
                                 </tr>
                                 <tr>
                                     <td className="border-b border-[#e4e5ee] text-[13px] font-semibold py-4 text-[#71778e]">Total</td>
-                                    <td className="border-b border-[#e4e5ee] text-right font-semibold text-xl py-4 ">${totalAmount}</td>
+                                    <td className="border-b border-[#e4e5ee] text-right font-semibold text-xl py-4 ">${totalAmount.toFixed(2)}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -324,7 +381,7 @@ const Checkout = () => {
                             <tr>
                                 <td rowSpan={2} className="text-[13px] font-semibold border-b border-[#e4e5ee] text-[#71778e]">Shipping</td>
                                 <td className="text-right text-[13px] py-3">Flat rate: <span className="inline-flex text-[#d51243] text-sm gap-2">$5.00<input type="radio" name="vendor" value="Vendor 1"
-                                //  onChange={handleCheckboxChange} 
+                             
                                 />
                                 </span></td>
                             </tr>
@@ -335,7 +392,7 @@ const Checkout = () => {
                                         type="radio"
                                         name="vendor"
                                         value="Vendor 1"
-                                    // onChange={handleCheckboxChange}
+                                    
                                     />
                                 </label></td>
                             </tr>
@@ -387,6 +444,7 @@ const Checkout = () => {
 
                 </div>
             </div>
+            
         </div>
     );
 }
