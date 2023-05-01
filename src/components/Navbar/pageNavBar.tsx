@@ -18,7 +18,7 @@ const PageNavBar = () => {
   return (
     <div className="lg:flex lg:flex-row ">
       <ul className="lg:space-x-1 lg:flex gap gap-0">
-        <li className="font-semibold rounded-full bg-[#F0FAFF] ">
+        {/* <li className="font-semibold rounded-full bg-[#F0FAFF] ">
           <button onMouseEnter={toggleShop} className="lg:py-2 lg:px-4">
             <div>
               <Link
@@ -65,10 +65,10 @@ const PageNavBar = () => {
               </Link>
             </div>
           )}
-        </li>
+        </li> */}
 
         {/* Shop */}
-        <li className="font-semibold hoverable hover:rounded-full  hover:bg-[#F0FAFF] ">
+        {/* <li className="font-semibold hoverable hover:rounded-full  hover:bg-[#F0FAFF] ">
           <button onMouseEnter={toggleShop} className="lg:py-2 lg:px-4">
             <div>
               <Link
@@ -80,7 +80,7 @@ const PageNavBar = () => {
               </Link>
             </div>
           </button>
-        </li>
+        </li> */}
         {/* Meats & SeaFood */}
         <li className="font-semibold font-ff-headings hoverable hover:rounded-full  hover:bg-[#F0FAFF] ">
           <button

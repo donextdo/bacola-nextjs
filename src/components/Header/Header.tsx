@@ -15,6 +15,8 @@ const Header = () => {
   const [cart, setCart] = useState(false);
   // const [totalCount, setTotalCount] = useState(0)
   const totalCount = useSelector((state: RootState) => state.cart.totalCount);
+  const totalAmount = useSelector((state: RootState) => state.cart.totalAmount);
+
 
   const { publicRuntimeConfig } = getConfig();
 
@@ -93,13 +95,16 @@ const Header = () => {
             <SearchItem />
           </div>
 
-          <div className="basis-1/4 flex gap-4 justify-end">
+          <div className="basis-1/4 flex gap-4 justify-end items-center font-semibold">
             <div>
               <Link href="/account">
                 <button className="border rounded-full p-2">
                   <AiOutlineUser className="text-2xl" />
                 </button>
               </Link>
+            </div>
+            <div className="">
+              ${totalAmount.toFixed(2)}
             </div>
             <div
               className="relative"

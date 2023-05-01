@@ -6,12 +6,12 @@ import { GrFormClose } from "react-icons/gr";
 import { IoCloseSharp, IoClose } from "react-icons/io5";
 import { RootState } from "../../../redux/store"
 import { useDispatch, useSelector } from "react-redux";
-import { removeItem, updateItemQuantity } from "../cartSlice";
+import { calSubTotal, removeItem, updateItemQuantity } from "../cartSlice";
 import { updateProductQuantity } from "@/features/product/productSlice";
 import { Product } from "@/features/product/product";
 
 
-const CartCard = ({item, index}:any) => {
+const CartCard = ({item, index,totalAmount}:any) => {
     const dispatch = useDispatch()
     const cartItems = useSelector((state: RootState) => state.cart.items);
 
@@ -23,12 +23,15 @@ const CartCard = ({item, index}:any) => {
         const newQuantity = (item.count || 0) + 1;
     dispatch(updateItemQuantity({ itemId: item._id, count: newQuantity }));
     dispatch(updateProductQuantity({ productId: item._id, count: newQuantity }))
+    dispatch(calSubTotal(totalAmount))
     };
 
     const handleDecrement = (item: Product) => {
         const newQuantity = Math.max((item.count || 0) - 1, 0);
     dispatch(updateItemQuantity({ itemId: item._id, count: newQuantity }));
     dispatch(updateProductQuantity({ productId: item._id, count: newQuantity }))
+    dispatch(calSubTotal(totalAmount))
+
     };
     useEffect(() => {
         console.log(cartItems)
@@ -37,6 +40,7 @@ const CartCard = ({item, index}:any) => {
     
     const handleDelete = (_id: string) => {
         dispatch(removeItem(_id));
+        dispatch(calSubTotal(totalAmount))
 
         
     }

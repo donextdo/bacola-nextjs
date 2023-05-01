@@ -6,7 +6,7 @@ import { FC, useState } from "react";
 import Image from "next/image";
 import { RootState } from "../../redux/store";
 import { useDispatch, useSelector } from "react-redux";
-import { addItem, updateItemQuantity } from "../cart/cartSlice";
+import { addItem, calSubTotal, updateItemQuantity } from "../cart/cartSlice";
 import { updateProductQuantity } from "./productSlice";
 import { Product } from "./product";
 import Link from "next/link";
@@ -18,6 +18,8 @@ interface Props {
 export const ProductCard: FC<Props> = ({ product }) => {
   const [isDiscount, setIsdiscount] = useState(false);
   const dispatch = useDispatch();
+  const cartItems = useSelector((state: RootState) => state.cart.items);
+ 
 
   useEffect(() => {
     if ((product.discount) >= 0) {
@@ -32,6 +34,8 @@ export const ProductCard: FC<Props> = ({ product }) => {
     dispatch(
       updateProductQuantity({ productId: product._id, count: newQuantity })
     );
+    dispatch(calSubTotal(totalAmount))
+
   };
 
   const handleDecrement = (product: Product) => {
@@ -45,6 +49,8 @@ export const ProductCard: FC<Props> = ({ product }) => {
       // dispatch(removeFromCart(id))
       // setIsAddToCart(false)
     }
+    dispatch(calSubTotal(totalAmount))
+
   };
 
   const handleaddToCart = (product: Product) => {
@@ -54,6 +60,8 @@ export const ProductCard: FC<Props> = ({ product }) => {
       updateProductQuantity({ productId: product._id, count: newQuantity })
     );
     console.log(product._id);
+    dispatch(calSubTotal(totalAmount))
+
   };
 
   const stars = Array.from({ length: 5 }, (_, i) => (
@@ -98,9 +106,21 @@ const handleWishlist = (product: any) => {
 
 }
 
+let totalAmount = 0
+    for (let i = 0; i < cartItems.length; i++) {
+       let item = cartItems[i];
+       let subtotal = item.count * (item.price-item.price*(item.discount/100));
+       totalAmount += subtotal;
+     }
+     useEffect(() => {
+      console.log(totalAmount)
+
+      dispatch(calSubTotal(totalAmount))
+  });
+
   return (
     <div
-      className="md:max-w-[212.95px] md:max-h-[370.24px] min-w-[212.95px] min-h-[350.24px] mx-auto bg-white border border-gray-200  overflow-hidden relative group hover:drop-shadow-lg rounded-sm"
+      className="w-full min-h-[350.24px] mx-auto bg-white border border-gray-200  overflow-hidden relative group hover:drop-shadow-lg rounded-sm"
       key={product._id}
     >
       <div className="absolute max-w-[88.41px] max-h-[49px] flex flex-col items-start gap-1 p-2">
@@ -180,7 +200,7 @@ const handleWishlist = (product: any) => {
         { (product.count ==undefined || product.count<1) && (
           <button
             type="button"
-            className=" bg-blue-900 text-white min-h-[34px] min-w-[180.8px] rounded-full w-full "
+            className=" bg-blue-900 text-white min-h-[34px]  rounded-full w-full "
             onClick={() => handleaddToCart(product)}
           >
             Add to cart
