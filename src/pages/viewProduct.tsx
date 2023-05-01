@@ -37,27 +37,27 @@ import { updateProductQuantity } from "@/features/product/productSlice";
 
 const ItemPages = () => {
   const [data, setData] = useState<Product>({
-    _id: '',
+    _id: "",
     isRecommended: false,
     isDiscount: false,
     isOrganic: false,
     isFavourite: false,
     discount: 0,
     rating: 0,
-    front: '',
-    back: '',
-    side: '',
-    title: '',
+    front: "",
+    back: "",
+    side: "",
+    title: "",
     isAvailable: false,
     price: 0,
     quantity: 0,
-    brand: '',
-    description: '',
+    brand: "",
+    description: "",
     productQuantity: 0,
-    skuNumber: '',
+    skuNumber: "",
     count: 0,
     newprice: 0,
-    type: ''
+    type: "",
   });
   const [myObject, setMyObject] = useState(null);
   const [isColor, setIsColor] = useState(1);
@@ -263,12 +263,16 @@ const ItemPages = () => {
             <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 w-full ">
               <div className=" w-full">
                 <div className=" flex flex-row">
-                  <span className="text-gray-400 line-through mr-2 my-1 font-[1.125rem] flex items-center justify-center">
-                    {data?.price}
+                  <span className="font-ff-headings text-gray-400 line-through mr-2 my-1 font-[1.125rem] flex items-center justify-center">
+                    ${data?.price}
                   </span>
 
-                  <span className="my-1 text-red-700 text-[1.625rem] font-semibold">
-                    $7.25
+                  <span className="font-ff-headings my-1 text-red-700 text-[1.625rem] font-semibold">
+                    $
+                    {(
+                      data?.price -
+                      data?.price * (data?.discount / 100)
+                    ).toFixed(2)}
                   </span>
                 </div>
                 {data?.quantity > 0 ? (
@@ -487,8 +491,9 @@ const ItemPages = () => {
         <div className="bg-white drop-shadow rounded-md mt-10 pb-5">
           <div className=" flex flex-col sm:flex-row gap-4 sm:gap-8  justify-start text-left text-gray-400 py-5 px-6">
             <button
-              className={`   ${isColor === 1 ? "text-black" : "text-[#c2c2d3]"
-                }`}
+              className={`   ${
+                isColor === 1 ? "text-black" : "text-[#c2c2d3]"
+              }`}
               onClick={() => handleChange(1)}
             >
               DESCRIPTION
@@ -500,8 +505,9 @@ const ItemPages = () => {
               ADDITIONAL INFORMATION
             </button>
             <button
-              className={`   ${isColor === 3 ? "text-black" : "text-[#c2c2d3]"
-                }`}
+              className={`   ${
+                isColor === 3 ? "text-black" : "text-[#c2c2d3]"
+              }`}
               onClick={() => handleChange(3)}
             >
               REVIEW

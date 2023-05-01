@@ -15,4 +15,8 @@ module.exports = {
       "ongolemart.com",
     ],
   },
+  publicRuntimeConfig: {
+    APP_NAME: "bacola",
+    APP_LOGO_URL: "",
+  },
 };

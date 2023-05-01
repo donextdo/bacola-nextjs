@@ -9,37 +9,41 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
-export const FilterSideBar = ({ categoryId, brand, subcategory }:any) => {
-  const [selectedBrands, setSelectedBrands] = useState([]);
+export const FilterSideBar = ({
+  categoryId,
+  // brand,
+  subcategory,
+}: any) => {
+  //const [selectedBrands, setSelectedBrands] = useState([]);
   const [selectedSubCat, setSelectedSubCat] = useState([]);
   const router = useRouter();
-  let brandId:any = [];
-  let subcategorySelected:any = [];
+  // let brandId: any = [];
+  let subcategorySelected: any = [];
 
-  useEffect(() => {
-    if (brand) {
-      const brands = brand.split(",");
-      sessionStorage.setItem("brands", brands);
-      brandId = brands;
-    }
-  }, [brand]);
+  // useEffect(() => {
+  //   if (brand) {
+  //     const brands = brand.split(",");
+  //     sessionStorage.setItem("brands", brands);
+  //     brandId = brands;
+  //   }
+  // }, [brand]);
 
   useEffect(() => {
     if (subcategory) {
       const subCategories = subcategory.split(",");
       sessionStorage.setItem("subCategories", subCategories);
-      console.log("category coming", subCategories);
+      console.log("category coming from session storage", subCategories);
       subcategorySelected = subCategories;
     }
   }, [subcategory]);
 
-  const handleBrandChange = (brands:any) => {
-    setSelectedBrands(brands);
-  };
+  // const handleBrandChange = (brands: any) => {
+  //   setSelectedBrands(brands);
+  // };
 
-  const handleSubCatChange = (subCate:any) => {
+  const handleSubCatChange = (subCate: any) => {
     setSelectedSubCat(subCate);
-    console.log("gehwyhjdkwjd ", subCate);
+    console.log("sub category passing with props ", subCate);
   };
 
   return (
@@ -52,7 +56,7 @@ export const FilterSideBar = ({ categoryId, brand, subcategory }:any) => {
           />
           <RangeSlider />
           <Status />
-          <Brands categoryId={categoryId} onBrandChange={handleBrandChange} />
+          {/* <Brands categoryId={categoryId} onBrandChange={handleBrandChange} /> */}
         </div>
         <div className="lg:mt-12">
           <Image
@@ -69,9 +73,9 @@ export const FilterSideBar = ({ categoryId, brand, subcategory }:any) => {
         <div className="lg:mt-12 md:mt-12 mt-12">
           <FilteredProduct
             categoryId={categoryId}
-            selectedBrands={
-              selectedBrands.length > 0 ? selectedBrands : brandId
-            }
+            // selectedBrands={
+            //   selectedBrands.length > 0 ? selectedBrands : brandId
+            // }
             selectedSubCat={
               selectedSubCat.length > 0 ? selectedSubCat : subcategorySelected
             }

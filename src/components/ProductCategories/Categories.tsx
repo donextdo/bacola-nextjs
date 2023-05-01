@@ -4,7 +4,7 @@ import axios from "axios";
 import baseUrl from "../../../utils/baseUrl";
 import { useRouter } from "next/router";
 
-const Categories = ({ categoryId, onSuCatChange }:any) => {
+const Categories = ({ categoryId, onSuCatChange }: any) => {
   const [subCategory, setSubCategory] = useState([]);
   const [isEmpty, setIsEmpty] = useState(false);
   const [checkedCategory, setCheckedCategory] = useState({});
@@ -26,7 +26,7 @@ const Categories = ({ categoryId, onSuCatChange }:any) => {
     fetchData();
   }, [categoryId]);
 
-  const handleCtegoryClick = (categoryId:any, name:any) => {
+  const handleCtegoryClick = (categoryId: any, name: any) => {
     let updatedCheckedCategory = {};
 
     if (checkedCategory === categoryId) {

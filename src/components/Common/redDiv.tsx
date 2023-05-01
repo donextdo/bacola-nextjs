@@ -6,6 +6,7 @@ import download from "../../../assets/home/download.png";
 import Image from "next/image";
 import { BsArrowRight } from "react-icons/bs";
 import banner from "../../../assets/home/banner-box2.png";
+import { useRouter } from "next/router";
 
 export const RedDiv = () => {
   return (
@@ -72,6 +73,10 @@ export const AdditionalDiv = () => {
 };
 
 export const BestSeller = () => {
+  const router = useRouter();
+  const goToProduct = () => {
+    router.push("./filterProduct");
+  };
   return (
     <div className="flex flex-row items-center justify-between mb-9 ">
       <div className="flex flex-col">
@@ -82,7 +87,10 @@ export const BestSeller = () => {
           Do not miss the current offers until the end of March.
         </div>
       </div>
-      <div className=" p-2 h-9 flex flex-row rounded-full border border-gray-300 text-sm w-32 text-gray-500 px-4 justify-between ">
+      <div
+        className=" p-2 h-9 flex flex-row rounded-full border border-gray-300 text-sm w-32 text-gray-500 px-4 justify-between cursor-pointer"
+        onClick={goToProduct}
+      >
         View All
         <span>
           <BsArrowRight className="text-lg"></BsArrowRight>
@@ -93,6 +101,10 @@ export const BestSeller = () => {
 };
 
 export const NewProduct = () => {
+  const router = useRouter();
+  const goToProduct = () => {
+    router.push("./filterProduct");
+  };
   return (
     <div className="flex flex-row items-center justify-between mb-9 ">
       <div className="flex flex-col">
@@ -103,7 +115,10 @@ export const NewProduct = () => {
           New products with updated stocks.
         </div>
       </div>
-      <div className=" p-2 h-9 flex flex-row rounded-full border border-gray-300 text-sm w-32 text-gray-500 px-4 justify-between ">
+      <div
+        className=" p-2 h-9 flex flex-row rounded-full border border-gray-300 text-sm w-32 text-gray-500 px-4 justify-between cursor-pointer"
+        onClick={goToProduct}
+      >
         View All
         <span>
           <BsArrowRight className="text-lg"></BsArrowRight>
