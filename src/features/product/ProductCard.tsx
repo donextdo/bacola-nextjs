@@ -69,6 +69,35 @@ export const ProductCard: FC<Props> = ({ product }) => {
   let discountprice;
   discountprice = product.price * (product.discount/100)
 let newprice=product.price-discountprice
+
+const handleWishlist = (product: any) => {
+  // const wishlist = JSON.parse(localStorage.getItem('wishlist'));
+
+  const wishlistString = localStorage.getItem('wishlist');
+  const wishlist = wishlistString ? JSON.parse(wishlistString) : [];
+
+  const newObj = {
+      id: product._id,
+      image: product.front,
+      title: product.title,
+      price: product.price,
+      date: new Date().toLocaleDateString("en-US", {
+          month: "long",
+          day: "numeric",
+          year: "numeric"
+      }),
+      quantity: product.quantity
+  };
+  // console.log(newObj)
+  // Modify the array by pushing the new object
+  wishlist.push(newObj);
+
+  // Store the modified array back in local storage
+  localStorage.setItem('wishlist', JSON.stringify(wishlist));
+
+
+}
+
   return (
     <div
       className="md:max-w-[212.95px] md:max-h-[370.24px] min-w-[212.95px] min-h-[350.24px] mx-auto bg-white border border-gray-200  overflow-hidden relative group hover:drop-shadow-lg rounded-sm"
@@ -99,7 +128,7 @@ let newprice=product.price-discountprice
           <SlSizeFullscreen className="h-[10px] w-[10px] fill-blue-900 group-hover/icon2:fill-white" />
         </div>
         <div
-          className={`absolute max-w-[24px] max-h-[24px] top-9 right-2 bg-white flex items-center justify-center rounded-full h-8 w-8 hover:cursor-pointer drop-shadow-lg md:invisible group-hover:visible md:group-hover:-translate-x-3 md:group-hover:ease-in transition duration-150 hover:bg-blue-900 group/icon1`}
+          className={`absolute max-w-[24px] max-h-[24px] top-9 right-2 bg-white flex items-center justify-center rounded-full h-8 w-8 hover:cursor-pointer drop-shadow-lg md:invisible group-hover:visible md:group-hover:-translate-x-3 md:group-hover:ease-in transition duration-150 hover:bg-blue-900 group/icon1`} onClick={() => handleWishlist(product)}
         >
           {product.isFavourite ? (
             <FaHeart className="h-3 w-3 fill-blue-900 group-hover/icon1:fill-white" />
@@ -124,7 +153,11 @@ let newprice=product.price-discountprice
       </div>
       <div className="mx-5 mb-1 max-h-[155.29px] max-w-[212.95] ">
         <div className="text-sm font-medium text-black hover:text-indigo-400  capitalize leading-tight hover:cursor-pointer line-clamp-2">
+      <Link href={`/item-preview/${product._id}`}>  
+
           {product.title}
+          </Link>
+
         </div>
         <div className="my-1 font-[.6875rem] text-xs pt-2 text-green-600 uppercase font-semibold tracking-[.005em]">
           {product.quantity>0 ? "In Stock" : "Out of Stock"}
@@ -135,11 +168,11 @@ let newprice=product.price-discountprice
         <div className=" flex flex-row items-center">
           {isDiscount && (
             <span className="text-gray-400 text-sm line-through mr-2 my-1 font-[1.125rem]">
-              ${product.price as unknown as ReactElement}
+              ${product.price.toFixed(2) as unknown as ReactElement}
             </span>
           )}
           <span className="my-1 text-red-700 text-lg font-semibold">
-            ${newprice}
+            ${newprice.toFixed(2)}
           </span>
         </div>
       </div>

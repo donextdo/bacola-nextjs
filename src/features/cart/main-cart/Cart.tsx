@@ -102,7 +102,7 @@ const Cart: FC<CartType> = () => {
                                 <tbody>
                                     <tr>
                                         <td className="border-b border-[#e4e5ee] py-3 font-semibold text-[13px]">Subtotal</td>
-                                        <td className="border-b border-[#e4e5ee] py-3 text-[15px] text-right">${totalAmount}</td>
+                                        <td className="border-b border-[#e4e5ee] py-3 text-[15px] text-right">${totalAmount.toFixed(2)}</td>
                                     </tr>
                                     <tr>
                                         <td rowSpan={4} className="text-[13px] font-semibold border-b border-[#e4e5ee]">Shipping</td>
@@ -132,7 +132,7 @@ const Cart: FC<CartType> = () => {
                                     </tr>
                                     <tr>
                                         <td className="border-b border-[#e4e5ee] text-[13px] font-semibold pb-4">Total</td>
-                                        <td className="border-b border-[#e4e5ee] text-right font-semibold text-xl py-4">${totalAmount}</td>
+                                        <td className="border-b border-[#e4e5ee] text-right font-semibold text-xl py-4">${totalAmount.toFixed(2)}</td>
                                     </tr>
                                 </tbody>
                             </table>

@@ -92,13 +92,13 @@ const Bill = () => {
                 onChange={(e) => setLastName(e.target.value)}
             />
 
-            <label className="text-sm">Company Name (optional)</label>
+            <label className="text-sm">Company Name </label>
             <input
                 type="text"
                 className="w-full px-4 h-10 bg-gray-100 rounded-md mt-2 mb-4"
                 value={companyName}
                 onChange={(e) => setCompanyName(e.target.value)}
-                required
+                
             />
 
             <label className="text-sm">Country / Region *</label>
