@@ -292,7 +292,23 @@ console.log(ship)
        <h2 className="text-sm mt-2">{order?.billingAddress.billingEmail}</h2>
        </div>
 
-       <h2 className="font-semibold  mt-4 mb-2">SHIPPING DETAILS</h2>
+       {ship !== null && ship.shippingAddress &&(
+  <div className="mt-4">
+    <h2 className="font-semibold mb-2">SHIPPING DETAILS</h2>
+    <div className="mb-4">
+      <h2 className="text-sm">{ship.shippingAddress?.shippingFirstName} {ship.shippingAddress?.shippingLastName}</h2>
+      <h2 className="text-sm">{ship.shippingAddress?.shippingCompanyName}</h2>
+      <h2 className="text-sm">{ship.shippingAddress?.street}</h2>
+      <h2 className="text-sm">{ship.shippingAddress?.town}</h2>
+      <h2 className="text-sm">{ship.shippingAddress?.zipCode}</h2>
+      <h2 className="text-sm">{ship.shippingAddress?.country}</h2>
+      <h2 className="text-sm">{ship.shippingAddress?.shippingphone}</h2>
+    </div>
+  </div>
+)}
+
+        
+       {/* <h2 className="font-semibold  mt-4 mb-2">SHIPPING DETAILS</h2>
       <div className="mb-4">
        <h2 className="text-sm">{ship?.shippingAddress.shippingFirstName} {ship?.shippingAddress.shippingLastName}</h2>
        <h2 className="text-sm">{ship?.shippingAddress.shippingCompanyName}</h2>
@@ -301,7 +317,7 @@ console.log(ship)
        <h2 className="text-sm">{ship?.shippingAddress.zipCode}</h2>
        <h2 className="text-sm">{ship?.shippingAddress.country}</h2>
        <h2 className="text-sm">{ship?.shippingAddress.shippingphone}</h2>
-       </div>
+       </div> */}
 
     </div>
   );
