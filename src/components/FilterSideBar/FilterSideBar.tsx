@@ -8,6 +8,8 @@ import bacolaBannergif from "../../../assets/home/sidebar-banner.gif";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import { PageNumber } from "../Pagination/PageNumber";
+import { ProductCount } from "../Pagination/ProductCount";
 
 export const FilterSideBar = ({
   categoryId,
@@ -16,6 +18,7 @@ export const FilterSideBar = ({
 }: any) => {
   //const [selectedBrands, setSelectedBrands] = useState([]);
   const [selectedSubCat, setSelectedSubCat] = useState([]);
+  const [productCount, setProductCount] = useState();
   const router = useRouter();
   // let brandId: any = [];
   let subcategorySelected: any = [];
@@ -45,6 +48,10 @@ export const FilterSideBar = ({
     setSelectedSubCat(subCate);
     console.log("sub category passing with props ", subCate);
   };
+  const passCount = (countProduct: any) => {
+    setProductCount(countProduct);
+    console.log("count product ", countProduct);
+  };
 
   return (
     <div className="flex flex-row mb-9">
@@ -66,11 +73,14 @@ export const FilterSideBar = ({
           />
         </div>
       </div>
-      <div className="lg:w-3/4 md:w-full w-full cursor-pointer mt-12 md:ml-9">
-        <div>
+      <div className="lg:w-3/4 md:w-full w-full mt-12 md:ml-9">
+        <div className="cursor-pointer">
           <ImageProductFilter />
         </div>
-        <div className="lg:mt-12 md:mt-12 mt-12">
+        <div>
+          <ProductCount passCount={passCount} />
+        </div>
+        <div className="lg:mt-12 md:mt-12 mt-12 cursor-pointer">
           <FilteredProduct
             categoryId={categoryId}
             // selectedBrands={
@@ -80,6 +90,9 @@ export const FilterSideBar = ({
               selectedSubCat.length > 0 ? selectedSubCat : subcategorySelected
             }
           />
+        </div>
+        <div>
+          <PageNumber />
         </div>
       </div>
     </div>

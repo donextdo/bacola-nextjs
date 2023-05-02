@@ -35,10 +35,7 @@ export const SearchItem = () => {
 
   const sendView = (itemId: any) => {
     setIsHide(true);
-    router.push({
-      pathname: "/viewProduct",
-      query: { itemId: itemId },
-    });
+    router.push(`/item-preview/${itemId}`);
     setSearchItem("");
     setIsHide(false);
   };

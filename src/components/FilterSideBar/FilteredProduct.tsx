@@ -149,6 +149,15 @@ export const FilteredProduct = ({
             console.log(error);
           });
         }
+      } else {
+        const fetchData = async () => {
+          const response = await axios.get(`${baseUrl}/products/getAll`);
+          console.log("ViewAll", response);
+          setProduct(response.data);
+        };
+        fetchData().catch((error) => {
+          console.log(error);
+        });
       }
     };
     fetchData().catch((error) => {
