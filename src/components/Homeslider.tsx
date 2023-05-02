@@ -63,7 +63,7 @@ export default function HomeSlider() {
                     Specialist in the grocery store
                   </h2>
                   <h1 className="text-black text-base mt-3 lg:mt-6">
-                  Only this week. Don&apos;t miss...
+                    Only this week. Don&apos;t miss...
                   </h1>
 
                   <h1 className="text-black text-base mt-3 lg:mt-6">
