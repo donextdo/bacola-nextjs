@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
-import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
-import Pagination from "react-js-pagination";
 import axios from "axios";
 import baseUrl from "../../../utils/baseUrl";
 import { useRouter } from "next/router";
@@ -17,7 +15,7 @@ export const PageNumber = ({ perpage }: any) => {
     try {
       const fetchData = async () => {
         const response = await axios.get(
-          `http://localhost:4000/api/products?perpage=${perpage}`
+          `${baseUrl}/products?perpage=${perpage}`
         );
         setTotalPage(response.data.totalPages);
         setCurrentPage(response.data.currentPage);

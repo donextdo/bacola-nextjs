@@ -91,7 +91,7 @@ const Header = () => {
               </div>
             </Link>
           </div>
-          <div className="basis-1/4 ">
+          <div className="basis-1/4 lg:visible md:visible invisible">
             <Location />
           </div>
           <div className="basis-2/4 search-bar">

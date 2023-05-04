@@ -11,13 +11,7 @@ import { useRouter } from "next/router";
 import { PageNumber } from "../Pagination/PageNumber";
 import { ProductCount } from "../Pagination/ProductCount";
 
-export const FilterSideBar = ({
-  categoryId,
-  brand,
-  subcategory,
-  perpage,
-  page,
-}: any) => {
+export const FilterSideBar = ({ categoryId, brand, subcategory }: any) => {
   const [selectedBrands, setSelectedBrands] = useState([]);
   const [selectedSubCat, setSelectedSubCat] = useState([]);
 
@@ -50,10 +44,6 @@ export const FilterSideBar = ({
     setSelectedSubCat(subCate);
     console.log("sub category passing with props ", subCate);
   };
-  // const passCount = (countProduct: any) => {
-  //   setProductCount(countProduct);
-  //   console.log("count product ", countProduct);
-  // };
 
   useEffect(() => {
     const storedBrands = localStorage.getItem("selectedBrands");
@@ -99,12 +89,10 @@ export const FilterSideBar = ({
             selectedSubCat={
               selectedSubCat.length > 0 ? selectedSubCat : subcategorySelected
             }
-            perpage={perpage}
-            page={page}
           />
         </div>
         <div>
-          <PageNumber perpage={perpage} />
+          <PageNumber />
         </div>
       </div>
     </div>

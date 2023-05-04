@@ -1,1 +1,0 @@
-{"version":3,"sources":["baseUrl.tsx"],"names":[],"mappings":";;AAAA,8CAA8C;AAC9C,IAAM,OAAO,GAAG,8BAA8B,CAAC;AAE/C,qBAAe,OAAO,CAAC","file":"baseUrl.js","sourcesContent":["// const baseUrl = 'http://localhost:4000/api'\r\nconst baseUrl = \"http://16.16.173.63:4000/api\";\r\n\r\nexport default baseUrl;\r\n"]}
