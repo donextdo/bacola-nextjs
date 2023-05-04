@@ -10,13 +10,13 @@ import logo from "../../../assets/logo/bacola.png";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import getConfig from "next/config";
+import { Location } from "../Location/Location";
 
 const Header = () => {
   const [cart, setCart] = useState(false);
   // const [totalCount, setTotalCount] = useState(0)
   const totalCount = useSelector((state: RootState) => state.cart.totalCount);
   const totalAmount = useSelector((state: RootState) => state.cart.totalAmount);
-
 
   const { publicRuntimeConfig } = getConfig();
 
@@ -91,6 +91,9 @@ const Header = () => {
               </div>
             </Link>
           </div>
+          <div className="basis-1/4 lg:visible md:visible invisible">
+            <Location />
+          </div>
           <div className="basis-2/4 search-bar">
             <SearchItem />
           </div>
@@ -103,9 +106,7 @@ const Header = () => {
                 </button>
               </Link>
             </div>
-            <div className="">
-              ${totalAmount.toFixed(2)}
-            </div>
+            <div className="">${totalAmount.toFixed(2)}</div>
             <div
               className="relative"
               onMouseEnter={hnadleEnter}

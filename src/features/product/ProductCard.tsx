@@ -10,6 +10,9 @@ import { addItem, calSubTotal, updateItemQuantity } from "../cart/cartSlice";
 import { updateProductQuantity } from "./productSlice";
 import { Product } from "./product";
 import Link from "next/link";
+import ProductPopup from "./ProductPopup";
+import axios from "axios";
+import baseUrl from "../../../utils/baseUrl";
 
 interface Props {
   product: Product;
@@ -17,8 +20,12 @@ interface Props {
 
 export const ProductCard: FC<Props> = ({ product }) => {
   const [isDiscount, setIsdiscount] = useState(false);
+  const [productPopup, setProductPopup] = useState(false);
+  const [wishlist, setWishlist] = useState([]);
   const dispatch = useDispatch();
   const cartItems = useSelector((state: RootState) => state.cart.items);
+  let id = localStorage.getItem("id");
+
  
 
   useEffect(() => {
@@ -54,6 +61,7 @@ export const ProductCard: FC<Props> = ({ product }) => {
   };
 
   const handleaddToCart = (product: Product) => {
+
     dispatch(addItem(product));
     const newQuantity = (product.count || 0) + 1;
     dispatch(
@@ -78,15 +86,18 @@ export const ProductCard: FC<Props> = ({ product }) => {
   discountprice = product.price * (product.discount/100)
 let newprice=product.price-discountprice
 
-const handleWishlist = (product: any) => {
+const handleWishlist = async (product: any) => {
   // const wishlist = JSON.parse(localStorage.getItem('wishlist'));
 
-  const wishlistString = localStorage.getItem('wishlist');
-  const wishlist = wishlistString ? JSON.parse(wishlistString) : [];
+  // const wishlistString = localStorage.getItem('wishlist');
+  // const wishlist = wishlistString ? JSON.parse(wishlistString) : [];
+  
 
-  const newObj = {
-      id: product._id,
-      image: product.front,
+
+  const whishListObj = {
+    "whishList":[{
+      _id: product._id,
+      front: product.front,
       title: product.title,
       price: product.price,
       date: new Date().toLocaleDateString("en-US", {
@@ -95,15 +106,16 @@ const handleWishlist = (product: any) => {
           year: "numeric"
       }),
       quantity: product.quantity
+    }]
   };
-  // console.log(newObj)
-  // Modify the array by pushing the new object
-  wishlist.push(newObj);
-
-  // Store the modified array back in local storage
-  localStorage.setItem('wishlist', JSON.stringify(wishlist));
-
-
+ 
+  try {
+    const response = await axios.put(`${baseUrl}/users/wishList/${id}`, whishListObj);
+    console.log(response.data); // do something with the response data
+} catch (error) {
+    console.log(error); // handle the error
+}
+ 
 }
 
 let totalAmount = 0
@@ -113,10 +125,25 @@ let totalAmount = 0
        totalAmount += subtotal;
      }
      useEffect(() => {
-      console.log(totalAmount)
-
       dispatch(calSubTotal(totalAmount))
   });
+
+  let proId
+  const handlepopup = (product:any) => {
+    setProductPopup(true)
+    proId=product._id
+    console.log(proId)
+  }
+
+//   let yellowstars = [];
+//   let graystars=[];
+
+// for (let i = 1; i <= product.review; i++) {
+//   yellowstars.push(<FaStar />);
+// }
+// for (let i = 1; i <= (5-product.review); i++) {
+//   graystars.push(<FaStar />);
+// }
 
   return (
     <div
@@ -144,9 +171,10 @@ let totalAmount = 0
         )}
       </div>
       <div className="max-w-[40px] max-h-[85px] ">
-        <div className="absolute max-w-[24px] max-h-[24px] top-2 right-2 bg-white flex items-center justify-center rounded-full h-8 w-8 hover:cursor-pointer drop-shadow-lg md:invisible group-hover:visible md:group-hover:-translate-x-3 md:group-hover:ease-in transition duration-150 hover:bg-blue-900 group/icon2">
+        <button className="absolute max-w-[24px] max-h-[24px] top-2 right-2 bg-white flex items-center justify-center rounded-full h-8 w-8 hover:cursor-pointer drop-shadow-lg md:invisible group-hover:visible md:group-hover:-translate-x-3 md:group-hover:ease-in transition duration-150 hover:bg-blue-900 group/icon2" onClick={() => handlepopup(product)}>
           <SlSizeFullscreen className="h-[10px] w-[10px] fill-blue-900 group-hover/icon2:fill-white" />
-        </div>
+        </button>
+        
         <div
           className={`absolute max-w-[24px] max-h-[24px] top-9 right-2 bg-white flex items-center justify-center rounded-full h-8 w-8 hover:cursor-pointer drop-shadow-lg md:invisible group-hover:visible md:group-hover:-translate-x-3 md:group-hover:ease-in transition duration-150 hover:bg-blue-900 group/icon1`} onClick={() => handleWishlist(product)}
         >
@@ -184,6 +212,8 @@ let totalAmount = 0
         </div>
         <div className="text-xs pt-2 flex flex-row items-center my-1">
           {stars}
+          {/* <p className="text-md text-yellow-400 flex">{yellowstars}</p>
+        <p className="text-md text-gray-400 flex">{graystars}</p> */}
         </div>
         <div className=" flex flex-row items-center">
           {isDiscount && (
@@ -229,6 +259,12 @@ let totalAmount = 0
           </div>
         )}
       </div>
+
+      {
+          productPopup && (
+            <ProductPopup setProductPopup={setProductPopup} proId={proId}/>
+          )
+        }
     </div>
   );
 };

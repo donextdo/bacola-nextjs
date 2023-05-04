@@ -1,9 +1,12 @@
 import { addItem } from "@/features/cart/cartSlice";
 import { updateProductQuantity } from "@/features/product/productSlice";
+import axios from "axios";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { IoClose } from "react-icons/io5";
 import { useDispatch } from "react-redux";
+import baseUrl from "../../utils/baseUrl";
+import { Product } from "@/features/product/product";
 
 interface WIshlist {
     selected: boolean;
@@ -11,27 +14,35 @@ interface WIshlist {
     date: string;
     price: number;
     title:string;
-    id: string;
-    image:string;
+  _id: string;
+    front:string;
     checked: boolean;
     quantity: number;
 
     // any other properties
   }
 const Wishlist = () => {
-    const [data, setData] = useState<Array<WIshlist>>([
-        // { id: 1, name: "John", age: 25, email: "john@example.com", phone: "1234567890", address: "123 Main St", city: "New York" },
-        // { id: 2, name: "Jane", age: 30, email: "jane@example.com", phone: "2345678901", address: "456 Broadway", city: "Los Angeles" },
-        // { id: 3, name: "Bob", age: 40, email: "bob@example.com", phone: "3456789012", address: "789 5th Ave", city: "Chicago" },
-    ]);
+    const [data, setData] = useState<Array<WIshlist>>([]);
+   
+    let id: any;
+    if (typeof localStorage !== 'undefined') {
+      id = localStorage.getItem("id");
+    }
 
     useEffect(() => {
-        const wishlistString = localStorage.getItem('wishlist');
-        const wishlist = wishlistString ? JSON.parse(wishlistString) : [];
-        console.log(wishlist)
-        setData(wishlist);
+        fetchData()
     }, []);
 
+    async function fetchData() {
+        try {
+            const res = await axios.get(`${baseUrl}/users/${id}`);
+            console.log(res.data.whishList)
+            setData(res.data.whishList)        
+        } catch (err) {
+            console.log(err);
+        }
+    }
+    
     const [checkAll, setCheckAll] = useState(false);
 
     const handleCheckAll = () => {
@@ -46,7 +57,7 @@ const Wishlist = () => {
     const handleCheck = (id:any) => {
         const newData = [...data];
         newData.forEach(item => {
-            if (item.id === id) {
+            if (item._id === id) {
                 item.checked = !item.checked;
             }
         });
@@ -54,29 +65,18 @@ const Wishlist = () => {
     };
 
     const handleDelete = (id: any) => {
-        setData((prevData) => prevData.filter((item) => item.id !== id));
-        // localStorage.setItem('wishlist', JSON.stringify([])); 
-        // Retrieve the wishlist array from localStorage and parse it
-        const wishlistString = localStorage.getItem('wishlist');
-        const wishlist = wishlistString ? JSON.parse(wishlistString) : [];
-
-        // Find the index of the item you want to remove
-        const index = wishlist.findIndex((item:any) => item.id === id);
-
-        // Use the splice method to remove the item from the array
-        wishlist.splice(index, 1);
-
-        // Store the updated array back into localStorage
-        localStorage.setItem('wishlist', JSON.stringify(wishlist));
+        const newItems = data.filter((item) => item._id !== id);
+        setData(newItems)
 
     };
     const dispatch = useDispatch();
 
     const handleCart = (item: any) => {
+        console.log(item)
         dispatch(addItem(item))
         const newQuantity = (item.count || 0) + 1;
     dispatch(
-      updateProductQuantity({ productId: item.id, count: newQuantity })
+      updateProductQuantity({ productId: item.productId, count: newQuantity })
     );
     }
 
@@ -121,22 +121,22 @@ const Wishlist = () => {
                 </thead>
                 <tbody>
                     {data.map((item) => (
-                        <tr key={item.id}>
+                        <tr key={item._id}>
                             <td className="border px-4 py-2">
                                 <input
                                     type="checkbox"
                                     className="form-checkbox h-5 w-5 text-blue-600"
                                     checked={item.checked}
-                                    onChange={() => handleCheck(item.id)}
+                                    onChange={() => handleCheck(item._id)}
                                 />
                             </td>
                             <td className="border px-4 py-2">
-                                <button className="" onClick={() => handleDelete(item.id)}><IoClose /></button>
+                                <button className="" onClick={() => handleDelete(item._id)}><IoClose /></button>
                             </td>
                             <td className="border px-4 py-2">
                                 <div className="w-[71px] h-[71px]">
                                     <Image
-                                        src={item.image}
+                                        src={item.front}
                                         alt="Header Image"
                                         className="w-full "
                                         width={1200}

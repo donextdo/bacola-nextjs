@@ -9,9 +9,14 @@ const NavbarNew = () => {
     <div>
       <div className="xl:px-40 lg:px-5 lg:py-5  hidden md:hidden lg:block">
         <div className=" lg:flex lg:flex-row  lg:justify-between lg:items-center">
-          <div className="lg:flex lg:flex-col ">
-            <Allcategories />
-          </div>
+        <div className="lg:flex lg:flex-col items-center">
+  <div className="my-4">
+    <Allcategories />
+  </div>
+  <div className="flex justify-center items-center bg-[#edeef5] rounded-full h-[18px] w-[120px] -mt-6">
+    <h1 className="text-[#71778e] text-[10px]">TOTAL 63 PRODUCTS</h1>
+  </div>
+</div>
           <div className="lg:flex lg:flex-col  ">
             <PageNavBar />
           </div>

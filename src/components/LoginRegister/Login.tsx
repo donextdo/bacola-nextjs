@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import baseUrl from "../../../utils/baseUrl";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 type FormValues = {
   usernameoremail: string;
@@ -102,17 +103,24 @@ const Login: React.FC<Props> = () => {
           </div>
 
           <div className="flex pl-3 mt-5 ">
-            {/* <input type="checkbox" className="bg-[#f3f4f7]" /> */}
-            {/* <p className="px-3 text-sm">Remember me</p> */}
+            <input type="checkbox" className="bg-[#f3f4f7]" />
+            <p className="px-3 text-sm">Remember me</p>
           </div>
 
-          <div className="mx-2 mt-5 mb-10 ">
+          <div className="mx-2 mt-5  ">
             <button
               type="submit"
               className=" rounded-md w-full block bg-[#233a95] px-3.5 py-2.5 text-center text-sm font-semibold text-white"
             >
               Login
             </button>
+          </div>
+          <div className="mx-2 mt-5 mb-5 ">
+            <Link href={"/forgetpassword/"}>
+              <p className="text-cyan-400 text-sm font-medium cursor-pointer hover:text-[#233a95] hover:underline">
+                Lost your password?
+              </p>
+            </Link>
           </div>
 
           {errorMsg && (

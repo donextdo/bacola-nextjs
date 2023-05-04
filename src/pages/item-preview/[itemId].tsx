@@ -58,7 +58,8 @@ const ItemPages = () => {
         skuNumber: '',
         count: 0,
         newprice: 0,
-        type: ''
+        type: '',
+        // review:'',
     })
     const [myObject, setMyObject] = useState(null);
     const [isColor, setIsColor] = useState(1);

@@ -6,8 +6,6 @@ import TopHeader from "../TopHeader/TopHeader";
 import NavbarNew from "../Navbar/newNawBar";
 import NewsLettertwo from "../NewsLetter2/NewsLettertwo";
 
-
-
 type Props = {
   children: ReactNode;
 };

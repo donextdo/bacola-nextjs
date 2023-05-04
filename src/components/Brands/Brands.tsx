@@ -4,7 +4,7 @@ import axios from "axios";
 import baseUrl from "../../../utils/baseUrl";
 import { useRouter } from "next/router";
 
-const Brands = ({ categoryId, onBrandChange }:any) => {
+const Brands = ({ categoryId, onBrandChange }: any) => {
   const [brand, setBrand] = useState([]);
   const [isEmpty, setIsEmpty] = useState(false);
   const [checkedBrands, setCheckedBrands] = useState<any>({});
@@ -27,15 +27,15 @@ const Brands = ({ categoryId, onBrandChange }:any) => {
     const queryBrands = router.query.brands;
     if (typeof queryBrands === "string") {
       const selectedBrands = queryBrands.split(",");
-      const newCheckedBrands: {[key: string]: boolean} = {}
-      selectedBrands.forEach((brandId:any) => {
+      const newCheckedBrands: { [key: string]: boolean } = {};
+      selectedBrands.forEach((brandId: any) => {
         newCheckedBrands[brandId] = true;
       });
       setCheckedBrands(newCheckedBrands);
     }
   }, [categoryId]);
 
-  const handleBrandClick = (brandId:any) => {
+  const handleBrandClick = (brandId: any) => {
     const newCheckedBrands = { ...checkedBrands };
     newCheckedBrands[brandId] = !checkedBrands[brandId];
     setCheckedBrands(newCheckedBrands);
@@ -70,7 +70,7 @@ const Brands = ({ categoryId, onBrandChange }:any) => {
                     type="checkbox"
                     id={category._id}
                     checked={isChecked}
-                    onChange={() => handleBrandClick(category._id)}
+                    onChange={() => handleBrandClick(category.brand)}
                     className="mr-4  min-h-[14px] min-w-[14px] hover:cursor-pointer accent-blue-900 hover:bg-blue-900"
                   />
                   <label

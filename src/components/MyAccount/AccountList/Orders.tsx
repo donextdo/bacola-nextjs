@@ -34,55 +34,64 @@ const Orders = () => {
         // <div className="border border-gray-200 p-4 ">
         //     <p className="leading-loose"><Link href="#" className="bg-[#233a95] text-white p-2 rounded-md">Browse Products</Link> No Order has been made yet.</p>
         // </div>
-        <div className="">
-            {orderList.map((order) => (
-                <div className="mb-8" key={order.orderId}>
-                    <div className="border border-gray-200 p-5 grid grid-cols-5">
-                        <div>
-                            <h1 className="text-sm font-semibold">Order</h1>
-                            <p className="text-[13px] text-[#2bbef9]">#{order.orderId}</p>
-                        </div>
-                        <div>
-                            <h1 className="text-sm font-semibold">Date</h1>
-                            <p className="text-[13px]">{order.date}</p>
-                        </div>
-                        <div>
-                            <h1 className="text-sm font-semibold">Status</h1>
-                            <p className="text-[13px]">{order.status}</p>
-                        </div>
-                        <div>
-                            <h1 className="text-sm font-semibold">Total</h1>
-                            <p className="text-[13px]">${order.totalprice}</p>
-                        </div>
-                        <div className="text-right">
-                            <button className="bg-[#233a95] text-white p-2 rounded-md w-[74px]">view</button>
-                        </div>
-                    </div>
-                    {order.items.map((item) => (
-                        <div className="border border-gray-200 p-5 space-y-3" key={item.productId}>
-                            <div className="flex justify-between border border-gray-200 items-center px-5 py-[15px]">
-                                <p className="text-sm">{item.productDetails.name} <span className="text-sm font-semibold">x {item.orderquantity}</span> </p>
-                                <div className="h-[60px] w-[60px] ">
-                                    <Image
-                                        src={item.productDetails.front}
-                                        alt="item1"
-                                        style={{
-                                            objectFit: "contain",
-                                            backgroundColor: "white",
-                                            width: "100%",
-                                            height: "100%",
-                                        }}
-                                        width={450}
-                                        height={400}
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                    ))}
+        <div>
+        {orderList.length > 0 ? (
+          <div className="">
+          {orderList.map((order) => (
+              <div className="mb-8" key={order.orderId}>
+                  <div className="border border-gray-200 p-5 grid grid-cols-5">
+                      <div>
+                          <h1 className="text-sm font-semibold">Order</h1>
+                          <p className="text-[13px] text-[#2bbef9]">#{order.orderId}</p>
+                      </div>
+                      <div>
+                          <h1 className="text-sm font-semibold">Date</h1>
+                          <p className="text-[13px]">{order.date}</p>
+                      </div>
+                      <div>
+                          <h1 className="text-sm font-semibold">Status</h1>
+                          <p className="text-[13px]">{order.status}</p>
+                      </div>
+                      <div>
+                          <h1 className="text-sm font-semibold">Total</h1>
+                          <p className="text-[13px]">${order.totalprice}</p>
+                      </div>
+                      <div className="text-right">
+                          <button className="bg-[#233a95] text-white p-2 rounded-md w-[74px]">view</button>
+                      </div>
+                  </div>
+                  {order.items.map((item) => (
+                      <div className="border border-gray-200 p-5 space-y-3" key={item.productId}>
+                          <div className="flex justify-between border border-gray-200 items-center px-5 py-[15px]">
+                              <p className="text-sm">{item.productDetails.name} <span className="text-sm font-semibold">x {item.orderquantity}</span> </p>
+                              <div className="h-[60px] w-[60px] ">
+                                  <Image
+                                      src={item.productDetails.front}
+                                      alt="item1"
+                                      style={{
+                                          objectFit: "contain",
+                                          backgroundColor: "white",
+                                          width: "100%",
+                                          height: "100%",
+                                      }}
+                                      width={450}
+                                      height={400}
+                                  />
+                              </div>
+                          </div>
+                      </div>
+                  ))}
 
-                </div>
-            ))}
-        </div>
+              </div>
+          ))}
+      </div>
+        ) : (
+            <div className="border border-gray-200 p-4 ">
+             <p className="leading-loose"><Link href="#" className="bg-[#233a95] text-white p-2 rounded-md">Browse Products</Link> No Order has been made yet.</p>
+             </div>
+        )}
+      </div>
+        
     );
 };
 
