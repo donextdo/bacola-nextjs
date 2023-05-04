@@ -37,6 +37,19 @@ const Checkout = () => {
     const [email, setEmail] = useState('');
     const [note, setNote] = useState('');
 
+    const [emailError, setEmailError] = useState('');
+    const [firstNameError, setFirstNameError] = useState('');
+    const [lastNameError, setLastNameError] = useState('');
+    const [companyNameError, setCompanyNameError] = useState('');
+    const [countryError, setCountryError] = useState('');
+    const [streetAddressError, setStreetAddressError] = useState('');
+    const [apartmentError, setApartmentError] = useState('');
+    const [townCityError, setTownCityError] = useState('');
+    const [stateError, setStateError] = useState('');
+    const [zipCodeError, setZipCodeError] = useState('');
+    const [phoneError, setPhoneError] = useState('');
+    const [formError, setFormError] = useState('');
+
     const router = useRouter();
     const cartItems = useSelector((state: RootState) => state.cart.items);
     const orderList = useSelector((state: RootState) => state.order.orders);
@@ -50,6 +63,123 @@ const Checkout = () => {
 //     discountprice = item.price * (item.discount/100)
 //   let newprice=item.price-discountprice
 //   item.price - (item.price * (item.discount/100))
+const handleEmailChange = (e:any) => {
+    const newEmail = e.target.value;
+    setEmail(newEmail);
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(newEmail)) {
+        setEmailError('Invalid email format');
+    } else {
+        setEmailError('');
+    }
+};
+
+const handleFirstNameChange = (e:any) => {
+    const newFirstName = e.target.value;
+    setFirstName(newFirstName);
+    if (newFirstName === '') {
+        setFirstNameError('First name cannot be empty');
+    } else {
+        setFirstNameError('');
+    }
+};
+
+const handleLastNameChange = (e:any) => {
+    const newLastName = e.target.value;
+    setLastName(newLastName);
+    if (newLastName === '') {
+        setLastNameError('Last name cannot be empty');
+    } else {
+        setLastNameError('');
+    }
+};
+
+const handleCompanyNameChange = (e:any) => {
+    const newCompanyName = e.target.value;
+    setCompanyName(newCompanyName);
+    if (newCompanyName === '') {
+        setCompanyNameError('Company name cannot be empty');
+    } else {
+        setCompanyNameError('');
+    }
+};
+
+const handleCountryChange = (e:any) => {
+    const newCountry = e.target.value;
+    setCountry(newCountry);
+    if (newCountry === '') {
+        setCountryError('Country cannot be empty');
+    } else {
+        setCountryError('');
+    }
+};
+
+const handleStreetAddressChange = (e:any) => {
+    const newStreetAddress = e.target.value;
+    setStreetAddress(newStreetAddress);
+    if (newStreetAddress === '') {
+        setStreetAddressError('Street address cannot be empty');
+    } else {
+        setStreetAddressError('');
+    }
+};
+
+const handleApartmentChange = (e:any) => {
+    const newApartment = e.target.value;
+    setApartment(newApartment);
+    // No validation logic for apartment, assuming it can be empty
+};
+
+const handleTownCityChange = (e:any) => {
+    const newTownCity = e.target.value;
+    setTownCity(newTownCity);
+    if (newTownCity === '') {
+        setTownCityError('Town/city cannot be empty');
+    } else {
+        setTownCityError('');
+    }
+};
+
+const handleStateChange = (e:any) => {
+    const newState = e.target.value;
+    setState(newState);
+    if (newState === '') {
+        setStateError('State cannot be empty');
+    } else {
+        setStateError('');
+    }
+};
+
+const handleZipCodeChange = (e:any) => {
+    const newZipCode = e.target.value;
+    setZipCode(newZipCode);
+    if (!/^[0-9]{5}(?:-[0-9]{4})?$/.test(newZipCode)) {
+        setZipCodeError('Invalid zip code format');
+    } else {
+        setZipCodeError('');
+    }
+};
+
+const handlePhoneChange = (e:any) => {
+    const newPhone = e.target.value;
+    setPhone(newPhone);
+    if (!/^\+?[0-9]{7,}$/i.test(newPhone)) {
+        setPhoneError('Invalid phone number format');
+    } else {
+        setPhoneError('');
+    }
+};
+
+// form handle submit
+// const handleSubmit = (e:any) => {
+//     e.preventDefault();
+//     // perform form submission or validation here
+//     if (emailError || phoneError) {
+//         setFormError('Please fix the errors and try again');
+//       } else {
+//         // perform form submission
+//         console.log('Form submitted!');
+//       }
+// };
 
     let totalAmount = 0
     for (let i = 0; i < cartItems.length; i++) {
@@ -84,8 +214,7 @@ const Checkout = () => {
             console.log(err);
         }
     }
-    //  const orderString = localStorage.getItem('order');
-    // const order = orderString ? JSON.parse(orderString) : [];
+    
 
     const [selectedRadio, setSelectedRadio] = useState('');
     const handleCheckboxChange = (e: any) => {
@@ -138,12 +267,6 @@ const Checkout = () => {
             }
         } catch (error) {
             console.log(error); // handle the error
-
-
-            // if(orderObj!=null){
-            //     dispatch(insertOrderAsync(orderObj));
-
-            // }
         }
     }
 
@@ -165,75 +288,90 @@ const Checkout = () => {
 
                     <div className="mt-3">
                         <div className="grid grid-cols-1 gap-5 md:grid-cols-2 mb-4">
-                            <div>
-                                <label className="text-[13px]">First Name *</label>
-                                <input
-                                    type="text"
-                                    className="w-full px-4 h-11 bg-gray-100 rounded-md mt-2 "
-                                    value={firstName}
-                                    onChange={(e) => setFirstName(e.target.value)}
-                                    required
-                                />
-
-                            </div>
-                            <div>
-                                <label className="text-[13px] ">Last Name *</label>
-                                <input
-                                    type="text"
-                                    className="w-full px-4 h-11 bg-gray-100 rounded-md mt-2"
-                                    value={lastName}
-                                    onChange={(e) => setLastName(e.target.value)}
-                                />
-                            </div>
+                        <div>
+                            <label className="text-[13px]">First Name *</label>
+                            <input
+                                type="text"
+                                className="w-full px-4 h-11 bg-gray-100 rounded-md mt-2 "
+                                value={firstName}
+                                onChange={handleFirstNameChange}
+                                required
+                            />
+                            {firstNameError && <div className='text-red-500'>{firstNameError}</div>}
+                        </div>
+                        <div>
+                            <label className="text-[13px] ">Last Name *</label>
+                            <input
+                                type="text"
+                                className="w-full px-4 h-11 bg-gray-100 rounded-md mt-2"
+                                value={lastName}
+                                onChange={handleLastNameChange}
+                                required
+                            />
+                            {lastNameError && <div className='text-red-500'>{lastNameError}</div>}
+                      </div>
                         </div>
 
                         <label className="text-[13px] ">Company Name </label>
+                    <input
+                        type="text"
+                        className="w-full px-4 h-11 bg-gray-100 rounded-md mt-2"
+                        value={companyName}
+                        onChange={handleCompanyNameChange}
+                    />
+ {/* {companyNameError && <div className='text-red-500'>{companyNameError}</div>} */}
+
+                          <div className="flex flex-col mt-4 mb-4">
+                        <label className="text-[13px] ">Country / Region *</label>
                         <input
                             type="text"
-                            className="w-full px-4 h-11 bg-gray-100 rounded-md mt-2 mb-4"
-                            value={companyName}
-                            onChange={(e) => setCompanyName(e.target.value)}
-
+                            className="w-full px-4 h-11 bg-gray-100 rounded-md mt-2"
+                            value={country}
+                            onChange={handleCountryChange}
+                            required
                         />
+                         {countryError && <div className='text-red-500'>{countryError}</div>}
+                    </div>
 
-                        <div className="flex flex-col space-y-2  mb-4">
-                            <label className="text-[13px] ">Country / Region *</label>
-                            <input
-                                type="text"
-                                className="w-full px-4 h-11 bg-gray-100 rounded-md mt-2 mb-4"
-                                value={country}
-                                onChange={(e) => setCountry(e.target.value)}
-                            />
-                        </div>
+                    <label className="text-[13px] ">Street address *</label>
+                    <input type="text" className="w-full h-11 px-4 bg-gray-100 rounded-md mt-2 pl-4 text-sm" placeholder="House number and street name" value={streetAddress} onChange={handleStreetAddressChange}
+                        required />
+                        {streetAddressError && <div className='text-red-500'>{streetAddressError}</div>}
+                    <input
+                        type="text" className="w-full px-4 h-11 bg-gray-100 rounded-md mt-4 mb-4 pl-4 text-sm" placeholder="Apartment, suite, unite, etc. (optional)" value={apartment} onChange={(e) => setApartment(e.target.value)}
+                    />
 
-                        <label className="text-[13px] ">Street address *</label>
-                        <input type="text" className="w-full h-11 px-4 bg-gray-100 rounded-md mt-2 mb-2 pl-4 text-sm" placeholder="House number and street name" value={streetAddress} onChange={(e) => setStreetAddress(e.target.value)} />
-                        <input type="text" className="w-full px-4 h-11 bg-gray-100 rounded-md mt-2 mb-4 pl-4 text-sm" placeholder="Apartment, suite, unite, etc. (optional)" value={apartment} onChange={(e) => setApartment(e.target.value)} />
-
-
-                        <label className="text-[13px] ">Town / City *</label>
-                        <input type="text" className="w-full px-4 h-11 bg-gray-100 rounded-md mt-2 mb-4" value={townCity} onChange={(e) => setTownCity(e.target.value)} />
-
+<label className="text-[13px] ">Town / City *</label>
+                    <input type="text" className="w-full px-4 h-11 bg-gray-100 rounded-md mt-2 " value={townCity} onChange={handleTownCityChange}
+                        required />
+                    {townCityError && <div className='text-red-500'>{townCityError}</div>}
                         
-                        <div className="flex flex-col space-y-2  mb-4">
-                            <label className="text-[13px] ">State *</label>
-                            <input type="text" className="w-full px-4 h-11 bg-gray-100 rounded-md mt-2 mb-4" value={state} onChange={(e) => setState(e.target.value)} />
+                    <div className="flex flex-col space-y-2 mt-4 mb-4">
+                        <label className="text-[13px] ">State *</label>
+                        <input type="text" className="w-full px-4 h-11 bg-gray-100 rounded-md mt-2" value={state} onChange={handleStateChange}
+                            required />
+                            {stateError && <div className='text-red-500'>{stateError}</div>}
+                    </div>
 
+                    <label className="text-[13px] ">Zip Code *</label>
+                    <input type="text" className="w-full px-4 h-11 bg-gray-100 rounded-md mt-2" value={zipCode} onChange={handleZipCodeChange}
+                        required />
+            {zipCodeError && <div className='text-red-500'>{zipCodeError}</div>}
+
+            <div className="grid grid-cols-1 gap-5 md:grid-cols-2 mt-4">
+                        <div>
+                            <label className="text-[13px] ">Phone *</label>
+                            <input type="text" className="w-full px-4 h-11 bg-gray-100 rounded-md mt-2 " value={phone} onChange={handlePhoneChange}
+                                required />
+                            {phoneError && <div className='text-red-500'>{phoneError}</div>}
                         </div>
-
-                        <label className="text-[13px] ">Zip Code *</label>
-                        <input type="text" className="w-full px-4 h-11 bg-gray-100 rounded-md mt-2 mb-4" value={zipCode} onChange={(e) => setZipCode(e.target.value)} />
-
-                        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 mb-2">
-                            <div>
-                                <label className="text-[13px] ">Phone *</label>
-                                <input type="text" className="w-full px-4 h-11 bg-gray-100 rounded-md mt-2 mb-4" value={phone} onChange={(e) => setPhone(e.target.value)} />
-                            </div>
-                            <div>
-                                <label className="text-[13px] ">Email address *</label>
-                                <input type="text" className="w-full px-4 h-11 bg-gray-100 rounded-md mt-2 mb-4" value={email} onChange={(e) => setEmail(e.target.value)} />
-                            </div>
+                        <div>
+                            <label className="text-[13px] ">Email address *</label>
+                            <input type="text" className="w-full px-4 h-11 bg-gray-100 rounded-md mt-2" value={email} onChange={handleEmailChange}
+                                required />
+                            {emailError && <div className='text-red-500'>{emailError}</div>}
                         </div>
+                    </div>
 
                         {/* <div className="flex gap-1 border-b border-[#e4e5ee] py-3">
                             <input type="checkbox" name="address" id="address" />
@@ -372,14 +510,9 @@ const Checkout = () => {
                     {/* load items and total  map method*/}
                     <table className="w-full">
                         <tbody>
-                            <tr>
-                                <td className=" py-3 text-[13px] w-[50%]">Pepsi Cola Soda - 2 L Bottle <span className="font-semibold">× 1</span> </td>
-                                <td className=" py-3 text-[15px] text-right">$5.05</td>
-                            </tr>
-                            <tr>
-                                <td className=" py-3 text-[13px] w-[50%]">Pepsi Cola Soda - 2 L Bottle <span className="font-semibold">× 2</span> </td>
-                                <td className=" py-3 text-[15px] text-right">$5.05</td>
-                            </tr>
+                        {cartItems.map((item, index) => (
+                                    <CheckoutSidebar item={item} key={index}/>
+                                ))}
                         </tbody>
                     </table>
 
@@ -387,7 +520,7 @@ const Checkout = () => {
                         <tbody>
                             <tr>
                                 <td className="text-[13px] font-semibold border-y border-[#e4e5ee] text-[#71778e]">Subtotal</td>
-                                <td className=" py-3 text-[15px] text-right border-y border-[#e4e5ee]">$5.05</td>
+                                <td className=" py-3 text-[15px] text-right border-y border-[#e4e5ee]">${totalAmount.toFixed(2)}</td>
 
                             </tr>
                             <tr>
@@ -399,18 +532,20 @@ const Checkout = () => {
                             </tr>
                             <tr>
 
-                                <td className="text-[13px] pb-5 text-right border-b border-[#e4e5ee]"><label className="inline-flex -gap-1"><span className="mr-2">Local pickup</span>
+                                <td className="text-[13px] pb-5 text-right border-b border-[#e4e5ee]">
+                                    {/* <label className="inline-flex -gap-1"><span className="mr-2">Local pickup</span>
                                     <input
                                         type="radio"
                                         name="vendor"
                                         value="Vendor 1"
                                     
                                     />
-                                </label></td>
+                                </label> */}
+                                </td>
                             </tr>
                             <tr>
                                 <td className="border-b border-[#e4e5ee] text-[13px] font-semibold py-4 text-[#71778e]">Total</td>
-                                <td className="border-b border-[#e4e5ee] text-right font-semibold text-xl py-4 ">$35.78</td>
+                                <td className="border-b border-[#e4e5ee] text-right font-semibold text-xl py-4 ">${totalAmount.toFixed(2)}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -447,12 +582,19 @@ const Checkout = () => {
 
                     <p className="text-[13px] mt-8">Your personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our <span className="text-[#ed174a] underline underline-offset-1 font-semibold">privacy policy.</span></p>
 
-                    <div className="flex gap-2 mt-4">
-                        <input type="checkbox" name="address" id="address" />
-                        <p className="text-xs">I have read and agree to the website <span className="text-[#ed174a] underline underline-offset-1">terms and conditions* </span></p>
-                    </div>
-
-                    <button className="bg-[#ed174a] text-white py-2.5 rounded-md text-sm h-[50px] w-full text-center mt-6 font-semibold" >Place order</button>
+                    {(firstName=="" || lastName=="" || 
+                    companyName=="" ||
+                    country=="" ||
+                    streetAddress=="" ||
+                    apartment=="" ||
+                    townCity=="" ||
+                    state=="" ||
+                    zipCode=="" ||
+                    phone=="" ||
+                    email=="" )
+                    
+                    ?<button className="bg-[#ed174a] opacity-50 text-white py-2.5 rounded-md text-sm h-[50px] w-full text-center mt-6 font-semibold" onClick={handleOrder} disabled={true}>Place order</button>
+                    : <button className="bg-[#ed174a] text-white py-2.5 rounded-md text-sm h-[50px] w-full text-center mt-6 font-semibold" onClick={handleOrder}>Place order</button>}
 
                 </div>
             </div>

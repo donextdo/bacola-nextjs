@@ -8,7 +8,6 @@ const inter = Inter({ subsets: ["latin"] });
 
 import CartList from "@/components/Image-Cart-Bottom/Image-cart-bottom";
 import HomeSlider from "@/components/Homeslider";
-
 import HomePage from "@/components/Common/Home";
 
 export default function Home() {

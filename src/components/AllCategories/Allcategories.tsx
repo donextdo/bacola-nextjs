@@ -74,7 +74,7 @@ const Allcategories = () => {
   }, [router.pathname]);
   return (
     <>
-      <div>
+      <div className="">
         <button
           className="w-[214px] h-[50px] rounded-full bg-[#2bbef9] "
           onClick={toggleHome}
@@ -97,7 +97,7 @@ const Allcategories = () => {
         </button>
 
         {homeOpen && (
-          <div className="text-[13px] w-64 py-2 min-w-[17rem] min-h-[32rem]  bg-white mt-5 border border-gray m-auto absolute p-3 z-10">
+          <div className="text-[13px] w-64 py-2 min-w-[17rem] min-h-[32rem]  bg-white mt-7 border border-gray m-auto absolute p-3 z-10 ">
             <ul className="relative">
               {viewCategory.map((category, index) => {
                 return (

@@ -8,6 +8,9 @@ import { RootState } from "../../../redux/store"
 import { useDispatch, useSelector } from "react-redux";
 import CartCard from "./CartCard";
 import { calSubTotal, removeAll } from "../cartSlice";
+import axios from "axios";
+import baseUrl from "../../../../utils/baseUrl";
+import { useRouter } from "next/router";
 
 
 interface CartType {
@@ -17,48 +20,125 @@ interface CartType {
 }
 
 const Cart: FC<CartType> = () => {
-    const  cartItems  = useSelector((state: RootState) => state.cart.items);
+    const cartItems = useSelector((state: RootState) => state.cart.items);
     const [selectedValue, setSelectedValue] = useState("Ship");
-  const dispatch = useDispatch();
+    const dispatch = useDispatch();
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [companyName, setCompanyName] = useState('');
+    const [country, setCountry] = useState('');
+    const [streetAddress, setStreetAddress] = useState('');
+    const [apartment, setApartment] = useState('');
+    const [townCity, setTownCity] = useState('');
+    const [state, setState] = useState('');
+    const [zipCode, setZipCode] = useState('');
+    const [phone, setPhone] = useState('');
+    const [email, setEmail] = useState('');
+    let id: any;
+    if (typeof localStorage !== 'undefined') {
+        id = localStorage.getItem("id");
+    }
+    const [showInputs, setShowInputs] = useState(false);
+    const router = useRouter();
 
-    // let total = 0;
-   
+
+
     useEffect(() => {
         console.log(cartItems)
         dispatch(calSubTotal(totalAmount))
     });
 
-    
-  
+    useEffect(() => {
+        fetchData()
+    }, []);
+
+    async function fetchData() {
+        try {
+            const res = await axios.get(`${baseUrl}/users/${id}`);
+            console.log(res.data)
+            const data = res.data;
+            setFirstName(data.shippingAddress.shippingFirstName);
+            setLastName(data.shippingAddress.shippingLastName);
+            setCompanyName(data.shippingAddress.shippingCompanyName);
+            setCountry(data.shippingAddress.country)
+            setStreetAddress(data.shippingAddress.street)
+            setApartment(data.shippingAddress.apartment)
+            setTownCity(data.shippingAddress.town)
+            setState(data.shippingAddress.state)
+            setZipCode(data.shippingAddress.zipCode)
+            setPhone(data.shippingAddress.shippingphone)
+            setEmail(data.shippingAddress.shippingEmail);
+
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+
+
     let totalAmount = 0
     for (let i = 0; i < cartItems.length; i++) {
-       let item = cartItems[i];
-       let subtotal = item.count * item.price;
-       totalAmount += subtotal;
-     }
-     useEffect(() => {
+        let item = cartItems[i];
+        let subtotal = item.count * item.price;
+        totalAmount += subtotal;
+    }
+    useEffect(() => {
         console.log(cartItems)
         dispatch(calSubTotal(totalAmount))
     });
 
-     
-     const [total, setTotal] = useState(totalAmount+5);
 
-     function handleClickRadioAdd5() {
-       setTotal(total + 5);
-     }
+    const [total, setTotal] = useState(totalAmount + 5);
 
-     function handleClickRadioSubtract5() {
-        setTotal(total - 5);
-      }
-     
-    const handleClear = () => {
-      
-        dispatch(removeAll())
-
-       
+    function handleClickRadioAdd5() {
+        setTotal(total + 5);
     }
 
+    function handleClickRadioSubtract5() {
+        setTotal(total - 5);
+    }
+
+    const handleClear = () => {
+
+        dispatch(removeAll())
+
+
+    }
+
+    function handleClick() {
+        setShowInputs(!showInputs);
+    }
+
+    const handleUpdateShipping = async () => {
+        const shippingObj = {
+                shippingFirstName: firstName,
+                shippingLastName: lastName,
+                shippingCompanyName: companyName,
+                 country: country,
+                 street: streetAddress,
+                 apartment: apartment,
+                 town: townCity,
+                 state: state,
+                 zipCode: zipCode,
+                 shippingphone: phone,
+                shippingEmail: email,
+          
+    }
+    console.log(shippingObj)
+
+    // router.push({
+    //     pathname: '/orderMessage',
+    //     query: shippingObj,
+    //   });
+
+    // try {
+    //     const response = await axios.post(`${baseUrl}/orders/place`, shippingObj);
+    //     console.log(response.data); // do something with the response data
+        
+    // } catch (error) {
+    //     console.log(error); // handle the error
+    // }
+    }
     return (
         <div className="px-3.5 container mx-auto mt-4 mb-20">
             <div>
@@ -87,7 +167,7 @@ const Cart: FC<CartType> = () => {
                             <div>
                                 {cartItems.map((item, index) => (
 
-                                    <CartCard item={item} key={index} totalAmount={totalAmount}/>
+                                    <CartCard item={item} key={index} totalAmount={totalAmount} />
                                 ))}
 
                             </div>
@@ -114,7 +194,7 @@ const Cart: FC<CartType> = () => {
                                         <td className="border-b border-[#e4e5ee] py-3 text-[15px] text-right">${totalAmount.toFixed(2)}</td>
                                     </tr>
                                     <tr>
-                                        <td rowSpan={4} className="text-[13px] font-semibold border-b border-[#e4e5ee]">Shipping</td>
+                                        <td rowSpan={4} className="text-[13px] font-semibold ">Shipping</td>
                                         <td className="text-right text-[13px] py-3">
                                             {/* Flat rate: <span className="inline-flex text-[#d51243] text-sm gap-2">$5.00
                                         <input type="radio" name="cart"  
@@ -126,9 +206,9 @@ const Cart: FC<CartType> = () => {
                                     <tr>
 
                                         <td className="text-[13px] pb-3 text-right"><label className="inline-flex -gap-1"><span className="mr-2">Local pickup</span>
-                                        <input type="radio" name="cart" 
-                                        // onClick={handleClickRadioSubtract5} 
-                                        />
+                                            <input type="radio" name="cart"
+                                            // onClick={handleClickRadioSubtract5} 
+                                            />
                                         </label></td>
                                     </tr>
                                     <tr>
@@ -137,11 +217,33 @@ const Cart: FC<CartType> = () => {
                                     </tr>
                                     <tr>
 
-                                        <td className="text-right text-[13px] border-b border-[#e4e5ee] text-[#2bbef9] pb-4">Change address</td>
+                                        <td className="text-right text-[13px]  text-[#2bbef9] pb-4"><button onClick={handleClick}> Change address</button>
+                                            {showInputs && (
+                                                <div className="flex flex-col justify-end text-right">
+                                                    <input
+                                                        type="text" className="w-full px-4 h-11 bg-gray-100 rounded-md mt-2 ml-2 pl-4 text-sm" placeholder="Country"
+                                                      value={country} 
+                                                      onChange={(e) => setCountry(e.target.value)}
+                                                    />
+                                                    <input
+                                                        type="text" className="w-full px-4 h-11 bg-gray-100 rounded-md mt-2 ml-2 pl-4 text-sm" placeholder="City"
+                                                      value={townCity} 
+                                                      onChange={(e) => setTownCity(e.target.value)}
+                                                    />
+                                                    <input
+                                                        type="text" className="w-full px-4 h-11 bg-gray-100 rounded-md mt-2 ml-2 pl-4 text-sm" placeholder="Postcode/Zip"
+                                                      value={zipCode} 
+                                                      onChange={(e) => setZipCode(e.target.value)}
+                                                    />
+
+                                                    <button className="bg-[#233a95] text-white py-2.5 px-4 rounded-md text-xs h-11 w-[104px] mt-3" onClick={handleUpdateShipping}>Update</button>
+                                                </div>
+                                            )}
+                                        </td>
                                     </tr>
                                     <tr>
-                                        <td className="border-b border-[#e4e5ee] text-[13px] font-semibold pb-4">Total</td>
-                                        <td className="border-b border-[#e4e5ee] text-right font-semibold text-xl py-4">${totalAmount.toFixed(2)}</td>
+                                        <td className="border-y border-[#e4e5ee] text-[13px] font-semibold pb-4">Total</td>
+                                        <td className="border-y border-[#e4e5ee] text-right font-semibold text-xl py-4">${totalAmount.toFixed(2)}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -166,7 +268,7 @@ const Cart: FC<CartType> = () => {
                             </tr>
                             <tr>
                                 <td rowSpan={4} className="text-[13px] font-semibold border-b border-[#e4e5ee]">Shipping</td>
-                                <td className="text-right text-[13px] py-3">Flat rate: <span className="inline-flex text-[#d51243] text-sm gap-2">$5.00<input type="radio" name="vendor"  
+                                <td className="text-right text-[13px] py-3">Flat rate: <span className="inline-flex text-[#d51243] text-sm gap-2">$5.00<input type="radio" name="vendor"
                                 // onChange={handleRadioChange} 
                                 /></span></td>
                             </tr>
@@ -176,7 +278,7 @@ const Cart: FC<CartType> = () => {
                                     <input
                                         type="radio"
                                         name="vendor"
-                                        // onChange={handleRadioChange}
+                                    // onChange={handleRadioChange}
                                     />
                                 </label></td>
                             </tr>
