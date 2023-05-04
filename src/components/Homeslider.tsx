@@ -28,7 +28,7 @@ export default function HomeSlider() {
   }, [dispatch]);
   return (
     <>
-      <div className="flex flex-row mb-9">
+      <div className="flex flex-row mb-9 z-20">
         <div className="lg:w-1/4"></div>
         <div className="mt-4 lg:w-3/4 md:w-full w-full cursor-pointer">
           <Swiper
@@ -63,7 +63,7 @@ export default function HomeSlider() {
                     Specialist in the grocery store
                   </h2>
                   <h1 className="text-black text-base mt-3 lg:mt-6">
-                  Only this week. Don&apos;t miss...
+                    Only this week. Don&apos;t miss...
                   </h1>
 
                   <h1 className="text-black text-base mt-3 lg:mt-6">

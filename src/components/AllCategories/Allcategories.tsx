@@ -18,10 +18,10 @@ import { useRouter } from "next/router";
 
 interface Category {
   _id: string;
-    name: string;
-    subcategories:any;
-    // any other properties
-  }
+  name: string;
+  subcategories: any;
+  // any other properties
+}
 
 const Allcategories = () => {
   const [homeOpen, setHomeOpen] = useState(false);
@@ -43,7 +43,7 @@ const Allcategories = () => {
     fetchData();
   }, []);
 
-  const handleCategoryHover = (_id:any) => {
+  const handleCategoryHover = (_id: any) => {
     //console.log(categoryId);
     setActiveCategory(_id);
   };
@@ -52,11 +52,11 @@ const Allcategories = () => {
     setActiveCategory(null);
   };
 
-  const handleSubCategoryHover = (subcategory:string) => {
+  const handleSubCategoryHover = (subcategory: string) => {
     //console.log(subcategory);
   };
 
-  const getProductByCategory = async (categoryId:any) => {
+  const getProductByCategory = async (categoryId: any) => {
     sessionStorage.clear();
     setHomeOpen(false);
     router.push({
@@ -97,7 +97,7 @@ const Allcategories = () => {
         </button>
 
         {homeOpen && (
-          <div className="text-[13px] w-64 py-2 min-w-[17rem] min-h-[32rem]  bg-white mt-7 border border-gray m-auto absolute p-3 z-10 ">
+          <div className="text-[13px] w-64 py-2 min-w-[17rem] min-h-[32rem]  bg-white mt-5 border border-gray m-auto absolute p-3 z-30">
             <ul className="relative">
               {viewCategory.map((category, index) => {
                 return (
@@ -128,28 +128,30 @@ const Allcategories = () => {
                     {activeCategory === category._id &&
                     category.subcategories.length > 0 ? (
                       <ul
-                        className="text-[13px] py-2  p-3  bg-white border border-gray absolute ml-[258px] top-[-0.52rem] z-10 min-w-[17rem] min-h-[32.5rem]"
+                        className="text-[13px] py-2  p-3  bg-white border border-gray absolute ml-[258px] top-[-0.52rem] z-30 min-w-[17rem] min-h-[32.5rem]"
                         onMouseEnter={() => setIsHover(true)}
                         onMouseLeave={() => setIsHover(false)}
                       >
-                        {category.subcategories.map((subcategory:any, index:any) => (
-                          <li key={index}>
-                            {" "}
-                            <a
-                              href="#"
-                              className="block px-2 py-2 pt-5 text-gray-500 hover:text-[#2bbef9]  "
-                              key={subcategory.id}
-                              onMouseEnter={() =>
-                                handleSubCategoryHover(subcategory?._id)
-                              }
-                              onClick={() =>
-                                getProductByCategory(subcategory?._id)
-                              }
-                            >
-                              {subcategory.name}
-                            </a>
-                          </li>
-                        ))}
+                        {category.subcategories.map(
+                          (subcategory: any, index: any) => (
+                            <li key={index}>
+                              {" "}
+                              <a
+                                href="#"
+                                className="block px-2 py-2 pt-5 text-gray-500 hover:text-[#2bbef9]  "
+                                key={subcategory.id}
+                                onMouseEnter={() =>
+                                  handleSubCategoryHover(subcategory?._id)
+                                }
+                                onClick={() =>
+                                  getProductByCategory(subcategory?._id)
+                                }
+                              >
+                                {subcategory.name}
+                              </a>
+                            </li>
+                          )
+                        )}
                       </ul>
                     ) : null}
                   </li>

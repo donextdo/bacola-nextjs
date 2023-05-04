@@ -6,7 +6,7 @@ import axios from "axios";
 interface CartState {
   items: Product[];
   totalCount: number;
-  totalAmount:number;
+  totalAmount: number;
   status: "idle" | "loading" | "succeeded" | "failed";
   error: string | null;
 }
@@ -88,9 +88,14 @@ export const cartSlice = createSlice({
         state.error = action.error.message ?? "Unknown error";
       });
   },
- 
 });
 
-export const { addItem, removeItem, updateItemQuantity, removeAll, calSubTotal } = cartSlice.actions;
+export const {
+  addItem,
+  removeItem,
+  updateItemQuantity,
+  removeAll,
+  calSubTotal,
+} = cartSlice.actions;
 
 export default cartSlice.reducer;
