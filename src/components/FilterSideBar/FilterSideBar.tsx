@@ -13,23 +13,25 @@ import { ProductCount } from "../Pagination/ProductCount";
 
 export const FilterSideBar = ({
   categoryId,
-  // brand,
+  brand,
   subcategory,
+  perpage,
+  page,
 }: any) => {
-  //const [selectedBrands, setSelectedBrands] = useState([]);
+  const [selectedBrands, setSelectedBrands] = useState([]);
   const [selectedSubCat, setSelectedSubCat] = useState([]);
-  const [productCount, setProductCount] = useState();
+
   const router = useRouter();
-  // let brandId: any = [];
+  let brandId: any = [];
   let subcategorySelected: any = [];
 
-  // useEffect(() => {
-  //   if (brand) {
-  //     const brands = brand.split(",");
-  //     sessionStorage.setItem("brands", brands);
-  //     brandId = brands;
-  //   }
-  // }, [brand]);
+  useEffect(() => {
+    if (brand) {
+      const brands = brand.split(",");
+      sessionStorage.setItem("brands", brands);
+      brandId = brands;
+    }
+  }, [brand]);
 
   useEffect(() => {
     if (subcategory) {
@@ -40,18 +42,26 @@ export const FilterSideBar = ({
     }
   }, [subcategory]);
 
-  // const handleBrandChange = (brands: any) => {
-  //   setSelectedBrands(brands);
-  // };
+  const handleBrandChange = (brands: any) => {
+    setSelectedBrands(brands);
+  };
 
   const handleSubCatChange = (subCate: any) => {
     setSelectedSubCat(subCate);
     console.log("sub category passing with props ", subCate);
   };
-  const passCount = (countProduct: any) => {
-    setProductCount(countProduct);
-    console.log("count product ", countProduct);
-  };
+  // const passCount = (countProduct: any) => {
+  //   setProductCount(countProduct);
+  //   console.log("count product ", countProduct);
+  // };
+
+  useEffect(() => {
+    const storedBrands = localStorage.getItem("selectedBrands");
+    if (storedBrands) {
+      const parsedBrands = JSON.parse(storedBrands);
+      setSelectedBrands(parsedBrands);
+    }
+  }, []);
 
   return (
     <div className="flex flex-row mb-9">
@@ -63,7 +73,7 @@ export const FilterSideBar = ({
           />
           <RangeSlider />
           <Status />
-          {/* <Brands categoryId={categoryId} onBrandChange={handleBrandChange} /> */}
+          <Brands categoryId={categoryId} onBrandChange={handleBrandChange} />
         </div>
         <div className="lg:mt-12">
           <Image
@@ -78,32 +88,25 @@ export const FilterSideBar = ({
           <ImageProductFilter />
         </div>
         <div>
-          <ProductCount passCount={passCount} />
+          <ProductCount />
         </div>
         <div className="lg:mt-12 md:mt-12 mt-12 cursor-pointer">
           <FilteredProduct
             categoryId={categoryId}
-            // selectedBrands={
-            //   selectedBrands.length > 0 ? selectedBrands : brandId
-            // }
+            selectedBrands={
+              selectedBrands.length > 0 ? selectedBrands : brandId
+            }
             selectedSubCat={
               selectedSubCat.length > 0 ? selectedSubCat : subcategorySelected
             }
+            perpage={perpage}
+            page={page}
           />
         </div>
         <div>
-          <PageNumber />
+          <PageNumber perpage={perpage} />
         </div>
       </div>
     </div>
   );
 };
-// useEffect(() => {
-//   const storedBrands = localStorage.getItem("selectedBrands");
-//   if (storedBrands) {
-//     const parsedBrands = JSON.parse(storedBrands);
-//     setSelectedBrands(parsedBrands);
-//   }
-// }, []);
-
-//console.log("data enawad? ", categoryId);
