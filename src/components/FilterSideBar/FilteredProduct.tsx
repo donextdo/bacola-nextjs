@@ -25,7 +25,7 @@ export const FilteredProduct = ({
       if (categoryId) {
         try {
           const response = await axios.get(
-            `${baseUrl}/api/productDetails?categoryId=${categoryId}`
+            `http://localhost:4000/api/productDetails?categoryId=${categoryId}`
           );
           console.log("only category Id ? ", response);
           const products = response.data;
