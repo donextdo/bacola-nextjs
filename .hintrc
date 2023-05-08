@@ -23,6 +23,7 @@
         "label": "off",
         "autocomplete-valid": "off"
       }
-    ]
+    ],
+    "no-inline-styles": "off"
   }
 }
