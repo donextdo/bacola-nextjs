@@ -24,6 +24,7 @@ export const ProductList: FC<ComponentProps> = ({}) => {
 
   }, [dispatch]);
 
+ 
   // useEffect(() => {
   //   // Fetch products data from the API or use the dummy data from the JSON file
   //   fetch('/data.json')

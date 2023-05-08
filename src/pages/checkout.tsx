@@ -50,7 +50,28 @@ const Checkout = () => {
     const [phoneError, setPhoneError] = useState('');
     const [formError, setFormError] = useState('');
 
+    const [ship, setShip] = useState({
+    
+        shippingAddress: {
+          apartment: "",
+          country: "",
+          shippingCompanyName: "",
+          shippingEmail: "",
+          shippingFirstName: "",
+          shippingLastName: "",
+          shippingphone: "",
+          state: "",
+          street: "",
+          town: "",
+          zipCode: ""
+        },
+    
+      });
+
     const router = useRouter();
+
+     const { cartshippingFirstName, cartshippingLastName, cartshippingCompanyName, cartshippingcountry, cartshippingstreet, cartshippingapartment, cartshippingtown, cartshippingstate, cartshippingzipCode, cartshippingphone, cartshippingEmail } = router.query;
+
     const cartItems = useSelector((state: RootState) => state.cart.items);
     const orderList = useSelector((state: RootState) => state.order.orders);
     const dispatch = useDispatch<AppDispatch>();
@@ -169,7 +190,7 @@ const handlePhoneChange = (e:any) => {
     }
 };
 
-// form handle submit
+// form handle submit for example
 // const handleSubmit = (e:any) => {
 //     e.preventDefault();
 //     // perform form submission or validation here
@@ -214,6 +235,21 @@ const handlePhoneChange = (e:any) => {
             console.log(err);
         }
     }
+
+    useEffect(() => {
+        fetchData2()
+      }, []);
+
+    async function fetchData2() {
+        try {
+          const res = await axios.get(`${baseUrl}/users/${id}`);
+          console.log(res.data)
+          setShip(res.data)
+    
+        } catch (err) {
+          console.log(err);
+        }
+      }
     
 
     const [selectedRadio, setSelectedRadio] = useState('');
@@ -250,7 +286,28 @@ const handlePhoneChange = (e:any) => {
                 billingPhone: phone,
                 billingEmail: email,
                 note: note,
-            }
+            },
+            "shippingAddress": (cartshippingFirstName && cartshippingLastName && cartshippingCompanyName && cartshippingcountry && cartshippingstreet && cartshippingapartment && cartshippingtown && cartshippingstate && cartshippingzipCode && cartshippingphone && cartshippingEmail) ? 
+        {
+            shippingFirstName: cartshippingFirstName,
+            shippingLastName: cartshippingLastName,
+            shippingCompanyName: cartshippingCompanyName,
+            country: cartshippingcountry,
+            street: cartshippingstreet,
+            town: cartshippingtown,
+            zipCode: cartshippingzipCode,
+            shippingPhone: cartshippingphone,
+        } :
+        {
+            shippingFirstName: ship.shippingAddress?.shippingFirstName,
+            shippingLastName: ship.shippingAddress?.shippingLastName,
+            shippingCompanyName: ship.shippingAddress?.shippingCompanyName,
+            country: ship.shippingAddress?.country,
+            street: ship.shippingAddress?.street,
+            town: ship.shippingAddress?.town,
+            zipCode: ship.shippingAddress?.zipCode,
+            shippingPhone: ship.shippingAddress?.shippingphone,           
+        }
         };
 
         console.log(orderObj)
@@ -604,3 +661,5 @@ const handlePhoneChange = (e:any) => {
 }
 
 export default Checkout;
+
+

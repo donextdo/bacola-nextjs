@@ -26,7 +26,7 @@ export const ProductCard: FC<Props> = ({ product }) => {
   const cartItems = useSelector((state: RootState) => state.cart.items);
   let id = localStorage.getItem("id");
 
- 
+  
 
   useEffect(() => {
     if ((product.discount) >= 0) {
@@ -110,7 +110,7 @@ const handleWishlist = async (product: any) => {
   };
  
   try {
-    const response = await axios.put(`${baseUrl}/users/wishList/${id}`, whishListObj);
+    const response = await axios.post(`${baseUrl}/users/${id}/wishList`, whishListObj);
     console.log(response.data); // do something with the response data
 } catch (error) {
     console.log(error); // handle the error
@@ -135,15 +135,15 @@ let totalAmount = 0
     console.log(proId)
   }
 
-//   let yellowstars = [];
-//   let graystars=[];
+  let yellowstars = [];
+  let graystars=[];
 
-// for (let i = 1; i <= product.review; i++) {
-//   yellowstars.push(<FaStar />);
-// }
-// for (let i = 1; i <= (5-product.review); i++) {
-//   graystars.push(<FaStar />);
-// }
+for (let i = 1; i <= product.review; i++) {
+  yellowstars.push(<FaStar />);
+}
+for (let i = 1; i <= (5-product.review); i++) {
+  graystars.push(<FaStar />);
+}
 
   return (
     <div
@@ -211,9 +211,9 @@ let totalAmount = 0
           {product.quantity>0 ? "In Stock" : "Out of Stock"}
         </div>
         <div className="text-xs pt-2 flex flex-row items-center my-1">
-          {stars}
-          {/* <p className="text-md text-yellow-400 flex">{yellowstars}</p>
-        <p className="text-md text-gray-400 flex">{graystars}</p> */}
+          {/* {stars} */}
+          <p className="text-md text-yellow-400 flex">{yellowstars}</p>
+        <p className="text-md text-gray-400 flex">{graystars}</p>
         </div>
         <div className=" flex flex-row items-center">
           {isDiscount && (

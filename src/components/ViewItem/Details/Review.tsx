@@ -21,12 +21,11 @@ const Review = ({ itemId }: any) => {
     const [rating, setRating] = useState(0);
     const [text, setText] = useState("");
     const [savedText, setSavedText] = useState("");
-    const [review, setReview] = useState<Array<any>>([]);
     const [data, setData] = useState<Array<Review>>([])
     let id = localStorage.getItem("id");
 
 
-
+   
     let email: string | null;
     let username;
     let extractedUsername: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | ReactFragment | null | undefined;
@@ -34,7 +33,6 @@ const Review = ({ itemId }: any) => {
     // review name
     if (localStorage.getItem('email') !== null) {
         email = localStorage.getItem('email');
-        console.log(email)
         if (email !== null) {
             username = email.split('@')[0]; // Extract the username from the email
             extractedUsername = username.replace(/"/g, '');
@@ -62,39 +60,44 @@ const Review = ({ itemId }: any) => {
 
     // submit savetext
     const handleSubmit = async () => {
-        setSavedText(text);
-        setText("");
+       const review=text
 
         const data = {
-            body: savedText,
+            body: review,
             name: extractedUsername,
-            rating: 4,
+            rating: rating,
             userId: id,
             productId:itemId
         }
         console.log(data)
-        // setReview([...review, data])
+        if(rating>0 && review){
         try {
             const response = await axios.post(`${baseUrl}/reviews/insert`, data);
             console.log(response.data); // do something with the response data
+        setText("");
+
         } catch (error) {
             console.log(error); // handle the error
         }
+    }else{
+        alert("please add a rating and review")
+    }
     };
 
-    // star rating
-    const handleRatingChange = (event: any) => {
-        setRating(Number(event.target.value));
-        console.log(rating)
-        console.log(`Selected rating: ${rating}`);
-    };
+ 
 
     // review body
     const handleTextChange = (event: any) => {
         setText(event.target.value);
     };
 
-
+    // rating 
+    const buttonValues = [1, 2, 3, 4, 5];
+    
+    const handleRatingClick = (rating:any) => {
+        console.log(rating)
+      setRating(rating);
+    };
 
     return (
         <div>
@@ -130,25 +133,16 @@ const Review = ({ itemId }: any) => {
             <h1 className="text-lg mt-10 mb-2.5">Add a review</h1>
             <hr />
             <h4 className="mt-6 text-[13px]">Your rating *</h4>
-            <div className="flex">
-
-            {[1, 2, 3, 4, 5].map((ratingValue) => (
-        <label key={ratingValue}>
-          <input
-            type="radio"
-            name="rating"
-            value={ratingValue}
-            checked={ratingValue === rating}
-            onChange={handleRatingChange}
-            className="hidden"
-          />
-          <FaStar
-            className="star"
-            color={ratingValue <= rating ? '#ffc107' : '#e4e5e9'}
-          />
-        </label>
-      ))}
-            </div>
+            <div>
+  {buttonValues.map((value) => (
+    <button
+      key={value}
+      onClick={() => handleRatingClick(value)}
+    >
+      <FaStar className={`${rating >= value ? 'text-yellow-400' : 'text-gray-200'}`}/>
+    </button>
+  ))}
+</div>
             <h4 className="mt-3 mb-2 text-[13px]">Your review *</h4>
             <textarea className="w-full h-60 bg-gray-100 rounded-sm px-4" value={text}
                 onChange={handleTextChange}></textarea>
