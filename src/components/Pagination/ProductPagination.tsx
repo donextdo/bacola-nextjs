@@ -4,7 +4,7 @@ import baseUrl from "../../../utils/baseUrl";
 import axios from "axios";
 import { useRouter } from "next/router";
 
-export const ProductPagination = ({ perpage, page }: any) => {
+export const ProductPagination = ({ perpage, page, orderby }: any) => {
   const [product, setProduct] = useState([]);
 
   const router = useRouter();
@@ -46,7 +46,7 @@ export const ProductPagination = ({ perpage, page }: any) => {
       };
       fetchData();
     }
-  }, [perpage, page]);
+  }, [perpage, page, orderby]);
 
   return (
     <div>

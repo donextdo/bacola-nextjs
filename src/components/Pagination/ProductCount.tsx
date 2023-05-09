@@ -25,8 +25,41 @@ export const ProductCount = () =>
     const handleDropdownClickSort = (value: any) => {
       setSortBy(value);
       setShowSordMenu(false);
+      switch (value) {
+        case "Sort by popularity":
+          router.push({
+            pathname: router.pathname,
+            query: { ...router.query, orderby: "popularity" },
+          });
+          break;
+        case "Sort by average rating":
+          router.push({
+            pathname: router.pathname,
+            query: { ...router.query, orderby: "rating" },
+          });
+          break;
+        case "Sort by latest":
+          router.push({
+            pathname: router.pathname,
+            query: { ...router.query, orderby: "date" },
+          });
+          break;
+        case "Sort by price: low to high":
+          router.push({
+            pathname: router.pathname,
+            query: { ...router.query, orderby: "price" },
+          });
+          break;
+        case "Sort by price: high to low":
+          router.push({
+            pathname: router.pathname,
+            query: { ...router.query, orderby: "price-desc" },
+          });
+          break;
+        default:
+          break;
+      }
     };
-
     return (
       <div className="w-full h-12 bg-gray-100 mt-11 relative">
         <div className="flex flex-row justify-end">

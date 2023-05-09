@@ -9,10 +9,11 @@ import bacolaBannergif from "../../../assets/home/sidebar-banner.gif";
 import { ProductPagination } from "./ProductPagination";
 import { useEffect } from "react";
 
-export const HomePagination = ({ perpage, page }: any) => {
+export const HomePagination = ({ perpage, page, orderby }: any) => {
   useEffect(() => {
     console.log("perpage-homepagination ", perpage);
     console.log("page-homepagination ", page);
+    console.log("orderby-homepagination ", orderby);
   });
   return (
     <div className="flex flex-row mb-9">
@@ -38,7 +39,7 @@ export const HomePagination = ({ perpage, page }: any) => {
           <ProductCount />
         </div>
         <div className="mt-10">
-          <ProductPagination perpage={perpage} page={page} />
+          <ProductPagination perpage={perpage} page={page} orderby={orderby} />
         </div>
 
         <div className="lg:mt-12 md:mt-12 mt-12 cursor-pointer"></div>
