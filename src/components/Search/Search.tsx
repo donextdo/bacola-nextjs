@@ -39,6 +39,7 @@ export const SearchItem = () => {
     setSearchItem("");
     setIsHide(false);
   };
+  
 
   return (
     <div className=" flex flex-col w-full md:w-full lg:w-96 place-content-center relative">
@@ -70,7 +71,7 @@ export const SearchItem = () => {
 
       {searchItem !== "" && !isHide && (
         <div className=" flex flex-col">
-          <ul className="absolute bg-white border-2 border-gray-100 min-w-[37.5rem] z-10">
+          <ul className="absolute bg-white border-2 border-gray-100 min-w-[37.5rem] z-50">
             {products
               .filter((item) => {
                 const searchTerm = searchItem.toLowerCase();

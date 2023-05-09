@@ -69,7 +69,9 @@ export const cartSlice = createSlice({
       state.totalAmount = 0;
     },
     calSubTotal: (state, action) => {
-      state.totalAmount = action.payload;
+      // console.log('Order inserted:', action.payload);
+      state.totalAmount = action.payload 
+      
     },
   },
   extraReducers: (builder) => {

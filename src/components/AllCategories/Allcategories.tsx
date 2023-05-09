@@ -72,7 +72,7 @@ const Allcategories = () => {
   }, [router.pathname]);
   return (
     <>
-      <div>
+      <div className="">
         <button
           className="w-[214px] h-[50px] rounded-full bg-[#2bbef9] "
           onClick={toggleHome}
