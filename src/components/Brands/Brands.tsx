@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import { Product } from "@/features/product/product";
 import { RootState } from "@/redux/store";
 
-const Brands = ({ categoryId, onBrandChange }: any) => {
+const Brands = ({ categoryId }: any) => {
   const [brand, setBrand] = useState([]);
   const [isEmpty, setIsEmpty] = useState(false);
   const [checkedBrands, setCheckedBrands] = useState<any>({});
@@ -70,7 +70,7 @@ const Brands = ({ categoryId, onBrandChange }: any) => {
       query: { ...router.query, brands: selectedBrands.join(",") },
     });
 
-    onBrandChange(selectedBrands);
+    // onBrandChange(selectedBrands);
   };
 
   return (

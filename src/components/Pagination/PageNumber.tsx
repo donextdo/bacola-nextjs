@@ -55,7 +55,8 @@ export const PageNumber = ({ perpage }: any) => {
   }, [perpage, currentPage]);
 
   useEffect(() => {
-    const foo: { id: number }[] = [];
+    // const foo: { id: number }[] = [];
+    const foo: any = [];
 
     for (let i = 0; i < totalPage; i++) {
       const data = {

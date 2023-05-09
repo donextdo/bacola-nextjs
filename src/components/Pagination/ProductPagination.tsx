@@ -10,20 +10,13 @@ export const ProductPagination = ({ perpage, page, orderby }: any) => {
   const router = useRouter();
 
   useEffect(() => {
-    if (perpage || page) {
+    if (perpage || page || orderby) {
       const fetchData = async () => {
         try {
           const response = await axios.get(
-            `${baseUrl}/products?page=${page}&perpage=${perpage}`
+            `${baseUrl}/products?sort=${orderby}&page=${page}&perpage=${perpage}`
           );
-          console.log(
-            "only perpage product pagination with perpage? ",
-            response.data.products
-          );
-          console.log(
-            "only perpage product pagination currentpage with perpage? ",
-            response.data.currentPage
-          );
+
           const products = response.data.products;
           setProduct(products);
         } catch (error) {
