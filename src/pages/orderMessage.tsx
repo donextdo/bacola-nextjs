@@ -38,40 +38,6 @@ interface Order {
     billingEmail: string;
     note: string;
   };
-
-}
-interface OrderMsg {
-  orderId: string;
-  userId: string;
-  totalprice: number;
-  date: string;
-  status: string;
-  items: {
-    productDetails: {
-      name: string;
-      price: number;
-      brand: string;
-      description: string;
-
-    }
-    orderquantity: number;
-
-    productId: number;
-  }[];
-  billingAddress: {
-    billingFirstName: string;
-    billingLastName: string;
-    billingCompanyName: string;
-    country: string;
-    street: string;
-    apartment: string;
-    town: string;
-    state: string;
-    zipCode: string;
-    billingPhone: string;
-    billingEmail: string;
-    note: string;
-  };
   shippingAddress: {
     shippingFirstName: string;
     shippingLastName: string;
@@ -84,8 +50,56 @@ interface OrderMsg {
     zipCode: string;
     shippingPhone: string;
     shippingEmail: string;
-  };
+
 }
+}
+// interface OrderMsg {
+//   orderId: string;
+//   userId: string;
+//   totalprice: number;
+//   date: string;
+//   status: string;
+//   items: {
+//     productDetails: {
+//       name: string;
+//       price: number;
+//       brand: string;
+//       description: string;
+
+//     }
+//     orderquantity: number;
+
+//     productId: number;
+//   }[];
+//   billingAddress: {
+//     billingFirstName: string;
+//     billingLastName: string;
+//     billingCompanyName: string;
+//     country: string;
+//     street: string;
+//     apartment: string;
+//     town: string;
+//     state: string;
+//     zipCode: string;
+//     billingPhone: string;
+//     billingEmail: string;
+//     note: string;
+//   };
+//   shippingAddress: {
+//     shippingFirstName: string;
+//     shippingLastName: string;
+//     shippingCompanyName: string;
+//     country: string;
+//     street: string;
+//     apartment: string;
+//     town: string;
+//     state: string;
+//     zipCode: string;
+//     shippingPhone: string;
+//     shippingEmail: string;
+//   };
+// }
+
 const OrderMessage = () => {
   const [order, setOrder] = useState<Order>({
     orderId: "",
@@ -120,13 +134,6 @@ const OrderMessage = () => {
       zipCode: "",
       note: "",
     },
-  })
-  const [ship, setShip] = useState({
-    displayName: "",
-    email: "",
-    firstName: "",
-    lastName: "",
-    password: "",
     shippingAddress: {
       apartment: "",
       country: "",
@@ -134,41 +141,60 @@ const OrderMessage = () => {
       shippingEmail: "",
       shippingFirstName: "",
       shippingLastName: "",
-      shippingphone: "",
+      shippingPhone: "",
       state: "",
       street: "",
       town: "",
       zipCode: ""
     },
-    billingAddress: {
-      apartment: "",
-      country: "",
-      billingCompanyName: "",
-      billingEmail: "",
-      billingFirstName: "",
-      billingLastName: "",
-      billingphone: "",
-      state: "",
-      street: "",
-      town: "",
-      zipCode: ""
-    },
-    userName: "",
-    _id: "",
+  })
+  // const [ship, setShip] = useState({
+  //   displayName: "",
+  //   email: "",
+  //   firstName: "",
+  //   lastName: "",
+  //   password: "",
+  //   shippingAddress: {
+  //     apartment: "",
+  //     country: "",
+  //     shippingCompanyName: "",
+  //     shippingEmail: "",
+  //     shippingFirstName: "",
+  //     shippingLastName: "",
+  //     shippingphone: "",
+  //     state: "",
+  //     street: "",
+  //     town: "",
+  //     zipCode: ""
+  //   },
+  //   billingAddress: {
+  //     apartment: "",
+  //     country: "",
+  //     billingCompanyName: "",
+  //     billingEmail: "",
+  //     billingFirstName: "",
+  //     billingLastName: "",
+  //     billingphone: "",
+  //     state: "",
+  //     street: "",
+  //     town: "",
+  //     zipCode: ""
+  //   },
+  //   userName: "",
+  //   _id: "",
 
-  });
+  // });
 
   const router = useRouter();
   const { orderId, message } = router.query;
-  // const { shippingFirstName, shippingLastName, shippingCompanyName, country, street, apartment, town, state, zipCode, shippingphone, shippingEmail } = router.query;
 
 
   // const orderList = useSelector((state: RootState) => state.order.orders);
   // console.log(orderList)
   console.log(orderId)
-  useEffect(() => {
-    fetchData2()
-  }, []);
+  // useEffect(() => {
+  //   fetchData2()
+  // }, []);
 
   let id: any;
 
@@ -189,7 +215,6 @@ const OrderMessage = () => {
       const res = await axios.get(`${baseUrl}/orders/${orderId}`);
       console.log(res.data)
       setOrder(res.data)
-
     } catch (err) {
       console.log(err);
     }
@@ -197,18 +222,17 @@ const OrderMessage = () => {
 
 
 
-  async function fetchData2() {
-    try {
-      const res = await axios.get(`${baseUrl}/users/${id}`);
-      console.log(res.data)
-      setShip(res.data)
+  // async function fetchData2() {
+  //   try {
+  //     const res = await axios.get(`${baseUrl}/users/${id}`);
+  //     console.log(res.data)
+  //     setShip(res.data)
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // }
 
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
-  console.log(ship)
+  // console.log(ship)
 
   //  let email
   // if (typeof localStorage !== "undefined") {
@@ -295,65 +319,22 @@ const OrderMessage = () => {
         <h2 className="text-sm mt-2">{order?.billingAddress.billingEmail}</h2>
       </div>
 
-      {/* {shippingFirstName && shippingLastName && country && street && apartment && town && state && zipCode && shippingphone && shippingEmail ?(
-       <>
-       <div className="mt-4">
-            <h2 className="font-semibold mb-2">SHIPPING DETAILS</h2>
-            <div className="mb-4">
-              <h2 className="text-sm">{shippingFirstName} {shippingLastName}</h2>
-              <h2 className="text-sm">{street}</h2>
-              <h2 className="text-sm">{street}</h2>
-              <h2 className="text-sm">{town}</h2>
-              <h2 className="text-sm">{zipCode}</h2>
-              <h2 className="text-sm">{country}</h2>
-              <h2 className="text-sm">{shippingphone}</h2>
-            </div>
-          </div></>
-      ):(
-        <>
-        {ship !== null && ship.shippingAddress && (
-          <div className="mt-4">
-            <h2 className="font-semibold mb-2">SHIPPING DETAILS</h2>
-            <div className="mb-4">
-              <h2 className="text-sm">{ship.shippingAddress?.shippingFirstName} {ship.shippingAddress?.shippingLastName}</h2>
-              <h2 className="text-sm">{ship.shippingAddress?.shippingCompanyName}</h2>
-              <h2 className="text-sm">{ship.shippingAddress?.street}</h2>
-              <h2 className="text-sm">{ship.shippingAddress?.town}</h2>
-              <h2 className="text-sm">{ship.shippingAddress?.zipCode}</h2>
-              <h2 className="text-sm">{ship.shippingAddress?.country}</h2>
-              <h2 className="text-sm">{ship.shippingAddress?.shippingphone}</h2>
-            </div>
-          </div>
-        )}
-        </>
-      )} */}
 
-      {ship !== null && ship.shippingAddress && (
+      {/* {ship !== null && ship.shippingAddress && ( */}
         <div className="mt-4">
           <h2 className="font-semibold mb-2">SHIPPING DETAILS</h2>
           <div className="mb-4">
-            <h2 className="text-sm">{ship.shippingAddress?.shippingFirstName} {ship.shippingAddress?.shippingLastName}</h2>
-            <h2 className="text-sm">{ship.shippingAddress?.shippingCompanyName}</h2>
-            <h2 className="text-sm">{ship.shippingAddress?.street}</h2>
-            <h2 className="text-sm">{ship.shippingAddress?.town}</h2>
-            <h2 className="text-sm">{ship.shippingAddress?.zipCode}</h2>
-            <h2 className="text-sm">{ship.shippingAddress?.country}</h2>
-            <h2 className="text-sm">{ship.shippingAddress?.shippingphone}</h2>
+          <h2 className="text-sm">{order?.shippingAddress.shippingFirstName} {order?.shippingAddress.shippingLastName}</h2>
+        <h2 className="text-sm">{order?.shippingAddress.shippingCompanyName}</h2>
+        <h2 className="text-sm">{order?.shippingAddress.street}</h2>
+        <h2 className="text-sm">{order?.shippingAddress.town}</h2>
+        <h2 className="text-sm">{order?.shippingAddress.zipCode}</h2>
+        <h2 className="text-sm">{order?.shippingAddress.country}</h2>
+        <h2 className="text-sm">{order?.shippingAddress.shippingPhone}</h2>
+        <h2 className="text-sm mt-2">{order?.shippingAddress.shippingEmail}</h2>
           </div>
         </div>
-      )}
-
-
-      {/* <h2 className="font-semibold  mt-4 mb-2">SHIPPING DETAILS</h2>
-      <div className="mb-4">
-       <h2 className="text-sm">{ship?.shippingAddress.shippingFirstName} {ship?.shippingAddress.shippingLastName}</h2>
-       <h2 className="text-sm">{ship?.shippingAddress.shippingCompanyName}</h2>
-       <h2 className="text-sm">{ship?.shippingAddress.street}</h2>
-       <h2 className="text-sm">{ship?.shippingAddress.town}</h2>
-       <h2 className="text-sm">{ship?.shippingAddress.zipCode}</h2>
-       <h2 className="text-sm">{ship?.shippingAddress.country}</h2>
-       <h2 className="text-sm">{ship?.shippingAddress.shippingphone}</h2>
-       </div> */}
+      {/* )} */}
 
     </div>
   );

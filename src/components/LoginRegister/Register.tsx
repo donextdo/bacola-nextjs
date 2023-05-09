@@ -1,4 +1,5 @@
 import axios from "axios";
+import { renderToString } from "react-dom/server";
 import Link from "next/link";
 import React, { useState } from "react";
 import baseUrl from "../../../utils/baseUrl";
@@ -18,10 +19,10 @@ const Register: React.FC<Props> = () => {
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [validationMsg, setValidationMsg] = useState("");
-  const [errorMsg, setErrorMsg] = useState("");
+  const [errorMsg, setErrorMsg] = useState<React.ReactNode>("");
   const [isDisabled, setIsDisabled] = useState(false);
-  const router = useRouter();
 
+  const router = useRouter();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -38,69 +39,101 @@ const Register: React.FC<Props> = () => {
     };
     try {
       const response = await axios.post(`${baseUrl}/users/register`, data);
-      console.log(response.data); // do something with the response data
-    if(response.status==201){
-      // location.reload();
-      // setIsLoading(false);
+      console.log(response.data);
+      if (response.status == 201) {
+        try {
+          const response = await axios.post(`${baseUrl}/users/login`, details);
+          console.log(response.data);
+          localStorage.setItem("token", response.data.token);
 
-      try {
-        const response = await axios.post(`${baseUrl}/users/login`, details);
-        console.log(response.data);
-        localStorage.setItem("token", response.data.token);
-        // localStorage.setItem('token', response.data.token)
-        localStorage.setItem("id", response.data._id);
-        localStorage.setItem("email", response.data.email);
-        localStorage.setItem("wishlist", JSON.stringify([]));
-        localStorage.setItem("order", JSON.stringify([]));
-  
-        if (response.status == 200) {
-          
-          location.reload();
-          router.push("/account");
+          localStorage.setItem("id", response.data._id);
+          localStorage.setItem("email", response.data.email);
+          localStorage.setItem("wishlist", JSON.stringify([]));
+          localStorage.setItem("order", JSON.stringify([]));
+
+          if (response.status == 200) {
+            router.push("/account");
+          }
+        } catch (error) {
+          console.log(error);
         }
-      } catch (error) {
-        console.log(error);
       }
-      // router.push("/account");
-    }
     } catch (error) {
-      console.log(error); // handle the error
+      console.log(error);
       if (error) {
         const errorData = error;
         if (errorData) {
-          // Update error message
           setErrorMsg(errorData.toString());
         }
       }
-    }finally {
+    } finally {
       setIsLoading(false);
     }
   };
 
-  function handleClick() {
+  async function handleClick() {
     setIsLoading(true);
-    // ... send your request
+    const emailRegex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/i;
+    if (!email) {
+      setErrorMsg("Please provide a valid email address.");
+    } else if (!emailRegex.test(email)) {
+      setErrorMsg("Please provide a valid email address.");
+    } else if (!password) {
+      try {
+        const response = await fetch(
+          `http://localhost:4000/api/users/getUser/${email}`
+        );
+        console.log("response", response);
+        console.log("user = ", response);
+        if (response.status == 200) {
+          setErrorMsg(
+            <>
+              An account is already registered with your email address.{" "}
+              <Link
+                className="text-cyan-400 text-sm font-medium cursor-pointer hover:text-[#233a95] hover:underline"
+                href="/login"
+              >
+                Please log in
+              </Link>
+              .
+            </>
+          );
+        } else {
+          setErrorMsg("");
+        }
+        console.log(response);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    setIsLoading(false);
   }
 
   function handlePasswordChange(e: any) {
     const value = e.target.value;
     setPassword(value);
-
-    if (value.length < 8) {
+    console.log("vhgdyu : ", value);
+    if (!value) {
+      setValidationMsg("");
+      setIsDisabled(false);
+    } else if (value.length < 9) {
       setValidationMsg("Password must be at least 8 characters long");
-      setIsDisabled(true); // disable the Register button
+      setIsDisabled(true);
     } else if (!value.match(/[A-Z]/)) {
       setValidationMsg("Password must contain at least one uppercase letter");
-      setIsDisabled(true); // disable the Register button
+      setIsDisabled(true);
     } else if (!value.match(/[a-z]/)) {
       setValidationMsg("Password must contain at least one lowercase letter");
-      setIsDisabled(true); // disable the Register button
+      setIsDisabled(true);
     } else if (!value.match(/[0-9]/)) {
       setValidationMsg("Password must contain at least one number");
-      setIsDisabled(true); // disable the Register button
+      setIsDisabled(true);
+    } else if (!value.match(/[\W_]/)) {
+      setValidationMsg("Password must contain at least one symbol");
+      setIsDisabled(true);
     } else {
       setValidationMsg("Medium");
-      setIsDisabled(false); // enable the Register button
+      setIsDisabled(false);
     }
   }
 
@@ -171,7 +204,8 @@ const Register: React.FC<Props> = () => {
             <span className="justify-center  text-[12px] text-gray-600">
               Your personal data will be used to support your experience
               throughout this website, to manage access to your account, and for
-              other purposes described in our privacy policy.
+              other purposes described in our{" "}
+              <a className="text-red-600 cursor-pointer">privacy policy</a>.
             </span>
           </div>
 
@@ -187,7 +221,11 @@ const Register: React.FC<Props> = () => {
               {isLoading ? "Loading..." : "Register"}
             </button>
           </div>
-          {errorMsg && <div className="text-red-500">{errorMsg}</div>}
+          {errorMsg && (
+            <div className="border border-gray-300 p-3 text-sm pl-3 mx-2">
+              {errorMsg && <div className="text-black text-sm">{errorMsg}</div>}
+            </div>
+          )}
         </form>
       </div>
     </>

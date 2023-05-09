@@ -1,43 +1,45 @@
-import { Product } from "@/features/product/product";
-import { fetchProducts } from "@/features/product/productSlice";
-import { RootState } from "@/redux/store";
-import Link from "next/link";
 import React, { useState, useEffect, FC } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { ProductCard } from "@/features/product/ProductCard";
 import baseUrl from "../../../utils/baseUrl";
 import axios from "axios";
 import { useRouter } from "next/router";
 
-export const FilteredProduct = ({
-  categoryId,
-  selectedBrands,
-  selectedSubCat,
-  perpage,
-  page,
-}: any) => {
+export const ProductPagination = ({ perpage, page, orderby }: any) => {
   const [product, setProduct] = useState([]);
 
   const router = useRouter();
 
   useEffect(() => {
-    const fetchData = async () => {
-      if (categoryId) {
+    if (perpage || page || orderby) {
+      const fetchData = async () => {
         try {
           const response = await axios.get(
-            `${baseUrl}/productDetails?categoryId=${categoryId}`
+            `${baseUrl}/products?sort=${orderby}&page=${page}&perpage=${perpage}`
           );
-          console.log("only category Id ? ", response);
-          const products = response.data;
+
+          const products = response.data.products;
           setProduct(products);
-          console.log("only category Id ? ", products);
         } catch (error) {
           console.error(error);
         }
-      }
-    };
-    fetchData();
-  }, [categoryId]);
+      };
+      fetchData();
+    } else if (!perpage) {
+      const fetchData = async () => {
+        try {
+          const response = await axios.get(
+            `${baseUrl}/products?page=1&perpage=12`
+          );
+
+          const products = response.data.products;
+          setProduct(products);
+        } catch (error) {
+          console.error(error);
+        }
+      };
+      fetchData();
+    }
+  }, [perpage, page, orderby]);
 
   return (
     <div>

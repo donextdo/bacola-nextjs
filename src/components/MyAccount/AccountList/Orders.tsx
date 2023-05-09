@@ -63,10 +63,10 @@ const Orders = () => {
                   {order.items.map((item) => (
                       <div className="border border-gray-200 p-5 space-y-3" key={item.productId}>
                           <div className="flex justify-between border border-gray-200 items-center px-5 py-[15px]">
-                              <p className="text-sm">{item.productDetails.name} <span className="text-sm font-semibold">x {item.orderquantity}</span> </p>
+                              <p className="text-sm">{item.productDetails?.name} <span className="text-sm font-semibold">x {item.orderquantity}</span> </p>
                               <div className="h-[60px] w-[60px] ">
                                   <Image
-                                      src={item.productDetails.front}
+                                      src={item.productDetails?.front}
                                       alt="item1"
                                       style={{
                                           objectFit: "contain",

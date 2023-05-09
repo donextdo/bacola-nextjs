@@ -1,8 +1,12 @@
 import { useEffect, useState } from "react";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import { FiSearch } from "react-icons/fi";
+import axios from "axios";
+import baseUrl from "../../../utils/baseUrl";
 
 interface LocationType {
+  dollar_min: any;
+  locationName: any;
   id: number;
   name: string;
   min: string;
@@ -13,50 +17,63 @@ export const Location = () => {
 
   const [location, setLocation] = useState<LocationType[]>([]);
 
-  const [name, setName] = useState("Select a Location");
+  const [locationName, setLocationName] = useState<string>("Select a Location");
 
   const [searchQuery, setSearchQuery] = useState<string>("");
   const filteredLocation = location.filter((item) =>
-    item.name.toLowerCase().includes(searchQuery.toLowerCase())
+    item.locationName.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const locationArray: LocationType[] = [
-    { id: 1, name: "Select a Location", min: "Clear All" },
-    { id: 2, name: "Alabama", min: "Min: $130" },
-    { id: 3, name: "Alaska", min: "Min: $120" },
-    { id: 4, name: "Arizona", min: "Min: $150" },
-    { id: 5, name: "California", min: "Min: $110" },
-    { id: 6, name: "Colorado", min: "Min: $140" },
-    { id: 7, name: "Florida", min: "Min: $160" },
-    { id: 8, name: "Georgia", min: "Min: $120" },
-    { id: 9, name: "Kansas", min: "Min: $170" },
-    { id: 10, name: "Minnesota", min: "Min: $120" },
-    { id: 11, name: "New York", min: "Min: $110" },
-    { id: 12, name: "Washington", min: "Min: $130" },
-  ];
   useEffect(() => {
-    setLocation(locationArray);
-    setName(name);
-  }, [name]);
+    const fetchData = async () => {
+      const response = await axios.get(`${baseUrl}/locations/getAll`);
+
+      const locations = response.data;
+
+      setLocation(locations);
+      console.log("location", locations);
+    };
+    fetchData();
+    setLocationName(locationName);
+  }, [locationName]);
 
   const handleModal = () => {
     setShowModal(true);
   };
 
   const handleSelectLocation = (location: any) => {
-    setName(location.name);
+    localStorage.clear();
+    setLocationName(location.locationName);
     setShowModal(false);
-    localStorage.setItem("selectedLocation", location.name);
+    localStorage.setItem("selectedLocation", location.locationName);
   };
   const getInitialLocation = () => {
     const selectedLocation = localStorage.getItem("selectedLocation");
     if (selectedLocation) {
-      setName(selectedLocation);
+      setLocationName(selectedLocation);
+    }
+  };
+
+  const handleClearLocation = () => {
+    localStorage.clear();
+    const name = "Select a Location";
+    setLocationName(name);
+    setShowModal(false);
+    localStorage.setItem("selectedLocation", name);
+  };
+
+  const getClearLocation = () => {
+    const selectedLocationString = localStorage.getItem("selectedLocation");
+    if (selectedLocationString) {
+      setLocationName(selectedLocationString);
+    } else {
+      setLocationName("Select a Location");
     }
   };
 
   useEffect(() => {
     getInitialLocation();
+    getClearLocation();
   }, []);
   return (
     <div className=" z-40">
@@ -69,7 +86,7 @@ export const Location = () => {
             Your Location
           </div>
           <div className="text-[0.8125rem] self-start font-semibold overflow-hidden whitespace-nowrap text-[#233a95] pr-4">
-            {name}
+            {locationName}
           </div>
         </div>
         <div className="flex-shrink flex justify-center items-center w-6 ">
@@ -140,15 +157,29 @@ export const Location = () => {
                   className="location  mt-5"
                   style={{ maxHeight: "300px", overflowY: "scroll" }}
                 >
+                  <div
+                    className="flex items-center justify-between px-2 py-4 bg-white text-gray-700 text-sm cursor-pointer"
+                    onClick={() => handleClearLocation()}
+                  >
+                    <div className="hover:text-[#233a95]">
+                      Select a Location
+                    </div>
+                    <div className="rounded-full text-gray-400 font-semibold w-20 px-2 text-xs h-8 border border-gray-200 flex justify-center items-center">
+                      Clear All
+                    </div>
+                  </div>
+
                   {filteredLocation.map((item) => (
                     <div
                       key={item.id}
                       onClick={() => handleSelectLocation(item)}
                     >
                       <div className="flex items-center justify-between px-2 py-4 bg-white text-gray-700 text-sm cursor-pointer">
-                        <div className="hover:text-[#233a95]">{item.name}</div>
+                        <div className="hover:text-[#233a95]">
+                          {item.locationName}
+                        </div>
                         <div className="rounded-full text-gray-400 font-semibold w-20 px-2 text-xs h-8 border border-gray-200 flex justify-center items-center">
-                          {item.min}
+                          $:{item.dollar_min}
                         </div>
                       </div>
                       <hr />

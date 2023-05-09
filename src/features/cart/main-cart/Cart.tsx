@@ -41,7 +41,19 @@ const Cart: FC<CartType> = () => {
     const [showInputs, setShowInputs] = useState(false);
     const router = useRouter();
 
-
+    const [shippingObj, setShippingObj] = useState({
+        cartshippingFirstName: "",
+        cartshippingLastName: "",
+        cartshippingCompanyName: "",
+        cartshippingcountry: "",
+        cartshippingstreet: "",
+        cartshippingapartment: "",
+        cartshippingtown: "",
+        cartshippingstate: "",
+        cartshippingzipCode: "",
+        cartshippingphone: "",
+        cartshippingEmail: "",
+      });
 
     useEffect(() => {
         console.log(cartItems)
@@ -108,37 +120,37 @@ const Cart: FC<CartType> = () => {
     function handleClick() {
         setShowInputs(!showInputs);
     }
-
+    
     const handleUpdateShipping = async () => {
-        const shippingObj = {
-                shippingFirstName: firstName,
-                shippingLastName: lastName,
-                shippingCompanyName: companyName,
-                 country: country,
-                 street: streetAddress,
-                 apartment: apartment,
-                 town: townCity,
-                 state: state,
-                 zipCode: zipCode,
-                 shippingphone: phone,
-                shippingEmail: email,
+       const  newshippingObj = {
+                cartshippingFirstName: firstName,
+                cartshippingLastName: lastName,
+                cartshippingCompanyName: companyName,
+                cartshippingcountry: country,
+                cartshippingstreet: streetAddress,
+                cartshippingapartment: apartment,
+                cartshippingtown: townCity,
+                cartshippingstate: state,
+                cartshippingzipCode: zipCode,
+                cartshippingphone: phone,
+                cartshippingEmail: email,
           
     }
+    setShowInputs(false);
+    setShippingObj(newshippingObj);
     console.log(shippingObj)
 
-    // router.push({
-    //     pathname: '/orderMessage',
-    //     query: shippingObj,
-    //   });
-
-    // try {
-    //     const response = await axios.post(`${baseUrl}/orders/place`, shippingObj);
-    //     console.log(response.data); // do something with the response data
-        
-    // } catch (error) {
-    //     console.log(error); // handle the error
-    // }
     }
+
+   const handleCheckout = () =>{
+    console.log(shippingObj)
+
+    router.push({
+        pathname: '/checkout',
+        query: shippingObj,
+      });
+   }
+
     return (
         <div className="px-3.5 container mx-auto mt-4 mb-20">
             <div>
@@ -248,7 +260,9 @@ const Cart: FC<CartType> = () => {
                                 </tbody>
                             </table>
 
-                            <Link href="/checkout">   <button className="bg-[#ed174a] text-white py-2.5  rounded-md text-sm h-[50px] w-full text-center mt-4">Proceed to checkout</button></Link>
+                            {/* <Link href="/checkout">    */}
+                            <button className="bg-[#ed174a] text-white py-2.5  rounded-md text-sm h-[50px] w-full text-center mt-4" onClick={handleCheckout}>Proceed to checkout</button>
+                            {/* </Link> */}
 
                         </div>
                     </div>

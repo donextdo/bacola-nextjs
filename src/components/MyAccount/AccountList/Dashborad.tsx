@@ -1,6 +1,7 @@
 import { RootState } from "@/redux/store";
 import { JSXElementConstructor, ReactElement, ReactFragment } from "react";
 import { useSelector } from "react-redux";
+import Orders from "./Orders";
 
 const Dashboard = () => {
     const orderList = useSelector((state: RootState) => state.order.orders);

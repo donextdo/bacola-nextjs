@@ -20,5 +20,9 @@ export interface Product {
   count:number;
   newprice:number;
   type: string;
-  // review: number;
+  review: number;
+  mfgDate:string;
+  life:string;
+  category:string;
+  tags:string;
 }

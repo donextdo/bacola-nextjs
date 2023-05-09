@@ -19,11 +19,12 @@ export const ProductList: FC<ComponentProps> = ({}) => {
   ) as Product[];
   useEffect(() => {
     dispatch(fetchProducts());
-    console.log("data ", products);
-    console.log( products);
 
+    console.log("data ", products);
+    console.log(products);
   }, [dispatch]);
 
+ 
   // useEffect(() => {
   //   // Fetch products data from the API or use the dummy data from the JSON file
   //   fetch('/data.json')
@@ -35,9 +36,7 @@ export const ProductList: FC<ComponentProps> = ({}) => {
       <div className="mx-auto ">
         <div className="grid 2xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 grid-cols-2">
           {products.map((product: any, index) => {
-            return (
-                <ProductCard key={product.id} product={product} />
-            );
+            return <ProductCard key={product.id} product={product} />;
           })}
         </div>
       </div>
