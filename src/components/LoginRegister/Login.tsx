@@ -17,7 +17,7 @@ const Login: React.FC<Props> = () => {
   const [usernameoremail, setUsernameoremail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [errorMsg, setErrorMsg] = useState("");
+  const [errorMsg, setErrorMsg] = useState<React.ReactNode>("");
   const router = useRouter();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -50,6 +50,20 @@ const Login: React.FC<Props> = () => {
           case 400:
             setErrorMsg(
               "Incorrect password for the provided email or username"
+            );
+            setErrorMsg(
+              <>
+                The password you entered for the email address
+                <span className="mx-2 font-semibold">{usernameoremail}</span>
+                is incorrect.
+                <Link
+                  className="text-cyan-400 text-sm font-medium cursor-pointer hover:text-[#233a95] hover:underline mx-2"
+                  href="/forgetpassword"
+                >
+                  Lost your password?
+                </Link>
+                .
+              </>
             );
             break;
           case 404:

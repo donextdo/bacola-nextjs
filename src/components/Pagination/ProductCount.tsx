@@ -64,7 +64,7 @@ export const ProductCount = () => {
     if (router.query.perpage == undefined) {
       setCount(12);
     } else {
-      setCount(router.query.perpage);
+      setCount(parseInt(router.query.perpage as string));
     }
     const value = router.query.orderby;
     switch (value) {

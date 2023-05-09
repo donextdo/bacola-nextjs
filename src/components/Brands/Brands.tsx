@@ -26,6 +26,7 @@ const Brands = ({ categoryId }: any) => {
         const response = await axios.get(`${baseUrl}/products/${categoryId}`);
         setBrand(response.data);
         setIsEmpty(response.data.length === 0);
+        setBrandPage(response.data);
       } catch (error) {
         console.log(error);
       }
@@ -42,20 +43,20 @@ const Brands = ({ categoryId }: any) => {
     }
   }, [categoryId]);
 
-  useEffect(() => {
-    // const fetchData = async () => {
-    const categoryIds = products.reduce((acc, product) => {
-      if (!acc[product.brand]) {
-        // Create a unique ID for the brand based on its name
-        const brandId = product.brand.replace(/\s+/g, "-").toLowerCase();
-        acc[product.brand] = { id: brandId, name: product.brand };
-      }
-      return acc;
-    }, {});
-    console.log("categoryIds: ", categoryIds);
-    setBrandPage(Object.values(categoryIds));
-    // };
-  }, []);
+  // useEffect(() => {
+  //   // const fetchData = async () => {
+  //   const categoryIds = products.reduce((acc, product) => {
+  //     if (!acc[product.brand]) {
+  //       // Create a unique ID for the brand based on its name
+  //       const brandId = product.brand.replace(/\s+/g, "-").toLowerCase();
+  //       acc[product.brand] = { id: brandId, name: product.brand };
+  //     }
+  //     return acc;
+  //   }, {});
+  //   console.log("categoryIds: ", categoryIds);
+  //   setBrandPage(Object.values(categoryIds));
+  //   // };
+  // }, []);
 
   const handleBrandClick = (brandId: any) => {
     const newCheckedBrands = { ...checkedBrands };

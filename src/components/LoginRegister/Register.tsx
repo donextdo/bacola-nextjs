@@ -89,12 +89,12 @@ const Register: React.FC<Props> = () => {
           setErrorMsg(
             <>
               An account is already registered with your email address.{" "}
-              <a
+              <Link
                 className="text-cyan-400 text-sm font-medium cursor-pointer hover:text-[#233a95] hover:underline"
                 href="/login"
               >
                 Please log in
-              </a>
+              </Link>
               .
             </>
           );

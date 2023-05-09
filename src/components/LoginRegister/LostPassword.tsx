@@ -9,7 +9,7 @@ export const LostPassword = () => {
   const handleUser = async () => {
     try {
       const response = await fetch(
-        `http://localhost:4000/api/users/getUser/${usernameOrEmail}`
+        `${baseUrl}/users/getUser/${usernameOrEmail}`
       );
       setUsernameOrEmail("");
       console.log("response", response);
