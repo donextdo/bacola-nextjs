@@ -16,7 +16,8 @@ type Props = {
 const Login: React.FC<Props> = () => {
   const [usernameoremail, setUsernameoremail] = useState("");
   const [password, setPassword] = useState("");
-  const [errorMsg, setErrorMsg] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<React.ReactNode>("");
   const router = useRouter();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -29,7 +30,6 @@ const Login: React.FC<Props> = () => {
       const response = await axios.post(`${baseUrl}/users/login`, details);
       console.log(response.data);
       localStorage.setItem("token", response.data.token);
-      // localStorage.setItem('token', response.data.token)
       localStorage.setItem("id", response.data._id);
       localStorage.setItem("email", response.data.email);
       localStorage.setItem("wishlist", JSON.stringify([]));
@@ -39,21 +39,56 @@ const Login: React.FC<Props> = () => {
         location.reload();
         router.push("/account");
       }
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
-      if (error) {
-        const errorData = error;
-        if (errorData) {
-          if (errorData.toString() == "404") {
+      if (error.response) {
+        const statusCode = error.response.status;
+        switch (statusCode) {
+          case 200:
+            router.push("/account");
+            break;
+          case 400:
+            setErrorMsg(
+              "Incorrect password for the provided email or username"
+            );
+            setErrorMsg(
+              <>
+                The password you entered for the email address
+                <span className="mx-2 font-semibold">{usernameoremail}</span>
+                is incorrect.
+                <Link
+                  className="text-cyan-400 text-sm font-medium cursor-pointer hover:text-[#233a95] hover:underline mx-2"
+                  href="/forgetpassword"
+                >
+                  Lost your password?
+                </Link>
+                .
+              </>
+            );
+            break;
+          case 404:
+            setErrorMsg("Such user does not exist");
+            break;
+          case 500:
             setErrorMsg("Such user does not exist check your credentials");
-          } else {
-            setErrorMsg(errorData.toString());
-          }
-          // Update error message
+            break;
+          default:
+            setErrorMsg("Something went wrong. Please try again later.");
         }
       }
     }
   };
+
+  async function handleClick() {
+    setIsLoading(true);
+    if (!usernameoremail) {
+      setErrorMsg("Username is required.");
+    } else if (!password) {
+      setErrorMsg("The password field is empty.");
+    }
+    setIsLoading(false);
+  }
+
   return (
     <>
       <div className="max-w-lg mx-auto border-t-0 ">
@@ -110,9 +145,13 @@ const Login: React.FC<Props> = () => {
           <div className="mx-2 mt-5  ">
             <button
               type="submit"
-              className=" rounded-md w-full block bg-[#233a95] px-3.5 py-2.5 text-center text-sm font-semibold text-white"
+              className={`rounded-md w-full block bg-[#233a95] px-3.5 py-2.5 text-center text-sm font-semibold text-white ${
+                isLoading ? "loading" : ""
+              }`}
+              onClick={handleClick}
+              // disabled={Boolean(validationMsg)}
             >
-              Login
+              {isLoading ? "Loading..." : "Login"}
             </button>
           </div>
           <div className="mx-2 mt-5 mb-5 ">
@@ -124,8 +163,9 @@ const Login: React.FC<Props> = () => {
           </div>
 
           {errorMsg && (
-            <div className="border border-gray-300 p-3 text-sm ">
-              Error : <div className="text-black text-sm"> {errorMsg}</div>
+            <div className="border border-gray-300 p-3 mx-2 flex items-center">
+              <span className="font-bold text-black mr-2">Error:</span>
+              <div className="text-black text-sm">{errorMsg}</div>
             </div>
           )}
         </form>

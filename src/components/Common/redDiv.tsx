@@ -76,6 +76,7 @@ export const BestSeller = () => {
   const router = useRouter();
   const goToProduct = () => {
     router.push("./shop");
+    localStorage.clear();
   };
   return (
     <div className="flex flex-row items-center justify-between mb-9 ">
@@ -104,6 +105,7 @@ export const NewProduct = () => {
   const router = useRouter();
   const goToProduct = () => {
     router.push("./shop");
+    localStorage.clear();
   };
   return (
     <div className="flex flex-row items-center justify-between mb-9 ">
