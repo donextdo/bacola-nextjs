@@ -41,7 +41,19 @@ const Cart: FC<CartType> = () => {
     const [showInputs, setShowInputs] = useState(false);
     const router = useRouter();
 
-
+    const [shippingObj, setShippingObj] = useState({
+        cartshippingFirstName: "",
+        cartshippingLastName: "",
+        cartshippingCompanyName: "",
+        cartshippingcountry: "",
+        cartshippingstreet: "",
+        cartshippingapartment: "",
+        cartshippingtown: "",
+        cartshippingstate: "",
+        cartshippingzipCode: "",
+        cartshippingphone: "",
+        cartshippingEmail: "",
+      });
 
     useEffect(() => {
         console.log(cartItems)
@@ -108,9 +120,9 @@ const Cart: FC<CartType> = () => {
     function handleClick() {
         setShowInputs(!showInputs);
     }
-    let shippingObj :any
+    
     const handleUpdateShipping = async () => {
-         shippingObj = {
+       const  newshippingObj = {
                 cartshippingFirstName: firstName,
                 cartshippingLastName: lastName,
                 cartshippingCompanyName: companyName,
@@ -125,7 +137,7 @@ const Cart: FC<CartType> = () => {
           
     }
     setShowInputs(false);
-
+    setShippingObj(newshippingObj);
     console.log(shippingObj)
 
     }

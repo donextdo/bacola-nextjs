@@ -148,42 +148,42 @@ const OrderMessage = () => {
       zipCode: ""
     },
   })
-  const [ship, setShip] = useState({
-    displayName: "",
-    email: "",
-    firstName: "",
-    lastName: "",
-    password: "",
-    shippingAddress: {
-      apartment: "",
-      country: "",
-      shippingCompanyName: "",
-      shippingEmail: "",
-      shippingFirstName: "",
-      shippingLastName: "",
-      shippingphone: "",
-      state: "",
-      street: "",
-      town: "",
-      zipCode: ""
-    },
-    billingAddress: {
-      apartment: "",
-      country: "",
-      billingCompanyName: "",
-      billingEmail: "",
-      billingFirstName: "",
-      billingLastName: "",
-      billingphone: "",
-      state: "",
-      street: "",
-      town: "",
-      zipCode: ""
-    },
-    userName: "",
-    _id: "",
+  // const [ship, setShip] = useState({
+  //   displayName: "",
+  //   email: "",
+  //   firstName: "",
+  //   lastName: "",
+  //   password: "",
+  //   shippingAddress: {
+  //     apartment: "",
+  //     country: "",
+  //     shippingCompanyName: "",
+  //     shippingEmail: "",
+  //     shippingFirstName: "",
+  //     shippingLastName: "",
+  //     shippingphone: "",
+  //     state: "",
+  //     street: "",
+  //     town: "",
+  //     zipCode: ""
+  //   },
+  //   billingAddress: {
+  //     apartment: "",
+  //     country: "",
+  //     billingCompanyName: "",
+  //     billingEmail: "",
+  //     billingFirstName: "",
+  //     billingLastName: "",
+  //     billingphone: "",
+  //     state: "",
+  //     street: "",
+  //     town: "",
+  //     zipCode: ""
+  //   },
+  //   userName: "",
+  //   _id: "",
 
-  });
+  // });
 
   const router = useRouter();
   const { orderId, message } = router.query;
@@ -192,9 +192,9 @@ const OrderMessage = () => {
   // const orderList = useSelector((state: RootState) => state.order.orders);
   // console.log(orderList)
   console.log(orderId)
-  useEffect(() => {
-    fetchData2()
-  }, []);
+  // useEffect(() => {
+  //   fetchData2()
+  // }, []);
 
   let id: any;
 
@@ -222,17 +222,17 @@ const OrderMessage = () => {
 
 
 
-  async function fetchData2() {
-    try {
-      const res = await axios.get(`${baseUrl}/users/${id}`);
-      console.log(res.data)
-      setShip(res.data)
-    } catch (err) {
-      console.log(err);
-    }
-  }
+  // async function fetchData2() {
+  //   try {
+  //     const res = await axios.get(`${baseUrl}/users/${id}`);
+  //     console.log(res.data)
+  //     setShip(res.data)
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // }
 
-  console.log(ship)
+  // console.log(ship)
 
   //  let email
   // if (typeof localStorage !== "undefined") {
@@ -320,7 +320,7 @@ const OrderMessage = () => {
       </div>
 
 
-      {ship !== null && ship.shippingAddress && (
+      {/* {ship !== null && ship.shippingAddress && ( */}
         <div className="mt-4">
           <h2 className="font-semibold mb-2">SHIPPING DETAILS</h2>
           <div className="mb-4">
@@ -334,7 +334,7 @@ const OrderMessage = () => {
         <h2 className="text-sm mt-2">{order?.shippingAddress.shippingEmail}</h2>
           </div>
         </div>
-      )}
+      {/* )} */}
 
     </div>
   );

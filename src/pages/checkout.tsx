@@ -72,6 +72,8 @@ const Checkout = () => {
 
      const { cartshippingFirstName, cartshippingLastName, cartshippingCompanyName, cartshippingcountry, cartshippingstreet, cartshippingapartment, cartshippingtown, cartshippingstate, cartshippingzipCode, cartshippingphone, cartshippingEmail } = router.query;
 
+     
+
     const cartItems = useSelector((state: RootState) => state.cart.items);
     const orderList = useSelector((state: RootState) => state.order.orders);
     const dispatch = useDispatch<AppDispatch>();
@@ -211,6 +213,7 @@ const handlePhoneChange = (e:any) => {
 
     useEffect(() => {
         fetchData()
+
     }, []);
 
     async function fetchData() {
@@ -279,7 +282,7 @@ const handlePhoneChange = (e:any) => {
                 billingCompanyName: companyName,
                 country: country,
                 street: streetAddress,
-                apartment: apartment,
+                apartment: apartment, 
                 town: townCity,
                 state: state,
                 zipCode: zipCode,
@@ -542,7 +545,9 @@ const handlePhoneChange = (e:any) => {
                     state=="" ||
                     zipCode=="" ||
                     phone=="" ||
-                    email=="" )
+                    email=="" ||
+                    cartItems.length==0
+                    )
                     
                     ?<button className="bg-[#ed174a] opacity-50 text-white py-2.5 rounded-md text-sm h-[50px] w-full text-center mt-6 font-semibold" onClick={handleOrder} disabled={true}>Place order</button>
                     : <button className="bg-[#ed174a] text-white py-2.5 rounded-md text-sm h-[50px] w-full text-center mt-6 font-semibold" onClick={handleOrder}>Place order</button>}
