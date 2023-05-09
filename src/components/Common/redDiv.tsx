@@ -75,7 +75,7 @@ export const AdditionalDiv = () => {
 export const BestSeller = () => {
   const router = useRouter();
   const goToProduct = () => {
-    router.push("./filterProduct");
+    router.push("./shop");
   };
   return (
     <div className="flex flex-row items-center justify-between mb-9 ">
@@ -103,7 +103,7 @@ export const BestSeller = () => {
 export const NewProduct = () => {
   const router = useRouter();
   const goToProduct = () => {
-    router.push("./filterProduct");
+    router.push("./shop");
   };
   return (
     <div className="flex flex-row items-center justify-between mb-9 ">

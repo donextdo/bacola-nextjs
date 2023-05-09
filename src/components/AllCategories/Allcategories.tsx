@@ -44,7 +44,6 @@ const Allcategories = () => {
   }, []);
 
   const handleCategoryHover = (_id: any) => {
-    //console.log(categoryId);
     setActiveCategory(_id);
   };
 
@@ -52,12 +51,11 @@ const Allcategories = () => {
     setActiveCategory(null);
   };
 
-  const handleSubCategoryHover = (subcategory: string) => {
-    //console.log(subcategory);
-  };
+  const handleSubCategoryHover = (subcategory: string) => {};
 
   const getProductByCategory = async (categoryId: any) => {
     sessionStorage.clear();
+    localStorage.clear();
     setHomeOpen(false);
     router.push({
       pathname: "/filterProduct",
