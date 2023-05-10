@@ -33,19 +33,18 @@ const Categories = ({ categoryId, onSuCatChange }: any) => {
       // if the clicked category is already checked, uncheck it
       router.push({
         pathname: router.pathname,
-        query: { ...router.query, sub_category: undefined },
+        query: { ...router.query, subCategories: undefined },
       });
     } else {
       updatedCheckedCategory = categoryId;
       // if the clicked category is not checked, check it
       router.push({
         pathname: router.pathname,
-        query: { ...router.query, sub_category: categoryId },
+        query: { ...router.query, subCategories: categoryId },
       });
     }
 
     setCheckedCategory(updatedCheckedCategory);
-    onSuCatChange([updatedCheckedCategory]);
   };
 
   return (
