@@ -19,10 +19,10 @@ export const PageNumber = ({ perpage }: any) => {
         : currentPage
     );
 
-    if (perpage || currentPage) {
+    if (!perpage) {
       const fetchData = async () => {
         const response = await axios.get(
-          `${baseUrl}/products?page=${currentPage}&perpage=${perpage}`
+          `${baseUrl}/products?page=${currentPage}`
         );
 
         const products = response.data.products;
@@ -35,13 +35,17 @@ export const PageNumber = ({ perpage }: any) => {
         setNum(products.length);
       };
       fetchData();
-    } else if (!perpage) {
+    } else if (perpage || currentPage) {
       const fetchData = async () => {
         const response = await axios.get(
-          `${baseUrl}/products?page=1&perpage=12`
+          `${baseUrl}/products?page=${currentPage}&perpage=${perpage}`
         );
-        console.log("xhjjbxj : ", response.data.products);
+
         const products = response.data.products;
+        if (products.length == 0) {
+          console.log("ddddddd");
+        }
+
         setTotalPage(response.data.totalPages);
         setCurrentPage(
           localStorage.getItem("selectedPage")
@@ -55,7 +59,10 @@ export const PageNumber = ({ perpage }: any) => {
   }, [perpage, currentPage]);
 
   useEffect(() => {
-    // const foo: { id: number }[] = [];
+    localStorage.removeItem("selectedPage");
+  }, [perpage]);
+
+  useEffect(() => {
     const foo: any = [];
 
     for (let i = 0; i < totalPage; i++) {
