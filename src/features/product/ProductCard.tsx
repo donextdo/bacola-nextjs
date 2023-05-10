@@ -110,7 +110,7 @@ const handleWishlist = async (product: any) => {
   };
  
   try {
-    const response = await axios.post(`${baseUrl}/users/${id}/wishList`, whishListObj);
+    const response = await axios.post(`${baseUrl}/users/wishList/${id}`, whishListObj);
     console.log(response.data); // do something with the response data
 } catch (error) {
     console.log(error); // handle the error

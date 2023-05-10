@@ -35,7 +35,7 @@ const Wishlist = () => {
 
     async function fetchData() {
         try {
-            const res = await axios.get(`${baseUrl}/users/${id}`);
+            const res = await axios.get(`${baseUrl}/users/642de4a8ed3bde65a22655c8`);
             console.log(res.data.whishList)
             setData(res.data.whishList)        
         } catch (err) {
