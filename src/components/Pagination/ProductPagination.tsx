@@ -10,13 +10,13 @@ export const ProductPagination = ({ perpage, page, orderby }: any) => {
   const router = useRouter();
 
   useEffect(() => {
-    if (perpage || page || orderby) {
+    if (!perpage) {
       const fetchData = async () => {
         try {
           const response = await axios.get(
-            `${baseUrl}/products?sort=${orderby}&page=${page}&perpage=${perpage}`
+            `${baseUrl}/products?sort=${orderby}&page=${page}`
           );
-
+          console.log("!perpage");
           const products = response.data.products;
           setProduct(products);
         } catch (error) {
@@ -24,14 +24,22 @@ export const ProductPagination = ({ perpage, page, orderby }: any) => {
         }
       };
       fetchData();
-    } else if (!perpage) {
+    } else if (perpage || orderby) {
       const fetchData = async () => {
+        console.log("sssssss 1: ", page);
+        console.log("sssssss 2: ", perpage);
         try {
           const response = await axios.get(
-            `${baseUrl}/products?page=1&perpage=12`
+            `${baseUrl}/products?sort=${orderby}&page=${page}&perpage=${perpage}`
           );
+          console.log("perpage || page || orderby");
 
           const products = response.data.products;
+          console.log("sssssss 3: ", products);
+          if (products.length == 0) {
+            console.log("bhebhd");
+          }
+
           setProduct(products);
         } catch (error) {
           console.error(error);
