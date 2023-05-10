@@ -31,17 +31,17 @@ const MyAccount = () => {
                 </div>
                 {
                     modal && (
-                        <div><MyAccountPopup selected={selected} setSelected={setSelected} setModal={setModal} /></div>
+                        <div><MyAccountPopup selected={selected} setSelected={setSelected} setModal={setModal} setIsColor={setIsColor} isColor={isColor}/></div>
                     )
                 }
 
                 <div className='mt-8'>
-                    {selected === 1 ?
-                        <Dashboard />
+                    {isColor === 1 ?
+                        <Dashboard  />
                         :
-                        selected === 2 ?
+                        isColor === 2 ?
                             <Orders /> :
-                            selected === 3 ?
+                            isColor === 3 ?
                                 <AccountDetails /> :
                                 <Address />
                     }

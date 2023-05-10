@@ -9,20 +9,26 @@ import baseUrl from "../../../utils/baseUrl";
 import axios from "axios";
 import { useRouter } from "next/router";
 
-export const FilteredProduct = ({
-  categoryId,
-  selectedBrands,
-  selectedSubCat,
-  perpage,
-  page,
-}: any) => {
+export const FilteredProduct = ({ categoryId, brand, subcategory }: any) => {
   const [product, setProduct] = useState([]);
 
   const router = useRouter();
 
   useEffect(() => {
     const fetchData = async () => {
-      if (categoryId) {
+      if (categoryId && brand) {
+        try {
+          const response = await axios.get(
+            `${baseUrl}/productDetails?categoryId=${categoryId}&brands=${brand}`
+          );
+          console.log("only category Id ? ", response);
+          const products = response.data;
+          setProduct(products);
+          console.log("only category Id ? ", products);
+        } catch (error) {
+          console.error(error);
+        }
+      } else if (categoryId) {
         try {
           const response = await axios.get(
             `${baseUrl}/productDetails?categoryId=${categoryId}`
@@ -37,7 +43,57 @@ export const FilteredProduct = ({
       }
     };
     fetchData();
-  }, [categoryId]);
+  }, [categoryId, brand]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (subcategory && brand) {
+        try {
+          const response = await axios.get(
+            `${baseUrl}/productDetails?categoryId=${subcategory}&brands=${brand}`
+          );
+          console.log("only subcategory Id ? ", response);
+          const products = response.data;
+          setProduct(products);
+          console.log("only subcategory Id ? ", products);
+        } catch (error) {
+          console.error(error);
+        }
+      } else if (subcategory) {
+        try {
+          const response = await axios.get(
+            `${baseUrl}/productDetails?categoryId=${subcategory}`
+          );
+          console.log("only category Id ? ", response);
+          const products = response.data;
+          setProduct(products);
+          console.log("only category Id ? ", products);
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    };
+    fetchData();
+  }, [subcategory, brand]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (categoryId && subcategory && brand) {
+        try {
+          const response = await axios.get(
+            `${baseUrl}/productDetails?categoryId=${categoryId}&subCategories=${subcategory}&brands=${brand}`
+          );
+          console.log("only subcategory Id ? ", response);
+          const products = response.data;
+          setProduct(products);
+          console.log("only subcategory Id ? ", products);
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    };
+    fetchData();
+  }, [categoryId, subcategory, brand]);
 
   return (
     <div>

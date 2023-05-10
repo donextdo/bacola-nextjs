@@ -8,7 +8,7 @@ const FilterProduct = () => {
   const { query } = useRouter();
 
   const brand = query?.brands;
-  const subcategory = query?.sub_category;
+  const subcategory = query?.subCategories;
 
   return (
     <div className="xl:px-40 lg:px-5 md:px-5 px-5 ">

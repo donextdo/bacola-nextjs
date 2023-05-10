@@ -6,14 +6,14 @@ import Orders from "./Orders";
 const Dashboard = () => {
     const orderList = useSelector((state: RootState) => state.order.orders);
     console.log(orderList)
-   
+
     const handleClick = () => {
         localStorage.removeItem("token");
-        location.reload(); 
+        location.reload();
 
     }
     const handleorder = () => {
-        
+       
     }
 
     let email: string | null;
@@ -34,7 +34,7 @@ const Dashboard = () => {
         // Handle the case when the value is null
         // For example, you could set a default value      
     }
-        return (
+    return (
         <div>
             <p>Hello <span className="font-semibold">{extractedUsername}</span> (not <span className="font-semibold">{extractedUsername}?</span><button onClick={handleClick}><span className="text-[#2bbef9] underline underline-offset-1"> Log out</span></button>)</p>
 
