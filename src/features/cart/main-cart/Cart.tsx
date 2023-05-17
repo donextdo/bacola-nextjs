@@ -19,8 +19,18 @@ interface CartType {
     subtotal: number,
 }
 
+interface Coupon {
+    coupon_code: string,
+        date: string,
+        dicount_amount: number,
+        __v: number,
+        _id: string
+}
+
 const Cart: FC<CartType> = () => {
     const cartItems = useSelector((state: RootState) => state.cart.items);
+    let totalAmount1 = useSelector((state: RootState) => state.cart.totalAmount);
+
     const [selectedValue, setSelectedValue] = useState("Ship");
     const dispatch = useDispatch();
     const [firstName, setFirstName] = useState('');
@@ -40,6 +50,17 @@ const Cart: FC<CartType> = () => {
     }
     const [showInputs, setShowInputs] = useState(false);
     const router = useRouter();
+    const [coupon, setCoupon] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
+    const [couponDiscount, setCouponDiscount] = useState<Coupon>({
+        coupon_code: "",
+        date: "",
+        dicount_amount: 0,
+        __v: 0,
+        _id: ""
+    });
+    let [fulldiscount, setFulldiscount] = useState(0);
+
 
     const [shippingObj, setShippingObj] = useState({
         cartshippingFirstName: "",
@@ -53,7 +74,7 @@ const Cart: FC<CartType> = () => {
         cartshippingzipCode: "",
         cartshippingphone: "",
         cartshippingEmail: "",
-      });
+    });
 
     useEffect(() => {
         console.log(cartItems)
@@ -91,13 +112,19 @@ const Cart: FC<CartType> = () => {
     let totalAmount = 0
     for (let i = 0; i < cartItems.length; i++) {
         let item = cartItems[i];
-        let subtotal = item.count * item.price;
+        let subtotal = item.count * (item.price - item.price * (item.discount / 100));
         totalAmount += subtotal;
     }
     useEffect(() => {
         console.log(cartItems)
         dispatch(calSubTotal(totalAmount))
     });
+
+    // calculate discount
+    
+    fulldiscount = totalAmount * (couponDiscount.dicount_amount / 100)
+    console.log(fulldiscount)
+    console.log(couponDiscount)
 
 
     const [total, setTotal] = useState(totalAmount + 5);
@@ -120,37 +147,66 @@ const Cart: FC<CartType> = () => {
     function handleClick() {
         setShowInputs(!showInputs);
     }
-    
+
     const handleUpdateShipping = async () => {
-       const  newshippingObj = {
-                cartshippingFirstName: firstName,
-                cartshippingLastName: lastName,
-                cartshippingCompanyName: companyName,
-                cartshippingcountry: country,
-                cartshippingstreet: streetAddress,
-                cartshippingapartment: apartment,
-                cartshippingtown: townCity,
-                cartshippingstate: state,
-                cartshippingzipCode: zipCode,
-                cartshippingphone: phone,
-                cartshippingEmail: email,
-          
-    }
-    setShowInputs(false);
-    setShippingObj(newshippingObj);
-    console.log(shippingObj)
+        const newshippingObj = {
+            cartshippingFirstName: firstName,
+            cartshippingLastName: lastName,
+            cartshippingCompanyName: companyName,
+            cartshippingcountry: country,
+            cartshippingstreet: streetAddress,
+            cartshippingapartment: apartment,
+            cartshippingtown: townCity,
+            cartshippingstate: state,
+            cartshippingzipCode: zipCode,
+            cartshippingphone: phone,
+            cartshippingEmail: email,
+
+        }
+        setShowInputs(false);
+        setShippingObj(newshippingObj);
+        console.log(shippingObj)
 
     }
 
-   const handleCheckout = () =>{
-    console.log(shippingObj)
+    const handleCheckout = () => {
+        console.log(shippingObj)
 
-    router.push({
-        pathname: '/checkout',
-        query: shippingObj,
-      });
-   }
+        router.push({
+            pathname: '/checkout',
+            query: shippingObj,
+        });
+    }
+   
+    const handlecoupon = async () => {
+        try {
+            const res = await axios.get(`${baseUrl}/coupons/getOne/${coupon}`);
+            console.log(res.data)
+            if (res.status == 200) {
+                setCouponDiscount(res.data);
+                setErrorMessage('');
 
+            } 
+
+        } catch (err) {
+            console.log(err);
+            setErrorMessage('There is no such coupon.');
+            
+        }
+
+    }
+
+     let finalAmount = totalAmount-fulldiscount
+    
+     const hanleRemoveCoupon = () => {
+        setCouponDiscount({
+            coupon_code: "",
+            date: "",
+            dicount_amount: 0,
+            __v: 0,
+            _id: ""
+          });
+    }
     return (
         <div className="px-3.5 container mx-auto mt-4 mb-20">
             <div>
@@ -187,8 +243,10 @@ const Cart: FC<CartType> = () => {
 
                         <section className="flex justify-between mt-6">
                             <div className="inline-flex gap-2 w-full">
-                                <input type="text" className="h-11 bg-gray-100 rounded-md px-4 text-sm w-full md:w-72" placeholder="Coupon code" />
-                                <button className="bg-[#233a95] text-white py-2.5 px-4 rounded-md text-xs h-11 w-40">Apply coupon</button>
+                                <input type="text" className="h-11 bg-gray-100 rounded-md px-4 text-sm w-full md:w-72" placeholder="Coupon code"
+                                    onChange={(e) => setCoupon(e.target.value)}
+                                />
+                                <button className="bg-[#233a95] text-white py-2.5 px-4 rounded-md text-xs h-11 w-40" onClick={handlecoupon}>Apply coupon</button>
                             </div>
 
                             <div><button className="bg-[#233a95] text-white py-2.5 px-4 rounded-md text-xs h-11 w-[104px] hidden md:block" onClick={handleClear}>Remove All</button></div>
@@ -204,6 +262,10 @@ const Cart: FC<CartType> = () => {
                                     <tr>
                                         <td className="border-b border-[#e4e5ee] py-3 font-semibold text-[13px]">Subtotal</td>
                                         <td className="border-b border-[#e4e5ee] py-3 text-[15px] text-right">${totalAmount.toFixed(2)}</td>
+                                    </tr>
+                                    <tr>
+                                        <td className="border-b border-[#e4e5ee] py-3 font-semibold text-[13px]">Coupon <button className="text-amber-700" onClick={hanleRemoveCoupon}>[remove]</button></td>
+                                        <td className="border-b border-[#e4e5ee] py-3 text-[15px] text-right">-${fulldiscount.toFixed(2)}</td>
                                     </tr>
                                     <tr>
                                         <td rowSpan={4} className="text-[13px] font-semibold ">Shipping</td>
@@ -234,18 +296,18 @@ const Cart: FC<CartType> = () => {
                                                 <div className="flex flex-col justify-end text-right">
                                                     <input
                                                         type="text" className="w-full px-4 h-11 bg-gray-100 rounded-md mt-2 ml-2 pl-4 text-sm" placeholder="Country"
-                                                      value={country} 
-                                                      onChange={(e) => setCountry(e.target.value)}
+                                                        value={country}
+                                                        onChange={(e) => setCountry(e.target.value)}
                                                     />
                                                     <input
                                                         type="text" className="w-full px-4 h-11 bg-gray-100 rounded-md mt-2 ml-2 pl-4 text-sm" placeholder="City"
-                                                      value={townCity} 
-                                                      onChange={(e) => setTownCity(e.target.value)}
+                                                        value={townCity}
+                                                        onChange={(e) => setTownCity(e.target.value)}
                                                     />
                                                     <input
                                                         type="text" className="w-full px-4 h-11 bg-gray-100 rounded-md mt-2 ml-2 pl-4 text-sm" placeholder="Postcode/Zip"
-                                                      value={zipCode} 
-                                                      onChange={(e) => setZipCode(e.target.value)}
+                                                        value={zipCode}
+                                                        onChange={(e) => setZipCode(e.target.value)}
                                                     />
 
                                                     <button className="bg-[#233a95] text-white py-2.5 px-4 rounded-md text-xs h-11 w-[104px] mt-3" onClick={handleUpdateShipping}>Update</button>
@@ -255,7 +317,7 @@ const Cart: FC<CartType> = () => {
                                     </tr>
                                     <tr>
                                         <td className="border-y border-[#e4e5ee] text-[13px] font-semibold pb-4">Total</td>
-                                        <td className="border-y border-[#e4e5ee] text-right font-semibold text-xl py-4">${totalAmount.toFixed(2)}</td>
+                                        <td className="border-y border-[#e4e5ee] text-right font-semibold text-xl py-4">${finalAmount.toFixed(2)}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -269,6 +331,7 @@ const Cart: FC<CartType> = () => {
                 </section>
 
                 <button className="bg-[#233a95] text-white py-2.5 px-4 rounded-md text-xs h-11 w-full text-left mt-2 md:hidden" onClick={handleClear}>Remove All</button>
+                {errorMessage && <p className="text-red-500 font-semibold">{errorMessage}</p>}
 
                 {/* Cart Totals */}
                 <div className="w-full border border-[#e4e5ee] mt-10 p-4 rounded-md xl:hidden">
