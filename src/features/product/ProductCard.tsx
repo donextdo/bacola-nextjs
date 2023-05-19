@@ -96,7 +96,7 @@ const handleWishlist = async (product: any) => {
 
   const whishListObj = {
     "whishList":[{
-      _id: product._id,
+      productId: product._id,
       front: product.front,
       title: product.title,
       price: product.price,
