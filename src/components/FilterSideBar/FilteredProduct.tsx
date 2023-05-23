@@ -17,6 +17,9 @@ export const FilteredProduct = ({
   maxValue,
   inStock,
   onSale,
+  perpage,
+  page,
+  orderby,
 }: any) => {
   const [product, setProduct] = useState([]);
 
@@ -45,6 +48,16 @@ export const FilteredProduct = ({
         if (onSale) {
           url += `&on_sale=true`;
         }
+        if (orderby) {
+          url += `&sort=${orderby}`;
+        }
+
+        if (page) {
+          url += `&page=${page}`;
+        }
+        if (perpage) {
+          url += `&perpage=${perpage}`;
+        }
 
         const response = await axios.get(url);
         const products = response.data.products;
@@ -55,7 +68,18 @@ export const FilteredProduct = ({
       }
     };
     fetchData();
-  }, [categoryId, brand, subcategory, minValue, maxValue, inStock, onSale]);
+  }, [
+    categoryId,
+    brand,
+    subcategory,
+    minValue,
+    maxValue,
+    inStock,
+    onSale,
+    page,
+    perpage,
+    orderby,
+  ]);
 
   return (
     <div>
