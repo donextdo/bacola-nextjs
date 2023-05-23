@@ -43,21 +43,6 @@ const Brands = ({ categoryId }: any) => {
     }
   }, [categoryId]);
 
-  // useEffect(() => {
-  //   // const fetchData = async () => {
-  //   const categoryIds = products.reduce((acc, product) => {
-  //     if (!acc[product.brand]) {
-  //       // Create a unique ID for the brand based on its name
-  //       const brandId = product.brand.replace(/\s+/g, "-").toLowerCase();
-  //       acc[product.brand] = { id: brandId, name: product.brand };
-  //     }
-  //     return acc;
-  //   }, {});
-  //   console.log("categoryIds: ", categoryIds);
-  //   setBrandPage(Object.values(categoryIds));
-  //   // };
-  // }, []);
-
   const handleBrandClick = (brandId: any) => {
     const newCheckedBrands = { ...checkedBrands };
     newCheckedBrands[brandId] = !checkedBrands[brandId];
@@ -70,8 +55,6 @@ const Brands = ({ categoryId }: any) => {
       pathname: router.pathname,
       query: { ...router.query, brands: selectedBrands.join(",") },
     });
-
-    // onBrandChange(selectedBrands);
   };
 
   return (

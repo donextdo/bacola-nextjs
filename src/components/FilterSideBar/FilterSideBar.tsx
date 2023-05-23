@@ -11,13 +11,25 @@ import { useRouter } from "next/router";
 import { PageNumber } from "../Pagination/PageNumber";
 import { ProductCount } from "../Pagination/ProductCount";
 
-export const FilterSideBar = ({ categoryId, brand, subcategory }: any) => {
+export const FilterSideBar = ({
+  categoryId,
+  brand,
+  subcategory,
+  minValue,
+  maxValue,
+  inStock,
+  onSale,
+}: any) => {
   useEffect(() => {
     console.log("categoryId ? ", categoryId);
 
     console.log("brands ? ", brand);
 
     console.log("subCat ? ", subcategory);
+    console.log("minValue ? ", minValue);
+    console.log("maxValue ? ", maxValue);
+    console.log("inStock ? ", inStock);
+    console.log("onSale ? ", onSale);
   }, []);
 
   return (
@@ -49,6 +61,10 @@ export const FilterSideBar = ({ categoryId, brand, subcategory }: any) => {
             categoryId={categoryId}
             brand={brand}
             subcategory={subcategory}
+            minValue={minValue}
+            maxValue={maxValue}
+            inStock={inStock}
+            onSale={onSale}
           />
         </div>
         <div>
