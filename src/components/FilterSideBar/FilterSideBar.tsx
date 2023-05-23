@@ -19,6 +19,9 @@ export const FilterSideBar = ({
   maxValue,
   inStock,
   onSale,
+  perpage,
+  page,
+  orderby,
 }: any) => {
   useEffect(() => {
     console.log("categoryId ? ", categoryId);
@@ -30,6 +33,10 @@ export const FilterSideBar = ({
     console.log("maxValue ? ", maxValue);
     console.log("inStock ? ", inStock);
     console.log("onSale ? ", onSale);
+
+    console.log("perpage-homepagination? ", perpage);
+    console.log("page-homepagination? ", page);
+    console.log("orderby-homepagination? ", orderby);
   }, []);
 
   return (
@@ -65,10 +72,13 @@ export const FilterSideBar = ({
             maxValue={maxValue}
             inStock={inStock}
             onSale={onSale}
+            perpage={perpage}
+            page={page}
+            orderby={orderby}
           />
         </div>
         <div>
-          <PageNumber />
+          <PageNumber perpage={perpage} />
         </div>
       </div>
     </div>

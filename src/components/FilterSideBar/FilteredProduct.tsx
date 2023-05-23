@@ -47,7 +47,8 @@ export const FilteredProduct = ({
         }
 
         const response = await axios.get(url);
-        const products = response.data;
+        const products = response.data.products;
+        console.log("response.data: ", response.data.products);
         setProduct(products);
       } catch (error) {
         console.error(error);

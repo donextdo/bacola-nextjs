@@ -11,9 +11,9 @@ import { useEffect } from "react";
 
 export const HomePagination = ({ perpage, page, orderby }: any) => {
   useEffect(() => {
-    console.log("perpage-homepagination ", perpage);
-    console.log("page-homepagination ", page);
-    console.log("orderby-homepagination ", orderby);
+    // console.log("perpage-homepagination ", perpage);
+    // console.log("page-homepagination ", page);
+    // console.log("orderby-homepagination ", orderby);
   });
   return (
     <div className="flex flex-row mb-9">

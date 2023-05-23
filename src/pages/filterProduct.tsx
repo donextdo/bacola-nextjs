@@ -17,6 +17,15 @@ const FilterProduct = () => {
   console.log("max_price : ", maxValue);
   console.log("stock_status : ", inStock);
   console.log("on_sale : ", onSale);
+
+  const perpage = query?.perpage;
+  const page = query?.page;
+  const orderby = query?.orderby;
+
+  console.log("perpage filter", perpage);
+  console.log("page filter", page);
+  console.log("orderby filter", orderby);
+
   return (
     <div className="xl:px-40 lg:px-5 md:px-5 px-5 ">
       <FilterSideBar
@@ -27,6 +36,9 @@ const FilterProduct = () => {
         maxValue={maxValue}
         inStock={inStock}
         onSale={onSale}
+        perpage={perpage}
+        page={page}
+        orderby={orderby}
       />
     </div>
   );
