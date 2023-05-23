@@ -75,7 +75,7 @@ export const AdditionalDiv = () => {
 export const BestSeller = () => {
   const router = useRouter();
   const goToProduct = () => {
-    router.push("./shop");
+    router.push("./filterProduct");
     localStorage.clear();
   };
   return (
@@ -104,7 +104,7 @@ export const BestSeller = () => {
 export const NewProduct = () => {
   const router = useRouter();
   const goToProduct = () => {
-    router.push("./shop");
+    router.push("./filterProduct");
     localStorage.clear();
   };
   return (
