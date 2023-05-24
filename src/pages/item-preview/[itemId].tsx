@@ -64,7 +64,7 @@ const ItemPages = () => {
         life: "",
         category: "",
         tags: "",
-        speacialtag:""
+        speacialtag: ""
 
     })
     const [myCategory, setMyCategory] = useState([]);
@@ -78,7 +78,8 @@ const ItemPages = () => {
         id = localStorage.getItem("id");
     }
 
-
+    const [isClicked, setIsClicked] = useState<string | null>("front");
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const router = useRouter();
     const { itemId } = router.query;
@@ -91,7 +92,7 @@ const ItemPages = () => {
 
     useEffect(() => {
         fetchData();
-    }, []);
+    }, [itemId]);
 
     async function fetchData() {
         try {
@@ -105,8 +106,8 @@ const ItemPages = () => {
         }
     }
 
-    
-    
+
+
 
     let findcategory: any
     if (data && data.category && data.category.length > 0) {
@@ -118,8 +119,8 @@ const ItemPages = () => {
 
     useEffect(() => {
         if (findcategory) {
-        fetchData2();
-    }
+            fetchData2();
+        }
     }, [findcategory]);
 
     async function fetchData2() {
@@ -173,23 +174,23 @@ const ItemPages = () => {
     }
 
     const handleWishlist = async (data: any) => {
-        
+
         const whishListObj = {
-            "whishList":[{
-              productId: data._id,
-              front: data.front,
-              title: data.title,
-              price: data.price,
-              date: new Date().toLocaleDateString("en-US", {
-                  month: "long",
-                  day: "numeric",
-                  year: "numeric"
-              }),
-              quantity: data.quantity
+            "whishList": [{
+                productId: data._id,
+                front: data.front,
+                title: data.title,
+                price: data.price,
+                date: new Date().toLocaleDateString("en-US", {
+                    month: "long",
+                    day: "numeric",
+                    year: "numeric"
+                }),
+                quantity: data.quantity
             }]
-          };
-         
-          try {
+        };
+
+        try {
             const response = await axios.post(`${baseUrl}/users/wishList/${id}`, whishListObj);
             console.log(response.data); // do something with the response data
         } catch (error) {
@@ -295,7 +296,18 @@ const ItemPages = () => {
     for (let i = 1; i <= (5 - data.review); i++) {
         graystars.push(<FaStar />);
     }
+
+    
+    
+      const openModal = () => {
+        setIsModalOpen(true);
+      };
+    
+      const closeModal = () => {
+        setIsModalOpen(false);
+      };
     return (
+        <>
         <div className="bg-[#f7f8fd]">
             <div className="container mx-auto m-8 p-6 ">
 
@@ -343,13 +355,13 @@ const ItemPages = () => {
                                             Recommended
                                         </div>
                                     )}
-                                    
-                                        <div className=" font-semibold px-2 py-1 bg-emerald-100 text-green-600 rounded-full text-[10px] flex items-center justify-center uppercase tracking-tighter">
-                                            {data.speacialtag}
-                                        </div>
-                                   
+
+                                    <div className=" font-semibold px-2 py-1 bg-emerald-100 text-green-600 rounded-full text-[10px] flex items-center justify-center uppercase tracking-tighter">
+                                        {data.speacialtag}
+                                    </div>
+
                                 </div>
-                                <div className="hover:cursor-pointer flex items-center justify-center px-12 ">
+                                <div className="hover:cursor-pointer flex items-center justify-center px-12 " onClick={openModal}>
                                     <Image
                                         width={390}
                                         height={436}
@@ -359,8 +371,15 @@ const ItemPages = () => {
                                 </div>
 
                                 <div className="flex items-center justify-center row min-h-[63px] max-w-[421.2px] md:min-h-[67px] md:max-w-[444.66px]">
-                                    <div className="flex items-center justify-center min-w-[67px] min-h-[67px] lg:min-w-[67px] lg:min-h-[67px] md:min-w-[94.4px] md:min-h-[94.4px]  border border-gray-400 mr-2 hover:cursor-pointer"
-                                        onClick={() => handleClick(data?.side)}
+                                    <div
+                                        className={`flex items-center justify-center min-w-[67px] min-h-[67px] lg:min-w-[67px] lg:min-h-[67px] md:min-w-[94.4px] md:min-h-[94.4px] border ${isClicked === "side"
+                                                ? "border-gray-500"
+                                                : "border-gray-200"
+                                            } mr-2 hover:cursor-pointer`}
+                                        onClick={() => {
+                                            handleClick(data?.side);
+                                            setIsClicked("side");
+                                        }}
                                     >
                                         <Image
                                             width={67}
@@ -369,8 +388,16 @@ const ItemPages = () => {
                                             alt="Man looking at item at a store"
                                         />
                                     </div>
-                                    <div className="flex items-center justify-center min-w-[67px] min-h-[67px] lg:min-w-[67px] lg:min-h-[67px] md:min-w-[94.4px] md:min-h-[94.4px]   border border-gray-400 mr-2 hover:cursor-pointer"
-                                        onClick={() => handleClick(data?.front)}>
+                                    <div
+                                        className={`flex items-center justify-center min-w-[67px] min-h-[67px] lg:min-w-[67px] lg:min-h-[67px] md:min-w-[94.4px] md:min-h-[94.4px]   border ${isClicked === "front"
+                                                ? "border-gray-500"
+                                                : "border-gray-200"
+                                            } mr-2 hover:cursor-pointer`}
+                                        onClick={() => {
+                                            handleClick(data?.front);
+                                            setIsClicked("front");
+                                        }}
+                                    >
                                         <Image
                                             width={67}
                                             height={67}
@@ -378,8 +405,16 @@ const ItemPages = () => {
                                             alt="Man looking at item at a store"
                                         />
                                     </div>
-                                    <div className="flex items-center justify-center min-w-[67px] min-h-[67px] lg:min-w-[67px] lg:min-h-[67px] md:min-w-[94.4px] md:min-h-[94.4px]   border border-gray-400 hover:cursor-pointer"
-                                        onClick={() => handleClick(data?.back)}>
+                                    <div
+                                        className={`flex items-center justify-center min-w-[67px] min-h-[67px] lg:min-w-[67px] lg:min-h-[67px] md:min-w-[94.4px] md:min-h-[94.4px]   border ${isClicked === "back"
+                                                ? "border-gray-500"
+                                                : "border-gray-200"
+                                            } hover:cursor-pointer`}
+                                        onClick={() => {
+                                            handleClick(data?.back);
+                                            setIsClicked("back");
+                                        }}
+                                    >
                                         <Image
                                             width={67}
                                             height={67}
@@ -506,15 +541,15 @@ const ItemPages = () => {
                                     <div className="flex flex-row">
                                         <span className="text-gray-400 text-xs capitalize">
                                             Category:
-                                                {myCategory.map((cat:any)=>(
-                                                    <a
+                                            {myCategory.map((cat: any) => (
+                                                <a
                                                     href=""
                                                     rel="tag"
                                                     className="ml-2 text-gray-600 text-xs capitalize"
                                                 >
-                                                        {cat.name}
-                                                    </a>
-                                                ))} 
+                                                    {cat.name}
+                                                </a>
+                                            ))}
                                         </span>
                                     </div>
                                     <div className="flex">
@@ -679,6 +714,32 @@ const ItemPages = () => {
                 </div>
             </div>
         </div>
+        {/* Modal or Lightbox */}
+      {isModalOpen && (
+        <div className="fixed top-0 left-0 w-screen h-screen bg-black  flex items-center justify-center">
+          <button
+            className="absolute top-2 right-8 text-white text-4xl"
+            onClick={closeModal}
+          >
+            &times;
+          </button>
+          <div className="relative">
+            {/* Close Icon */}
+
+            {/* Full screen image */}
+            <div className="flex items-center justify-center">
+              <Image
+                src={mainImage || data?.front}
+                alt="mainImage"
+                width={700} // Adjust the width value as per your requirements
+                height={700} // Adjust the height value as per your requirements
+                className="max-w-full max-h-full"
+              />
+            </div>
+          </div>
+        </div>
+      )}
+        </>
     );
 }
 

@@ -41,7 +41,7 @@ const CartPopup = ({ setCart, }: any) => {
       {cartItems.length > 0 ?
         <div className="absolute w-[300px] max-h-[540px] bg-white right-0 z-50 px-5 py-4 shadow-lg">
           <div className="max-h-[260px] overflow-y-auto overflow-x-hidden">
-            {cartItems.map((item, index) => (
+            {cartItems.map((item:any, index) => (
               <CartPopupCard item={item} key={index} />
             ))}
           </div>

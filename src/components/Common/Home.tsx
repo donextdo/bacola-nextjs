@@ -6,7 +6,7 @@ import { useState } from "react";
 
 
 const HomePage = () => {
-  const [productPopup, setProductPopup] = useState(false);
+  
 
   return (
     <div className="lg:flex lg:flex-row lg:mb-9">
@@ -16,13 +16,13 @@ const HomePage = () => {
       <div className="md:ml-5 lg:w-3/4 md:w-full w-full">
         <div>
           <BestSeller />
-          <ProductList productPopup={productPopup} setProductPopup={setProductPopup}/>
+          <ProductList />
         </div>
         <TakeCare />
         {/* <RedDiv /> */}
         <div>
           <NewProduct />
-          <ProductList productPopup={productPopup} setProductPopup={setProductPopup}/>
+          <ProductList />
         </div>
         <div>
           <TopImage />

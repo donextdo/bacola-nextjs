@@ -61,7 +61,7 @@ const ProductPopup = ({setProductPopup, itemId}:any) => {
     const dispatch = useDispatch()
     const products = useSelector((state: RootState) => state.product.products) as Product[];
 
-
+// testing
     useEffect(() => {
         fetchData();
     }, []);
