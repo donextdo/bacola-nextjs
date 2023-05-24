@@ -112,28 +112,34 @@ const Brands = ({ categoryId }: any) => {
                 const isChecked = checkedBrands[brand.id];
                 return (
                   <div
-                    className="relative  max-h-[59px] max-w-[270px] items-center hover:cursor-pointer"
+                    className="relative  max-h-[59px] max-w-[270px] items-center hover:cursor-pointer flex "
                     key={index}
                   >
-                    <div className="mb-3  w-full flex flex-row">
-                      <input
-                        type="checkbox"
-                        id={brand.brand}
-                        checked={isChecked}
-                        onChange={() => handleBrandClick(brand.brand)}
-                        className="mr-4 min-h-[14px] min-w-[14px] hover:cursor-pointer accent-blue-900 hover:bg-blue-900"
-                      />
+                    <div className="mb-3  w-full flex flex-row justify-between ">
+                      <div className=" flex flex-row">
+                        <input
+                          type="checkbox"
+                          id={brand.brand}
+                          checked={isChecked}
+                          onChange={() => handleBrandClick(brand.brand)}
+                          className="mr-4 min-h-[14px] min-w-[14px] hover:cursor-pointer accent-blue-900 hover:bg-blue-900"
+                        />
 
-                      <label
-                        htmlFor={brand.brand}
-                        className={`select-none text-[.8125rem] font-medium hover:cursor-pointer capitalize ${
-                          isChecked ? "text-blue-900" : "text-gray-500"
-                        }`}
-                      >
-                        {brand.brand}
+                        <label
+                          htmlFor={brand.brand}
+                          className={`select-none text-[.8125rem] font-medium hover:cursor-pointer capitalize ${
+                            isChecked ? "text-blue-900" : "text-gray-500"
+                          }`}
+                        >
+                          {brand.brand}
+                        </label>
+                      </div>
 
-                        <span className="ml-2">({brand.count})</span>
-                      </label>
+                      <div className=" flex flex-row">
+                        <span className="ml-2 text-[.8125rem] font-medium ">
+                          ({brand.count})
+                        </span>
+                      </div>
                     </div>
                   </div>
                 );
