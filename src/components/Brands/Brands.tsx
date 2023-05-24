@@ -11,7 +11,7 @@ const Brands = ({ categoryId }: any) => {
   const [brand, setBrand] = useState([]);
   const [isEmpty, setIsEmpty] = useState(false);
   const [checkedBrands, setCheckedBrands] = useState<any>({});
-  const [brandPage, setBrandPage] = useState([]);
+  const [brandPage, setBrandPage] = useState<string[]>([]);
   const router = useRouter();
 
   useEffect(() => {

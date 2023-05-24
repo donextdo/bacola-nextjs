@@ -14,6 +14,8 @@ import { Product } from "@/features/product/product";
 const CartCard = ({item, index,totalAmount}:any) => {
     const dispatch = useDispatch()
     const cartItems = useSelector((state: RootState) => state.cart.items);
+  let totalAmount1 = useSelector((state: RootState) => state.cart.totalAmount);
+
 
 
     const handleCheckboxChange = () => {
@@ -45,11 +47,13 @@ const CartCard = ({item, index,totalAmount}:any) => {
         
     }
 
- let subtotal = (item.count) * (item.price)
+ 
 
  let discountprice;
  discountprice = item.price * (item.discount/100)
 let newprice=item.price-discountprice
+
+let subtotal = (item.count) * (newprice)
     return ( 
         <div className="grid grid-cols-4 sm:grid-cols-12 grid-2 gap-1 border-b border-[#e4e5ee] py-3 h-28 items-center relative" key={index}>
                                     <div className="h-[95px] sm:col-span-2">

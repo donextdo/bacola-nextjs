@@ -14,10 +14,11 @@ interface WIshlist {
     date: string;
     price: number;
     title:string;
-  _id: string;
+    productId: string;
     front:string;
     checked: boolean;
     quantity: number;
+    count:number;
 
     // any other properties
   }
@@ -57,33 +58,53 @@ const Wishlist = () => {
     const handleCheck = (id:any) => {
         const newData = [...data];
         newData.forEach(item => {
-            if (item._id === id) {
+            if (item.productId === id) {
                 item.checked = !item.checked;
             }
         });
         setData(newData);
     };
 
-    const handleDelete = (id: any) => {
-        const newItems = data.filter((item) => item._id !== id);
+    const handleDelete = async (_id: any) => {
+        
+        try {
+            const res = await axios.delete(`${baseUrl}/users/${id}/wishList/${_id}`);
+            console.log(res.data)
+            const newItems = data.filter((item) => item.productId !== _id);
         setData(newItems)
-
+        } catch (err) {
+            console.log(err);
+        }
     };
     const dispatch = useDispatch();
 
-    const handleCart = (item: any) => {
+    const handleCart = async (item: any) => {
         console.log(item)
-        dispatch(addItem(item))
-        const newQuantity = (item.count || 0) + 1;
-    dispatch(
-      updateProductQuantity({ productId: item.productId, count: newQuantity })
-    );
+        try {
+            const res = await axios.get(`${baseUrl}/products/getOne/${item.productId}`);
+            console.log(res.data)
+            const itemProduct = res.data
+            dispatch(addItem(itemProduct))
+                  
+        } catch (err) {
+            console.log(err);
+        }
+
     }
 
     const handleAddSelectedToCart = () => {
         const selectedItems = data.filter(item => item.checked);
-        selectedItems.forEach((item:any) => {
-            dispatch(addItem(item));
+        selectedItems.forEach(async (item:any) => {
+            try {
+                const res = await axios.get(`${baseUrl}/products/getOne/${item.productId}`);
+                console.log(res.data)
+                const itemProduct = res.data
+                dispatch(addItem(itemProduct))
+                      
+            } catch (err) {
+                console.log(err);
+            }
+            
         });
     }
 
@@ -91,8 +112,16 @@ const Wishlist = () => {
 
     const handleAddCart = () => {
         const selectedItems = data.filter(item => item.checked);
-        selectedItems.forEach((item:any) => {
-            dispatch(addItem(item));
+        selectedItems.forEach(async (item:any) => {
+            try {
+                const res = await axios.get(`${baseUrl}/products/getOne/${item.productId}`);
+                console.log(res.data)
+                const itemProduct = res.data
+                dispatch(addItem(itemProduct))
+                      
+            } catch (err) {
+                console.log(err);
+            }
         });
     }
 
@@ -121,17 +150,17 @@ const Wishlist = () => {
                 </thead>
                 <tbody>
                     {data.map((item) => (
-                        <tr key={item._id}>
+                        <tr key={item.productId}>
                             <td className="border px-4 py-2">
                                 <input
                                     type="checkbox"
                                     className="form-checkbox h-5 w-5 text-blue-600"
                                     checked={item.checked}
-                                    onChange={() => handleCheck(item._id)}
+                                    onChange={() => handleCheck(item.productId)}
                                 />
                             </td>
                             <td className="border px-4 py-2">
-                                <button className="" onClick={() => handleDelete(item._id)}><IoClose /></button>
+                                <button className="" onClick={() => handleDelete(item.productId)}><IoClose /></button>
                             </td>
                             <td className="border px-4 py-2">
                                 <div className="w-[71px] h-[71px]">
@@ -162,8 +191,8 @@ const Wishlist = () => {
             </table>
             <section className="flex justify-between p-3.5 border ">
                 <div className="inline-flex gap-2 w-full">
-                    <input type="text" className="h-11 bg-gray-100 rounded-md px-4 text-sm w-full md:w-72" placeholder="Action" />
-                    <button className="bg-[#233a95] text-white py-2.5 px-4 rounded-md text-xs h-11 w-40">Apply Action</button>
+                    {/* <input type="text" className="h-11 bg-gray-100 rounded-md px-4 text-sm w-full md:w-72" placeholder="Action" />
+                    <button className="bg-[#233a95] text-white py-2.5 px-4 rounded-md text-xs h-11 w-40">Apply Action</button> */}
                 </div>
 
                 <div className="flex gap-2">

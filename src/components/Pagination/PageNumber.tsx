@@ -9,7 +9,7 @@ export const PageNumber = ({ perpage }: any) => {
   let [cur, setCur] = useState(1);
   let [totalPage, setTotalPage] = useState(0);
   let [currentPage, setCurrentPage] = useState(1);
-  const [pageArray, setPageArray] = useState([]);
+  const [pageArray, setPageArray] = useState<{ id: number }[]>([]);
   const router = useRouter();
 
   useEffect(() => {

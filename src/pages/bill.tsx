@@ -48,14 +48,19 @@ const ProductPopup = ({setProductPopup, itemId}:any) => {
         count: 0,
         newprice: 0,
         type: '',
-        // review:'',
+        review:0,
+        mfgDate:"",
+        life:"",
+        category:"",
+        tags:""
+
     })
     const [mainImage, setMainImage] = useState(data?.front);
 
     const dispatch = useDispatch()
     const products = useSelector((state: RootState) => state.product.products) as Product[];
 
-
+// testing
     useEffect(() => {
         fetchData();
     }, []);

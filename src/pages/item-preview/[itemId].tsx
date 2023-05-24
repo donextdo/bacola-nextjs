@@ -59,17 +59,20 @@ const ItemPages = () => {
     count: 0,
     newprice: 0,
     type: "",
-    // review:'',
+    review: 0,
+    mfgDate: "",
+    life: "",
+    category: "",
+    tags: "",
   });
-  const [myObject, setMyObject] = useState(null);
+  const [myCategory, setMyCategory] = useState({});
   const [isColor, setIsColor] = useState(1);
   const [mainImage, setMainImage] = useState(data?.front);
   const [isClicked, setIsClicked] = useState<string | null>("front");
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const router = useRouter();
   const { itemId } = router.query;
-  console.log(itemId);
+  // console.log(itemId)
 
   const dispatch = useDispatch();
   const products = useSelector(
@@ -83,12 +86,35 @@ const ItemPages = () => {
   async function fetchData() {
     try {
       const res = await axios.get(`${baseUrl}/products/getOne/${itemId}`);
-      console.log("res", res);
+      console.log(res);
       setData(res.data);
     } catch (err) {
       console.log(err);
     }
   }
+
+  useEffect(() => {
+    fetchData2();
+  }, []);
+
+  let findcategory: any;
+  if (data && data.category && data.category.length > 0) {
+    findcategory = data.category[0];
+  } else {
+    findcategory = undefined;
+  }
+  console.log(findcategory);
+
+  async function fetchData2() {
+    try {
+      const res = await axios.get(`${baseUrl}/categories/get/${findcategory}`);
+      console.log(res.data);
+      setMyCategory(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   const item: Product | undefined = products.find(
     (item) => item._id === itemId
   );
@@ -163,15 +189,6 @@ const ItemPages = () => {
   const handleClick = (image: any) => {
     setMainImage(image);
   };
-
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
-
   let discountprice;
   discountprice = data.price * (data.discount / 100);
   let newprice = data.price - discountprice;
@@ -234,6 +251,15 @@ const ItemPages = () => {
     );
   };
 
+  let yellowstars = [];
+  let graystars = [];
+
+  for (let i = 1; i <= data.review; i++) {
+    yellowstars.push(<FaStar />);
+  }
+  for (let i = 1; i <= 5 - data.review; i++) {
+    graystars.push(<FaStar />);
+  }
   return (
     <div className="bg-[#f7f8fd]">
       <div className="container mx-auto m-8 p-6 ">
@@ -250,7 +276,8 @@ const ItemPages = () => {
               <div className="text-gray-400 mx-3">|</div>
               <span className="text-gray-400 ">
                 <div className="flex flex-row max-h-[18px] max-w-[130.49px] items-center justify-center">
-                  {stars}
+                  <p className="text-md text-yellow-400 flex">{yellowstars}</p>
+                  <p className="text-md text-gray-400 flex">{graystars}</p>
                 </div>
               </span>
               <span className="ml-1">
@@ -285,10 +312,7 @@ const ItemPages = () => {
                     </div>
                   )}
                 </div>
-                <div
-                  className="hover:cursor-pointer flex items-center justify-center px-12 "
-                  onClick={openModal}
-                >
+                <div className="hover:cursor-pointer flex items-center justify-center px-12 ">
                   <Image
                     width={390}
                     height={436}
@@ -299,11 +323,11 @@ const ItemPages = () => {
 
                 <div className="flex items-center justify-center row min-h-[63px] max-w-[421.2px] md:min-h-[67px] md:max-w-[444.66px]">
                   <div
-                    className={`flex items-center justify-center min-w-[67px] min-h-[67px] lg:min-w-[67px] lg:min-h-[67px] md:min-w-[94.4px] md:min-h-[94.4px] border border-gray-200 ${
+                    className={`flex items-center justify-center min-w-[67px] min-h-[67px] lg:min-w-[67px] lg:min-h-[67px] md:min-w-[94.4px] md:min-h-[94.4px] border ${
                       isClicked === "side"
                         ? "border-gray-500"
                         : "border-gray-200"
-                    }  mr-2 hover:cursor-pointer`}
+                    } mr-2 hover:cursor-pointer`}
                     onClick={() => {
                       handleClick(data?.side);
                       setIsClicked("side");
@@ -316,31 +340,6 @@ const ItemPages = () => {
                       alt="Man looking at item at a store"
                     />
                   </div>
-                  {/* Modal or Lightbox */}
-                  {isModalOpen && (
-                    <div className="fixed top-0 left-0 w-screen h-screen bg-black  flex items-center justify-center">
-                      <div className="relative">
-                        {/* Close Icon */}
-                        <button
-                          className="absolute top-2 right-2 text-black text-xl"
-                          onClick={closeModal}
-                        >
-                          &times;
-                        </button>
-
-                        {/* Full screen image */}
-                        <div className="flex items-center justify-center">
-                          <Image
-                            src={mainImage || data?.front}
-                            alt="mainImage"
-                            width={800} // Adjust the width value as per your requirements
-                            height={800} // Adjust the height value as per your requirements
-                            className="max-w-full max-h-full"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  )}
                   <div
                     className={`flex items-center justify-center min-w-[67px] min-h-[67px] lg:min-w-[67px] lg:min-h-[67px] md:min-w-[94.4px] md:min-h-[94.4px]   border ${
                       isClicked === "front"
@@ -384,7 +383,7 @@ const ItemPages = () => {
               <div className=" w-full">
                 <div className=" flex flex-row">
                   <span className="text-gray-400 line-through mr-2 my-1 font-[1.125rem] flex items-center justify-center">
-                    {data?.price.toFixed(2)}
+                    ${data?.price.toFixed(2)}
                   </span>
 
                   <span className="my-1 text-red-700 text-[1.625rem] font-semibold">
@@ -463,13 +462,13 @@ const ItemPages = () => {
                                         </button> */}
                   </div>
                 </div>
-                <div className="max-h-[66px] max-w-[113.66px] mt-6">
+                <div className="max-h-[66px] w-full mt-6">
                   <div className="flex flex-row text-[.75rem] place-items-start mb-1">
                     <div className="mr-2">
                       <BsCheckLg className="h-[15px] w-[15px] text-green-600 stroke-[1px]"></BsCheckLg>
                     </div>
                     <div className="">
-                      Type: <span className="">Organic</span>
+                      Type: <span className="">{data.type}</span>
                     </div>
                   </div>
                   <div className="flex flex-row text-[.75rem] place-items-start mb-1">
@@ -477,7 +476,7 @@ const ItemPages = () => {
                       <BsCheckLg className="h-[15px] w-[15px] text-green-600 stroke-[1px]"></BsCheckLg>
                     </div>
                     <div className="">
-                      MFG: <span>June 4.21</span>
+                      MFG: <span>{data.mfgDate}</span>
                     </div>
                   </div>
                   <div className="flex flex-row text-[.75rem] place-items-start mb-1">
@@ -485,7 +484,7 @@ const ItemPages = () => {
                       <BsCheckLg className="h-[15px] w-[15px] text-green-600 stroke-[1px]"></BsCheckLg>
                     </div>
                     <div className="">
-                      LIFE: <span className="">30 days</span>
+                      LIFE: <span className="">{data.life}</span>
                     </div>
                   </div>
                 </div>
@@ -506,27 +505,15 @@ const ItemPages = () => {
                   <div className="flex flex-row">
                     <span className="text-gray-400 text-[.8125rem] capitalize">
                       Tags:
-                      <a
-                        href=""
-                        rel="tag"
-                        className="ml-2 text-gray-600 text-[.8125rem] capitalize"
-                      >
-                        chicken,
-                      </a>
-                      <a
-                        href=""
-                        rel="tag"
-                        className="ml-1 text-gray-600 text-[.8125rem] capitalize"
-                      >
-                        natural,
-                      </a>
-                      <a
-                        href=""
-                        rel="tag"
-                        className="ml-1 text-gray-600 text-[.8125rem] capitalize"
-                      >
-                        organic
-                      </a>
+                      {/* {data.tags?.map((tag:any)=>(
+                                                <a
+                                                href=""
+                                                rel="tag"
+                                                className="ml-2 text-gray-600 text-[.8125rem] capitalize"
+                                            >
+                                                {tag.name}
+                                            </a>
+                                            ))} */}
                     </span>
                   </div>
                   <div className="flex flex-row gap-1.5 max-w-[229px] mt-6">
@@ -664,7 +651,7 @@ const ItemPages = () => {
             {isColor === 1 ? (
               <Description data={data} />
             ) : isColor === 2 ? (
-              <AdditionalInformation />
+              <AdditionalInformation data={data} />
             ) : (
               <Review itemId={itemId} />
             )}

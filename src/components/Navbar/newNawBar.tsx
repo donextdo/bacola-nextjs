@@ -3,19 +3,17 @@ import React, { useEffect, useState } from "react";
 
 import Allcategories from "../AllCategories/Allcategories";
 import PageNavBar from "./pageNavBar";
-import baseUrl from "../../../utils/baseUrl";
-import axios from "axios";
+import { RootState } from "@/redux/store";
+import { useSelector } from "react-redux";
+import { Product } from "@/features/product/product";
 
 const NavbarNew = () => {
-  const [totalProduct, setTotalProduct] = useState();
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await axios.get(`${baseUrl}/products`);
-      setTotalProduct(response.data.totalItems);
-      console.log("response: ", response.data.totalItems);
-    };
-    fetchData();
-  }, []);
+  const products = useSelector(
+    (state: RootState) => state.product.products
+  ) as Product[];
+
+  const totalProduct = products.length;
+
   return (
     <div>
       <div className="xl:px-40 lg:px-5 lg:py-5  hidden md:hidden lg:block">

@@ -100,7 +100,7 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
     const whishListObj = {
       whishList: [
         {
-          _id: product._id,
+          productId: product._id,
           front: product.front,
           title: product.title,
           price: product.price,
@@ -115,7 +115,7 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
     };
 
     try {
-      const response = await axios.put(
+      const response = await axios.post(
         `${baseUrl}/users/wishList/${id}`,
         whishListObj
       );
@@ -143,15 +143,15 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
     console.log(proId);
   };
 
-  //   let yellowstars = [];
-  //   let graystars=[];
+  let yellowstars = [];
+  let graystars = [];
 
-  // for (let i = 1; i <= product.review; i++) {
-  //   yellowstars.push(<FaStar />);
-  // }
-  // for (let i = 1; i <= (5-product.review); i++) {
-  //   graystars.push(<FaStar />);
-  // }
+  for (let i = 1; i <= product.review; i++) {
+    yellowstars.push(<FaStar />);
+  }
+  for (let i = 1; i <= 5 - product.review; i++) {
+    graystars.push(<FaStar />);
+  }
 
   return (
     <>
@@ -289,7 +289,6 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
           className="w-full min-h-[350.24px] mx-auto bg-white border border-gray-200  overflow-hidden relative group hover:drop-shadow-lg rounded-sm"
           key={product._id}
         >
-          {" "}
           <div className="absolute max-w-[88.41px] max-h-[49px] flex flex-col items-start gap-1 p-2">
             {isDiscount && (
               <div className=" font-semibold max-w-[45.39px] max-h-[24px] px-4 py-1 bg-sky-400 text-white rounded text-[10px] flex items-center justify-center">
@@ -329,6 +328,7 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
               )}
             </div>
           </div>
+
           <div className=" max-h-[172.95px] min-h-[172.95px] min-w-[154.95px] w-full  hover:cursor-pointer my-2 flex items-center justify-center">
             <Link href={`/item-preview/${product._id}`}>
               <Image
@@ -349,9 +349,9 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
               {product.quantity > 0 ? "In Stock" : "Out of Stock"}
             </div>
             <div className="text-xs pt-2 flex flex-row items-center my-1">
-              {stars}
-              {/* <p className="text-md text-yellow-400 flex">{yellowstars}</p>
-        <p className="text-md text-gray-400 flex">{graystars}</p> */}
+              {/* {stars} */}
+              <p className="text-md text-yellow-400 flex">{yellowstars}</p>
+              <p className="text-md text-gray-400 flex">{graystars}</p>
             </div>
             <div className=" flex flex-row items-center">
               {isDiscount && (
@@ -397,6 +397,7 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
               </div>
             )}
           </div>
+
           {productPopup && (
             <ProductPopup setProductPopup={setProductPopup} proId={proId} />
           )}
@@ -405,4 +406,3 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
     </>
   );
 };
-//max-w-md

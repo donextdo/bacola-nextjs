@@ -26,6 +26,7 @@ export const ProductList: FC<ComponentProps> = ({ passgrid }: any) => {
     console.log(products);
   }, [dispatch]);
 
+ 
   // useEffect(() => {
   //   // Fetch products data from the API or use the dummy data from the JSON file
   //   fetch('/data.json')

@@ -2,7 +2,7 @@
 const UserProfile = ({ email}:any) => {
     let initials;
   if (email){
-    initials = email?.charAt(1).toUpperCase()
+    initials = email?.charAt(0).toUpperCase()
     
   }else{
 
