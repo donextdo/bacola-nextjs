@@ -64,6 +64,8 @@ const ItemPages = () => {
   const [myObject, setMyObject] = useState(null);
   const [isColor, setIsColor] = useState(1);
   const [mainImage, setMainImage] = useState(data?.front);
+  const [isClicked, setIsClicked] = useState<string | null>("front");
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const router = useRouter();
   const { itemId } = router.query;
@@ -161,6 +163,15 @@ const ItemPages = () => {
   const handleClick = (image: any) => {
     setMainImage(image);
   };
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
   let discountprice;
   discountprice = data.price * (data.discount / 100);
   let newprice = data.price - discountprice;
@@ -274,7 +285,10 @@ const ItemPages = () => {
                     </div>
                   )}
                 </div>
-                <div className="hover:cursor-pointer flex items-center justify-center px-12 ">
+                <div
+                  className="hover:cursor-pointer flex items-center justify-center px-12 "
+                  onClick={openModal}
+                >
                   <Image
                     width={390}
                     height={436}
@@ -285,8 +299,15 @@ const ItemPages = () => {
 
                 <div className="flex items-center justify-center row min-h-[63px] max-w-[421.2px] md:min-h-[67px] md:max-w-[444.66px]">
                   <div
-                    className="flex items-center justify-center min-w-[67px] min-h-[67px] lg:min-w-[67px] lg:min-h-[67px] md:min-w-[94.4px] md:min-h-[94.4px]  border border-gray-400 mr-2 hover:cursor-pointer"
-                    onClick={() => handleClick(data?.side)}
+                    className={`flex items-center justify-center min-w-[67px] min-h-[67px] lg:min-w-[67px] lg:min-h-[67px] md:min-w-[94.4px] md:min-h-[94.4px] border border-gray-200 ${
+                      isClicked === "side"
+                        ? "border-gray-500"
+                        : "border-gray-200"
+                    }  mr-2 hover:cursor-pointer`}
+                    onClick={() => {
+                      handleClick(data?.side);
+                      setIsClicked("side");
+                    }}
                   >
                     <Image
                       width={67}
@@ -295,9 +316,41 @@ const ItemPages = () => {
                       alt="Man looking at item at a store"
                     />
                   </div>
+                  {/* Modal or Lightbox */}
+                  {isModalOpen && (
+                    <div className="fixed top-0 left-0 w-screen h-screen bg-black  flex items-center justify-center">
+                      <div className="relative">
+                        {/* Close Icon */}
+                        <button
+                          className="absolute top-2 right-2 text-black text-xl"
+                          onClick={closeModal}
+                        >
+                          &times;
+                        </button>
+
+                        {/* Full screen image */}
+                        <div className="flex items-center justify-center">
+                          <Image
+                            src={mainImage || data?.front}
+                            alt="mainImage"
+                            width={800} // Adjust the width value as per your requirements
+                            height={800} // Adjust the height value as per your requirements
+                            className="max-w-full max-h-full"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  )}
                   <div
-                    className="flex items-center justify-center min-w-[67px] min-h-[67px] lg:min-w-[67px] lg:min-h-[67px] md:min-w-[94.4px] md:min-h-[94.4px]   border border-gray-400 mr-2 hover:cursor-pointer"
-                    onClick={() => handleClick(data?.front)}
+                    className={`flex items-center justify-center min-w-[67px] min-h-[67px] lg:min-w-[67px] lg:min-h-[67px] md:min-w-[94.4px] md:min-h-[94.4px]   border ${
+                      isClicked === "front"
+                        ? "border-gray-500"
+                        : "border-gray-200"
+                    } mr-2 hover:cursor-pointer`}
+                    onClick={() => {
+                      handleClick(data?.front);
+                      setIsClicked("front");
+                    }}
                   >
                     <Image
                       width={67}
@@ -307,8 +360,15 @@ const ItemPages = () => {
                     />
                   </div>
                   <div
-                    className="flex items-center justify-center min-w-[67px] min-h-[67px] lg:min-w-[67px] lg:min-h-[67px] md:min-w-[94.4px] md:min-h-[94.4px]   border border-gray-400 hover:cursor-pointer"
-                    onClick={() => handleClick(data?.back)}
+                    className={`flex items-center justify-center min-w-[67px] min-h-[67px] lg:min-w-[67px] lg:min-h-[67px] md:min-w-[94.4px] md:min-h-[94.4px]   border ${
+                      isClicked === "back"
+                        ? "border-gray-500"
+                        : "border-gray-200"
+                    } hover:cursor-pointer`}
+                    onClick={() => {
+                      handleClick(data?.back);
+                      setIsClicked("back");
+                    }}
                   >
                     <Image
                       width={67}
