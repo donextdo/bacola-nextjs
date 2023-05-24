@@ -116,7 +116,7 @@ const Register: React.FC<Props> = () => {
       setValidationMsg("");
       setIsDisabled(false);
     } else if (value.length < 9) {
-      setValidationMsg("Password must be at least 8 characters long");
+      setValidationMsg("Password must be at least 9 characters long");
       setIsDisabled(true);
     } else if (!value.match(/[A-Z]/)) {
       setValidationMsg("Password must contain at least one uppercase letter");

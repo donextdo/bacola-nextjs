@@ -9,91 +9,117 @@ import baseUrl from "../../../utils/baseUrl";
 import axios from "axios";
 import { useRouter } from "next/router";
 
-export const FilteredProduct = ({ categoryId, brand, subcategory }: any) => {
+export const FilteredProduct = ({
+  categoryId,
+  brand,
+  subcategory,
+  minValue,
+  maxValue,
+  inStock,
+  onSale,
+  perpage,
+  page,
+  orderby,
+}: any) => {
   const [product, setProduct] = useState([]);
 
   const router = useRouter();
 
   useEffect(() => {
     const fetchData = async () => {
-      if (categoryId && brand) {
-        try {
-          const response = await axios.get(
-            `${baseUrl}/productDetails?categoryId=${categoryId}&brands=${brand}`
-          );
-          console.log("only category Id ? ", response);
-          const products = response.data;
-          setProduct(products);
-          console.log("only category Id ? ", products);
-        } catch (error) {
-          console.error(error);
+      try {
+        let url = `${baseUrl}/productDetails?`;
+
+        if (categoryId) {
+          url += `categoryId=${categoryId}`;
         }
-      } else if (categoryId) {
-        try {
-          const response = await axios.get(
-            `${baseUrl}/productDetails?categoryId=${categoryId}`
-          );
-          console.log("only category Id ? ", response);
-          const products = response.data;
-          setProduct(products);
-          console.log("only category Id ? ", products);
-        } catch (error) {
-          console.error(error);
+        if (subcategory) {
+          url += `&subCategories=${subcategory}`;
         }
+        if (brand) {
+          url += `&brands=${brand}`;
+        }
+        if (minValue && maxValue) {
+          url += `&min_price=${minValue}&max_price=${maxValue}`;
+        }
+        if (inStock) {
+          url += `&stock_status=true`;
+        }
+        if (onSale) {
+          url += `&on_sale=true`;
+        }
+        if (orderby) {
+          url += `&sort=${orderby}`;
+        }
+
+        if (page) {
+          url += `&page=${page}`;
+        }
+        if (perpage) {
+          url += `&perpage=${perpage}`;
+        }
+
+        const response = await axios.get(url);
+        const products = response.data.products;
+        console.log("response.data: ", response.data.products);
+        setProduct(products);
+      } catch (error) {
+        console.error(error);
       }
     };
     fetchData();
-  }, [categoryId, brand]);
+  }, [
+    categoryId,
+    brand,
+    subcategory,
+    minValue,
+    maxValue,
+    inStock,
+    onSale,
+    page,
+    perpage,
+    orderby,
+  ]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      if (subcategory && brand) {
+    if (!perpage) {
+      const fetchData = async () => {
         try {
           const response = await axios.get(
-            `${baseUrl}/productDetails?categoryId=${subcategory}&brands=${brand}`
+            `${baseUrl}/products?sort=${orderby}&page=${page}`
           );
-          console.log("only subcategory Id ? ", response);
-          const products = response.data;
+          console.log("!perpage");
+          const products = response.data.products;
           setProduct(products);
-          console.log("only subcategory Id ? ", products);
         } catch (error) {
           console.error(error);
         }
-      } else if (subcategory) {
+      };
+      fetchData();
+    } else if (perpage || orderby) {
+      const fetchData = async () => {
+        console.log("sssssss 1: ", page);
+        console.log("sssssss 2: ", perpage);
         try {
           const response = await axios.get(
-            `${baseUrl}/productDetails?categoryId=${subcategory}`
+            `${baseUrl}/products?sort=${orderby}&page=${page}&perpage=${perpage}`
           );
-          console.log("only category Id ? ", response);
-          const products = response.data;
-          setProduct(products);
-          console.log("only category Id ? ", products);
-        } catch (error) {
-          console.error(error);
-        }
-      }
-    };
-    fetchData();
-  }, [subcategory, brand]);
+          console.log("perpage || page || orderby");
 
-  useEffect(() => {
-    const fetchData = async () => {
-      if (categoryId && subcategory && brand) {
-        try {
-          const response = await axios.get(
-            `${baseUrl}/productDetails?categoryId=${categoryId}&subCategories=${subcategory}&brands=${brand}`
-          );
-          console.log("only subcategory Id ? ", response);
-          const products = response.data;
+          const products = response.data.products;
+          console.log("sssssss 3: ", products);
+          if (products.length == 0) {
+            console.log("bhebhd");
+          }
+
           setProduct(products);
-          console.log("only subcategory Id ? ", products);
         } catch (error) {
           console.error(error);
         }
-      }
-    };
-    fetchData();
-  }, [categoryId, subcategory, brand]);
+      };
+      fetchData();
+    }
+  }, [perpage, page, orderby]);
 
   return (
     <div>
