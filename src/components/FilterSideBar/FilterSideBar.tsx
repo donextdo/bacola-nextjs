@@ -23,6 +23,7 @@ export const FilterSideBar = ({
   page,
   orderby,
 }: any) => {
+  const [passgrid, setPassgrid] = useState();
   useEffect(() => {
     console.log("categoryId ? ", categoryId);
 
@@ -38,6 +39,11 @@ export const FilterSideBar = ({
     console.log("page-homepagination? ", page);
     console.log("orderby-homepagination? ", orderby);
   }, []);
+
+  const handleGridChange = (grid: any) => {
+    setPassgrid(grid);
+    console.log("grid ", grid);
+  };
 
   return (
     <div className="flex flex-row mb-9">
@@ -61,7 +67,7 @@ export const FilterSideBar = ({
           <ImageProductFilter />
         </div>
         <div>
-          <ProductCount />
+          <ProductCount passgrid={handleGridChange} />
         </div>
         <div className="lg:mt-12 md:mt-12 mt-12 cursor-pointer">
           <FilteredProduct
@@ -75,6 +81,7 @@ export const FilterSideBar = ({
             perpage={perpage}
             page={page}
             orderby={orderby}
+            passgrid={passgrid}
           />
         </div>
         <div>

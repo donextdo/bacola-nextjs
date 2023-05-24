@@ -14,10 +14,6 @@ const Brands = ({ categoryId }: any) => {
   const [brandPage, setBrandPage] = useState([]);
   const router = useRouter();
 
-  const products = useSelector(
-    (state: RootState) => state.product.products
-  ) as Product[];
-
   useEffect(() => {
     setCheckedBrands([]);
 
@@ -26,7 +22,6 @@ const Brands = ({ categoryId }: any) => {
         const response = await axios.get(`${baseUrl}/products/${categoryId}`);
         setBrand(response.data);
         setIsEmpty(response.data.length === 0);
-        setBrandPage(response.data);
       } catch (error) {
         console.log(error);
       }
@@ -56,6 +51,20 @@ const Brands = ({ categoryId }: any) => {
       query: { ...router.query, brands: selectedBrands.join(",") },
     });
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`${baseUrl}/productDetails/brand`);
+        console.log(response.data);
+        setBrandPage(response.data);
+        setIsEmpty(response.data.length === 0);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchData();
+  }, []);
 
   return (
     <div>
@@ -103,24 +112,27 @@ const Brands = ({ categoryId }: any) => {
                 const isChecked = checkedBrands[brand.id];
                 return (
                   <div
-                    className="relative max-h-[59px] max-w-[270px] flex items-center hover:cursor-pointer"
+                    className="relative  max-h-[59px] max-w-[270px] items-center hover:cursor-pointer"
                     key={index}
                   >
-                    <div className="flex flex-row mb-3">
+                    <div className="mb-3  w-full flex flex-row">
                       <input
                         type="checkbox"
-                        id={brand.id}
+                        id={brand.brand}
                         checked={isChecked}
-                        // onChange={() => handleBrandClick(brand.id)}
-                        className="mr-4  min-h-[14px] min-w-[14px] hover:cursor-pointer accent-blue-900 hover:bg-blue-900"
+                        onChange={() => handleBrandClick(brand.brand)}
+                        className="mr-4 min-h-[14px] min-w-[14px] hover:cursor-pointer accent-blue-900 hover:bg-blue-900"
                       />
+
                       <label
-                        htmlFor={brand.id}
-                        className={`select-none text-[.8125rem]  font-medium hover:cursor-pointer capitalize ${
+                        htmlFor={brand.brand}
+                        className={`select-none text-[.8125rem] font-medium hover:cursor-pointer capitalize ${
                           isChecked ? "text-blue-900" : "text-gray-500"
                         }`}
                       >
-                        {brand.name}
+                        {brand.brand}
+
+                        <span className="ml-2">({brand.count})</span>
                       </label>
                     </div>
                   </div>

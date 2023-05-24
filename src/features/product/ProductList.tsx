@@ -12,11 +12,13 @@ import { ImageFour, ImageOne, ImageThree } from "@/components/Common/ImageList";
 
 interface ComponentProps {}
 
-export const ProductList: FC<ComponentProps> = ({}) => {
+export const ProductList: FC<ComponentProps> = ({ passgrid }: any) => {
   const dispatch = useDispatch<AppDispatch>();
   const products = useSelector(
     (state: RootState) => state.product.products
   ) as Product[];
+  const [isGrid, setIsGrid] = useState<String>();
+
   useEffect(() => {
     dispatch(fetchProducts());
 
@@ -30,12 +32,30 @@ export const ProductList: FC<ComponentProps> = ({}) => {
   //     .then((response) => response.json())
   //     .then((data) => dispatch(setProducts(data)));
   // }, [dispatch]);
+
+  useEffect(() => {
+    const getItem = localStorage.getItem("gridType");
+    if (!getItem) {
+      console.log("empty : ");
+      setIsGrid("layoutGrid");
+    } else {
+      setIsGrid(getItem);
+    }
+
+    console.log("setIsGrid : ", getItem);
+  }, [passgrid]);
   return (
     <div>
       <div className="mx-auto ">
         <div className="grid 2xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 grid-cols-2">
           {products.map((product: any, index) => {
-            return <ProductCard key={product.id} product={product} />;
+            return (
+              <ProductCard
+                key={product.id}
+                product={product}
+                isGrid={passgrid}
+              />
+            );
           })}
         </div>
       </div>
