@@ -26,7 +26,7 @@ const NavbarNew = () => {
             </div>
             <div className="flex justify-center items-center bg-[#edeef5] rounded-full h-[18px] w-[120px] -mt-6">
               <h1 className="text-[#71778e] text-[10px]">
-                {/* TOTAL {totalProduct} PRODUCTS */}
+                TOTAL {totalProduct} PRODUCTS
               </h1>
             </div>
           </div>

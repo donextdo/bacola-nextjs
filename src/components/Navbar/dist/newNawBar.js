@@ -66,7 +66,10 @@ var NavbarNew = function () {
                     react_1["default"].createElement("div", { className: "my-4" },
                         react_1["default"].createElement(Allcategories_1["default"], null)),
                     react_1["default"].createElement("div", { className: "flex justify-center items-center bg-[#edeef5] rounded-full h-[18px] w-[120px] -mt-6" },
-                        react_1["default"].createElement("h1", { className: "text-[#71778e] text-[10px]" }))),
+                        react_1["default"].createElement("h1", { className: "text-[#71778e] text-[10px]" },
+                            "TOTAL ",
+                            totalProduct,
+                            " PRODUCTS"))),
                 react_1["default"].createElement("div", { className: "lg:flex lg:flex-col  " },
                     react_1["default"].createElement(pageNavBar_1["default"], null)))),
         react_1["default"].createElement("hr", { className: "my-0" })));
