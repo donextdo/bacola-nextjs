@@ -55,7 +55,7 @@ export const ProductPagination = ({ perpage, page, orderby }: any) => {
         <div className="mx-auto ">
           <div className="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 ">
             {product.map((product: any, index) => {
-              return <ProductCard key={product.id} product={product} />;
+              return <ProductCard key={product.id} product={product} productPopup={undefined} setProductPopup={undefined} />;
             })}
           </div>
         </div>

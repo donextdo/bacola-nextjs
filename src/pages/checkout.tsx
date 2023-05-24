@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import baseUrl from "../../utils/baseUrl";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 
 
@@ -529,7 +530,7 @@ const handlePhoneChange = (e:any) => {
                             selectedRadio === "cash" && <p className="text-xs text-[#71778e] mt-3">Pay with cash upon delivery.</p>
                         }
 
-                        <p className="text-[13px] mt-8">Your personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our <span className="text-[#ed174a] underline underline-offset-1 font-semibold">privacy policy.</span></p>
+                        <p className="text-[13px] mt-8">Your personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our <Link href="/privacy-policy"><span className="text-[#ed174a] underline underline-offset-1 font-semibold">privacy policy.</span></Link></p>
 
                         <div className="flex gap-2 mt-4">
                             <input type="checkbox" name="address" id="address" />

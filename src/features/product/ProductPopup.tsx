@@ -3,17 +3,7 @@ import { IoClose } from "react-icons/io5";
 import { FC, useEffect, useState } from "react";
 import {
     FaHeart,
-    FaFacebookF,
-    FaTwitter,
-    FaWhatsapp,
-    FaPinterest,
-    FaLinkedin,
-    FaReddit,
-    FaShippingFast,
 } from "react-icons/fa";
-import { HiOutlineCurrencyDollar } from "react-icons/hi";
-import { GiMedicinePills } from "react-icons/gi";
-import { TbArrowsDownUp } from "react-icons/tb";
 import { BsCheckLg } from "react-icons/bs";
 import axios from "axios";
 import baseUrl from "../../../utils/baseUrl";
@@ -21,7 +11,7 @@ import { Product } from "./product";
 import { useDispatch, useSelector } from "react-redux";
 import { addItem, updateItemQuantity } from "../cart/cartSlice";
 import { updateProductQuantity } from "./productSlice";
-import siteUrl from "../../../utils/siteUrl";
+
 import { RootState } from "@/redux/store";
 
 const ProductPopup = ({setProductPopup, proId}:any) => {
@@ -67,7 +57,7 @@ const ProductPopup = ({setProductPopup, proId}:any) => {
 
     async function fetchData() {
         try {
-            const res = await axios.get(`${baseUrl}/products/getOne/644b54d6b1d73a568c29dfd1`);
+            const res = await axios.get(`${baseUrl}/products/getOne/${proId}`);
             console.log(res)
             setData(res.data);
         } catch (err) {
@@ -138,8 +128,8 @@ const ProductPopup = ({setProductPopup, proId}:any) => {
         setProductPopup(false)
     }
     return ( 
-        <div className="fixed inset-0 z-20 grid place-items-center bg-slate-900 bg-opacity-50">
-            <div className="py-6 px-4 flex gap-6 flex-col relative bg-white shadow-md rounded-md w-5/6">
+        <div className="fixed inset-0 z-50 grid place-items-center bg-slate-900 bg-opacity-50">
+            <div className="py-6 px-4 mx-2 flex gap-6 flex-col relative bg-white shadow-md rounded-md w-full lg:w-[1024px]">
             <div className="flex justify-end px-2"><button onClick={handleclose} className="bg-[#c2c2d3] rounded-full w-8 h-8 flex justify-center items-center"><IoClose className="text-white"/></button></div>
             <div className=" bg-white  rounded-md px-6 mt-4 ">
                     <div className="w-full mb-[1.875rem]">
@@ -390,7 +380,7 @@ const ProductPopup = ({setProductPopup, proId}:any) => {
                 </div>
 </div>
 </div>
-
+   
      );
 }
  

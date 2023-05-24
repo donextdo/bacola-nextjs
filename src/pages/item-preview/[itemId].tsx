@@ -59,16 +59,19 @@ const ItemPages = () => {
         count: 0,
         newprice: 0,
         type: '',
-        review:0,
-        mfgDate:"",
-        life:"",
-        category:"",
-        tags:""
+        review: 0,
+        mfgDate: "",
+        life: "",
+        category: "",
+        tags: ""
 
     })
     const [myCategory, setMyCategory] = useState({});
     const [isColor, setIsColor] = useState(1);
     const [mainImage, setMainImage] = useState(data?.front);
+    const [tag, setTag] = useState([]);
+
+
 
 
     const router = useRouter();
@@ -89,6 +92,8 @@ const ItemPages = () => {
             const res = await axios.get(`${baseUrl}/products/getOne/${itemId}`);
             console.log(res)
             setData(res.data);
+            setTag(res.data.tags)
+
         } catch (err) {
             console.log(err);
         }
@@ -96,14 +101,15 @@ const ItemPages = () => {
 
     useEffect(() => {
         fetchData2();
+        console.log(tag)
     }, []);
 
-    let findcategory:any
+    let findcategory: any
     if (data && data.category && data.category.length > 0) {
         findcategory = data.category[0];
-      } else {
+    } else {
         findcategory = undefined;
-      }
+    }
     console.log(findcategory)
 
 
@@ -198,7 +204,7 @@ const ItemPages = () => {
     const linkedinShareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`;
     const redditShareUrl = `https://www.reddit.com/submit?url=${encodedUrl}`;
     const whatsappShareUrl = `https://wa.me/?text=${encodedUrl}`;
-  
+
 
     const facebookShareClick = (e: any) => {
         e.preventDefault();
@@ -261,14 +267,14 @@ const ItemPages = () => {
     };
 
     let yellowstars = [];
-  let graystars=[];
+    let graystars = [];
 
-for (let i = 1; i <= data.review; i++) {
-  yellowstars.push(<FaStar />);
-}
-for (let i = 1; i <= (5-data.review); i++) {
-  graystars.push(<FaStar />);
-}
+    for (let i = 1; i <= data.review; i++) {
+        yellowstars.push(<FaStar />);
+    }
+    for (let i = 1; i <= (5 - data.review); i++) {
+        graystars.push(<FaStar />);
+    }
     return (
         <div className="bg-[#f7f8fd]">
             <div className="container mx-auto m-8 p-6 ">
@@ -287,8 +293,8 @@ for (let i = 1; i <= (5-data.review); i++) {
                             <div className="text-gray-400 mx-3">|</div>
                             <span className="text-gray-400 ">
                                 <div className="flex flex-row max-h-[18px] max-w-[130.49px] items-center justify-center">
-                                <p className="text-md text-yellow-400 flex">{yellowstars}</p>
-        <p className="text-md text-gray-400 flex">{graystars}</p>
+                                    <p className="text-md text-yellow-400 flex">{yellowstars}</p>
+                                    <p className="text-md text-gray-400 flex">{graystars}</p>
                                 </div>
                             </span>
                             <span className="ml-1">
@@ -478,30 +484,40 @@ for (let i = 1; i <= (5-data.review); i++) {
                                 <hr className="max-w-[330px] mt-6"></hr>
                                 <div className="mt-6 max-h-[72.8px] max-w-[308.33px]">
                                     <div className="flex flex-row">
-                                        <span className="text-gray-400 text-[.8125rem] capitalize">
+                                        <span className="text-gray-400 text-xs capitalize">
                                             Category:
                                             <a
                                                 href=""
                                                 rel="tag"
-                                                className="ml-2 text-gray-600 text-[.8125rem] capitalize"
+                                                className="ml-2 text-gray-600 text-xs capitalize"
                                             >
                                                 Meats & Seafood
                                             </a>
                                         </span>
                                     </div>
-                                    <div className="flex flex-row">
-                                        <span className="text-gray-400 text-[.8125rem] capitalize">
+                                    <div className="flex">
+                                        <span className="text-gray-400 text-xs capitalize">
                                             Tags:
-                                            {/* {data.tags?.map((tag:any)=>(
-                                                <a
-                                                href=""
-                                                rel="tag"
-                                                className="ml-2 text-gray-600 text-[.8125rem] capitalize"
-                                            >
-                                                {tag.name}
-                                            </a>
-                                            ))} */}
+
                                         </span>
+                                        <div className="flex">
+                                            {tag.map((tag: any, index: number) => (
+                                                <div key={index} className="flex">
+
+                                                    <div className="text-xs">
+                                                        {index > 0 && ','}
+                                                    </div>
+                                                    <a
+                                                        href=""
+                                                        rel="tag"
+                                                        className="ml-2 text-gray-600 text-xs capitalize flex"
+                                                    >
+                                                        {tag.name}
+                                                    </a>
+                                                </div>
+                                            ))}
+                                        </div>
+
                                     </div>
                                     <div className="flex flex-row gap-1.5 max-w-[229px] mt-6">
                                         <div className="">
@@ -596,7 +612,7 @@ for (let i = 1; i <= (5-data.review); i++) {
                             <Description data={data} />
                             :
                             isColor === 2 ?
-                                <AdditionalInformation data={data}                                /> :
+                                <AdditionalInformation data={data} /> :
                                 <Review itemId={itemId} />
 
                         }

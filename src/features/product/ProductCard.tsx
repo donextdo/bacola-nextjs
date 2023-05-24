@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect } from "react";
+import React, { Dispatch, ReactElement, SetStateAction, useEffect } from "react";
 import { FaStar, FaHeart } from "react-icons/fa";
 import { SlSizeFullscreen } from "react-icons/sl";
 import { FiHeart } from "react-icons/fi";
@@ -16,16 +16,18 @@ import baseUrl from "../../../utils/baseUrl";
 
 interface Props {
   product: Product;
+  productPopup: any;
+  setProductPopup: any;
 }
 
-export const ProductCard: FC<Props> = ({ product }) => {
+export const ProductCard: FC<Props> = ({ product,setProductPopup, productPopup }) => {
   const [isDiscount, setIsdiscount] = useState(false);
-  const [productPopup, setProductPopup] = useState(false);
+  // const [productPopup, setProductPopup] = useState(false);
   const [wishlist, setWishlist] = useState([]);
   const dispatch = useDispatch();
   const cartItems = useSelector((state: RootState) => state.cart.items);
   let id = localStorage.getItem("id");
-
+  const [pproductId, setPproductId] = useState("");
   
 
   useEffect(() => {
@@ -128,11 +130,11 @@ let totalAmount = 0
       dispatch(calSubTotal(totalAmount))
   });
 
-  let proId
+  // let proId = "";
   const handlepopup = (product:any) => {
     setProductPopup(true)
-    proId=product._id
-    console.log(proId)
+    setPproductId(product._id);
+    
   }
 
   let yellowstars = [];
@@ -262,7 +264,7 @@ for (let i = 1; i <= (5-product.review); i++) {
 
       {
           productPopup && (
-            <ProductPopup setProductPopup={setProductPopup} proId={proId}/>
+            <ProductPopup setProductPopup={setProductPopup} proId={pproductId}/>
           )
         }
     </div>
