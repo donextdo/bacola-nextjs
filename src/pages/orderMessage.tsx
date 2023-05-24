@@ -266,7 +266,7 @@ const OrderMessage = () => {
         </div>
         <div>
           <h1 className="text-sm font-semibold">Total</h1>
-          <p className="text-[13px]">${order?.totalprice.toFixed(2)}</p>
+          <p className="text-[13px]">Rs{order?.totalprice.toFixed(2)}</p>
         </div>
         <div className="">
           <h1 className="text-sm font-semibold">Payment method:</h1>

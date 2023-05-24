@@ -86,7 +86,7 @@ export default function BottomFooter() {
 
               <p className="text-gray-400 text-[12px] pl-5 xl:mr-7">
 
-                Copyright 2022 © Bacola WordPress Theme. All rights reserved.
+                Copyright 2022 © BunTalk WordPress Theme. All rights reserved.
                 Powered by KlbTheme.
               </p>
             </div>

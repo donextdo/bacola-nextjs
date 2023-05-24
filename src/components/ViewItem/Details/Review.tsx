@@ -51,7 +51,7 @@ const Review = ({ itemId }: any) => {
     async function fetchData() {
         try {
             const res = await axios.get(`${baseUrl}/reviews/getReview/${itemId}`);
-            console.log(res)
+            console.log(res.data)
             setData(res.data);
         } catch (err) {
             console.log(err);

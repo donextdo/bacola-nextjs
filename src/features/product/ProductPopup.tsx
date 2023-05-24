@@ -13,6 +13,7 @@ import { addItem, updateItemQuantity } from "../cart/cartSlice";
 import { updateProductQuantity } from "./productSlice";
 
 import { RootState } from "@/redux/store";
+import Review from "@/components/ViewItem/Details/Review";
 
 const ProductPopup = ({setProductPopup, proId}:any) => {
     const [data, setData] = useState<Product>({
@@ -41,10 +42,20 @@ const ProductPopup = ({setProductPopup, proId}:any) => {
         mfgDate:"",
         life:"",
         category:"",
-        tags:""
+        tags:"",
+        speacialtag:""
 
     })
     const [mainImage, setMainImage] = useState(data?.front);
+    let id: any;
+    if (typeof localStorage !== 'undefined') {
+        id = localStorage.getItem("id");
+    }
+    const [allreview, setAllreview] = useState<Array<Review>>([])
+    const [tag, setTag] = useState([]);
+    const [myCategory, setMyCategory] = useState([]);
+
+
 
     const dispatch = useDispatch()
     const products = useSelector((state: RootState) => state.product.products) as Product[];
@@ -60,6 +71,44 @@ const ProductPopup = ({setProductPopup, proId}:any) => {
             const res = await axios.get(`${baseUrl}/products/getOne/${proId}`);
             console.log(res)
             setData(res.data);
+            setTag(res.data.tags)
+
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    let findcategory: any
+    if (data && data.category && data.category.length > 0) {
+        findcategory = data.category[0];
+    } else {
+        findcategory = undefined;
+    }
+    console.log(findcategory)
+
+    useEffect(() => {
+        if (findcategory) {
+        fetchData2();
+    }
+    }, [findcategory]);
+
+    async function fetchData2() {
+        try {
+            const res = await axios.get(`${baseUrl}/categories/get/${findcategory}`);
+            console.log(res.data)
+            setMyCategory(res.data);
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    useEffect(() => {
+        fetchData3();
+    }, []);
+    async function fetchData3() {
+        try {
+            const res = await axios.get(`${baseUrl}/reviews/getReview/${proId}`);
+            setAllreview(res.data);
         } catch (err) {
             console.log(err);
         }
@@ -79,31 +128,28 @@ const ProductPopup = ({setProductPopup, proId}:any) => {
         dispatch(updateProductQuantity({ productId: data._id, count: newQuantity }))
     };
 
-    const handleWishlist = (data: any) => {
-        // const wishlist = JSON.parse(localStorage.getItem('wishlist'));
-
-        const wishlistString = localStorage.getItem('wishlist');
-        const wishlist = wishlistString ? JSON.parse(wishlistString) : [];
-
-        const newObj = {
-            id: data._id,
-            image: data.front,
-            title: data.title,
-            price: data.price,
-            date: new Date().toLocaleDateString("en-US", {
-                month: "long",
-                day: "numeric",
-                year: "numeric"
-            }),
-            quantity: data.quantity
-        };
-        // console.log(newObj)
-        // Modify the array by pushing the new object
-        wishlist.push(newObj);
-
-        // Store the modified array back in local storage
-        localStorage.setItem('wishlist', JSON.stringify(wishlist));
-
+    const handleWishlist = async (data: any) => {
+        const whishListObj = {
+            "whishList":[{
+              productId: data._id,
+              front: data.front,
+              title: data.title,
+              price: data.price,
+              date: new Date().toLocaleDateString("en-US", {
+                  month: "long",
+                  day: "numeric",
+                  year: "numeric"
+              }),
+              quantity: data.quantity
+            }]
+          };
+         
+          try {
+            const response = await axios.post(`${baseUrl}/users/wishList/${id}`, whishListObj);
+            console.log(response.data); // do something with the response data
+        } catch (error) {
+            console.log(error); // handle the error
+        }
 
     }
 
@@ -148,7 +194,7 @@ const ProductPopup = ({setProductPopup, proId}:any) => {
                             </span>
                             <span className="ml-1">
                                 <div className="uppercase  text-gray-400 font-semibold ml-2 text-[11px] flex items-center justify-center">
-                                    1 review
+                                {allreview.length} REVIEW
                                 </div>
                             </span>
 
@@ -172,9 +218,9 @@ const ProductPopup = ({setProductPopup, proId}:any) => {
                                             Recommended
                                         </div>
                                     )}
-                                    {data?.isOrganic && (
+                                    {data?.speacialtag && (
                                         <div className=" font-semibold px-2 py-1 bg-emerald-100 text-green-600 rounded-full text-[10px] flex items-center justify-center uppercase tracking-tighter">
-                                            {data.type}
+                                            {data.speacialtag}
                                         </div>
                                     )}
                                 </div>
@@ -227,7 +273,7 @@ const ProductPopup = ({setProductPopup, proId}:any) => {
                                     </span>
 
                                     <span className="my-1 text-red-700 text-[1.625rem] font-semibold">
-                                        ${newprice.toFixed(2)}
+                                        Rs{newprice.toFixed(2)}
                                     </span>
                                 </div>
                                 {data?.quantity > 0 ? (
@@ -335,40 +381,39 @@ const ProductPopup = ({setProductPopup, proId}:any) => {
                                     <div className="flex flex-row">
                                         <span className="text-gray-400 text-[.8125rem] capitalize">
                                             Category:
-                                            <a
-                                                href=""
-                                                rel="tag"
-                                                className="ml-2 text-gray-600 text-[.8125rem] capitalize"
-                                            >
-                                                Meats & Seafood
-                                            </a>
+                                            {myCategory.map((cat:any)=>(
+                                                    <a
+                                                    href=""
+                                                    rel="tag"
+                                                    className="ml-2 text-gray-600 text-xs capitalize"
+                                                >
+                                                        {cat.name}
+                                                    </a>
+                                                ))} 
                                         </span>
                                     </div>
                                     <div className="flex flex-row">
                                         <span className="text-gray-400 text-[.8125rem] capitalize">
                                             Tags:
-                                            <a
-                                                href=""
-                                                rel="tag"
-                                                className="ml-2 text-gray-600 text-[.8125rem] capitalize"
-                                            >
-                                                chicken,
-                                            </a>
-                                            <a
-                                                href=""
-                                                rel="tag"
-                                                className="ml-1 text-gray-600 text-[.8125rem] capitalize"
-                                            >
-                                                natural,
-                                            </a>
-                                            <a
-                                                href=""
-                                                rel="tag"
-                                                className="ml-1 text-gray-600 text-[.8125rem] capitalize"
-                                            >
-                                                organic
-                                            </a>
+                                           
                                         </span>
+                                        <div className="flex">
+                                            {tag.map((tag: any, index: number) => (
+                                                <div key={index} className="flex">
+
+                                                    <div className="text-xs">
+                                                        {index > 0 && ','}
+                                                    </div>
+                                                    <a
+                                                        href=""
+                                                        rel="tag"
+                                                        className="ml-2 text-gray-600 text-xs capitalize flex"
+                                                    >
+                                                        {tag.name}
+                                                    </a>
+                                                </div>
+                                            ))}
+                                        </div>
                                     </div>
                                     
                                 </div>

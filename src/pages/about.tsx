@@ -17,7 +17,7 @@ function About() {
         </div>
         <div className="absolute text-center transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
           <p className="text-[23px] font-semibold md:text-[32px] lg:text-6xl sm:mt-3">
-            About for Bacola
+            About for BunTalk
           </p>
           <p className="font-semibold lg:tracking-[.25em] md:text-[12px] lg:text-sm lg:mt-3 text-[12px]">
             WE CAN DO MORE FOR YOU
@@ -78,7 +78,7 @@ function About() {
 
           <div className="xl:ml-16 xl:mt-24 xl:mb-40">
             <p className=" text-gray-900 text-[16px]  text-left ">
-              Rachel Leonard - Bacola CEO
+              Rachel Leonard - BunTalk CEO
             </p>
             <p className="  mt-5 text-[28px] font-semibold  gray-900 2xl:text-[32px] xl:text-[32px]">
               Duis convallis luctus pretium. Pellentesque habitant morbi

@@ -63,14 +63,20 @@ const ItemPages = () => {
         mfgDate: "",
         life: "",
         category: "",
-        tags: ""
+        tags: "",
+        speacialtag:""
 
     })
-    const [myCategory, setMyCategory] = useState({});
+    const [myCategory, setMyCategory] = useState([]);
     const [isColor, setIsColor] = useState(1);
     const [mainImage, setMainImage] = useState(data?.front);
     const [tag, setTag] = useState([]);
+    const [allreview, setAllreview] = useState<Array<Review>>([])
 
+    let id: any;
+    if (typeof localStorage !== 'undefined') {
+        id = localStorage.getItem("id");
+    }
 
 
 
@@ -90,7 +96,7 @@ const ItemPages = () => {
     async function fetchData() {
         try {
             const res = await axios.get(`${baseUrl}/products/getOne/${itemId}`);
-            console.log(res)
+            console.log(res.data)
             setData(res.data);
             setTag(res.data.tags)
 
@@ -99,10 +105,8 @@ const ItemPages = () => {
         }
     }
 
-    useEffect(() => {
-        fetchData2();
-        console.log(tag)
-    }, []);
+    
+    
 
     let findcategory: any
     if (data && data.category && data.category.length > 0) {
@@ -112,12 +116,29 @@ const ItemPages = () => {
     }
     console.log(findcategory)
 
+    useEffect(() => {
+        if (findcategory) {
+        fetchData2();
+    }
+    }, [findcategory]);
 
     async function fetchData2() {
         try {
             const res = await axios.get(`${baseUrl}/categories/get/${findcategory}`);
             console.log(res.data)
             setMyCategory(res.data);
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    useEffect(() => {
+        fetchData3();
+    }, []);
+    async function fetchData3() {
+        try {
+            const res = await axios.get(`${baseUrl}/reviews/getReview/${itemId}`);
+            setAllreview(res.data);
         } catch (err) {
             console.log(err);
         }
@@ -151,30 +172,29 @@ const ItemPages = () => {
         setIsColor(id);
     }
 
-    const handleWishlist = (data: any) => {
-        // const wishlist = JSON.parse(localStorage.getItem('wishlist'));
-
-        const wishlistString = localStorage.getItem('wishlist');
-        const wishlist = wishlistString ? JSON.parse(wishlistString) : [];
-
-        const newObj = {
-            id: data._id,
-            image: data.front,
-            title: data.title,
-            price: data.price,
-            date: new Date().toLocaleDateString("en-US", {
-                month: "long",
-                day: "numeric",
-                year: "numeric"
-            }),
-            quantity: data.quantity
-        };
-        // console.log(newObj)
-        // Modify the array by pushing the new object
-        wishlist.push(newObj);
-
-        // Store the modified array back in local storage
-        localStorage.setItem('wishlist', JSON.stringify(wishlist));
+    const handleWishlist = async (data: any) => {
+        
+        const whishListObj = {
+            "whishList":[{
+              productId: data._id,
+              front: data.front,
+              title: data.title,
+              price: data.price,
+              date: new Date().toLocaleDateString("en-US", {
+                  month: "long",
+                  day: "numeric",
+                  year: "numeric"
+              }),
+              quantity: data.quantity
+            }]
+          };
+         
+          try {
+            const response = await axios.post(`${baseUrl}/users/wishList/${id}`, whishListObj);
+            console.log(response.data); // do something with the response data
+        } catch (error) {
+            console.log(error); // handle the error
+        }
 
 
     }
@@ -299,7 +319,7 @@ const ItemPages = () => {
                             </span>
                             <span className="ml-1">
                                 <div className="uppercase  text-gray-400 font-semibold ml-2 text-[11px] flex items-center justify-center">
-                                    1 review
+                                    {allreview.length} REVIEW
                                 </div>
                             </span>
 
@@ -323,11 +343,11 @@ const ItemPages = () => {
                                             Recommended
                                         </div>
                                     )}
-                                    {data?.isOrganic && (
+                                    
                                         <div className=" font-semibold px-2 py-1 bg-emerald-100 text-green-600 rounded-full text-[10px] flex items-center justify-center uppercase tracking-tighter">
-                                            {data.type}
+                                            {data.speacialtag}
                                         </div>
-                                    )}
+                                   
                                 </div>
                                 <div className="hover:cursor-pointer flex items-center justify-center px-12 ">
                                     <Image
@@ -374,11 +394,11 @@ const ItemPages = () => {
                             <div className=" w-full">
                                 <div className=" flex flex-row">
                                     <span className="text-gray-400 line-through mr-2 my-1 font-[1.125rem] flex items-center justify-center">
-                                        ${data?.price.toFixed(2)}
+                                        Rs{data?.price.toFixed(2)}
                                     </span>
 
                                     <span className="my-1 text-red-700 text-[1.625rem] font-semibold">
-                                        ${newprice.toFixed(2)}
+                                        Rs{newprice.toFixed(2)}
                                     </span>
                                 </div>
                                 {data?.quantity > 0 ? (
@@ -486,13 +506,15 @@ const ItemPages = () => {
                                     <div className="flex flex-row">
                                         <span className="text-gray-400 text-xs capitalize">
                                             Category:
-                                            <a
-                                                href=""
-                                                rel="tag"
-                                                className="ml-2 text-gray-600 text-xs capitalize"
-                                            >
-                                                Meats & Seafood
-                                            </a>
+                                                {myCategory.map((cat:any)=>(
+                                                    <a
+                                                    href=""
+                                                    rel="tag"
+                                                    className="ml-2 text-gray-600 text-xs capitalize"
+                                                >
+                                                        {cat.name}
+                                                    </a>
+                                                ))} 
                                         </span>
                                     </div>
                                     <div className="flex">
@@ -574,7 +596,7 @@ const ItemPages = () => {
                                         <div className="mr-4">
                                             <FaShippingFast className="min-w-[30px] min-h-[20px]"></FaShippingFast>
                                         </div>
-                                        <div>Free Shipping apply to all orders over $100</div>
+                                        <div>Free Shipping apply to all orders over Rs100</div>
                                     </div>
                                     <div className="flex flex-row place-items-center ">
                                         <div className="mr-4">

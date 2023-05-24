@@ -89,12 +89,6 @@ export const ProductCard: FC<Props> = ({ product,setProductPopup, productPopup }
 let newprice=product.price-discountprice
 
 const handleWishlist = async (product: any) => {
-  // const wishlist = JSON.parse(localStorage.getItem('wishlist'));
-
-  // const wishlistString = localStorage.getItem('wishlist');
-  // const wishlist = wishlistString ? JSON.parse(wishlistString) : [];
-  
-
 
   const whishListObj = {
     "whishList":[{
@@ -220,11 +214,11 @@ for (let i = 1; i <= (5-product.review); i++) {
         <div className=" flex flex-row items-center">
           {isDiscount && (
             <span className="text-gray-400 text-sm line-through mr-2 my-1 font-[1.125rem]">
-              ${product.price.toFixed(2) as unknown as ReactElement}
+              Rs{product.price.toFixed(2) as unknown as ReactElement}
             </span>
           )}
           <span className="my-1 text-red-700 text-lg font-semibold">
-            ${newprice.toFixed(2)}
+            Rs{newprice.toFixed(2)}
           </span>
         </div>
       </div>

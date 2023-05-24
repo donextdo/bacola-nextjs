@@ -70,7 +70,7 @@ export default function HomeSlider() {
                     from
                     <span className="text-red-600 font-semibold text-2xl lg:text-3xl">
                       {" "}
-                      $ 7.99{" "}
+                      Rs 7.99{" "}
                     </span>
                   </h1>
                   <div className="bg-[#2bbef9] p-2 flex flex-row rounded-full text-sm w-32 text-white font-semibold px-4 justify-between mt-3 lg:mt-6">
@@ -111,7 +111,7 @@ export default function HomeSlider() {
                   from
                   <span className="text-red-600 font-semibold text-2xl lg:text-3xl">
                     {" "}
-                    $ 8.99{" "}
+                    Rs 8.99{" "}
                   </span>
                 </h1>
                 <div className="bg-[#2bbef9] p-2 flex flex-row rounded-full text-sm w-32 text-white font-semibold px-4 justify-between mt-3 lg:mt-6">
@@ -151,7 +151,7 @@ export default function HomeSlider() {
                   from
                   <span className="text-red-600 font-semibold text-2xl lg:text-3xl">
                     {" "}
-                    $ 6.99{" "}
+                    Rs 6.99{" "}
                   </span>
                 </h1>
                 <div className="bg-[#2bbef9] p-2 flex flex-row rounded-full text-sm w-32 text-white font-semibold px-4 justify-between mt-3 lg:mt-6">

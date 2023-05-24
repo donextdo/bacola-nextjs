@@ -179,7 +179,7 @@ export const Location = () => {
                           {item.locationName}
                         </div>
                         <div className="rounded-full text-gray-400 font-semibold w-20 px-2 text-xs h-8 border border-gray-200 flex justify-center items-center">
-                          $:{item.dollar_min}
+                          Rs:{item.dollar_min}
                         </div>
                       </div>
                       <hr />
