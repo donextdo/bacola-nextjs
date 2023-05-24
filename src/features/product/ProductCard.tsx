@@ -24,6 +24,7 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
   const [productPopup, setProductPopup] = useState(false);
   const [wishlist, setWishlist] = useState([]);
   const [grid, setGrid] = useState<string>("");
+  const [proId, setProId] = useState("");
   const dispatch = useDispatch();
   const cartItems = useSelector((state: RootState) => state.cart.items);
   let id = localStorage.getItem("id");
@@ -136,11 +137,11 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
     dispatch(calSubTotal(totalAmount));
   });
 
-  let proId;
   const handlepopup = (product: any) => {
+    console.log("producttttttttttttt", product);
     setProductPopup(true);
-    proId = product._id;
-    console.log(proId);
+    setProId(product);
+    console.log("prodddddddddddddd", proId);
   };
 
   let yellowstars = [];
@@ -166,7 +167,7 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
               <div className="absolute top-2 right-2">
                 <button
                   className="bg-white flex items-center justify-center rounded-full h-8 w-8 hover:cursor-pointer drop-shadow-lg md:invisible group-hover:visible md:group-hover:-translate-x-3 md:group-hover:ease-in transition duration-150 hover:bg-blue-900 group/icon2"
-                  onClick={() => handlepopup(product)}
+                  onClick={() => handlepopup(product._id)}
                 >
                   <SlSizeFullscreen className="h-[10px] w-[10px] fill-blue-900 group-hover/icon2:fill-white" />
                 </button>
@@ -278,9 +279,9 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
                   </div>
                 )}
               </div>
-              {productPopup && (
+              {/* {productPopup && (
                 <ProductPopup setProductPopup={setProductPopup} proId={proId} />
-              )}
+              )} */}
             </div>
           </div>
         </>
@@ -312,7 +313,7 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
           <div className="max-w-[40px] max-h-[85px] ">
             <button
               className="absolute max-w-[24px] max-h-[24px] top-2 right-2 bg-white flex items-center justify-center rounded-full h-8 w-8 hover:cursor-pointer drop-shadow-lg md:invisible group-hover:visible md:group-hover:-translate-x-3 md:group-hover:ease-in transition duration-150 hover:bg-blue-900 group/icon2"
-              onClick={() => handlepopup(product)}
+              onClick={() => handlepopup(product._id)}
             >
               <SlSizeFullscreen className="h-[10px] w-[10px] fill-blue-900 group-hover/icon2:fill-white" />
             </button>
@@ -398,10 +399,13 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
             )}
           </div>
 
-          {productPopup && (
+          {/* {productPopup && (
             <ProductPopup setProductPopup={setProductPopup} proId={proId} />
-          )}
+          )} */}
         </div>
+      )}
+      {productPopup && (
+        <ProductPopup setProductPopup={setProductPopup} proId={proId} />
       )}
     </>
   );
