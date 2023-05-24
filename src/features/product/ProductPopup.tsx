@@ -381,8 +381,9 @@ const ProductPopup = ({setProductPopup, proId}:any) => {
                                     <div className="flex flex-row">
                                         <span className="text-gray-400 text-[.8125rem] capitalize">
                                             Category:
-                                            {myCategory.map((cat:any)=>(
+                                            {myCategory.map((cat:any, index)=>(
                                                     <a
+                                                    key={index}
                                                     href=""
                                                     rel="tag"
                                                     className="ml-2 text-gray-600 text-xs capitalize"
