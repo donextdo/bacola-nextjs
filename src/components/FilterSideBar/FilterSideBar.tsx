@@ -11,14 +11,39 @@ import { useRouter } from "next/router";
 import { PageNumber } from "../Pagination/PageNumber";
 import { ProductCount } from "../Pagination/ProductCount";
 
-export const FilterSideBar = ({ categoryId, brand, subcategory }: any) => {
+export const FilterSideBar = ({
+  categoryId,
+  brand,
+  subcategory,
+  minValue,
+  maxValue,
+  inStock,
+  onSale,
+  perpage,
+  page,
+  orderby,
+}: any) => {
+  const [passgrid, setPassgrid] = useState();
   useEffect(() => {
     console.log("categoryId ? ", categoryId);
 
     console.log("brands ? ", brand);
 
     console.log("subCat ? ", subcategory);
+    console.log("minValue ? ", minValue);
+    console.log("maxValue ? ", maxValue);
+    console.log("inStock ? ", inStock);
+    console.log("onSale ? ", onSale);
+
+    console.log("perpage-homepagination? ", perpage);
+    console.log("page-homepagination? ", page);
+    console.log("orderby-homepagination? ", orderby);
   }, []);
+
+  const handleGridChange = (grid: any) => {
+    setPassgrid(grid);
+    console.log("grid ", grid);
+  };
 
   return (
     <div className="flex flex-row mb-9">
@@ -42,17 +67,25 @@ export const FilterSideBar = ({ categoryId, brand, subcategory }: any) => {
           <ImageProductFilter />
         </div>
         <div>
-          <ProductCount />
+          <ProductCount passgrid={handleGridChange} />
         </div>
         <div className="lg:mt-12 md:mt-12 mt-12 cursor-pointer">
           <FilteredProduct
             categoryId={categoryId}
             brand={brand}
             subcategory={subcategory}
+            minValue={minValue}
+            maxValue={maxValue}
+            inStock={inStock}
+            onSale={onSale}
+            perpage={perpage}
+            page={page}
+            orderby={orderby}
+            passgrid={passgrid}
           />
         </div>
         <div>
-          <PageNumber />
+          <PageNumber perpage={perpage} />
         </div>
       </div>
     </div>

@@ -48,7 +48,6 @@ const Register: React.FC<Props> = () => {
 
           localStorage.setItem("id", response.data._id);
           localStorage.setItem("email", response.data.email);
-          localStorage.setItem("wishlist", JSON.stringify([]));
           localStorage.setItem("order", JSON.stringify([]));
 
           if (response.status == 200) {
@@ -117,7 +116,7 @@ const Register: React.FC<Props> = () => {
       setValidationMsg("");
       setIsDisabled(false);
     } else if (value.length < 9) {
-      setValidationMsg("Password must be at least 8 characters long");
+      setValidationMsg("Password must be at least 9 characters long");
       setIsDisabled(true);
     } else if (!value.match(/[A-Z]/)) {
       setValidationMsg("Password must contain at least one uppercase letter");

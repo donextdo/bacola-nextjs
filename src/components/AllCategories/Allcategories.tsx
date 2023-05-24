@@ -9,9 +9,9 @@ import {
   MdOutlineFastfood,
   MdOutlineStorage,
 } from "react-icons/md";
+import axios from "axios";
 import { BsCupHot, BsEgg } from "react-icons/bs";
 import { IoFastFoodSharp } from "react-icons/io5";
-import axios from "axios";
 import baseUrl from "../../../utils/baseUrl";
 import { FilterSideBar } from "../FilterSideBar/FilterSideBar";
 import { useRouter } from "next/router";

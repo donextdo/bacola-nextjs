@@ -41,13 +41,13 @@ const CartPopup = ({ setCart, }: any) => {
       {cartItems.length > 0 ?
         <div className="absolute w-[300px] max-h-[540px] bg-white right-0 z-50 px-5 py-4 shadow-lg">
           <div className="max-h-[260px] overflow-y-auto overflow-x-hidden">
-            {cartItems.map((item, index) => (
+            {cartItems.map((item:any, index) => (
               <CartPopupCard item={item} key={index} />
             ))}
           </div>
           <div className="flex justify-between mt-6 mb-4">
             <p className="text-[#c2c2d3] font-semibold text-[13px]">Subtotal:</p>
-            <p className="text-lg text-[#d51243]">${totalAmount.toFixed(2)}</p>
+            <p className="text-lg text-[#d51243]">Rs{totalAmount.toFixed(2)}</p>
           </div>
 
           <Link href="/cart">

@@ -25,4 +25,5 @@ export interface Product {
   life:string;
   category:string;
   tags:string;
+  speacialtag:string;
 }

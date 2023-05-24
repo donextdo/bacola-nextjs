@@ -46,7 +46,7 @@ export const AdditionalDiv = () => {
             className="w-[35px] h-[30px] ml-1"
           />
           <div className="px-10 text-xs">
-            Download the Bacola App to your Phone.
+            Download the BunTalk App to your Phone.
           </div>
         </div>
         <hr></hr>
@@ -75,7 +75,7 @@ export const AdditionalDiv = () => {
 export const BestSeller = () => {
   const router = useRouter();
   const goToProduct = () => {
-    router.push("./shop");
+    router.push("./filterProduct");
     localStorage.clear();
   };
   return (
@@ -104,7 +104,7 @@ export const BestSeller = () => {
 export const NewProduct = () => {
   const router = useRouter();
   const goToProduct = () => {
-    router.push("./shop");
+    router.push("./filterProduct");
     localStorage.clear();
   };
   return (

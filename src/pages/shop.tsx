@@ -10,9 +10,9 @@ const PaginationProduct = () => {
   const page = query?.page;
   const orderby = query?.orderby;
 
-  console.log("perpage ", perpage);
-  console.log("page ", page);
-  console.log("orderby ", orderby);
+  // console.log("perpage ", perpage);
+  // console.log("page ", page);
+  // console.log("orderby ", orderby);
 
   return (
     <div className="xl:px-40 lg:px-5 md:px-5 px-5 ">

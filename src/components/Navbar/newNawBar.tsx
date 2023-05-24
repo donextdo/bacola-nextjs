@@ -1,18 +1,21 @@
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import Allcategories from "../AllCategories/Allcategories";
 import PageNavBar from "./pageNavBar";
-import { RootState } from "@/redux/store";
-import { useSelector } from "react-redux";
-import { Product } from "@/features/product/product";
+import baseUrl from "../../../utils/baseUrl";
+import axios from "axios";
 
 const NavbarNew = () => {
-
-  const products = useSelector( (state: RootState) => state.product.products ) as Product[];
-
-  const totalProduct=products.length
-  
+  const [totalProduct, setTotalProduct] = useState();
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await axios.get(`${baseUrl}/products`);
+      setTotalProduct(response.data.totalItems);
+      console.log("response: ", response.data.totalItems);
+    };
+    fetchData();
+  }, []);
   return (
     <div>
       <div className="xl:px-40 lg:px-5 lg:py-5  hidden md:hidden lg:block">
@@ -22,7 +25,9 @@ const NavbarNew = () => {
               <Allcategories />
             </div>
             <div className="flex justify-center items-center bg-[#edeef5] rounded-full h-[18px] w-[120px] -mt-6">
-              <h1 className="text-[#71778e] text-[10px]">TOTAL {totalProduct} PRODUCTS</h1>
+              <h1 className="text-[#71778e] text-[10px]">
+                TOTAL {totalProduct} PRODUCTS
+              </h1>
             </div>
           </div>
           <div className="lg:flex lg:flex-col  ">

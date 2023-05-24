@@ -11,9 +11,11 @@ import HomeSlider from "@/components/Homeslider";
 import HomePage from "@/components/Common/Home";
 
 export default function Home() {
+  
   return (
     <div className="xl:px-40 lg:px-5 md:px-5 px-5 ">
       {/* <Header /> */}
+
       <div>
         <HomeSlider />
       </div>

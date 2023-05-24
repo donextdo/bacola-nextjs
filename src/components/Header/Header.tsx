@@ -6,7 +6,7 @@ import { SlHandbag } from "react-icons/sl";
 import Link from "next/link";
 import { BsList } from "react-icons/bs";
 import Image from "next/image";
-import logo from "../../../assets/logo/bacola.png";
+import logo from "../../../assets/logo/buntalk.png";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import getConfig from "next/config";
@@ -106,7 +106,7 @@ const Header = () => {
                 </button>
               </Link>
             </div>
-            <div className="">${totalAmount.toFixed(2)}</div>
+            <div className="">RS{totalAmount.toFixed(2)}</div>
             <div
               className="relative"
               onMouseEnter={hnadleEnter}

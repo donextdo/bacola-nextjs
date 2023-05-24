@@ -1,9 +1,12 @@
+import { useRouter } from "next/router";
 import { useState, useEffect, useRef, ReactElement } from "react";
 
 export const RangeSlider = () => {
   const [minValue, setMinValue] = useState(0);
   const [maxValue, setMaxValue] = useState(50);
   const progressRef = useRef<HTMLDivElement>(null);
+
+  const router = useRouter();
 
   const handleMin = (e: { target: { value: string } }) => {
     if (maxValue - minValue >= 0 && maxValue <= 50) {
@@ -37,6 +40,19 @@ export const RangeSlider = () => {
       progressRef.current.style.right = `${(1 - maxValue / 50) * 100}%`;
     }
   }, [minValue, maxValue]);
+
+  const setPriceQuery = () => {
+    console.log("minValue: ", minValue);
+    console.log("maxValue: ", maxValue);
+    router.push({
+      pathname: router.pathname,
+      query: {
+        ...router.query,
+        min_price: minValue,
+        max_price: maxValue,
+      },
+    });
+  };
 
   return (
     <div className="box-border max-h-[85px] max-w-[270px] lg:mt-12  ">
@@ -91,6 +107,7 @@ export const RangeSlider = () => {
             <button
               type="button"
               className="uppercase text-[.75rem] ml-3 font-semibold"
+              onClick={setPriceQuery}
             >
               filter
             </button>

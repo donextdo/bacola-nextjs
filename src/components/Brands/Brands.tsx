@@ -14,10 +14,6 @@ const Brands = ({ categoryId }: any) => {
   const [brandPage, setBrandPage] = useState<string[]>([]);
   const router = useRouter();
 
-  const products = useSelector(
-    (state: RootState) => state.product.products
-  ) as Product[];
-
   useEffect(() => {
     setCheckedBrands([]);
 
@@ -26,7 +22,6 @@ const Brands = ({ categoryId }: any) => {
         const response = await axios.get(`${baseUrl}/products/${categoryId}`);
         setBrand(response.data);
         setIsEmpty(response.data.length === 0);
-        setBrandPage(response.data);
       } catch (error) {
         console.log(error);
       }
@@ -43,21 +38,6 @@ const Brands = ({ categoryId }: any) => {
     }
   }, [categoryId]);
 
-  // useEffect(() => {
-  //   // const fetchData = async () => {
-  //   const categoryIds = products.reduce((acc, product) => {
-  //     if (!acc[product.brand]) {
-  //       // Create a unique ID for the brand based on its name
-  //       const brandId = product.brand.replace(/\s+/g, "-").toLowerCase();
-  //       acc[product.brand] = { id: brandId, name: product.brand };
-  //     }
-  //     return acc;
-  //   }, {});
-  //   console.log("categoryIds: ", categoryIds);
-  //   setBrandPage(Object.values(categoryIds));
-  //   // };
-  // }, []);
-
   const handleBrandClick = (brandId: any) => {
     const newCheckedBrands = { ...checkedBrands };
     newCheckedBrands[brandId] = !checkedBrands[brandId];
@@ -70,9 +50,21 @@ const Brands = ({ categoryId }: any) => {
       pathname: router.pathname,
       query: { ...router.query, brands: selectedBrands.join(",") },
     });
-
-    // onBrandChange(selectedBrands);
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`${baseUrl}/productDetails/brand`);
+        console.log(response.data);
+        setBrandPage(response.data);
+        setIsEmpty(response.data.length === 0);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchData();
+  }, []);
 
   return (
     <div>
@@ -120,25 +112,34 @@ const Brands = ({ categoryId }: any) => {
                 const isChecked = checkedBrands[brand.id];
                 return (
                   <div
-                    className="relative max-h-[59px] max-w-[270px] flex items-center hover:cursor-pointer"
+                    className="relative  max-h-[59px] max-w-[270px] items-center hover:cursor-pointer flex "
                     key={index}
                   >
-                    <div className="flex flex-row mb-3">
-                      <input
-                        type="checkbox"
-                        id={brand.id}
-                        checked={isChecked}
-                        // onChange={() => handleBrandClick(brand.id)}
-                        className="mr-4  min-h-[14px] min-w-[14px] hover:cursor-pointer accent-blue-900 hover:bg-blue-900"
-                      />
-                      <label
-                        htmlFor={brand.id}
-                        className={`select-none text-[.8125rem]  font-medium hover:cursor-pointer capitalize ${
-                          isChecked ? "text-blue-900" : "text-gray-500"
-                        }`}
-                      >
-                        {brand.name}
-                      </label>
+                    <div className="mb-3  w-full flex flex-row justify-between ">
+                      <div className=" flex flex-row">
+                        <input
+                          type="checkbox"
+                          id={brand.brand}
+                          checked={isChecked}
+                          onChange={() => handleBrandClick(brand.brand)}
+                          className="mr-4 min-h-[14px] min-w-[14px] hover:cursor-pointer accent-blue-900 hover:bg-blue-900"
+                        />
+
+                        <label
+                          htmlFor={brand.brand}
+                          className={`select-none text-[.8125rem] font-medium hover:cursor-pointer capitalize ${
+                            isChecked ? "text-blue-900" : "text-gray-500"
+                          }`}
+                        >
+                          {brand.brand}
+                        </label>
+                      </div>
+
+                      <div className=" flex flex-row">
+                        <span className="ml-2 text-[.8125rem] font-medium ">
+                          ({brand.count})
+                        </span>
+                      </div>
                     </div>
                   </div>
                 );

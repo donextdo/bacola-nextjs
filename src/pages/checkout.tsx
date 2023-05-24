@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import baseUrl from "../../utils/baseUrl";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 
 
@@ -470,12 +471,12 @@ const handlePhoneChange = (e:any) => {
                             <tbody>
                                 <tr>
                                     <td className="text-[13px] font-semibold border-y border-[#e4e5ee] text-[#71778e]">Subtotal</td>
-                                    <td className=" py-3 text-[15px] text-right border-y border-[#e4e5ee]">${totalAmount.toFixed(2)}</td>
+                                    <td className=" py-3 text-[15px] text-right border-y border-[#e4e5ee]">Rs{totalAmount.toFixed(2)}</td>
 
                                 </tr>
                                 <tr>
                                     <td rowSpan={2} className="text-[13px] font-semibold border-b border-[#e4e5ee] text-[#71778e]">Shipping</td>
-                                    <td className="text-right text-[13px] py-3">Flat rate: <span className="inline-flex text-[#d51243] text-sm gap-2">$5.00<input type="radio" name="vendor" value="Vendor 1"
+                                    <td className="text-right text-[13px] py-3">Flat rate: <span className="inline-flex text-[#d51243] text-sm gap-2">Rs5.00<input type="radio" name="vendor" value="Vendor 1"
                                     //  onChange={handleCheckboxChange} 
                                     />
                                     </span></td>
@@ -495,7 +496,7 @@ const handlePhoneChange = (e:any) => {
                                 </tr>
                                 <tr>
                                     <td className="border-b border-[#e4e5ee] text-[13px] font-semibold py-4 text-[#71778e]">Total</td>
-                                    <td className="border-b border-[#e4e5ee] text-right font-semibold text-xl py-4 ">${totalAmount.toFixed(2)}</td>
+                                    <td className="border-b border-[#e4e5ee] text-right font-semibold text-xl py-4 ">Rs{totalAmount.toFixed(2)}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -529,7 +530,7 @@ const handlePhoneChange = (e:any) => {
                             selectedRadio === "cash" && <p className="text-xs text-[#71778e] mt-3">Pay with cash upon delivery.</p>
                         }
 
-                        <p className="text-[13px] mt-8">Your personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our <span className="text-[#ed174a] underline underline-offset-1 font-semibold">privacy policy.</span></p>
+                        <p className="text-[13px] mt-8">Your personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our <Link href="/privacy-policy"><span className="text-[#ed174a] underline underline-offset-1 font-semibold">privacy policy.</span></Link></p>
 
                         <div className="flex gap-2 mt-4">
                             <input type="checkbox" name="address" id="address" />
@@ -582,12 +583,12 @@ const handlePhoneChange = (e:any) => {
                         <tbody>
                             <tr>
                                 <td className="text-[13px] font-semibold border-y border-[#e4e5ee] text-[#71778e]">Subtotal</td>
-                                <td className=" py-3 text-[15px] text-right border-y border-[#e4e5ee]">${totalAmount.toFixed(2)}</td>
+                                <td className=" py-3 text-[15px] text-right border-y border-[#e4e5ee]">Rs{totalAmount.toFixed(2)}</td>
 
                             </tr>
                             <tr>
                                 <td rowSpan={2} className="text-[13px] font-semibold border-b border-[#e4e5ee] text-[#71778e]">Shipping</td>
-                                <td className="text-right text-[13px] py-3">Flat rate: <span className="inline-flex text-[#d51243] text-sm gap-2">$5.00<input type="radio" name="vendor" value="Vendor 1"
+                                <td className="text-right text-[13px] py-3">Flat rate: <span className="inline-flex text-[#d51243] text-sm gap-2">Rs5.00<input type="radio" name="vendor" value="Vendor 1"
                              
                                 />
                                 </span></td>
@@ -607,7 +608,7 @@ const handlePhoneChange = (e:any) => {
                             </tr>
                             <tr>
                                 <td className="border-b border-[#e4e5ee] text-[13px] font-semibold py-4 text-[#71778e]">Total</td>
-                                <td className="border-b border-[#e4e5ee] text-right font-semibold text-xl py-4 ">${totalAmount.toFixed(2)}</td>
+                                <td className="border-b border-[#e4e5ee] text-right font-semibold text-xl py-4 ">Rs{totalAmount.toFixed(2)}</td>
                             </tr>
                         </tbody>
                     </table>

@@ -52,7 +52,8 @@ const ProductPopup = ({setProductPopup, itemId}:any) => {
         mfgDate:"",
         life:"",
         category:"",
-        tags:""
+        tags:"",
+        speacialtag:"",
 
     })
     const [mainImage, setMainImage] = useState(data?.front);
@@ -237,7 +238,7 @@ const ProductPopup = ({setProductPopup, itemId}:any) => {
                                     </span>
 
                                     <span className="my-1 text-red-700 text-[1.625rem] font-semibold">
-                                        ${newprice.toFixed(2)}
+                                        Rs{newprice.toFixed(2)}
                                     </span>
                                 </div>
                                 {data?.quantity > 0 ? (
