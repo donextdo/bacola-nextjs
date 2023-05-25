@@ -70,6 +70,7 @@ const ItemPages = () => {
   const [mainImage, setMainImage] = useState(data?.front);
   const [isClicked, setIsClicked] = useState<string | null>("front");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [hideImage, setHideImage] = useState(false);
 
   const router = useRouter();
   const { itemId } = router.query;
@@ -88,8 +89,17 @@ const ItemPages = () => {
   async function fetchData() {
     try {
       const res = await axios.get(`${baseUrl}/products/getOne/${itemId}`);
-      console.log(res);
+      console.log("response: ", res.data.back);
       setData(res.data);
+      // if (!res.data.front) {
+      //   setHideImage(true);
+      // }
+      if (res.data.back == "") {
+        setHideImage(true);
+      }
+      // if (!res.data.side) {
+      //   setHideImage(true);
+      // }
     } catch (err) {
       console.log(err);
     }
@@ -350,12 +360,16 @@ const ItemPages = () => {
                         setIsClicked("side");
                       }}
                     >
+                      {/* {!hideImage ? ( */}
                       <Image
                         width={67}
                         height={67}
                         src={data?.side}
                         alt="Man looking at item at a store"
                       />
+                      {/* ) : (
+                        <></>
+                      )} */}
                     </div>
                     <div
                       className={`flex items-center justify-center min-w-[67px] min-h-[67px] lg:min-w-[67px] lg:min-h-[67px] md:min-w-[94.4px] md:min-h-[94.4px]   border ${
@@ -368,12 +382,16 @@ const ItemPages = () => {
                         setIsClicked("front");
                       }}
                     >
+                      {/* {!hideImage ? ( */}
                       <Image
                         width={67}
                         height={67}
                         src={data?.front}
                         alt="Man looking at item at a store"
                       />
+                      {/* ) : (
+                        <></>
+                      )} */}
                     </div>
                     <div
                       className={`flex items-center justify-center min-w-[67px] min-h-[67px] lg:min-w-[67px] lg:min-h-[67px] md:min-w-[94.4px] md:min-h-[94.4px]   border ${
@@ -386,12 +404,16 @@ const ItemPages = () => {
                         setIsClicked("back");
                       }}
                     >
-                      <Image
-                        width={67}
-                        height={67}
-                        src={data?.back}
-                        alt="Man looking at item at a store"
-                      />
+                      {!hideImage ? (
+                        <Image
+                          width={67}
+                          height={67}
+                          src={data?.back}
+                          alt="Man looking at item at a store"
+                        />
+                      ) : (
+                        <></>
+                      )}
                     </div>
                   </div>
                 </div>

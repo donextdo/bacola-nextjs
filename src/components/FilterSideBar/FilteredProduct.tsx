@@ -151,43 +151,6 @@ export const FilteredProduct = ({
     }
   }, [page, perpage, orderby, brand, minValue, maxValue, inStock, onSale]);
 
-  // useEffect(() => {
-  //   if (!perpage) {
-  //     const fetchData = async () => {
-  //       try {
-  //         const response = await axios.get(
-  //           `${baseUrl}/products?sort=${orderby}&page=${page}`
-  //         );
-  //         console.log("!perpage");
-  //         const products = response.data.products;
-  //         setProduct(products);
-  //       } catch (error) {
-  //         console.error(error);
-  //       }
-  //     };
-  //     fetchData();
-  //   } else if (perpage || orderby) {
-  //     const fetchData = async () => {
-  //       try {
-  //         const response = await axios.get(
-  //           `${baseUrl}/products?sort=${orderby}&page=${page}&perpage=${perpage}`
-  //         );
-
-  //         const products = response.data.products;
-
-  //         if (products.length == 0) {
-  //           console.log("bhebhd");
-  //         }
-
-  //         setProduct(products);
-  //       } catch (error) {
-  //         console.error(error);
-  //       }
-  //     };
-  //     fetchData();
-  //   }
-  // }, [perpage, page, orderby]);
-
   useEffect(() => {
     const getItem = localStorage.getItem("gridType");
     if (!getItem) {
@@ -199,6 +162,10 @@ export const FilteredProduct = ({
 
     console.log("setIsGrid : ", getItem);
   }, [passgrid]);
+
+  useEffect(() => {
+    // console.log("productcccccc: ", product[0]?._id);
+  });
 
   return (
     <div>
@@ -221,7 +188,7 @@ export const FilteredProduct = ({
             {product.map((product: any, index) => {
               return (
                 <ProductCard
-                  key={product.id}
+                  key={product?._id}
                   product={product}
                   isGrid={passgrid}
                 />

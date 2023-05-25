@@ -44,6 +44,10 @@ export const ProductList: FC<ComponentProps> = ({ passgrid }: any) => {
 
     console.log("setIsGrid : ", getItem);
   }, [passgrid]);
+  useEffect(() => {
+    console.log("produuuuuuuuuuuuu: ", products);
+  });
+
   return (
     <div>
       <div className="mx-auto ">

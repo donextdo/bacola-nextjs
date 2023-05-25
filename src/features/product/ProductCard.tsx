@@ -30,6 +30,10 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
   let id = localStorage.getItem("id");
 
   useEffect(() => {
+    // if (product.count == "") console.log("product.count == 0: ", product.count);
+  });
+
+  useEffect(() => {
     if (product.discount >= 0) {
       setIsdiscount(true);
     }
@@ -279,9 +283,6 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
                   </div>
                 )}
               </div>
-              {/* {productPopup && (
-                <ProductPopup setProductPopup={setProductPopup} proId={proId} />
-              )} */}
             </div>
           </div>
         </>
@@ -398,10 +399,6 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
               </div>
             )}
           </div>
-
-          {/* {productPopup && (
-            <ProductPopup setProductPopup={setProductPopup} proId={proId} />
-          )} */}
         </div>
       )}
       {productPopup && (
