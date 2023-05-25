@@ -263,18 +263,22 @@ const Cart: FC<CartType> = () => {
                                         <td className="border-b border-[#e4e5ee] py-3 font-semibold text-[13px]">Subtotal</td>
                                         <td className="border-b border-[#e4e5ee] py-3 text-[15px] text-right">Rs{totalAmount.toFixed(2)}</td>
                                     </tr>
+                                    {fulldiscount > 0 &&
                                     <tr>
-                                        <td className="border-b border-[#e4e5ee] py-3 font-semibold text-[13px]">Coupon <button className="text-amber-700" onClick={hanleRemoveCoupon}>[remove]</button></td>
-                                        <td className="border-b border-[#e4e5ee] py-3 text-[15px] text-right">-Rs{fulldiscount.toFixed(2)}</td>
-                                    </tr>
+                                    <td className="border-b border-[#e4e5ee] py-3 font-semibold text-[13px]">Coupon <button className="text-amber-700" onClick={hanleRemoveCoupon}>[remove]</button></td>
+                                    <td className="border-b border-[#e4e5ee] py-3 text-[15px] text-right">-Rs{fulldiscount.toFixed(2)}</td>
+                                </tr>
+                                    }
+                                    
                                     <tr>
                                         <td rowSpan={4} className="text-[13px] font-semibold ">Shipping</td>
                                         <td className="text-right text-[13px] py-3">
-                                            {/* Flat rate: <span className="inline-flex text-[#d51243] text-sm gap-2">$5.00
+                                            Free shipping <span className="inline-flex text-[#d51243] text-sm gap-2">
+                                                {/* $5.00 */}
                                         <input type="radio" name="cart"  
                                         // onClick={handleClickRadioAdd5} 
                                         />
-                                        </span> */}
+                                        </span>
                                         </td>
                                     </tr>
                                     <tr>

@@ -476,7 +476,9 @@ const handlePhoneChange = (e:any) => {
                                 </tr>
                                 <tr>
                                     <td rowSpan={2} className="text-[13px] font-semibold border-b border-[#e4e5ee] text-[#71778e]">Shipping</td>
-                                    <td className="text-right text-[13px] py-3">Flat rate: <span className="inline-flex text-[#d51243] text-sm gap-2">Rs5.00<input type="radio" name="vendor" value="Vendor 1"
+                                    <td className="text-right text-[13px] py-3">Free shipping <span className="inline-flex text-[#d51243] text-sm gap-2">
+                                        {/* Rs5.00 */}
+                                        <input type="radio" name="vendor" value="Vendor 1"
                                     //  onChange={handleCheckboxChange} 
                                     />
                                     </span></td>
@@ -484,14 +486,14 @@ const handlePhoneChange = (e:any) => {
                                 <tr>
 
                                     <td className="text-[13px] pb-5 text-right border-b border-[#e4e5ee]">
-                                        {/* <label className="inline-flex -gap-1"><span className="mr-2">Local pickup</span>
+                                        <label className="inline-flex -gap-1"><span className="mr-2">Local pickup</span>
                                         <input
                                             type="radio"
                                             name="vendor"
                                             value="Vendor 1"
                                         // onChange={handleCheckboxChange}
                                         />
-                                    </label> */}
+                                    </label>
                                     </td>
                                 </tr>
                                 <tr>

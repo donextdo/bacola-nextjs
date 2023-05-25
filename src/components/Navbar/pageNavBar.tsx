@@ -89,7 +89,7 @@ const PageNavBar = () => {
           >
             <GiChickenOven className="text-xl mr-2" />
             <Link
-              href="#"
+              href={"/filterProduct"}
               className="hover:text-[#2bbef9] flex text-gray-700 text-[15px]"
             >
               MEATS &amp; SEAFOOD
@@ -104,7 +104,7 @@ const PageNavBar = () => {
           >
             <MdOutlineBakeryDining className="text-xl mr-2" />
             <Link
-              href="#"
+              href={"/filterProduct"}
               className="hover:text-[#2bbef9] flex text-gray-700 text-[15px]"
             >
               BAKERY
@@ -119,7 +119,7 @@ const PageNavBar = () => {
           >
             <FaMugHot className="text-xl mr-2" />
             <Link
-              href="#"
+              href={"/filterProduct"}
               className="hover:text-[#2bbef9] flex text-gray-700 text-[15px]"
             >
               BEVERAGES
