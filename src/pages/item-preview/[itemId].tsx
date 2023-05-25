@@ -355,11 +355,19 @@ const ItemPages = () => {
                                             Recommended
                                         </div>
                                     )}
+                                   {data?.speacialtag == "organic" && (
+                  <div className=" font-semibold px-2 py-1 bg-emerald-100 text-green-600 rounded-full text-[10px] flex items-center justify-center uppercase tracking-tighter">
+                         {data.speacialtag}
+                    
+                  </div>
+                )} 
+                   {data?.speacialtag == "Recommended" && (
 
-                                    <div className=" font-semibold px-2 py-1 bg-emerald-100 text-green-600 rounded-full text-[10px] flex items-center justify-center uppercase tracking-tighter">
-                                        {data.speacialtag}
-                                    </div>
+                  <div className=" font-semibold px-2 py-1 bg-gray-500 text-white rounded text-[10px] flex items-center justify-center uppercase tracking-tighter">
+                   {data.speacialtag}
 
+                  </div>
+                )}
                                 </div>
                                 <div className="hover:cursor-pointer flex items-center justify-center px-12 " onClick={openModal}>
                                     <Image

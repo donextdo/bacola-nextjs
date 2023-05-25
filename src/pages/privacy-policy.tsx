@@ -3,7 +3,7 @@ const Privacy_Policy = () => {
         <div className="px-2 xl:px-12 2xl:px-20 my-16">
            <div className="">
             <h1 className="text-[28px] mb-4 font-semibold">Who we are</h1>
-            <p className="text-sm">Our website address is: https://klbtheme.com/bacola.</p>
+            <p className="text-sm">Our website address is: https://buntalk.lk.</p>
            </div>
            <div className="mt-8">
             <h1 className="text-[28px] mb-4 font-semibold">Comments</h1>
