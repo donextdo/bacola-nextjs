@@ -7,14 +7,29 @@ import { ProductCount } from "./ProductCount";
 import Image from "next/image";
 import bacolaBannergif from "../../../assets/home/sidebar-banner.gif";
 import { ProductPagination } from "./ProductPagination";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
-export const HomePagination = ({ perpage, page, orderby }: any) => {
+export const HomePagination = ({
+  perpage,
+  page,
+  orderby,
+  brand,
+
+  minValue,
+  maxValue,
+  inStock,
+  onSale,
+}: any) => {
+  const [passgrid, setPassgrid] = useState();
   useEffect(() => {
     // console.log("perpage-homepagination ", perpage);
     // console.log("page-homepagination ", page);
     // console.log("orderby-homepagination ", orderby);
   });
+  const handleGridChange = (grid: any) => {
+    setPassgrid(grid);
+    console.log("grid ", grid);
+  };
   return (
     <div className="flex flex-row mb-9">
       <div className="lg:w-1/4 hidden lg:block">
@@ -36,10 +51,20 @@ export const HomePagination = ({ perpage, page, orderby }: any) => {
           <ImageProductFilter />
         </div>
         <div>
-          <ProductCount />
+          <ProductCount passgrid={handleGridChange} />
         </div>
         <div className="mt-10">
-          <ProductPagination perpage={perpage} page={page} orderby={orderby} />
+          <ProductPagination
+            brand={brand}
+            minValue={minValue}
+            maxValue={maxValue}
+            inStock={inStock}
+            onSale={onSale}
+            passgrid={passgrid}
+            perpage={perpage}
+            page={page}
+            orderby={orderby}
+          />
         </div>
 
         <div className="lg:mt-12 md:mt-12 mt-12 cursor-pointer"></div>

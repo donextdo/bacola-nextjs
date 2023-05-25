@@ -4,7 +4,18 @@ import baseUrl from "../../../utils/baseUrl";
 import axios from "axios";
 import { useRouter } from "next/router";
 
-export const ProductPagination = ({ perpage, page, orderby,passgrid, }: any) => {
+export const ProductPagination = ({
+  brand,
+
+  minValue,
+  maxValue,
+  inStock,
+  onSale,
+  perpage,
+  page,
+  orderby,
+  passgrid,
+}: any) => {
   const [product, setProduct] = useState([]);
   const [isGrid, setIsGrid] = useState<String>();
 
@@ -14,31 +25,26 @@ export const ProductPagination = ({ perpage, page, orderby,passgrid, }: any) => 
     if (!perpage) {
       const fetchData = async () => {
         try {
-          const response = await axios.get(
-            `${baseUrl}/products?sort=${orderby}&page=${page}`
-          );
-          console.log("!perpage");
-          const products = response.data.products;
-          setProduct(products);
-        } catch (error) {
-          console.error(error);
-        }
-      };
-      fetchData();
-    } else if (perpage || orderby) {
-      const fetchData = async () => {
-        console.log("sssssss 1: ", page);
-        console.log("sssssss 2: ", perpage);
-        try {
-          const response = await axios.get(
-            `${baseUrl}/products?sort=${orderby}&page=${page}&perpage=${perpage}`
-          );
-          console.log("perpage || page || orderby");
+          let url = `${baseUrl}/products?page=${page}&sort=${orderby}`;
 
+          if (brand) {
+            url += `&brands=${brand}`;
+          }
+          if (minValue && maxValue) {
+            url += `&min_price=${minValue}&max_price=${maxValue}`;
+          }
+          if (inStock) {
+            url += `&stock_status=${inStock}`;
+          }
+          if (onSale) {
+            url += `&on_sale=${onSale}`;
+          }
+
+          const response = await axios.get(url);
           const products = response.data.products;
-          console.log("sssssss 3: ", products);
-          if (products.length == 0) {
-            console.log("bhebhd");
+
+          if (products.length === 0) {
+            console.log("No products found.");
           }
 
           setProduct(products);
@@ -46,9 +52,43 @@ export const ProductPagination = ({ perpage, page, orderby,passgrid, }: any) => 
           console.error(error);
         }
       };
+
+      fetchData();
+    } else if (perpage || orderby) {
+      const fetchData = async () => {
+        try {
+          let url = `${baseUrl}/products?page=${page}&perpage=${perpage}&sort=${orderby}`;
+
+          if (brand) {
+            url += `&brands=${brand}`;
+          }
+          if (minValue && maxValue) {
+            url += `&min_price=${minValue}&max_price=${maxValue}`;
+          }
+          if (inStock) {
+            url += `&stock_status=${inStock}`;
+          }
+          if (onSale) {
+            url += `&on_sale=${onSale}`;
+          }
+
+          const response = await axios.get(url);
+          const products = response.data.products;
+
+          if (products.length === 0) {
+            console.log("No products found.");
+          }
+
+          setProduct(products);
+        } catch (error) {
+          console.error(error);
+        }
+      };
+
       fetchData();
     }
-  }, [perpage, page, orderby]);
+  }, [page, perpage, orderby, brand, minValue, maxValue, inStock, onSale]);
+
   useEffect(() => {
     const getItem = localStorage.getItem("gridType");
     if (!getItem) {

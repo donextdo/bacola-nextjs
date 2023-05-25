@@ -30,10 +30,6 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
   let id = localStorage.getItem("id");
 
   useEffect(() => {
-    // if (product.count == "") console.log("product.count == 0: ", product.count);
-  });
-
-  useEffect(() => {
     if (product.discount >= 0) {
       setIsdiscount(true);
     }
@@ -55,6 +51,7 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
     dispatch(
       updateProductQuantity({ productId: product._id, count: newQuantity })
     );
+    console.log("handleIncrement ", product.count);
     dispatch(calSubTotal(totalAmount));
   };
 
@@ -65,6 +62,7 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
     dispatch(
       updateProductQuantity({ productId: product._id, count: newQuantity })
     );
+    console.log("handleDecrement ", product.count);
     if (product.count === 1) {
       // dispatch(removeFromCart(id))
       // setIsAddToCart(false)
@@ -73,8 +71,15 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
   };
 
   const handleaddToCart = (product: Product) => {
+    if (!product.count) {
+      console.log("product.count.undefine == 0: ", product.count);
+    }
+    if (product.count) {
+      console.log("product.count.count == 0: ", product.count);
+    }
     dispatch(addItem(product));
     const newQuantity = (product.count || 0) + 1;
+    console.log("handleaddToCart ", product.count);
     dispatch(
       updateProductQuantity({ productId: product._id, count: newQuantity })
     );
@@ -142,10 +147,8 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
   });
 
   const handlepopup = (product: any) => {
-    console.log("producttttttttttttt", product);
     setProductPopup(true);
     setProId(product);
-    console.log("prodddddddddddddd", proId);
   };
 
   let yellowstars = [];

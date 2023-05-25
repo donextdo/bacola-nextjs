@@ -28,6 +28,7 @@ const Allcategories = () => {
   const [viewCategory, setviewCategory] = useState<Array<Category>>([]);
   const [activeCategory, setActiveCategory] = useState(null);
   const [isClicked, setIsClicked] = useState(true);
+  const [activeSubCategory, setActiveSubCategory] = useState(null);
 
   const [isHover, setIsHover] = useState(false);
   const router = useRouter();
@@ -51,7 +52,9 @@ const Allcategories = () => {
     setActiveCategory(null);
   };
 
-  const handleSubCategoryHover = (subcategory: string) => {};
+  const handleSubCategoryHover = (_id: any) => {
+    setActiveSubCategory(_id);
+  };
 
   const getProductByCategory = async (categoryId: any) => {
     sessionStorage.clear();
