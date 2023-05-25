@@ -72,6 +72,9 @@ const ItemPages = () => {
     const [mainImage, setMainImage] = useState(data?.front);
     const [tag, setTag] = useState([]);
     const [allreview, setAllreview] = useState<Array<Review>>([])
+    const [hideBackImage, setHideBackImage] = useState(false);
+  const [hideFrontImage, setHideFrontImage] = useState(false);
+  const [hideSideImage, setHideSideImage] = useState(false);
 
     let id: any;
     if (typeof localStorage !== 'undefined') {
@@ -100,6 +103,15 @@ const ItemPages = () => {
             console.log(res.data)
             setData(res.data);
             setTag(res.data.tags)
+            if (res.data.back == "") {
+                setHideBackImage(true);
+              }
+              if (res.data.front == "") {
+                setHideFrontImage(true);
+              }
+              if (res.data.side == "") {
+                setHideSideImage(true);
+              }
 
         } catch (err) {
             console.log(err);
@@ -389,12 +401,16 @@ const ItemPages = () => {
                                             setIsClicked("side");
                                         }}
                                     >
-                                        <Image
-                                            width={67}
-                                            height={67}
-                                            src={data?.side}
-                                            alt="Man looking at item at a store"
-                                        />
+                                        {!hideSideImage ? (
+                        <Image
+                          width={67}
+                          height={67}
+                          src={data?.side}
+                          alt="Man looking at item at a store"
+                        />
+                      ) : (
+                        <></>
+                      )}
                                     </div>
                                     <div
                                         className={`flex items-center justify-center min-w-[67px] min-h-[67px] lg:min-w-[67px] lg:min-h-[67px] md:min-w-[94.4px] md:min-h-[94.4px]   border ${isClicked === "front"
@@ -406,12 +422,16 @@ const ItemPages = () => {
                                             setIsClicked("front");
                                         }}
                                     >
-                                        <Image
-                                            width={67}
-                                            height={67}
-                                            src={data?.front}
-                                            alt="Man looking at item at a store"
-                                        />
+                                       {!hideFrontImage ? (
+                        <Image
+                          width={67}
+                          height={67}
+                          src={data?.front}
+                          alt="Man looking at item at a store"
+                        />
+                      ) : (
+                        <></>
+                      )}
                                     </div>
                                     <div
                                         className={`flex items-center justify-center min-w-[67px] min-h-[67px] lg:min-w-[67px] lg:min-h-[67px] md:min-w-[94.4px] md:min-h-[94.4px]   border ${isClicked === "back"
@@ -423,12 +443,16 @@ const ItemPages = () => {
                                             setIsClicked("back");
                                         }}
                                     >
-                                        <Image
-                                            width={67}
-                                            height={67}
-                                            src={data?.back}
-                                            alt="Man looking at item at a store"
-                                        />
+                                       {!hideBackImage ? (
+                        <Image
+                          width={67}
+                          height={67}
+                          src={data?.back}
+                          alt="Man looking at item at a store"
+                        />
+                      ) : (
+                        <></>
+                      )}
                                     </div>
                                 </div>
                             </div>
