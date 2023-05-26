@@ -28,6 +28,7 @@ const Allcategories = () => {
   const [viewCategory, setviewCategory] = useState<Array<Category>>([]);
   const [activeCategory, setActiveCategory] = useState(null);
   const [isClicked, setIsClicked] = useState(true);
+  const [activeSubCategory, setActiveSubCategory] = useState(null);
 
   const [isHover, setIsHover] = useState(false);
   const router = useRouter();
@@ -51,7 +52,9 @@ const Allcategories = () => {
     setActiveCategory(null);
   };
 
-  const handleSubCategoryHover = (subcategory: string) => {};
+  const handleSubCategoryHover = (_id: any) => {
+    setActiveSubCategory(_id);
+  };
 
   const getProductByCategory = async (categoryId: any) => {
     sessionStorage.clear();
@@ -63,11 +66,12 @@ const Allcategories = () => {
     });
   };
   useEffect(() => {
-    // Detect current URL and set homeOpen state
     if (router.pathname === "/") {
       setHomeOpen(true);
+      handleCategoryLeave();
     } else {
       setHomeOpen(false);
+      handleCategoryLeave();
     }
   }, [router.pathname]);
   return (
@@ -128,7 +132,7 @@ const Allcategories = () => {
                       <ul
                         className="text-[13px] py-2  p-3  bg-white border border-gray absolute ml-[258px] top-[-0.52rem] z-30 min-w-[17rem] min-h-[32.5rem]"
                         onMouseEnter={() => setIsHover(true)}
-                        onMouseLeave={() => setIsHover(false)}
+                        onMouseLeave={handleCategoryLeave}
                       >
                         {category.subcategories.map(
                           (subcategory: any, index: any) => (

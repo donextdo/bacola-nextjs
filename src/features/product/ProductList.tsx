@@ -51,7 +51,7 @@ export const ProductList: FC<ComponentProps> = ({passgrid}:any) => {
   useEffect(() => {
     console.log("produuuuuuuuuuuuu: ", products);
   });
-
+  const displayedProducts = products.slice(0, 8);
   return (
     <div>
       <div className="mx-auto ">

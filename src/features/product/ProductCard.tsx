@@ -36,7 +36,7 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
 
 
   useEffect(() => {
-    if ((product.discount) >= 0) {
+    if (product.discount >= 0) {
       setIsdiscount(true);
     }
 
@@ -59,8 +59,9 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
     dispatch(
       updateProductQuantity({ productId: product._id, count: newQuantity })
     );
-    dispatch(calSubTotal(totalAmount))
 
+    console.log("handleIncrement ", product.count);
+    dispatch(calSubTotal(totalAmount));
   };
 
   const handleDecrement = (product: Product) => {
@@ -70,6 +71,7 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
     dispatch(
       updateProductQuantity({ productId: product._id, count: newQuantity })
     );
+    console.log("handleDecrement ", product.count);
     if (product.count === 1) {
       // dispatch(removeFromCart(id))
       // setIsAddToCart(false)
@@ -80,8 +82,15 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
 
   const handleaddToCart = (product: Product) => {
 
+    if (!product.count) {
+      console.log("product.count.undefine == 0: ", product.count);
+    }
+    if (product.count) {
+      console.log("product.count.count == 0: ", product.count);
+    }
     dispatch(addItem(product));
     const newQuantity = (product.count || 0) + 1;
+    console.log("handleaddToCart ", product.count);
     dispatch(
       updateProductQuantity({ productId: product._id, count: newQuantity })
     );
@@ -90,10 +99,10 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
     Swal.fire({
       title: '<span style="font-size: 18px">Item has been added to your card</span>',
       width: 400,
-      timer: 2000,
+      timer: 1500,
       // padding: '3',
       color: 'white',
-      background : '#00B853',
+      background: '#00B853',
       showConfirmButton: false,
       heightAuto: true,
       position: 'bottom-end',
@@ -132,7 +141,7 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
           quantity: product.quantity
         }]
       };
-  
+
       try {
         const response = await axios.post(`${baseUrl}/users/wishList/${id}`, whishListObj);
         console.log(response.data); // do something with the response data
@@ -178,10 +187,8 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
   });
 
   const handlepopup = (product: any) => {
-    console.log("producttttttttttttt", product);
     setProductPopup(true);
     setProId(product);
-    console.log("prodddddddddddddd", proId);
   };
 
   let yellowstars = [];
@@ -242,14 +249,14 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
                 )}
                 {product?.speacialtag == "organic" && (
                   <div className=" font-semibold px-2 py-1 bg-emerald-100 text-green-600 rounded-full text-[10px] flex items-center justify-center uppercase tracking-tighter">
-                         {product.speacialtag}
-                    
+                    {product.speacialtag}
+
                   </div>
-                )} 
-                   {product?.speacialtag == "Recommended" && (
+                )}
+                {product?.speacialtag == "Recommended" && (
 
                   <div className=" font-semibold px-2 py-1 bg-gray-500 text-white rounded text-[10px] flex items-center justify-center uppercase tracking-tighter">
-                   {product.speacialtag}
+                    {product.speacialtag}
 
                   </div>
                 )}
@@ -347,19 +354,19 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
                   %
                 </div>
               )}
-            {product?.speacialtag == "organic" && (
-                  <div className=" font-semibold px-2 py-1 bg-emerald-100 text-green-600 rounded-full text-[10px] flex items-center justify-center uppercase tracking-tighter">
-                         {product.speacialtag}
-                    
-                  </div>
-                )} 
-                   {product?.speacialtag == "Recommended" && (
+              {product?.speacialtag == "organic" && (
+                <div className=" font-semibold px-2 py-1 bg-emerald-100 text-green-600 rounded-full text-[10px] flex items-center justify-center uppercase tracking-tighter">
+                  {product.speacialtag}
 
-                  <div className=" font-semibold px-2 py-1 bg-gray-500 text-white rounded text-[10px] flex items-center justify-center uppercase tracking-tighter">
-                   {product.speacialtag}
+                </div>
+              )}
+              {product?.speacialtag == "Recommended" && (
 
-                  </div>
-                )}
+                <div className=" font-semibold px-2 py-1 bg-gray-500 text-white rounded text-[10px] flex items-center justify-center uppercase tracking-tighter">
+                  {product.speacialtag}
+
+                </div>
+              )}
             </div>
             <div className="max-w-[40px] max-h-[85px] ">
               <button className="absolute max-w-[24px] max-h-[24px] top-2 right-2 bg-white flex items-center justify-center rounded-full h-8 w-8 hover:cursor-pointer drop-shadow-lg md:invisible group-hover:visible md:group-hover:-translate-x-3 md:group-hover:ease-in transition duration-150 hover:bg-blue-900 group/icon2" onClick={() => handlepopup(product._id)}>
@@ -417,7 +424,8 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
                 </span>
               </div>
             </div>
-            <div className="mx-1 border-black text-black py-2 px-4 mt-1 rounded-full md:invisible group-hover:visible md:group-hover:-translate-y-3 md:group-hover:ease-in transition duration-150">
+            <div className="mx-1 border-black text-black py-2 px-4 mt-1 rounded-full  transition duration-150">
+              <div className="md:invisible group-hover:visible md:group-hover:-translate-y-3 md:group-hover:ease-in">
               {(product.count == undefined || product.count < 1) && (
                 <button
                   type="button"
@@ -427,6 +435,8 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
                   Add to cart
                 </button>
               )}
+              </div>
+              <div>
 
               {product.count >= 1 && (
                 <div className="max-h-[34px] w-full flex grid-cols-3 h-10">
@@ -449,6 +459,7 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
                   </button>
                 </div>
               )}
+              </div>
             </div>
           </div>
         </>
