@@ -26,13 +26,6 @@ export const ProductList: FC<ComponentProps> = ({ passgrid }: any) => {
     console.log(products);
   }, [dispatch]);
 
-  // useEffect(() => {
-  //   // Fetch products data from the API or use the dummy data from the JSON file
-  //   fetch('/data.json')
-  //     .then((response) => response.json())
-  //     .then((data) => dispatch(setProducts(data)));
-  // }, [dispatch]);
-
   useEffect(() => {
     const getItem = localStorage.getItem("gridType");
     if (!getItem) {
@@ -47,12 +40,12 @@ export const ProductList: FC<ComponentProps> = ({ passgrid }: any) => {
   useEffect(() => {
     console.log("produuuuuuuuuuuuu: ", products);
   });
-
+  const displayedProducts = products.slice(0, 8);
   return (
     <div>
       <div className="mx-auto ">
         <div className="grid 2xl:grid-cols-4 lg:grid-cols-4 md:grid-cols-3 grid-cols-2">
-          {products.map((product: any, index) => {
+          {displayedProducts.map((product: any, index) => {
             return (
               <ProductCard
                 key={product.id}
