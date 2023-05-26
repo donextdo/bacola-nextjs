@@ -35,6 +35,17 @@ export const RangeSlider = () => {
   };
 
   useEffect(() => {
+    router.push({
+      pathname: router.pathname,
+      query: {
+        ...router.query,
+        min_price: minValue,
+        max_price: maxValue,
+      },
+    });
+  }, [minValue, maxValue]);
+
+  useEffect(() => {
     if (progressRef.current) {
       progressRef.current.style.left = `${(minValue / 50) * 100}%`;
       progressRef.current.style.right = `${(1 - maxValue / 50) * 100}%`;
