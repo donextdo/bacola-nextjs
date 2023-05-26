@@ -26,4 +26,5 @@ export interface Product {
   category:string;
   tags:string;
   speacialtag:string;
+  additionalInformation: string
 }
