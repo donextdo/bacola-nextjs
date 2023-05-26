@@ -4,9 +4,13 @@ import { GiChickenOven } from "react-icons/gi";
 import { MdOutlineBakeryDining } from "react-icons/md";
 import { FaMugHot } from "react-icons/fa";
 import { MdKeyboardArrowDown } from "react-icons/md";
-
+import { useRouter } from "next/router";
+import axios from "axios";
+import baseUrl from "../../../utils/baseUrl";
 const PageNavBar = () => {
   const [homeOpen, setHomeOpen] = useState(false);
+  const router = useRouter();
+
   const toggleHome = () => {
     setHomeOpen(homeOpen);
   };
@@ -15,6 +19,46 @@ const PageNavBar = () => {
   const toggleShop = () => {
     setShopOpen(shopOpen);
   };
+  const handleMeat = async (categoryId: any) => {
+    if (categoryId == "Meats & Seafood") {
+      const response = await axios.get(
+        `${baseUrl}/categories/catname/${categoryId}`
+      );
+      router.push({
+        pathname: "/filterProduct",
+        query: { categoryId: response.data[0]._id },
+      });
+    } else if (categoryId == "Breads & Bakery") {
+      const response = await axios.get(
+        `${baseUrl}/categories/catname/${categoryId}`
+      );
+      router.push({
+        pathname: "/filterProduct",
+        query: { categoryId: response.data[0]._id },
+      });
+    } else if (categoryId == "Beverages") {
+      const response = await axios.get(
+        `${baseUrl}/categories/catname/${categoryId}`
+      );
+      router.push({
+        pathname: "/filterProduct",
+        query: { categoryId: response.data[0]._id },
+      });
+    }
+  };
+  // const handleBakery = async (categoryId: any) => {
+  //   router.push({
+  //     pathname: "/filterProduct",
+  //     query: { categoryId: categoryId },
+  //   });
+  // };
+  // const handleBeverage = async (categoryId: any) => {
+  //   router.push({
+  //     pathname: "/filterProduct",
+  //     query: { categoryId: categoryId },
+  //   });
+  // };
+  //644007834ddc2982ee097a72
   return (
     <div className="lg:flex lg:flex-row ">
       <ul className="lg:space-x-1 lg:flex gap gap-0">
@@ -86,10 +130,12 @@ const PageNavBar = () => {
           <button
             onMouseEnter={toggleShop}
             className="lg:py-2 lg:px-4 inline-flex items-center"
+            onClick={() => handleMeat("Meats & Seafood")}
           >
             <GiChickenOven className="text-xl mr-2" />
             <Link
-              href={"/shop"}
+              // href={"/shop"}
+              href="#"
               className="hover:text-[#2bbef9] flex text-gray-700 text-[15px]"
             >
               MEATS &amp; SEAFOOD
@@ -101,10 +147,12 @@ const PageNavBar = () => {
           <button
             onMouseEnter={toggleShop}
             className="lg:py-2 lg:px-4 inline-flex items-center"
+            onClick={() => handleMeat("Breads & Bakery")}
           >
             <MdOutlineBakeryDining className="text-xl mr-2" />
             <Link
-              href={"/shop"}
+              // href={"/shop"}
+              href="#"
               className="hover:text-[#2bbef9] flex text-gray-700 text-[15px]"
             >
               BAKERY
@@ -116,10 +164,12 @@ const PageNavBar = () => {
           <button
             onMouseEnter={toggleShop}
             className="lg:py-2 lg:px-4 inline-flex items-center"
+            onClick={() => handleMeat("Beverages")}
           >
             <FaMugHot className="text-xl mr-2" />
             <Link
-              href={"/shop"}
+              // href={"/shop"}
+              href="#"
               className="hover:text-[#2bbef9] flex text-gray-700 text-[15px]"
             >
               BEVERAGES
