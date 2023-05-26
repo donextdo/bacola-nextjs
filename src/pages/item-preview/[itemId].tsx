@@ -462,11 +462,11 @@ const ItemPages = () => {
                                 <div className=" w-full">
                                     <div className=" flex flex-row">
                                         <span className="text-gray-400 line-through mr-2 my-1 font-[1.125rem] flex items-center justify-center">
-                                            Rs{data?.price.toFixed(2)}
+                                            Rs {data?.price.toFixed(2)}
                                         </span>
 
                                         <span className="my-1 text-red-700 text-[1.625rem] font-semibold">
-                                            Rs{newprice.toFixed(2)}
+                                            Rs {newprice.toFixed(2)}
                                         </span>
                                     </div>
                                     {data?.quantity > 0 ? (
@@ -671,7 +671,7 @@ const ItemPages = () => {
                                             <div className="mr-4">
                                                 <FaShippingFast className="min-w-[30px] min-h-[20px]"></FaShippingFast>
                                             </div>
-                                            <div>Free Shipping apply to all orders over Rs100</div>
+                                            <div>Free Shipping apply to all orders over Rs 100</div>
                                         </div>
                                         <div className="flex flex-row place-items-center ">
                                             <div className="mr-4">

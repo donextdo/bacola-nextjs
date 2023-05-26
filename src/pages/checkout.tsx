@@ -475,7 +475,7 @@ const handlePhoneChange = (e:any) => {
                             <tbody>
                                 <tr>
                                     <td className="text-[13px] font-semibold border-y border-[#e4e5ee] text-[#71778e]">Subtotal</td>
-                                    <td className=" py-3 text-[15px] text-right border-y border-[#e4e5ee]">Rs{totalAmount.toFixed(2)}</td>
+                                    <td className=" py-3 text-[15px] text-right border-y border-[#e4e5ee]">Rs {totalAmount.toFixed(2)}</td>
 
                                 </tr>
                                 <tr>
@@ -502,7 +502,7 @@ const handlePhoneChange = (e:any) => {
                                 </tr>
                                 <tr>
                                     <td className="border-b border-[#e4e5ee] text-[13px] font-semibold py-4 text-[#71778e]">Total</td>
-                                    <td className="border-b border-[#e4e5ee] text-right font-semibold text-xl py-4 ">Rs{totalAmount.toFixed(2)}</td>
+                                    <td className="border-b border-[#e4e5ee] text-right font-semibold text-xl py-4 ">Rs {totalAmount.toFixed(2)}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -590,12 +590,12 @@ const handlePhoneChange = (e:any) => {
                         <tbody>
                             <tr>
                                 <td className="text-[13px] font-semibold border-y border-[#e4e5ee] text-[#71778e]">Subtotal</td>
-                                <td className=" py-3 text-[15px] text-right border-y border-[#e4e5ee]">Rs{totalAmount.toFixed(2)}</td>
+                                <td className=" py-3 text-[15px] text-right border-y border-[#e4e5ee]">Rs {totalAmount.toFixed(2)}</td>
 
                             </tr>
                             <tr>
                                 <td rowSpan={2} className="text-[13px] font-semibold border-b border-[#e4e5ee] text-[#71778e]">Shipping</td>
-                                <td className="text-right text-[13px] py-3">Flat rate: <span className="inline-flex text-[#d51243] text-sm gap-2">Rs5.00<input type="radio" name="vendor" value="Vendor 1"
+                                <td className="text-right text-[13px] py-3">Flat rate: <span className="inline-flex text-[#d51243] text-sm gap-2">Rs 5.00<input type="radio" name="vendor" value="Vendor 1"
                              
                                 />
                                 </span></td>
@@ -615,7 +615,7 @@ const handlePhoneChange = (e:any) => {
                             </tr>
                             <tr>
                                 <td className="border-b border-[#e4e5ee] text-[13px] font-semibold py-4 text-[#71778e]">Total</td>
-                                <td className="border-b border-[#e4e5ee] text-right font-semibold text-xl py-4 ">Rs{totalAmount.toFixed(2)}</td>
+                                <td className="border-b border-[#e4e5ee] text-right font-semibold text-xl py-4 ">Rs {totalAmount.toFixed(2)}</td>
                             </tr>
                         </tbody>
                     </table>

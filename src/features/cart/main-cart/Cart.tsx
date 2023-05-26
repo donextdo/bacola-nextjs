@@ -214,7 +214,7 @@ const Cart: FC<CartType> = () => {
                     <div className="w-full h-full pb-10">
                         <div className="border border-[#e4e5ee] rounded-md space-y-4 py-4 px-4">
                             <p className="text-sm">
-                                Add <span className="text-[#ed174a] font-semibold">Rs15.93</span> to
+                                Add <span className="text-[#ed174a] font-semibold">Rs 15.93</span> to
                                 cart and get free shipping!
                             </p>
                             <hr className="h-2 rounded-md bg-[#ed174a]" />
@@ -261,12 +261,12 @@ const Cart: FC<CartType> = () => {
                                 <tbody>
                                     <tr>
                                         <td className="border-b border-[#e4e5ee] py-3 font-semibold text-[13px]">Subtotal</td>
-                                        <td className="border-b border-[#e4e5ee] py-3 text-[15px] text-right">Rs{totalAmount.toFixed(2)}</td>
+                                        <td className="border-b border-[#e4e5ee] py-3 text-[15px] text-right">Rs {totalAmount.toFixed(2)}</td>
                                     </tr>
                                     {fulldiscount > 0 &&
                                     <tr>
                                     <td className="border-b border-[#e4e5ee] py-3 font-semibold text-[13px]">Coupon <button className="text-amber-700" onClick={hanleRemoveCoupon}>[remove]</button></td>
-                                    <td className="border-b border-[#e4e5ee] py-3 text-[15px] text-right">-Rs{fulldiscount.toFixed(2)}</td>
+                                    <td className="border-b border-[#e4e5ee] py-3 text-[15px] text-right">-Rs {fulldiscount.toFixed(2)}</td>
                                 </tr>
                                     }
                                     
@@ -321,7 +321,7 @@ const Cart: FC<CartType> = () => {
                                     </tr>
                                     <tr>
                                         <td className="border-y border-[#e4e5ee] text-[13px] font-semibold pb-4">Total</td>
-                                        <td className="border-y border-[#e4e5ee] text-right font-semibold text-xl py-4">Rs{finalAmount.toFixed(2)}</td>
+                                        <td className="border-y border-[#e4e5ee] text-right font-semibold text-xl py-4">Rs {finalAmount.toFixed(2)}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -345,11 +345,11 @@ const Cart: FC<CartType> = () => {
                         <tbody>
                             <tr>
                                 <td className="border-b border-[#e4e5ee] py-3 font-semibold text-[13px]">Subtotal</td>
-                                <td className="border-b border-[#e4e5ee] py-3 text-[15px] text-right">Rs{totalAmount}</td>
+                                <td className="border-b border-[#e4e5ee] py-3 text-[15px] text-right">Rs {totalAmount}</td>
                             </tr>
                             <tr>
                                 <td rowSpan={4} className="text-[13px] font-semibold border-b border-[#e4e5ee]">Shipping</td>
-                                <td className="text-right text-[13px] py-3">Flat rate: <span className="inline-flex text-[#d51243] text-sm gap-2">Rs5.00<input type="radio" name="vendor"
+                                <td className="text-right text-[13px] py-3">Flat rate: <span className="inline-flex text-[#d51243] text-sm gap-2">Rs 5.00<input type="radio" name="vendor"
                                 // onChange={handleRadioChange} 
                                 /></span></td>
                             </tr>
@@ -373,7 +373,7 @@ const Cart: FC<CartType> = () => {
                             </tr>
                             <tr>
                                 <td className="border-b border-[#e4e5ee] text-[13px] font-semibold pb-4">Total</td>
-                                <td className="border-b border-[#e4e5ee] text-right font-semibold text-xl py-4">Rs{total}</td>
+                                <td className="border-b border-[#e4e5ee] text-right font-semibold text-xl py-4">Rs {total}</td>
                             </tr>
                         </tbody>
                     </table>

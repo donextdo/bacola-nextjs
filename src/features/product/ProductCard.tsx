@@ -416,11 +416,11 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
               <div className=" flex flex-row items-center">
                 {isDiscount && (
                   <span className="text-gray-400 text-sm line-through mr-2 my-1 font-[1.125rem]">
-                    Rs{product.price.toFixed(2) as unknown as ReactElement}
+                    Rs {product.price.toFixed(2) as unknown as ReactElement}
                   </span>
                 )}
                 <span className="my-1 text-red-700 text-lg font-semibold">
-                  Rs{newprice.toFixed(2)}
+                  Rs {newprice.toFixed(2)}
                 </span>
               </div>
             </div>
