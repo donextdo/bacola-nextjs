@@ -9,14 +9,24 @@ const PaginationProduct = () => {
   const perpage = query?.perpage;
   const page = query?.page;
   const orderby = query?.orderby;
-
-  // console.log("perpage ", perpage);
-  // console.log("page ", page);
-  // console.log("orderby ", orderby);
+  const brand = query?.brands;
+  const minValue = query?.min_price;
+  const maxValue = query?.max_price;
+  const inStock = query?.stock_status;
+  const onSale = query?.on_sale;
 
   return (
     <div className="xl:px-40 lg:px-5 md:px-5 px-5 ">
-      <HomePagination perpage={perpage} page={page} orderby={orderby} />
+      <HomePagination
+        brand={brand}
+        perpage={perpage}
+        page={page}
+        orderby={orderby}
+        minValue={minValue}
+        maxValue={maxValue}
+        inStock={inStock}
+        onSale={onSale}
+      />
     </div>
   );
 };

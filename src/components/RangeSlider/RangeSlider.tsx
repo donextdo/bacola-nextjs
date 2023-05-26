@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { useState, useEffect, useRef, ReactElement } from "react";
-
+import { ChangeEvent } from "react";
 export const RangeSlider = () => {
   const [minValue, setMinValue] = useState(0);
   const [maxValue, setMaxValue] = useState(50);
@@ -8,28 +8,76 @@ export const RangeSlider = () => {
 
   const router = useRouter();
 
-  const handleMin = (e: { target: { value: string } }) => {
-    if (maxValue - minValue >= 0 && maxValue <= 50) {
-      if (parseInt(e.target.value) > parseInt(maxValue.toString())) {
+  // const handleMin = (e: { target: { value: string } }) => {
+  //   if (maxValue - minValue >= 0 && maxValue <= 50) {
+  //     if (parseInt(e.target.value) > parseInt(maxValue.toString())) {
+  //     } else {
+  //       setMinValue(parseInt(e.target.value));
+  //     }
+  //   } else {
+  //     if (parseInt(e.target.value) < minValue) {
+  //       setMinValue(parseInt(e.target.value));
+  //     }
+  //   }
+  // };
+
+  // const handleMax = (e: { target: { value: string } }) => {
+  //   if (maxValue - minValue >= 0 && maxValue <= 50) {
+  //     if (parseInt(e.target.value) < parseInt(minValue.toString())) {
+  //     } else {
+  //       setMaxValue(parseInt(e.target.value));
+  //     }
+  //   } else {
+  //     if (parseInt(e.target.value) > maxValue) {
+  //       setMaxValue(parseInt(e.target.value));
+  //     }
+  //   }
+  // };
+
+  useEffect(() => {
+    const { query } = router;
+    const minPrice = Number(query.min_price);
+    const maxPrice = Number(query.max_price);
+
+    if (!isNaN(minPrice) && !isNaN(maxPrice)) {
+      setMinValue(minPrice);
+      setMaxValue(maxPrice);
+    }
+  }, [router.query]);
+  const handleMin = (e: ChangeEvent<HTMLInputElement>) => {
+    e.persist();
+    e.preventDefault();
+    const newMinValue = parseInt(e.target.value);
+    if (maxValue - newMinValue >= 0 && maxValue <= 50) {
+      if (newMinValue > parseInt(maxValue.toString())) {
+        // Ignore invalid input
       } else {
-        setMinValue(parseInt(e.target.value));
+        setMinValue(newMinValue);
+        updatePriceQuery(newMinValue, maxValue);
       }
     } else {
-      if (parseInt(e.target.value) < minValue) {
-        setMinValue(parseInt(e.target.value));
+      if (newMinValue < minValue) {
+        setMinValue(newMinValue);
+        updatePriceQuery(newMinValue, maxValue);
       }
     }
   };
 
-  const handleMax = (e: { target: { value: string } }) => {
-    if (maxValue - minValue >= 0 && maxValue <= 50) {
-      if (parseInt(e.target.value) < parseInt(minValue.toString())) {
+  const handleMax = (e: ChangeEvent<HTMLInputElement>) => {
+    e.persist();
+    e.preventDefault();
+    const newMaxValue = parseInt(e.target.value);
+    if (newMaxValue - minValue >= 0 && newMaxValue <= 50) {
+      if (newMaxValue < parseInt(minValue.toString())) {
+        // Ignore invalid input
       } else {
-        setMaxValue(parseInt(e.target.value));
+        setMaxValue(newMaxValue);
+        updatePriceQuery(minValue, newMaxValue);
       }
     } else {
-      if (parseInt(e.target.value) > maxValue) {
-        setMaxValue(parseInt(e.target.value));
+      if (newMaxValue > maxValue) {
+        setMaxValue(newMaxValue);
+        updatePriceQuery(minValue, newMaxValue);
       }
     }
   };
@@ -41,9 +89,22 @@ export const RangeSlider = () => {
     }
   }, [minValue, maxValue]);
 
+  const updatePriceQuery = (min: number, max: number) => {
+    router.push(
+      {
+        pathname: router.pathname,
+        query: {
+          ...router.query,
+          min_price: min,
+          max_price: max,
+        },
+      },
+      undefined,
+      { scroll: false }
+    );
+  };
+
   const setPriceQuery = () => {
-    console.log("minValue: ", minValue);
-    console.log("maxValue: ", maxValue);
     router.push({
       pathname: router.pathname,
       query: {

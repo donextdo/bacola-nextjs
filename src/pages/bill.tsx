@@ -48,12 +48,13 @@ const ProductPopup = ({setProductPopup, itemId}:any) => {
         count: 0,
         newprice: 0,
         type: '',
-        review:0,
-        mfgDate:"",
-        life:"",
-        category:"",
-        tags:"",
-        speacialtag:"",
+        review: 0,
+        mfgDate: "",
+        life: "",
+        category: "",
+        tags: "",
+        speacialtag: "",
+        additionalInformation: ''
 
     })
     const [mainImage, setMainImage] = useState(data?.front);
