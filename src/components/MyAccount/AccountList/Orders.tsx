@@ -160,7 +160,7 @@ const Orders = () => {
                                             </div>
                                             <div>
                                                 <h1 className="text-sm font-semibold">Total</h1>
-                                                <p className="text-[13px]">Rs{order.totalprice.toFixed(2)}</p>
+                                                <p className="text-[13px]">Rs {order.totalprice.toFixed(2)}</p>
                                             </div>
                                             <div className="text-right">
                                                 <button className="bg-[#233a95] text-white p-2 rounded-md w-[74px]" onClick={() => handleView(order.orderId)}>view</button>
@@ -215,12 +215,12 @@ const Orders = () => {
                     {order?.items.map((item, index) => (
                         <div className="flex  " key={index}>
                             <div className="w-2/3 text-sm px-2 py-2 border border-gray-300 ">{item.productDetails?.name} <span className="text-sm font-semibold">x {item.orderquantity}</span></div>
-                            <div className="w-1/3 text-sm px-2 py-2 border border-gray-300 ">Rs{item.productDetails?.price}</div>
+                            <div className="w-1/3 text-sm px-2 py-2 border border-gray-300 ">Rs {item.productDetails?.price}</div>
                         </div>
                     ))}
                     <div className="flex  ">
                         <div className="w-2/3 font-semibold text-sm px-2 py-2 border border-gray-300 ">Subtotal:</div>
-                        <div className="w-1/3 text-sm px-2 py-2 border border-gray-300 ">Rs{order?.totalprice.toFixed(2)}</div>
+                        <div className="w-1/3 text-sm px-2 py-2 border border-gray-300 ">Rs {order?.totalprice.toFixed(2)}</div>
                     </div>
                     <div className="flex  ">
                         <div className="w-2/3 font-semibold text-sm px-2 py-2 border border-gray-300 ">Payment method:</div>
@@ -228,7 +228,7 @@ const Orders = () => {
                     </div>
                     <div className="flex  ">
                         <div className="w-2/3 font-semibold text-sm px-2 py-2 border border-gray-300 ">Total:</div>
-                        <div className="w-1/3 text-sm px-2 py-2 border border-gray-300 ">Rs{order?.totalprice.toFixed(2)}</div>
+                        <div className="w-1/3 text-sm px-2 py-2 border border-gray-300 ">Rs {order?.totalprice.toFixed(2)}</div>
                     </div>
 
 

@@ -239,7 +239,7 @@ const ProductPopup = ({setProductPopup, itemId}:any) => {
                                     </span>
 
                                     <span className="my-1 text-red-700 text-[1.625rem] font-semibold">
-                                        Rs{newprice.toFixed(2)}
+                                        Rs {newprice.toFixed(2)}
                                     </span>
                                 </div>
                                 {data?.quantity > 0 ? (

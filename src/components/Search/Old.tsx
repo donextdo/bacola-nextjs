@@ -115,13 +115,13 @@ export const Old = () => {
                       // key={item.id}
                       className="cursor-pointer text-end text-sm text-gray-400 font-semibold line-through mr-2 text-[14px] font-ff-headings"
                     >
-                      Rs{item.price}
+                      Rs {item.price}
                     </li>
                     <li
                       // key={item.id}
                       className="cursor-pointer text-end text-red-600 text-sm font-semibold mr-2 font-ff-headings"
                     >
-                      Rs
+                      Rs 
                       {(
                         item.price -
                         item.price * (item.discount / 100)

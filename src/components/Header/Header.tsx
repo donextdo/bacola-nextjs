@@ -106,7 +106,7 @@ const Header = () => {
                 </button>
               </Link>
             </div>
-            <div className="">RS{totalAmount.toFixed(2)}</div>
+            <div className="">Rs {totalAmount.toFixed(2)}</div>
             <div
               className="relative"
               onMouseEnter={hnadleEnter}
