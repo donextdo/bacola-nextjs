@@ -161,7 +161,7 @@ const ItemPages = () => {
     const item: Product | undefined = products.find((item) => item._id === itemId);
 
     const handleIncrement = (data: Product) => {
-        const newQuantity = (item?.count || 0) + 1;
+        const newQuantity = (item?.count || 1) + 1;
         dispatch(updateItemQuantity({ itemId: data._id, count: newQuantity }));
         dispatch(updateProductQuantity({ productId: data._id, count: newQuantity }))
     };
@@ -548,25 +548,32 @@ const ItemPages = () => {
                                             <div className="mr-2">
                                                 <BsCheckLg className="h-[15px] w-[15px] text-green-600 stroke-[1px]"></BsCheckLg>
                                             </div>
-                                            <div className="">
+                                            {data.type && (
+                                                <div className="">
                                                 Type: <span className="">{data.type}</span>
                                             </div>
+                                            )}                             
                                         </div>
                                         <div className="flex flex-row text-[.75rem] place-items-start mb-1">
                                             <div className="mr-2 ">
                                                 <BsCheckLg className="h-[15px] w-[15px] text-green-600 stroke-[1px]"></BsCheckLg>
                                             </div>
-                                            <div className="">
-                                                MFG: <span>{data.mfgDate}</span>
-                                            </div>
+                                            {data.mfgDate && (
+                                                    <div className="">
+                                                    MFG: <span>{data.mfgDate}</span>
+                                                </div>
+                                            )}                   
                                         </div>
                                         <div className="flex flex-row text-[.75rem] place-items-start mb-1">
                                             <div className="mr-2">
                                                 <BsCheckLg className="h-[15px] w-[15px] text-green-600 stroke-[1px]"></BsCheckLg>
                                             </div>
-                                            <div className="">
-                                                LIFE: <span className="">{data.life}</span>
-                                            </div>
+                                            {data.life &&(
+                                                 <div className="">
+                                                 LIFE: <span className="">{data.life}</span>
+                                             </div>
+                                            )}
+                                           
                                         </div>
                                     </div>
                                     <hr className="max-w-[330px] mt-6"></hr>
@@ -663,9 +670,9 @@ const ItemPages = () => {
                                     </div>
                                 </div>
                                 <div className="pb-4 mt-10 xl:mt-0">
-                                    <div className="flex flex-row items-center justify-center max-h-[38px] w-full rounded  bg-red-100  text-[.8125rem] p-6 text-red-800">
+                                    {/* <div className="flex flex-row items-center justify-center max-h-[38px] w-full rounded  bg-red-100  text-[.8125rem] p-6 text-red-800">
                                         Covid-19 Info: We keep delivering.
-                                    </div>
+                                    </div> */}
                                     <div className=" bg-gray-100  text-[.8125rem] p-6 py-10 space-y-8 mt-4">
                                         <div className="flex flex-row place-items-center">
                                             <div className="mr-4">
@@ -679,12 +686,12 @@ const ItemPages = () => {
                                             </div>
                                             <div>Guranteed 100% Organic from natural farmas</div>
                                         </div>
-                                        <div className="flex flex-row place-items-center ">
+                                        {/* <div className="flex flex-row place-items-center ">
                                             <div className="mr-4">
                                                 <HiOutlineCurrencyDollar className="min-w-[30px] min-h-[20px] "></HiOutlineCurrencyDollar>
                                             </div>
                                             <div>1 Day Returns if you change your mind</div>
-                                        </div>
+                                        </div> */}
                                     </div>
                                 </div>
                             </div>
@@ -703,7 +710,7 @@ const ItemPages = () => {
                                     onClick={() => handleChange(2)}>ADDITIONAL INFORMATION</button>
                             )}
                             <button className={`   ${isColor === 3 ? 'text-black' : 'text-[#c2c2d3]'}`}
-                                onClick={() => handleChange(3)}>REVIEW</button>
+                                onClick={() => handleChange(3)}>REVIEWS({allreview.length})</button>
                         </div>
                         <hr />
                         <div className='mt-4 px-6'>
@@ -721,6 +728,7 @@ const ItemPages = () => {
 
                 </div>
 
+                {/* mobile view */}
                 <div className="lg:hidden">
                     <div className="fixed bottom-0 w-full h-20 bg-white flex items-center justify-between z-50">
                         <div className="grid grid-cols-3 gap-2 min-h-[44px] min-w-[130px] pl-4">
@@ -734,7 +742,8 @@ const ItemPages = () => {
 
 
                             <div className=" flex items-center justify-center w-full text-center ">
-                                {data.count}
+                            {item?.count || 1}
+
                             </div>
 
                             <button
@@ -749,6 +758,7 @@ const ItemPages = () => {
                             <button
                                 type="button"
                                 className=" bg-blue-900 text-white px-12 py-3 rounded-full "
+                                onClick={() => handleaddToCart(data)}
                             >
                                 Add to cart
                             </button>
@@ -756,6 +766,7 @@ const ItemPages = () => {
                     </div>
                 </div>
             </div>
+
             {/* Modal or Lightbox */}
             {isModalOpen && (
                 <div className="fixed top-0 left-0 w-screen h-screen bg-black  flex items-center justify-center">

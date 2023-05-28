@@ -7,9 +7,9 @@ const NewsLettertwo = () => {
       <div className="px-5 mx-auto sm:px-5 lg:px-10 2xl:px-40">
         <div className="grid lg:grid-cols-2">
           <div className="max-w-5xl lg:max-w-md lg:self-center">
-            <p className="mt-6 text-base text-gray-300 lg:mt-10">
+            {/* <p className="mt-6 text-base text-gray-300 lg:mt-10">
               Rs 20 discount for your first order
-            </p>
+            </p> */}
             <h2 className="text-lg font-bold text-white lg:text-3xl lg:mt-2">
               Join our newsletter and get...
             </h2>

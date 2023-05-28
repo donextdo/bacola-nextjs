@@ -18,7 +18,7 @@ const NavbarNew = () => {
   }, []);
   return (
     <div>
-      <div className="xl:px-40 lg:px-5 lg:py-5  hidden md:hidden lg:block">
+      <div className="container mx-auto xl:px-40 lg:px-5 lg:py-5  hidden md:hidden lg:block">
         <div className=" lg:flex lg:flex-row  lg:justify-between lg:items-center">
           <div className="lg:flex lg:flex-col items-center">
             <div className="my-4">

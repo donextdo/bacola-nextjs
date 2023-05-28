@@ -9,11 +9,11 @@ import { BsArrowRight } from "react-icons/bs";
 export const ImageOne = () => {
   return (
     <div>
-      <div className="mt-9 relative cursor-pointer">
+      <div className="mt-9 relative cursor-pointer w-full">
         <Image
           src={banner1}
           alt="banner - Image"
-          className="mb-0 h-[220px] w-full rounded-md lg:w-[430px]"
+          className="mb-0 h-[220px] w-full rounded-md"
         />
         <div className="absolute inset-0 flex flex-col justify-center max-w-[390px] max-h-[290px] lg:max-w-[610px] lg:max-h-[372px] p-8 lg:mt-3 md:justify-center md:mt-14 md:max-w-[450px]">
           <div className="flex flex-row  mt-3 items-center">
@@ -39,11 +39,11 @@ export const ImageOne = () => {
 
 export const ImageTwo = () => {
   return (
-    <div className="mt-9 relative cursor-pointer">
+    <div className="mt-9 relative cursor-pointer w-full">
       <Image
         src={banner2}
         alt="banner - Image"
-        className="mb-0 h-[220px] w-full rounded-md lg:w-[430px] lg:ml-7"
+        className="mb-0 h-[220px] w-full rounded-md "
       />
       <div className="absolute inset-0 flex flex-col justify-center max-w-[390px] lg:mt-3 max-h-[290px] lg:max-w-[610px] lg:max-h-[372px] p-8 md:justify-center md:mt-14 md:max-w-[450px]">
         <div className="flex flex-row  mt-3 items-center">
