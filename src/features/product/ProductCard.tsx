@@ -405,9 +405,15 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
                 </Link>
 
               </div>
-              <div className="my-1 font-[.6875rem] text-xs pt-2 text-green-600 uppercase font-semibold tracking-[.005em]">
-                {product.quantity > 0 ? "In Stock" : "Out of Stock"}
-              </div>
+              {product?.quantity > 0 ? (
+                <div className="my-1 font-[.6875rem] text-xs pt-2 text-green-600 uppercase font-semibold tracking-[.005em]">
+                  In Stock
+                </div>
+              ) : (
+                <div className="my-1 font-[.6875rem] text-xs pt-2 text-red-600 uppercase font-semibold tracking-[.005em]">
+                  Out of Stock
+                </div>
+              )}
               <div className="text-xs pt-2 flex flex-row items-center my-1">
                 {/* {stars} */}
                 <p className="text-md text-yellow-400 flex">{yellowstars}</p>
@@ -426,39 +432,39 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
             </div>
             <div className="mx-1 border-black text-black py-2 px-4 mt-1 rounded-full  transition duration-150">
               <div className="md:invisible group-hover:visible md:group-hover:-translate-y-3 md:group-hover:ease-in">
-              {(product.count == undefined || product.count < 1) && (
-                <button
-                  type="button"
-                  className=" bg-blue-900 text-white min-h-[34px]  rounded-full w-full "
-                  onClick={() => handleaddToCart(product)}
-                >
-                  Add to cart
-                </button>
-              )}
+                {(product.count == undefined || product.count < 1) && (
+                  <button
+                    type="button"
+                    className=" bg-blue-900 text-white min-h-[34px]  rounded-full w-full "
+                    onClick={() => handleaddToCart(product)}
+                  >
+                    Add to cart
+                  </button>
+                )}
               </div>
               <div>
 
-              {product.count >= 1 && (
-                <div className="max-h-[34px] w-full flex grid-cols-3 h-10">
-                  <button
-                    type="button"
-                    className="px-4 max-h-[34px] border-gray-500 bg-slate-500 rounded-tl-3xl rounded-bl-3xl "
-                    onClick={() => handleDecrement(product)}
-                  >
-                    -
-                  </button>
-                  <div className="max-h-[34px] flex items-center justify-center w-full text-center border-y">
-                    {product.count || 0}
+                {product.count >= 1 && (
+                  <div className="max-h-[34px] w-full flex grid-cols-3 h-10">
+                    <button
+                      type="button"
+                      className="px-4 max-h-[34px] border-gray-500 bg-slate-500 rounded-tl-3xl rounded-bl-3xl "
+                      onClick={() => handleDecrement(product)}
+                    >
+                      -
+                    </button>
+                    <div className="max-h-[34px] flex items-center justify-center w-full text-center border-y">
+                      {product.count || 0}
+                    </div>
+                    <button
+                      type="button"
+                      className="px-4 max-h-[34px] border-gray-500 bg-yellow-500 rounded-br-3xl rounded-tr-3xl "
+                      onClick={() => handleIncrement(product)}
+                    >
+                      +
+                    </button>
                   </div>
-                  <button
-                    type="button"
-                    className="px-4 max-h-[34px] border-gray-500 bg-yellow-500 rounded-br-3xl rounded-tr-3xl "
-                    onClick={() => handleIncrement(product)}
-                  >
-                    +
-                  </button>
-                </div>
-              )}
+                )}
               </div>
             </div>
           </div>

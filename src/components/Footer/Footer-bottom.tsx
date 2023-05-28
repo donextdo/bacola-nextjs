@@ -34,7 +34,7 @@ export default function BottomFooter() {
           </div>
 
 
-          <div className="ml-7 xl:ml-40 2xl:ml-96  sm:mx-10 xl:mx-0 lg:ml-16 md:ml-40">
+          {/* <div className="ml-7 xl:ml-40 2xl:ml-96  sm:mx-10 xl:mx-0 lg:ml-16 md:ml-40">
 
             <p className="font-semibold text-[14px] xl:ml-7 md:ml-7 ">
               Download App on Mobile :
@@ -63,12 +63,12 @@ export default function BottomFooter() {
                 height={38}
               />
             </button>
-          </div>
+          </div> */}
 
           <div className="sm:mx-[25%]  lg:mx-0 xl:mx-0 my-0">
-            <button className="border rounded-full p-2  ml-7 mt-3 lg:mt-0 text-[#233a95]">
+            <Link href="https://www.facebook.com/buntalksl"><button className="border rounded-full p-2  ml-7 mt-3 lg:mt-0 text-[#233a95]">
               <GrFacebookOption />
-            </button>
+            </button></Link>
             <button className="border rounded-full p-2  mx-2 text-[#233a95]">
               <AiOutlineTwitter />
             </button>
@@ -80,14 +80,13 @@ export default function BottomFooter() {
 
         <hr className="my-5 " />
 
-        <div className="xl:flex ">
+        <div className="xl:flex justify-between">
           <div className="lg:flex lg:mb-5 xl:mb-0">
             <div>
 
               <p className="text-gray-400 text-[12px] pl-5 xl:mr-7">
 
-                Copyright 2022 © BunTalk WordPress Theme. All rights reserved.
-                Powered by KlbTheme.
+                Copyright © 2023 Buntalk. All Rights Reserved.
               </p>
             </div>
 
@@ -96,7 +95,7 @@ export default function BottomFooter() {
 
               <p className="text-gray-400 text-[12px]  pl-5 lg:pl-2">
                 <Link
-                  href=""
+                  href="/privacy-policy"
                   className="hover:underline hover:underline-offset-1"
                 >
                   Privacy Policy
@@ -120,11 +119,12 @@ export default function BottomFooter() {
               </p>
             </div>
           </div>
-          <div className="hidden lg:block ">
+          <div className="hidden lg:block  ">
+            <div></div>
             <button className="ml-5 xl:ml-7">
               <SiAmericanexpress className="text-2xl text-gray-600" />
             </button>
-            <button className="ml-5 xl:ml-7">
+            {/* <button className="ml-5 xl:ml-7">
               <FaCcStripe className="text-2xl text-gray-600" />
             </button>
             <button className="ml-5 xl:ml-7">
@@ -135,13 +135,14 @@ export default function BottomFooter() {
             </button>
             <button className="ml-5 xl:ml-7">
               <FaCcPaypal className="text-2xl text-gray-600" />
-            </button>
+            </button> */}
             <button className="ml-5 xl:ml-7">
               <RiMastercardFill className="text-2xl text-gray-600" />
             </button>
             <button className="ml-5 xl:ml-7">
               <SiVisa className="text-2xl text-gray-600" />
             </button>
+
           </div>
         </div>
       </div>

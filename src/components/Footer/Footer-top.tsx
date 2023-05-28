@@ -29,7 +29,7 @@ export default function Footer() {
                 <TbTruckDelivery />
               </p>
               <p className="text-[13px] font-medium">
-                Free delivery for order over Rs 70
+                Free delivery for order over Rs 7
               </p>
             </div>
           </div>
