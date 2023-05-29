@@ -9,6 +9,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { calSubTotal, removeItem, updateItemQuantity } from "../cartSlice";
 import { updateProductQuantity } from "@/features/product/productSlice";
 import { Product } from "@/features/product/product";
+// import Tooltip from "@/components/Tooltip/Tooltip";
+
 
 
 const CartCard = ({item, index,totalAmount}:any) => {
@@ -71,9 +73,12 @@ let subtotal = (item.count) * (newprice)
                                         />
 
                                     </div>
+                                    
+                                  
                                     <div className="col-span-2 sm:col-span-4 text-sm  ">
                                         {item.title}
                                     </div>
+                                   
                                     <div className="col-span-1 hidden sm:block">{newprice.toFixed(2)}</div>
                                     <div className="flex sm:col-span-2">
                                         <button className="p-2.5 bg-[#edeef5] rounded-full w-[30px] flex items-center" onClick={()=>handleDecrement(item)}>

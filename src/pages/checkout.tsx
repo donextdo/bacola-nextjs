@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import baseUrl from "../../utils/baseUrl";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { removeAll } from "@/features/cart/cartSlice";
 
 
 
@@ -326,6 +327,8 @@ const handlePhoneChange = (e:any) => {
                     pathname: '/orderMessage',
                     query: orderData,
                   });
+        dispatch(removeAll())
+
 
             }
         } catch (error) {
