@@ -3,6 +3,7 @@ import productReducer from "@/features/product/productSlice";
 import cartReducer from "../features/cart/cartSlice";
 import orderSlice from "@/components/Checkout/orderSlice";
 import userReducer from "../../src/features/User/userSlice";
+import recentlyClickedReducer from "@/features/product/recentlyClickedSlice";
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
     cart: cartReducer,
     order: orderSlice,
     user: userReducer,
+    recentlyClicked: recentlyClickedReducer,
   },
 });
 

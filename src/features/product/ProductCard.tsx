@@ -20,7 +20,7 @@ import axios from "axios";
 import baseUrl from "../../../utils/baseUrl";
 import { useRouter } from "next/router";
 import Swal from "sweetalert2";
-
+import { addRecentlyClickedProductId } from "./recentlyClickedSlice";
 interface Props {
   product: Product;
   isGrid: string;
@@ -55,13 +55,26 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
     }
   }, [isGrid]);
 
+  const handleProductClick = (product: any) => {
+    let recentlyAddedProductsString = localStorage.getItem(
+      "recentlyAddedProducts"
+    );
+    let products: any[] = [];
+
+    if (recentlyAddedProductsString) {
+      products = JSON.parse(recentlyAddedProductsString);
+    }
+    products.push(product._id);
+    if (products.length > 4) {
+      products = products.slice(-4);
+    }
+
+    // Save the updated list back to local storage
+    localStorage.setItem("recentlyAddedProducts", JSON.stringify(products));
+    console.log("data - productId: ", products);
+  };
+
   const handleIncrement = (product: Product) => {
-    if (!product.count) {
-      console.log("product.count.handleIncrement == 0: ", product.count);
-    }
-    if (product.count) {
-      console.log("product.count.handleIncrement == 0: ", product.count);
-    }
     // setQuantity(quantity + 1);
     const newQuantity = (product.count || 0) + 1;
     dispatch(updateItemQuantity({ itemId: product._id, count: newQuantity }));
@@ -74,12 +87,6 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
   };
 
   const handleDecrement = (product: Product) => {
-    if (!product.count) {
-      console.log("product.count.handleDecrement == 0: ", product.count);
-    }
-    if (product.count) {
-      console.log("product.count.handleDecrement == 0: ", product.count);
-    }
     // setQuantity(quantity - 1);
     const newQuantity = Math.max((product.count || 0) - 1, 0);
     dispatch(updateItemQuantity({ itemId: product._id, count: newQuantity }));
@@ -95,12 +102,6 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
   };
 
   const handleaddToCart = (product: Product) => {
-    if (!product.count) {
-      console.log("product.count.undefine == 0: ", product.count);
-    }
-    if (product.count) {
-      console.log("product.count.count == 0: ", product.count);
-    }
     dispatch(addItem(product));
     const newQuantity = (product.count || 0) + 1;
     console.log("handleaddToCart ", product.count);
@@ -276,7 +277,10 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
                   </div>
                 )}
               </div>
-              <div className=" h-full w-full  hover:cursor-pointer flex items-center justify-center mb-5">
+              <div
+                className=" h-full w-full  hover:cursor-pointer flex items-center justify-center mb-5"
+                onClick={() => handleProductClick(product)}
+              >
                 <Link href={`/item-preview/${product._id}`}>
                   <Image
                     width={172.95}
@@ -291,7 +295,10 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
             </div>{" "}
             <div className="w-2/3 ">
               <div className="mx-5 mb-1 max-h-[155.29px] max-w-[212.95]  mt-5">
-                <div className="text-sm font-medium text-black hover:text-indigo-400  capitalize leading-tight hover:cursor-pointer line-clamp-2">
+                <div
+                  className="text-sm font-medium text-black hover:text-indigo-400  capitalize leading-tight hover:cursor-pointer line-clamp-2"
+                  onClick={() => handleProductClick(product)}
+                >
                   <Link href={`/item-preview/${product._id}`}>
                     {product.title}
                   </Link>
@@ -299,7 +306,7 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
                 <div className="my-1 font-[.6875rem] text-xs pt-2 text-green-600 uppercase font-semibold tracking-[.005em]">
                   {product.quantity > 0 ? "In Stock" : "Out of Stock"}
                 </div>
-                <div className="text-xs pt-2 flex flex-row items-center my-1">
+                <div className="text-xs pt-2 flex flex-row items-center my-1 ">
                   {stars}
                   {/* <p className="text-md text-yellow-400 flex">{yellowstars}</p>
   <p className="text-md text-gray-400 flex">{graystars}</p> */}
@@ -400,7 +407,10 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
               </div>
             </div>
 
-            <div className=" max-h-[172.95px] min-h-[172.95px] min-w-[154.95px] w-full  hover:cursor-pointer my-2 flex items-center justify-center">
+            <div
+              className=" max-h-[172.95px] min-h-[172.95px] min-w-[154.95px] w-full  hover:cursor-pointer my-2 flex items-center justify-center"
+              onClick={() => handleProductClick(product)}
+            >
               <Link href={`/item-preview/${product._id}`}>
                 <Image
                   width={172.95}
@@ -413,7 +423,10 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
               </Link>
             </div>
             <div className="mx-5 mb-1 max-h-[155.29px] max-w-[212.95] ">
-              <div className="text-sm font-medium text-black hover:text-indigo-400  capitalize leading-tight hover:cursor-pointer line-clamp-2">
+              <div
+                className="text-sm font-medium text-black hover:text-indigo-400  capitalize leading-tight hover:cursor-pointer line-clamp-2"
+                onClick={() => handleProductClick(product)}
+              >
                 <Link href={`/item-preview/${product._id}`}>
                   {product.title}
                 </Link>

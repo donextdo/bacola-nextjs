@@ -10,7 +10,6 @@ import { fetchProducts } from "@/features/product/productSlice";
 
 export const ProductPagination = ({
   brand,
-
   minValue,
   maxValue,
   inStock,

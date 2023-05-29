@@ -28,6 +28,7 @@ import { updateProductQuantity } from "@/features/product/productSlice";
 import Review from "@/components/ViewItem/Details/Review";
 import siteUrl from "../../../utils/siteUrl";
 import default_image from "../../../assets/item/default_image.jpeg";
+import { RecentlyViewProduct } from "@/components/RecentlyViewProduct/RecentlyViewProduct";
 // interface ItemData {
 //     description: string;
 //     quantity: number;
@@ -769,7 +770,9 @@ const ItemPages = () => {
             </div>
           </div>
         </div>
-
+        <div className="pb-20 pt-20 px-6">
+          <RecentlyViewProduct />
+        </div>
         {/* mobile view */}
         <div className="lg:hidden">
           <div className="fixed bottom-0 w-full h-20 bg-white flex items-center justify-between z-50">
