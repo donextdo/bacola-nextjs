@@ -131,7 +131,7 @@ export const Location = () => {
               <div>
                 <div className="mt-3  sm:mt-5 ">
                   <h3 className="text-lg leading-6 font-medium text-gray-900">
-                    Choose your Delivery Location
+                    Choose your pickup location
                   </h3>
                   <h2 className="text-xs leading-6 text-gray-500">
                     Enter your address and we will specify the offer for your
@@ -168,7 +168,7 @@ export const Location = () => {
                       Clear All
                     </div>
                   </div>
-
+                  <hr />
                   {filteredLocation.map((item) => (
                     <div
                       key={item.id}
@@ -178,9 +178,9 @@ export const Location = () => {
                         <div className="hover:text-[#233a95]">
                           {item.locationName}
                         </div>
-                        <div className="rounded-full text-gray-400 font-semibold w-20 px-2 text-xs h-8 border border-gray-200 flex justify-center items-center">
+                        {/* <div className="rounded-full text-gray-400 font-semibold w-20 px-2 text-xs h-8 border border-gray-200 flex justify-center items-center">
                           Rs:{item.dollar_min}
-                        </div>
+                        </div> */}
                       </div>
                       <hr />
                     </div>
