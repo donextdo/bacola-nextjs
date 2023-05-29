@@ -84,9 +84,7 @@ export const FilterSideBar = ({
             passgrid={passgrid}
           />
         </div>
-        <div>
-          <PageNumber perpage={perpage} />
-        </div>
+        <div>{/* <PageNumber perpage={perpage} /> */}</div>
       </div>
     </div>
   );
