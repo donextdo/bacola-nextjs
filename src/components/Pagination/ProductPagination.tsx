@@ -3,6 +3,10 @@ import { ProductCard } from "@/features/product/ProductCard";
 import baseUrl from "../../../utils/baseUrl";
 import axios from "axios";
 import { useRouter } from "next/router";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/redux/store";
+import { Product } from "@/features/product/product";
+import { fetchProducts } from "@/features/product/productSlice";
 
 export const ProductPagination = ({
   brand,
@@ -18,7 +22,15 @@ export const ProductPagination = ({
 }: any) => {
   const [product, setProduct] = useState([]);
   const [isGrid, setIsGrid] = useState<String>();
-
+  const [matchWithProduct, setmatchWithProduct] = useState<Product[]>([]);
+  const dispatch = useDispatch<AppDispatch>();
+  const productsRidux = useSelector(
+    (state: RootState) => state.product.products
+  ) as Product[];
+  useEffect(() => {
+    dispatch(fetchProducts());
+    console.log("data data", productsRidux);
+  }, [dispatch]);
   const router = useRouter();
 
   useEffect(() => {
@@ -100,9 +112,15 @@ export const ProductPagination = ({
 
     console.log("setIsGrid : ", getItem);
   }, [passgrid]);
+  useEffect(() => {
+    const matchedProducts = productsRidux.filter((pr: Product) =>
+      product.some((p: any) => p?._id === pr?._id)
+    );
+    setmatchWithProduct(matchedProducts);
+  }, [product, productsRidux]);
   return (
     <div>
-      {product.length != 0 ? (
+      {matchWithProduct.length != 0 ? (
         <div className="mx-auto ">
           {/* <div className="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 "> */}
           <div
@@ -118,7 +136,7 @@ export const ProductPagination = ({
                 : ""
             }`}
           >
-            {product.map((product: any, index) => {
+            {matchWithProduct.map((product: any, index) => {
               return (
                 <ProductCard
                   key={product.id}
