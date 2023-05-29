@@ -50,7 +50,7 @@ export const FilterSideBar = ({
       <div className="lg:w-1/4 hidden lg:block">
         <div className="grid md:grid-cols-1 grid-cols-1 ">
           <Categories categoryId={categoryId} />
-          <RangeSlider />
+          <RangeSlider categoryId={categoryId} />
           <Status />
           <Brands categoryId={categoryId} />
         </div>
