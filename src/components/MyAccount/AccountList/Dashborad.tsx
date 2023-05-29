@@ -9,6 +9,8 @@ const Dashboard = ({onButtonClick, handleAddressClick, handleAccountDetailsClick
 
     const handleClick = () => {
         localStorage.removeItem("token");
+        localStorage.removeItem("id");
+
         location.reload();
 
     }

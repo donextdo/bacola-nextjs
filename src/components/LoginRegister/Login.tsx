@@ -1,8 +1,11 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import baseUrl from "../../../utils/baseUrl";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import Swal from "sweetalert2";
+
+
 
 type FormValues = {
   usernameoremail: string;
@@ -19,6 +22,31 @@ const Login: React.FC<Props> = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<React.ReactNode>("");
   const router = useRouter();
+  const [rememberMe, setRememberMe] = useState(false);
+
+  useEffect(() => {
+    const savedUsernameEmail = localStorage.getItem("usernameEmail");
+    const savedPassword = localStorage.getItem("password");
+
+    if (savedUsernameEmail && savedPassword) {
+      setUsernameoremail(savedUsernameEmail);
+      setPassword(savedPassword);
+     
+    }
+  }, []);
+
+  // Save email and password to localStorage
+  useEffect(() => {
+    if (rememberMe) {
+      localStorage.setItem("usernameEmail", usernameoremail);
+      localStorage.setItem("password", password);
+    } 
+  }, [usernameoremail, password, rememberMe]);
+
+  const handleRememberme = () => {
+    // Handle checkbox click
+    setRememberMe(!rememberMe);
+  };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -36,6 +64,17 @@ const Login: React.FC<Props> = () => {
       localStorage.setItem("order", JSON.stringify([]));
 
       if (response.status == 200) {
+        Swal.fire({
+          title: '<span style="font-size: 18px">You have successfully logged in.</span>',
+          width: 400,
+          timer: 2000,
+          // padding: '3',
+          color: 'white',
+          background : '#00B853',
+          showConfirmButton: false,
+          heightAuto: true,
+          position: 'bottom',
+        })
         location.reload();
         router.push("/account");
       }
@@ -138,7 +177,8 @@ const Login: React.FC<Props> = () => {
           </div>
 
           <div className="flex pl-3 mt-5 ">
-            <input type="checkbox" className="bg-[#f3f4f7]" />
+            <input type="checkbox" className="bg-[#f3f4f7]" checked={rememberMe}
+          onChange={handleRememberme}/>
             <p className="px-3 text-sm">Remember me</p>
           </div>
 

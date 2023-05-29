@@ -247,7 +247,7 @@ const OrderMessage = () => {
 
   return (
 
-    <div className="mx-4">
+    <div className="mx-20 xl:mx-36">
       <div className="w-full border-2 border-dashed border-[#00b853] text-lg md:text-2xl leading-5 md:leading-6 py-3 md:py-8 px-3 md:px-10 my-20 text-center font-medium" style={{ color: '#00b853' }}>
         Thank you. Your order has been received.
       </div>
@@ -266,7 +266,7 @@ const OrderMessage = () => {
         </div>
         <div>
           <h1 className="text-sm font-semibold">Total</h1>
-          <p className="text-[13px]">${order?.totalprice.toFixed(2)}</p>
+          <p className="text-[13px]">Rs {order?.totalprice.toFixed(2)}</p>
         </div>
         <div className="">
           <h1 className="text-sm font-semibold">Payment method:</h1>
@@ -288,7 +288,7 @@ const OrderMessage = () => {
         </table>
         {order?.items.map((item, index) => (
           <div className="flex border border-gray-300 " key={index}>
-            <div className="w-2/3 px-2 py-2">{item.productDetails?.name}</div>
+            <div className="w-2/3 px-2 py-2">{item.productDetails?.name} <span className="font-semibold">x {item.orderquantity}</span></div>
             <div className="w-1/3 py-2">{item.productDetails?.price}</div>
           </div>
         ))}

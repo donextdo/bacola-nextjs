@@ -2,7 +2,7 @@ import Link from "next/link";
 
 const TopHeader = () => {
     return (
-        <div className="hidden xl:block px-40">
+        <div className="container mx-auto hidden xl:block px-40">
             <div className=" mx-auto flex justify-between py-2.5">
                 <div>
                     <nav>

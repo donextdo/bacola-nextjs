@@ -9,7 +9,7 @@ const CheckoutSidebar = ({item}:any) => {
     return (
         <tr>
             <td className=" py-3 text-[13px] w-[50%]">{item.title} <span className="font-semibold">× {item.count || 0}</span> </td>
-            <td className=" py-3 text-[15px] text-right">${subtotal.toFixed(2)}</td>
+            <td className=" py-3 text-[15px] text-right">Rs {subtotal.toFixed(2)}</td>
         </tr>
     );
 }

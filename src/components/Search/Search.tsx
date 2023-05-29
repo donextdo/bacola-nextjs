@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 
 import baseUrl from "../../../utils/baseUrl";
 import axios from "axios";
-import socketIOClient from "socket.io-client";
+// import socketIOClient from "socket.io-client";
 
 interface Item {
   _id: string;
@@ -103,10 +103,10 @@ export const SearchItem = () => {
                 </div>
                 <div className="flex flex-col">
                   <li className="cursor-pointer text-end text-sm text-gray-400 font-semibold line-through mr-2 text-[14px] font-ff-headings">
-                    ${item.price}
+                    RS {item.price}
                   </li>
                   <li className="cursor-pointer text-end text-red-600 text-sm font-semibold mr-2 font-ff-headings">
-                    $
+                    Rs 
                     {(item.price - item.price * (item.discount / 100)).toFixed(
                       2
                     )}

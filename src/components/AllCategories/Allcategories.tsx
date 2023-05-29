@@ -163,7 +163,7 @@ const Allcategories = () => {
 
             <hr className="my-2" />
 
-            <div className="py-2 px-2">
+            {/* <div className="py-2 px-2">
               <p className="hover:text-[#2bbef9] ">Value Of the Day</p>
             </div>
             <div className="py-2 px-2">
@@ -171,7 +171,7 @@ const Allcategories = () => {
             </div>
             <div className="py-2 px-2">
               <p className="hover:text-[#2bbef9]">New Arrivals</p>
-            </div>
+            </div> */}
           </div>
         )}
       </div>

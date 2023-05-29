@@ -164,9 +164,9 @@ export const RangeSlider = ({ categoryId }: any) => {
             price:
             <span className="text-black font-semibold">
               {" "}
-              ${minValue}
+              Rs {minValue}
             </span> -{" "}
-            <span className="text-black font-semibold"> ${maxValue}</span>
+            <span className="text-black font-semibold"> Rs {maxValue}</span>
           </div>
           <div className=" ml-16 ">
             <button

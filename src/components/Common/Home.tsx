@@ -2,8 +2,12 @@ import { ProductList } from "@/features/product/ProductList";
 import { TopImage, BottomImage } from "./AllImage";
 import { MainDiv } from "./MainDiv";
 import { BestSeller, NewProduct, RedDiv, TakeCare } from "./redDiv";
+import { useState } from "react";
+
 
 const HomePage = () => {
+  
+
   return (
     <div className="lg:flex lg:flex-row lg:mb-9">
       <div className="lg:w-1/4 ">

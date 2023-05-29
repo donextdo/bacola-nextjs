@@ -11,6 +11,8 @@ import { calSubTotal, removeAll } from "../cartSlice";
 import axios from "axios";
 import baseUrl from "../../../../utils/baseUrl";
 import { useRouter } from "next/router";
+import cartimage from "../../../../assets/cart/cartimage2.png"
+
 
 
 interface CartType {
@@ -21,10 +23,10 @@ interface CartType {
 
 interface Coupon {
     coupon_code: string,
-        date: string,
-        dicount_amount: number,
-        __v: number,
-        _id: string
+    date: string,
+    dicount_amount: number,
+    __v: number,
+    _id: string
 }
 
 const Cart: FC<CartType> = () => {
@@ -60,7 +62,7 @@ const Cart: FC<CartType> = () => {
         _id: ""
     });
     let [fulldiscount, setFulldiscount] = useState(0);
-
+  
 
     const [shippingObj, setShippingObj] = useState({
         cartshippingFirstName: "",
@@ -121,7 +123,7 @@ const Cart: FC<CartType> = () => {
     });
 
     // calculate discount
-    
+
     fulldiscount = totalAmount * (couponDiscount.dicount_amount / 100)
     console.log(fulldiscount)
     console.log(couponDiscount)
@@ -177,7 +179,7 @@ const Cart: FC<CartType> = () => {
             query: shippingObj,
         });
     }
-   
+
     const handlecoupon = async () => {
         try {
             const res = await axios.get(`${baseUrl}/coupons/getOne/${coupon}`);
@@ -186,200 +188,240 @@ const Cart: FC<CartType> = () => {
                 setCouponDiscount(res.data);
                 setErrorMessage('');
 
-            } 
+            }
 
         } catch (err) {
             console.log(err);
             setErrorMessage('There is no such coupon.');
-            
+
         }
 
     }
 
-     let finalAmount = totalAmount-fulldiscount
-    
-     const hanleRemoveCoupon = () => {
+    let finalAmount = totalAmount - fulldiscount
+
+    const hanleRemoveCoupon = () => {
         setCouponDiscount({
             coupon_code: "",
             date: "",
             dicount_amount: 0,
             __v: 0,
             _id: ""
-          });
+        });
+    }
+
+
+    const handleproduct = () => {
+
     }
     return (
-        <div className="px-3.5 container mx-auto mt-4 mb-20">
-            <div>
-                <section className="flex justify-between h-full">
-                    <div className="w-full h-full pb-10">
-                        <div className="border border-[#e4e5ee] rounded-md space-y-4 py-4 px-4">
+        <>
+            {cartItems.length > 0 ? (
+                <div className="px-3.5 container mx-auto mt-4 mb-20">
+                    <div>
+                        <section className="flex justify-between h-full">
+                            <div className="w-full h-full pb-10">
+                                {/* <div className="border border-[#e4e5ee] rounded-md space-y-4 py-4 px-4">
                             <p className="text-sm">
-                                Add <span className="text-[#ed174a] font-semibold">$15.93</span> to
+                                Add <span className="text-[#ed174a] font-semibold">Rs 15.93</span> to
                                 cart and get free shipping!
                             </p>
                             <hr className="h-2 rounded-md bg-[#ed174a]" />
-                        </div>
+                        </div> */}
 
-                        <div className="mt-8">
-                            {/* header */}
-                            <div className="grid grid-cols-4 sm:grid-cols-12 gap-2 border-b border-[#e4e5ee] pb-3">
-                                <div className="text-xs sm:col-span-2"></div>
-                                <div className="col-span-2 sm:col-span-4 text-xs text-[#71778e] font-semibold">Product</div>
-                                <div className="text-xs text-[#71778e] font-semibold hidden sm:block">Price</div>
-                                <div className="text-xs text-[#71778e] font-semibold sm:col-span-2">Quantity</div>
-                                <div className="text-xs text-[#71778e] font-semibold hidden sm:block">Subtotal</div>
-                                <div></div>
+                                <div className="mt-8">
+                                    {/* header */}
+                                    <div className="grid grid-cols-4 sm:grid-cols-12 gap-2 border-b border-[#e4e5ee] pb-3">
+                                        <div className="text-xs sm:col-span-2"></div>
+                                        <div className="col-span-2 sm:col-span-4 text-xs text-[#71778e] font-semibold">Product</div>
+                                        <div className="text-xs text-[#71778e] font-semibold hidden sm:block">Price</div>
+                                        <div className="text-xs text-[#71778e] font-semibold sm:col-span-2">Quantity</div>
+                                        <div className="text-xs text-[#71778e] font-semibold hidden sm:block">Subtotal</div>
+                                        <div></div>
+                                    </div>
+
+                                    {/* products */}
+                                    <div>
+                                        {cartItems.map((item, index) => (
+
+                                            <CartCard item={item} key={index} totalAmount={totalAmount} />
+                                        ))}
+
+                                    </div>
+                                </div>
+
+                                <section className="flex justify-between mt-6">
+                                    <div className="inline-flex gap-2 w-full">
+                                        <input type="text" className="h-11 bg-gray-100 rounded-md px-4 text-sm w-full md:w-72" placeholder="Coupon code"
+                                            onChange={(e) => setCoupon(e.target.value)}
+                                        />
+                                        <button className="bg-[#233a95] text-white py-2.5 px-4 rounded-md text-xs h-11 w-40" onClick={handlecoupon}>Apply coupon</button>
+                                    </div>
+
+                                    <div><button className="bg-[#233a95] text-white py-2.5 px-4 rounded-md text-xs h-11 w-[104px] hidden md:block" onClick={handleClear}>Remove All</button></div>
+                                </section>
                             </div>
-
-                            {/* products */}
                             <div>
-                                {cartItems.map((item, index) => (
+                                {/* sidebar cart totals */}
+                                <div className="w-80 border border-[#e4e5ee] p-4 rounded-md h-full hidden xl:block ml-8">
+                                    <h2 className="font-semibold mb-3">CART TOTALS</h2>
+                                    <hr />
+                                    <table className="w-full">
+                                        <tbody>
+                                            <tr>
+                                                <td className="border-b border-[#e4e5ee] py-3 font-semibold text-[13px]">Subtotal</td>
+                                                <td className="border-b border-[#e4e5ee] py-3 text-[15px] text-right">Rs {totalAmount.toFixed(2)}</td>
+                                            </tr>
+                                            {fulldiscount > 0 &&
+                                                <tr>
+                                                    <td className="border-b border-[#e4e5ee] py-3 font-semibold text-[13px]">Coupon <button className="text-amber-700" onClick={hanleRemoveCoupon}>[remove]</button></td>
+                                                    <td className="border-b border-[#e4e5ee] py-3 text-[15px] text-right">-Rs {fulldiscount.toFixed(2)}</td>
+                                                </tr>
+                                            }
 
-                                    <CartCard item={item} key={index} totalAmount={totalAmount} />
-                                ))}
+                                            <tr>
+                                                <td rowSpan={4} className="text-[13px] font-semibold "></td>
+                                                <td className="text-right text-[13px] py-3">
+                                                    {/* Free shipping <span className="inline-flex text-[#d51243] text-sm gap-2">
+                                                $5.00
+                                        <input type="radio" name="cart"  
+                                        onClick={handleClickRadioAdd5} 
+                                        />
+                                        </span> */}
+                                                </td>
+                                            </tr>
+                                            <tr>
 
+                                                <td className="text-[13px] pb-3 text-right"><label className="inline-flex -gap-1"><span className="mr-2">Local pickup</span>
+                                                    <input type="radio" name="cart"
+                                                    // onClick={handleClickRadioSubtract5} 
+                                                    />
+                                                </label></td>
+                                            </tr>
+                                            <tr>
+
+                                                <td className="text-right text-[12.5px] ">
+                                                    {/* Shipping to <span className="font-semibold">AL.</span> */}
+                                                </td>
+                                            </tr>
+                                            <tr>
+
+                                                <td className="text-right text-[13px]  text-[#2bbef9] pb-4"><button onClick={handleClick}> Change address</button>
+                                                    {showInputs && (
+                                                        <div className="flex flex-col justify-end text-right">
+                                                            <input
+                                                                type="text" className="w-full px-4 h-11 bg-gray-100 rounded-md mt-2 ml-2 pl-4 text-sm" placeholder="Country"
+                                                                value={country}
+                                                                onChange={(e) => setCountry(e.target.value)}
+                                                            />
+                                                            <input
+                                                                type="text" className="w-full px-4 h-11 bg-gray-100 rounded-md mt-2 ml-2 pl-4 text-sm" placeholder="City"
+                                                                value={townCity}
+                                                                onChange={(e) => setTownCity(e.target.value)}
+                                                            />
+                                                            <input
+                                                                type="text" className="w-full px-4 h-11 bg-gray-100 rounded-md mt-2 ml-2 pl-4 text-sm" placeholder="Postcode/Zip"
+                                                                value={zipCode}
+                                                                onChange={(e) => setZipCode(e.target.value)}
+                                                            />
+
+                                                            <button className="bg-[#233a95] text-white py-2.5 px-4 rounded-md text-xs h-11 w-[104px] mt-3" onClick={handleUpdateShipping}>Update</button>
+                                                        </div>
+                                                    )}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td className="border-y border-[#e4e5ee] text-[13px] font-semibold pb-4">Total</td>
+                                                <td className="border-y border-[#e4e5ee] text-right font-semibold text-xl py-4">Rs {finalAmount.toFixed(2)}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                    {/* <Link href="/checkout">    */}
+                                    <button className="bg-[#ed174a] text-white py-2.5  rounded-md text-sm h-[50px] w-full text-center mt-4" onClick={handleCheckout}>Proceed to checkout</button>
+                                    {/* </Link> */}
+
+                                </div>
                             </div>
-                        </div>
-
-                        <section className="flex justify-between mt-6">
-                            <div className="inline-flex gap-2 w-full">
-                                <input type="text" className="h-11 bg-gray-100 rounded-md px-4 text-sm w-full md:w-72" placeholder="Coupon code"
-                                    onChange={(e) => setCoupon(e.target.value)}
-                                />
-                                <button className="bg-[#233a95] text-white py-2.5 px-4 rounded-md text-xs h-11 w-40" onClick={handlecoupon}>Apply coupon</button>
-                            </div>
-
-                            <div><button className="bg-[#233a95] text-white py-2.5 px-4 rounded-md text-xs h-11 w-[104px] hidden md:block" onClick={handleClear}>Remove All</button></div>
                         </section>
-                    </div>
-                    <div>
-                        {/* sidebar cart totals */}
-                        <div className="w-80 border border-[#e4e5ee] p-4 rounded-md h-full hidden xl:block ml-8">
+
+                        <button className="bg-[#233a95] text-white py-2.5 px-4 rounded-md text-xs h-11 w-full text-left mt-2 md:hidden" onClick={handleClear}>Remove All</button>
+                        {errorMessage && <p className="text-red-500 font-semibold">{errorMessage}</p>}
+
+                        {/* Cart Totals */}
+                        <div className="w-full border border-[#e4e5ee] mt-10 p-4 rounded-md xl:hidden">
                             <h2 className="font-semibold mb-3">CART TOTALS</h2>
                             <hr />
                             <table className="w-full">
                                 <tbody>
                                     <tr>
                                         <td className="border-b border-[#e4e5ee] py-3 font-semibold text-[13px]">Subtotal</td>
-                                        <td className="border-b border-[#e4e5ee] py-3 text-[15px] text-right">${totalAmount.toFixed(2)}</td>
+                                        <td className="border-b border-[#e4e5ee] py-3 text-[15px] text-right">Rs {totalAmount}</td>
                                     </tr>
                                     <tr>
-                                        <td className="border-b border-[#e4e5ee] py-3 font-semibold text-[13px]">Coupon <button className="text-amber-700" onClick={hanleRemoveCoupon}>[remove]</button></td>
-                                        <td className="border-b border-[#e4e5ee] py-3 text-[15px] text-right">-${fulldiscount.toFixed(2)}</td>
-                                    </tr>
-                                    <tr>
-                                        <td rowSpan={4} className="text-[13px] font-semibold ">Shipping</td>
+                                        <td rowSpan={4} className="text-[13px] font-semibold border-b border-[#e4e5ee]">Shipping</td>
                                         <td className="text-right text-[13px] py-3">
-                                            {/* Flat rate: <span className="inline-flex text-[#d51243] text-sm gap-2">$5.00
-                                        <input type="radio" name="cart"  
-                                        // onClick={handleClickRadioAdd5} 
-                                        />
-                                        </span> */}
+                                            {/* Flat rate: <span className="inline-flex text-[#d51243] text-sm gap-2">Rs 5.00<input type="radio" name="vendor"
+                                // onChange={handleRadioChange} 
+                                /></span> */}
                                         </td>
                                     </tr>
                                     <tr>
 
                                         <td className="text-[13px] pb-3 text-right"><label className="inline-flex -gap-1"><span className="mr-2">Local pickup</span>
-                                            <input type="radio" name="cart"
-                                            // onClick={handleClickRadioSubtract5} 
+                                            <input
+                                                type="radio"
+                                                name="vendor"
+                                            // onChange={handleRadioChange}
                                             />
                                         </label></td>
                                     </tr>
                                     <tr>
 
-                                        <td className="text-right text-[12.5px] pb-4">Shipping to <span className="font-semibold">AL.</span></td>
-                                    </tr>
-                                    <tr>
-
-                                        <td className="text-right text-[13px]  text-[#2bbef9] pb-4"><button onClick={handleClick}> Change address</button>
-                                            {showInputs && (
-                                                <div className="flex flex-col justify-end text-right">
-                                                    <input
-                                                        type="text" className="w-full px-4 h-11 bg-gray-100 rounded-md mt-2 ml-2 pl-4 text-sm" placeholder="Country"
-                                                        value={country}
-                                                        onChange={(e) => setCountry(e.target.value)}
-                                                    />
-                                                    <input
-                                                        type="text" className="w-full px-4 h-11 bg-gray-100 rounded-md mt-2 ml-2 pl-4 text-sm" placeholder="City"
-                                                        value={townCity}
-                                                        onChange={(e) => setTownCity(e.target.value)}
-                                                    />
-                                                    <input
-                                                        type="text" className="w-full px-4 h-11 bg-gray-100 rounded-md mt-2 ml-2 pl-4 text-sm" placeholder="Postcode/Zip"
-                                                        value={zipCode}
-                                                        onChange={(e) => setZipCode(e.target.value)}
-                                                    />
-
-                                                    <button className="bg-[#233a95] text-white py-2.5 px-4 rounded-md text-xs h-11 w-[104px] mt-3" onClick={handleUpdateShipping}>Update</button>
-                                                </div>
-                                            )}
+                                        <td className="text-right text-[12.5px] pb-4">
+                                            {/* Shipping to <span className="font-semibold">AL.</span> */}
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td className="border-y border-[#e4e5ee] text-[13px] font-semibold pb-4">Total</td>
-                                        <td className="border-y border-[#e4e5ee] text-right font-semibold text-xl py-4">${finalAmount.toFixed(2)}</td>
+
+                                        <td className="text-right text-[13px] border-b border-[#e4e5ee] text-[#2bbef9] pb-4">Change address</td>
+                                    </tr>
+                                    <tr>
+                                        <td className="border-b border-[#e4e5ee] text-[13px] font-semibold pb-4">Total</td>
+                                        <td className="border-b border-[#e4e5ee] text-right font-semibold text-xl py-4">Rs {total}</td>
                                     </tr>
                                 </tbody>
                             </table>
 
-                            {/* <Link href="/checkout">    */}
-                            <button className="bg-[#ed174a] text-white py-2.5  rounded-md text-sm h-[50px] w-full text-center mt-4" onClick={handleCheckout}>Proceed to checkout</button>
-                            {/* </Link> */}
+                            <Link href="/checkout"><button className="bg-[#ed174a] text-white py-2.5  rounded-md text-sm h-[50px] w-full text-center mt-4">Proceed to checkout</button></Link>
 
                         </div>
                     </div>
-                </section>
-
-                <button className="bg-[#233a95] text-white py-2.5 px-4 rounded-md text-xs h-11 w-full text-left mt-2 md:hidden" onClick={handleClear}>Remove All</button>
-                {errorMessage && <p className="text-red-500 font-semibold">{errorMessage}</p>}
-
-                {/* Cart Totals */}
-                <div className="w-full border border-[#e4e5ee] mt-10 p-4 rounded-md xl:hidden">
-                    <h2 className="font-semibold mb-3">CART TOTALS</h2>
-                    <hr />
-                    <table className="w-full">
-                        <tbody>
-                            <tr>
-                                <td className="border-b border-[#e4e5ee] py-3 font-semibold text-[13px]">Subtotal</td>
-                                <td className="border-b border-[#e4e5ee] py-3 text-[15px] text-right">${totalAmount}</td>
-                            </tr>
-                            <tr>
-                                <td rowSpan={4} className="text-[13px] font-semibold border-b border-[#e4e5ee]">Shipping</td>
-                                <td className="text-right text-[13px] py-3">Flat rate: <span className="inline-flex text-[#d51243] text-sm gap-2">$5.00<input type="radio" name="vendor"
-                                // onChange={handleRadioChange} 
-                                /></span></td>
-                            </tr>
-                            <tr>
-
-                                <td className="text-[13px] pb-3 text-right"><label className="inline-flex -gap-1"><span className="mr-2">Local pickup</span>
-                                    <input
-                                        type="radio"
-                                        name="vendor"
-                                    // onChange={handleRadioChange}
-                                    />
-                                </label></td>
-                            </tr>
-                            <tr>
-
-                                <td className="text-right text-[12.5px] pb-4">Shipping to <span className="font-semibold">AL.</span></td>
-                            </tr>
-                            <tr>
-
-                                <td className="text-right text-[13px] border-b border-[#e4e5ee] text-[#2bbef9] pb-4">Change address</td>
-                            </tr>
-                            <tr>
-                                <td className="border-b border-[#e4e5ee] text-[13px] font-semibold pb-4">Total</td>
-                                <td className="border-b border-[#e4e5ee] text-right font-semibold text-xl py-4">${total}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    <Link href="/checkout"><button className="bg-[#ed174a] text-white py-2.5  rounded-md text-sm h-[50px] w-full text-center mt-4">Proceed to checkout</button></Link>
 
                 </div>
-            </div>
+            ) : (
+                <div className="flex flex-col items-center justify-center">
+                    <div className="h-[320px] w-[320px]">
+                        <Image
+                            src={cartimage}
+                            alt="item1"
+                            style={{
+                                objectFit: "contain",
+                                backgroundColor: "white",
+                                width: "100%",
+                                height: "100%",
+                            }}
+                            width={450}
+                            height={400}
+                        />
 
-        </div>
+                    </div>
+                    <div className="text-lg text-[#ed174a] font-semibold">YOUR CART IS CURRENTLY EMPTY.</div>
+                    <div><button className="bg-[#233a95] text-white py-2.5 px-8 rounded-full text-sm h-12 my-10" onClick={handleproduct}>Return to shop</button></div>
+                </div>
+            )
+            }
+        </>
     );
 };
 

@@ -3,7 +3,7 @@ import { AdditionalDiv } from "./redDiv";
 
 export const TopImage = () => {
   return (
-    <div className="lg:flex lg:flex-row">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
       <ImageOne />
       <ImageTwo />
     </div>

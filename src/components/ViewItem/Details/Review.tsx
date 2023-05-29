@@ -7,6 +7,7 @@ import UserProfile from "./UserProfile ";
 import { FaStar } from "react-icons/fa";
 import StartRating from "./ReviewDetails/StartRating";
 import DateFormatChange from "./ReviewDetails/DateFormatChange";
+import { useRouter } from "next/router";
 
 interface Review {
     rating: number;
@@ -23,6 +24,7 @@ const Review = ({ itemId }: any) => {
     const [savedText, setSavedText] = useState("");
     const [data, setData] = useState<Array<Review>>([])
     let id = localStorage.getItem("id");
+    const router = useRouter();
 
 
    
@@ -48,10 +50,12 @@ const Review = ({ itemId }: any) => {
         fetchData();
     }, []);
 
+   
+
     async function fetchData() {
         try {
             const res = await axios.get(`${baseUrl}/reviews/getReview/${itemId}`);
-            console.log(res)
+            console.log(res.data)
             setData(res.data);
         } catch (err) {
             console.log(err);
@@ -60,7 +64,8 @@ const Review = ({ itemId }: any) => {
 
     // submit savetext
     const handleSubmit = async () => {
-       const review=text
+        if(id){
+            const review=text
 
         const data = {
             body: review,
@@ -82,6 +87,31 @@ const Review = ({ itemId }: any) => {
     }else{
         alert("please add a rating and review")
     }
+        } else {
+            router.push('/account');
+          }
+    //    const review=text
+
+    //     const data = {
+    //         body: review,
+    //         name: extractedUsername,
+    //         rating: rating,
+    //         userId: id,
+    //         productId:itemId
+    //     }
+    //     console.log(data)
+    //     if(rating>0 && review){
+    //     try {
+    //         const response = await axios.post(`${baseUrl}/reviews/insert`, data);
+    //         console.log(response.data); // do something with the response data
+    //     setText("");
+
+    //     } catch (error) {
+    //         console.log(error); // handle the error
+    //     }
+    // }else{
+    //     alert("please add a rating and review")
+    // }
     };
 
  
