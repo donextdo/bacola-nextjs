@@ -18,7 +18,7 @@ export const RangeSlider = ({ categoryId }: any) => {
         const products = response.data.products;
 
         // Extracting all the product prices
-        const prices = products.map((product) => product.price);
+        const prices = products.map((product:any) => product.price);
 
         // Finding the maximum price
         const maxPrice = Math.max(...prices);
