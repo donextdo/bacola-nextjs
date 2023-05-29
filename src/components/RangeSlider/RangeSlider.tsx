@@ -1,38 +1,42 @@
 import { useRouter } from "next/router";
 import { useState, useEffect, useRef, ReactElement } from "react";
 import { ChangeEvent } from "react";
-export const RangeSlider = () => {
+import baseUrl from "../../../utils/baseUrl";
+import axios from "axios";
+export const RangeSlider = ({ categoryId }: any) => {
   const [minValue, setMinValue] = useState(0);
   const [maxValue, setMaxValue] = useState(50);
+  const [maxPriceValue, setMaxPriceValue] = useState(0);
   const progressRef = useRef<HTMLDivElement>(null);
 
+  useEffect(() => {
+    if (categoryId) {
+      const fetchData = async () => {
+        const response = await axios(
+          `${baseUrl}/productDetails?categoryId=${categoryId}`
+        );
+        const products = response.data.products;
+
+        // Extracting all the product prices
+        const prices = products.map((product:any) => product.price);
+
+        // Finding the maximum price
+        const maxPrice = Math.max(...prices);
+
+        // Rounding the maximum price
+        let roundedPrice;
+
+        roundedPrice = Math.ceil(maxPrice / 10) * 10;
+        // setMaxPriceValue(roundedPrice);
+        // setMaxValue(maxPriceValue);
+        console.log("Rounded maximum price: ", roundedPrice);
+      };
+
+      fetchData();
+    }
+  }, []);
+
   const router = useRouter();
-
-  // const handleMin = (e: { target: { value: string } }) => {
-  //   if (maxValue - minValue >= 0 && maxValue <= 50) {
-  //     if (parseInt(e.target.value) > parseInt(maxValue.toString())) {
-  //     } else {
-  //       setMinValue(parseInt(e.target.value));
-  //     }
-  //   } else {
-  //     if (parseInt(e.target.value) < minValue) {
-  //       setMinValue(parseInt(e.target.value));
-  //     }
-  //   }
-  // };
-
-  // const handleMax = (e: { target: { value: string } }) => {
-  //   if (maxValue - minValue >= 0 && maxValue <= 50) {
-  //     if (parseInt(e.target.value) < parseInt(minValue.toString())) {
-  //     } else {
-  //       setMaxValue(parseInt(e.target.value));
-  //     }
-  //   } else {
-  //     if (parseInt(e.target.value) > maxValue) {
-  //       setMaxValue(parseInt(e.target.value));
-  //     }
-  //   }
-  // };
 
   useEffect(() => {
     const { query } = router;

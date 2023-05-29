@@ -1,6 +1,8 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import baseUrl from "../../../utils/baseUrl";
+import Swal from "sweetalert2";
+
 
 const Ship = () => {
     const [firstName, setFirstName] = useState('');
@@ -214,6 +216,17 @@ const Ship = () => {
             try {
                 const response = await axios.patch(`${baseUrl}/users/${id}`, data);
                 console.log(response.data); // do something with the response data
+                if (response.status==200){
+                    Swal.fire({
+                      title: 'Success',
+                      text: 'Your shipping address has been updated successfully',
+                      icon: 'success',
+                      confirmButtonText: 'Done',
+                      confirmButtonColor: '#8DC14F',
+                      
+                    })
+            
+                  }
             } catch (error) {
                 console.log(error); // handle the error
             }

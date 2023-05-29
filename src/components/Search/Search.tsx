@@ -106,7 +106,7 @@ export const SearchItem = () => {
                     RS {item.price}
                   </li>
                   <li className="cursor-pointer text-end text-red-600 text-sm font-semibold mr-2 font-ff-headings">
-                    Rs 
+                    Rs
                     {(item.price - item.price * (item.discount / 100)).toFixed(
                       2
                     )}

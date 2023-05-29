@@ -12,9 +12,11 @@ import { RootState } from "@/redux/store";
 import getConfig from "next/config";
 import { Location } from "../Location/Location";
 import { useRouter } from "next/router";
+import SideNavBar from "../SideNavBar/SideNavbar";
 
 const Header = () => {
   const [cart, setCart] = useState(false);
+  const [showSideNavbar, setShowSideNavbar] = useState(false)
   // const [totalCount, setTotalCount] = useState(0)
   const totalCount = useSelector((state: RootState) => state.cart.totalCount);
   const totalAmount = useSelector((state: RootState) => state.cart.totalAmount);
@@ -72,6 +74,11 @@ const Header = () => {
   const handleLeave = () => {
     setCart(false);
   };
+
+  const handleSideNavbar = () => {
+    setShowSideNavbar(true);
+  };
+
 
   return (
     <>
@@ -131,7 +138,7 @@ const Header = () => {
                 </div>
               )}
             </div>
-            <div>{}</div>
+            <div>{ }</div>
           </div>
         </div>
       </div>
@@ -140,24 +147,29 @@ const Header = () => {
       <div className="md:hidden  sticky top-0  w-full bg-white z-50">
         <div className="flex justify-between items-center h-14 px-2">
           <div>
-            <button className="text-3xl">
+            <button className="text-3xl" onClick={handleSideNavbar}>
               <BsList />
             </button>
+            {showSideNavbar && (
+              <SideNavBar setShowSideNavbar={setShowSideNavbar}/>
+            )}
           </div>
           <div className="h-[50px] w-40 sm:col-span-2">
-          <Image
-          src={logo}
-          alt="item1"
-          style={{
-            objectFit: "contain",
-            backgroundColor: "white",
-            width: "100%",
-            height: "100%",
-          }}
-          width={450}
-          height={400}
-        />
-              </div>
+          <Link href="/">
+            <Image
+              src={logo}
+              alt="item1"
+              style={{
+                objectFit: "contain",
+                backgroundColor: "white",
+                width: "100%",
+                height: "100%",
+              }}
+              width={450}
+              height={400}
+            />
+            </Link>
+          </div>
           <div
             className="relative"
             onMouseEnter={hnadleEnter}
@@ -171,10 +183,10 @@ const Header = () => {
             </button>
             {cart && <CartPopup setCart={setCart} />}
             {totalCount > 0 && (
-                <div className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full h-5 w-5 flex items-center justify-center">
-                  {totalCount}
-                </div>
-              )}
+              <div className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full h-5 w-5 flex items-center justify-center">
+                {totalCount}
+              </div>
+            )}
           </div>
         </div>
       </div>

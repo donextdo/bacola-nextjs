@@ -18,31 +18,28 @@ const AllcategoriesSideNavbar = () => {
   };
   return (
     <>
-    
-      <div className="mt-5">
+
+      <div className="">
         <button
-          className="w-[340px] h-[50px] rounded-lg justify-between bg-[#2bbef9] mx-5 "
+          className="w-full h-[50px] rounded-lg justify-between bg-[#2bbef9] "
           onClick={toggleHome}
         >
-          <div>
-            <Link
-              href="#"
-              className="font-ff-headings text-white justify-between px-3 py-4 text-[15px] font-semibold flex "
-            >
-              {" "}
-              <div>
-                <MdOutlineStorage className="mx-2 text-xl " />
-              </div>
-              ALL CATEGORIES
-              <div>
-                <MdKeyboardArrowDown className="mx-2 text-xl " />
-              </div>
-            </Link>
+          <div className="font-ff-headings text-white justify-between px-3 py-4 text-[15px] font-semibold flex">
+
+            <div>
+              <MdOutlineStorage className="mx-2 text-xl " />
+            </div>
+            <div> ALL CATEGORIES</div>
+            <div>
+              <MdKeyboardArrowDown className="mx-2 text-xl " />
+            </div>
+
           </div>
         </button>
-      <div className="ml-5">
+      </div>
+      
         {homeOpen && (
-          <div className="text-[13px] absolute w-[268px] py-2  shadow-md font-medium bg-white rounded-lg  ">
+          <div className="text-[13px]  w-full py-2  font-medium bg-white   ">
             <div className="flex  ">
               <CiApple className="py-2 text-4xl text-gray-400 " />
               <Link href="#" className="block px-2 py-2 text-gray-500  hover:text-[#2bbef9] md:font-medium ">
@@ -111,10 +108,7 @@ const AllcategoriesSideNavbar = () => {
             </div> */}
           </div>
         )}
-        </div>
-      </div>
-     
-      
+
     </>
   );
 };

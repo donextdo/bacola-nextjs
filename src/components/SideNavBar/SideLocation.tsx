@@ -11,74 +11,73 @@ interface LocationType {
   name: string;
   min: string;
 }
+const SideLocation = () => {
+    const [showModal, setShowModal] = useState<boolean>(false);
 
-export const Location = () => {
-  const [showModal, setShowModal] = useState<boolean>(false);
-
-  const [location, setLocation] = useState<LocationType[]>([]);
-
-  const [locationName, setLocationName] = useState<string>("Select a Location");
-
-  const [searchQuery, setSearchQuery] = useState<string>("");
-  const filteredLocation = location.filter((item) =>
-    item.locationName.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await axios.get(`${baseUrl}/locations/getAll`);
-
-      const locations = response.data;
-
-      setLocation(locations);
-      console.log("location", locations);
+    const [location, setLocation] = useState<LocationType[]>([]);
+  
+    const [locationName, setLocationName] = useState<string>("Select a Location");
+  
+    const [searchQuery, setSearchQuery] = useState<string>("");
+    const filteredLocation = location.filter((item) =>
+      item.locationName.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  
+    useEffect(() => {
+      const fetchData = async () => {
+        const response = await axios.get(`${baseUrl}/locations/getAll`);
+  
+        const locations = response.data;
+  
+        setLocation(locations);
+        console.log("location", locations);
+      };
+      fetchData();
+      setLocationName(locationName);
+    }, [locationName]);
+  
+    const handleModal = () => {
+      setShowModal(true);
     };
-    fetchData();
-    setLocationName(locationName);
-  }, [locationName]);
-
-  const handleModal = () => {
-    setShowModal(true);
-  };
-
-  const handleSelectLocation = (location: any) => {
-    localStorage.clear();
-    setLocationName(location.locationName);
-    setShowModal(false);
-    localStorage.setItem("selectedLocation", location.locationName);
-  };
-  const getInitialLocation = () => {
-    const selectedLocation = localStorage.getItem("selectedLocation");
-    if (selectedLocation) {
-      setLocationName(selectedLocation);
-    }
-  };
-
-  const handleClearLocation = () => {
-    localStorage.clear();
-    const name = "Select a Location";
-    setLocationName(name);
-    setShowModal(false);
-    localStorage.setItem("selectedLocation", name);
-  };
-
-  const getClearLocation = () => {
-    const selectedLocationString = localStorage.getItem("selectedLocation");
-    if (selectedLocationString) {
-      setLocationName(selectedLocationString);
-    } else {
-      setLocationName("Select a Location");
-    }
-  };
-
-  useEffect(() => {
-    getInitialLocation();
-    getClearLocation();
-  }, []);
-  return (
-    <div className=" z-40">
+  
+    const handleSelectLocation = (location: any) => {
+      localStorage.clear();
+      setLocationName(location.locationName);
+      setShowModal(false);
+      localStorage.setItem("selectedLocation", location.locationName);
+    };
+    const getInitialLocation = () => {
+      const selectedLocation = localStorage.getItem("selectedLocation");
+      if (selectedLocation) {
+        setLocationName(selectedLocation);
+      }
+    };
+  
+    const handleClearLocation = () => {
+      localStorage.clear();
+      const name = "Select a Location";
+      setLocationName(name);
+      setShowModal(false);
+      localStorage.setItem("selectedLocation", name);
+    };
+  
+    const getClearLocation = () => {
+      const selectedLocationString = localStorage.getItem("selectedLocation");
+      if (selectedLocationString) {
+        setLocationName(selectedLocationString);
+      } else {
+        setLocationName("Select a Location");
+      }
+    };
+  
+    useEffect(() => {
+      getInitialLocation();
+      getClearLocation();
+    }, []);
+    return ( 
+        <div className=" z-40">
       <div
-        className="border border-gray-200 rounded-md relative mx-6 flex flex-row justify-start items-center h-[60px] w-[180px] py-6 px-4 shadow-sm cursor-pointer md:mx-3 "
+        className="border border-gray-200 rounded-md relative flex flex-row justify-start items-center h-[60px] w-full py-6 px-4 shadow-sm cursor-pointer"
         onClick={handleModal}
       >
         <div className="flex-grow flex flex-col">
@@ -131,7 +130,7 @@ export const Location = () => {
               <div>
                 <div className="mt-3  sm:mt-5 ">
                   <h3 className="text-lg leading-6 font-medium text-gray-900">
-                    Choose your pickup location
+                    Choose your Delivery Location
                   </h3>
                   <h2 className="text-xs leading-6 text-gray-500">
                     Enter your address and we will specify the offer for your
@@ -168,7 +167,7 @@ export const Location = () => {
                       Clear All
                     </div>
                   </div>
-                  <hr />
+
                   {filteredLocation.map((item) => (
                     <div
                       key={item.id}
@@ -178,9 +177,9 @@ export const Location = () => {
                         <div className="hover:text-[#233a95]">
                           {item.locationName}
                         </div>
-                        {/* <div className="rounded-full text-gray-400 font-semibold w-20 px-2 text-xs h-8 border border-gray-200 flex justify-center items-center">
+                        <div className="rounded-full text-gray-400 font-semibold w-20 px-2 text-xs h-8 border border-gray-200 flex justify-center items-center">
                           Rs:{item.dollar_min}
-                        </div> */}
+                        </div>
                       </div>
                       <hr />
                     </div>
@@ -192,5 +191,7 @@ export const Location = () => {
         </div>
       )}
     </div>
-  );
-};
+     );
+}
+ 
+export default SideLocation;
