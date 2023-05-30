@@ -1,6 +1,6 @@
 import { Product } from "@/features/product/product";
 import { fetchProducts } from "@/features/product/productSlice";
-import { RootState } from "@/redux/store";
+import { AppDispatch, RootState } from "@/redux/store";
 import Link from "next/link";
 import React, { useState, useEffect, FC } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -23,7 +23,17 @@ export const FilteredProduct = ({
   passgrid,
 }: any) => {
   const [product, setProduct] = useState([]);
+  const [matchWithProduct, setmatchWithProduct] = useState<Product[]>([]);
   const [isGrid, setIsGrid] = useState<String>();
+
+  const dispatch = useDispatch<AppDispatch>();
+  const productsRidux = useSelector(
+    (state: RootState) => state.product.products
+  ) as Product[];
+  useEffect(() => {
+    dispatch(fetchProducts());
+    console.log("data data", productsRidux);
+  }, [dispatch]);
 
   const router = useRouter();
 
@@ -96,12 +106,14 @@ export const FilteredProduct = ({
   }, [passgrid]);
 
   useEffect(() => {
-    // console.log("productcccccc: ", product[0]?._id);
-  });
-
+    const matchedProducts = productsRidux.filter((pr: Product) =>
+      product.some((p: any) => p?._id === pr?._id)
+    );
+    setmatchWithProduct(matchedProducts);
+  }, [product, productsRidux]);
   return (
     <div>
-      {product.length != 0 ? (
+      {matchWithProduct.length != 0 ? (
         <div className="mx-auto ">
           {/* <div className="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 "> */}
           <div
@@ -117,10 +129,10 @@ export const FilteredProduct = ({
                 : ""
             }`}
           >
-            {product.map((product: any, index) => {
+            {matchWithProduct.map((product: any, index) => {
               return (
                 <ProductCard
-                  key={product?._id}
+                  key={product._id}
                   product={product}
                   isGrid={passgrid}
                 />

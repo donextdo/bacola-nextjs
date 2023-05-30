@@ -339,6 +339,8 @@ const handlePhoneChange = (e:any) => {
      const handletermsandconditions = () => {
     setIsChecked(!isChecked);
   };
+
+  
     return (
         <div className="container mx-auto px-[15px]  ">
 
