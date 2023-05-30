@@ -10,7 +10,7 @@ import { calSubTotal, removeItem, updateItemQuantity } from "../cartSlice";
 import { updateProductQuantity } from "@/features/product/productSlice";
 import { Product } from "@/features/product/product";
 // import { Tooltip } from 'react-tooltip';
-import Tooltip from '@mui/material/Tooltip';
+// import Tooltip from '@mui/material/Tooltip';
 
 
 
@@ -85,11 +85,11 @@ const MAX_LENGTH = 20; // Maximum number of characters to display
                                     
                                    
                                   
-                                    <Tooltip title={item.title} followCursor>
+                                    {/* <Tooltip title={item.title} followCursor> */}
                                     <div className="col-span-2 sm:col-span-4 text-sm ">
-                                        {displayName}
+                                        {item.title}
                                     </div>
-                                    </Tooltip>
+                                    {/* </Tooltip> */}
                                    
                                     <div className="col-span-1 hidden sm:block">{newprice.toFixed(2)}</div>
                                     <div className="flex sm:col-span-2">

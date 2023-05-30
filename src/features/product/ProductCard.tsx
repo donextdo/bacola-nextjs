@@ -170,27 +170,6 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
       router.push("/account");
     }
 
-    // const whishListObj = {
-    //   "whishList": [{
-    //     productId: product._id,
-    //     front: product.front,
-    //     title: product.title,
-    //     price: product.price,
-    //     date: new Date().toLocaleDateString("en-US", {
-    //       month: "long",
-    //       day: "numeric",
-    //       year: "numeric"
-    //     }),
-    //     quantity: product.quantity
-    //   }]
-    // };
-
-    // try {
-    //   const response = await axios.post(`${baseUrl}/users/wishList/${id}`, whishListObj);
-    //   console.log(response.data); // do something with the response data
-    // } catch (error) {
-    //   console.log(error); // handle the error
-    // }
   };
 
   let totalAmount = 0;
@@ -461,7 +440,7 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
                 {(product.count == undefined || product.count < 1) && (
                   <button
                     type="button"
-                    className=" bg-blue-900 text-white min-h-[34px]  rounded-full w-full "
+                    className=" bg-primary text-white min-h-[34px]  rounded-full w-full "
                     onClick={() => handleaddToCart(product)}
                   >
                     Add to cart

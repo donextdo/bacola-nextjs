@@ -4,9 +4,9 @@
 
 @import url(https://fonts.googleapis.com/css?family=Dosis:200,300,regular,500,600,700,800);
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
 
 @layer base {
   body {

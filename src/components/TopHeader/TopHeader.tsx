@@ -1,6 +1,9 @@
 import Link from "next/link";
 
 const TopHeader = () => {
+    const contactNumber = process.env.NEXT_PUBLIC_CONTACT_NUMBER;
+    const message = process.env.NEXT_PUBLIC_MESSAGE;
+
     return (
         <div className="container mx-auto hidden xl:block px-40">
             <div className=" mx-auto flex justify-between py-2.5">
@@ -32,13 +35,13 @@ const TopHeader = () => {
                 </div>
                 <div className="flex items-center">
                     <span className="text-xs mr-4">
-                    100% Secure delivery without contacting the courier
+                    {message}
                     </span>
                     <span className="text-xs text-gray-300 mr-4">
 						| 
                     </span>
                     <span className="text-xs flex">
-						Need help? Call Us: <p className="text-[#2bbef9] font-semibold ml-2">0112729729</p>
+						Need help? Call Us: <p className="text-[#2bbef9] font-semibold ml-2">{contactNumber}</p>
                     </span>
                 </div>
             </div>

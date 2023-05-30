@@ -23,12 +23,13 @@ import { Product } from "@/features/product/product";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
-import { addItem, updateItemQuantity } from "@/features/cart/cartSlice";
+import { addItem, addItems, updateItemQuantity } from "@/features/cart/cartSlice";
 import { updateProductQuantity } from "@/features/product/productSlice";
 import Review from "@/components/ViewItem/Details/Review";
 import siteUrl from "../../../utils/siteUrl";
 import default_image from "../../../assets/item/default_image.jpeg";
 import { RecentlyViewProduct } from "@/components/RecentlyViewProduct/RecentlyViewProduct";
+import RelatedProduct from "@/components/RelatedProduct/RelatedProduct";
 // interface ItemData {
 //     description: string;
 //     quantity: number;
@@ -189,32 +190,37 @@ const ItemPages = () => {
     };
 
     const handleWishlist = async (data: any) => {
-        const whishListObj = {
-            whishList: [
-                {
-                    productId: data._id,
-                    front: data.front,
-                    title: data.title,
-                    price: data.price,
-                    date: new Date().toLocaleDateString("en-US", {
-                        month: "long",
-                        day: "numeric",
-                        year: "numeric",
-                    }),
-                    quantity: data.quantity,
-                },
-            ],
-        };
-
-        try {
-            const response = await axios.post(
-                `${baseUrl}/users/wishList/${id}`,
-                whishListObj
-            );
-            console.log(response.data); // do something with the response data
-        } catch (error) {
-            console.log(error); // handle the error
-        }
+       
+        if (id) {
+            const whishListObj = {
+                whishList: [
+                    {
+                        productId: data._id,
+                        front: data.front,
+                        title: data.title,
+                        price: data.price,
+                        date: new Date().toLocaleDateString("en-US", {
+                            month: "long",
+                            day: "numeric",
+                            year: "numeric",
+                        }),
+                        quantity: data.quantity,
+                    },
+                ],
+            };
+    
+            try {
+                const response = await axios.post(
+                    `${baseUrl}/users/wishList/${id}`,
+                    whishListObj
+                );
+                console.log(response.data); // do something with the response data
+            } catch (error) {
+                console.log(error); // handle the error
+            }
+          } else {
+            router.push("/account");
+          }
     };
 
     const handleaddToCart = (data: any) => {
@@ -223,6 +229,7 @@ const ItemPages = () => {
         dispatch(
             updateProductQuantity({ productId: data._id, count: newQuantity })
         );
+        // dispatch(addItems({ product: data, count: item?.count }))
         console.log(data._id);
     };
 
@@ -769,6 +776,10 @@ const ItemPages = () => {
                             )}
                         </div>
                     </div>
+                </div>
+
+                <div className="">
+                    <RelatedProduct />
                 </div>
                 <div className="pb-20 pt-20 px-6">
                     <RecentlyViewProduct />

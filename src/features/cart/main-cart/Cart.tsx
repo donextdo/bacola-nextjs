@@ -212,7 +212,7 @@ const Cart: FC<CartType> = () => {
 
 
     const handleproduct = () => {
-
+    router.push("./shop");
     }
     return (
         <>

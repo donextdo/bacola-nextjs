@@ -1,4 +1,4 @@
-import Tooltip from '@mui/material/Tooltip';
+// import Tooltip from '@mui/material/Tooltip';
 
 
 const CheckoutSidebar = ({ item }: any) => {
@@ -17,12 +17,13 @@ const CheckoutSidebar = ({ item }: any) => {
     return (
         <tr>
             <td className=" py-3 text-[13px] w-[50%]">
-                <Tooltip title={item.title} followCursor>
+                {/* <Tooltip title={item.title} followCursor> */}
 
                     <div>
-                        {displayName} <span className="font-semibold">× {item.count || 0}</span>
+                        {item.title} <span className="font-semibold">× {item.count || 0}</span>
                     </div>
-                </Tooltip></td>
+                {/* </Tooltip> */}
+                </td>
             <td className=" py-3 text-[15px] text-right">Rs {subtotal.toFixed(2)}</td>
         </tr>
     );

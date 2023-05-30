@@ -305,7 +305,7 @@ const Bill = () => {
             <input type="text" className="w-full px-4 h-10 bg-gray-100 rounded-md mt-2 mb-4" value={email} onChange={handleEmailChange} required/>
             {emailError && <div className='text-red-500'>{emailError}</div>}
 
-            <button type="submit" className="bg-[#233a95] text-white py-2.5 px-4 mb-4 rounded-md text-sm" 
+            <button type="submit" className="bg-primary text-white py-2.5 px-4 mb-4 rounded-md text-sm" 
             // onClick={handleSave}
             >Save Changes</button>
              {formError && <div className='text-red-500'>{formError}</div>}

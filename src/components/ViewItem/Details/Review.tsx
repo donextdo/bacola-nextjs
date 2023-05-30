@@ -11,12 +11,12 @@ import { useRouter } from "next/router";
 
 interface Review {
     rating: number;
-    name:string;
-    body:string;
+    name: string;
+    body: string;
     submittedDate: string;
-    _id:string;
+    _id: string;
     // other properties
-  }
+}
 
 const Review = ({ itemId }: any) => {
     const [rating, setRating] = useState(0);
@@ -27,7 +27,7 @@ const Review = ({ itemId }: any) => {
     const router = useRouter();
 
 
-   
+
     let email: string | null;
     let username;
     let extractedUsername: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | ReactFragment | null | undefined;
@@ -50,7 +50,7 @@ const Review = ({ itemId }: any) => {
         fetchData();
     }, []);
 
-   
+
 
     async function fetchData() {
         try {
@@ -64,57 +64,57 @@ const Review = ({ itemId }: any) => {
 
     // submit savetext
     const handleSubmit = async () => {
-        if(id){
-            const review=text
+        if (id) {
+            const review = text
 
-        const data = {
-            body: review,
-            name: extractedUsername,
-            rating: rating,
-            userId: id,
-            productId:itemId
-        }
-        console.log(data)
-        if(rating>0 && review){
-        try {
-            const response = await axios.post(`${baseUrl}/reviews/insert`, data);
-            console.log(response.data); // do something with the response data
-        setText("");
+            const data = {
+                body: review,
+                name: extractedUsername,
+                rating: rating,
+                userId: id,
+                productId: itemId
+            }
+            console.log(data)
+            if (rating > 0 && review) {
+                try {
+                    const response = await axios.post(`${baseUrl}/reviews/insert`, data);
+                    console.log(response.data); // do something with the response data
+                    setText("");
 
-        } catch (error) {
-            console.log(error); // handle the error
-        }
-    }else{
-        alert("please add a rating and review")
-    }
+                } catch (error) {
+                    console.log(error); // handle the error
+                }
+            } else {
+                alert("please add a rating and review")
+            }
         } else {
             router.push('/account');
-          }
-    //    const review=text
+        }
+        //    const review=text
 
-    //     const data = {
-    //         body: review,
-    //         name: extractedUsername,
-    //         rating: rating,
-    //         userId: id,
-    //         productId:itemId
-    //     }
-    //     console.log(data)
-    //     if(rating>0 && review){
-    //     try {
-    //         const response = await axios.post(`${baseUrl}/reviews/insert`, data);
-    //         console.log(response.data); // do something with the response data
-    //     setText("");
+        //     const data = {
+        //         body: review,
+        //         name: extractedUsername,
+        //         rating: rating,
+        //         userId: id,
+        //         productId:itemId
+        //     }
+        //     console.log(data)
+        //     if(rating>0 && review){
+        //     try {
+        //         const response = await axios.post(`${baseUrl}/reviews/insert`, data);
+        //         console.log(response.data); // do something with the response data
+        //     setText("");
 
-    //     } catch (error) {
-    //         console.log(error); // handle the error
-    //     }
-    // }else{
-    //     alert("please add a rating and review")
-    // }
+        //     } catch (error) {
+        //         console.log(error); // handle the error
+        //     }
+        // }else{
+        //     alert("please add a rating and review")
+        // }
     };
 
- 
+
 
     // review body
     const handleTextChange = (event: any) => {
@@ -123,10 +123,10 @@ const Review = ({ itemId }: any) => {
 
     // rating 
     const buttonValues = [1, 2, 3, 4, 5];
-    
-    const handleRatingClick = (rating:any) => {
+
+    const handleRatingClick = (rating: any) => {
         console.log(rating)
-      setRating(rating);
+        setRating(rating);
     };
 
     return (
@@ -164,15 +164,15 @@ const Review = ({ itemId }: any) => {
             <hr />
             <h4 className="mt-6 text-[13px]">Your rating *</h4>
             <div>
-  {buttonValues.map((value) => (
-    <button
-      key={value}
-      onClick={() => handleRatingClick(value)}
-    >
-      <FaStar className={`${rating >= value ? 'text-yellow-400' : 'text-gray-200'}`}/>
-    </button>
-  ))}
-</div>
+                {buttonValues.map((value) => (
+                    <button
+                        key={value}
+                        onClick={() => handleRatingClick(value)}
+                    >
+                        <FaStar className={`${rating >= value ? 'text-yellow-400' : 'text-gray-200'}`} />
+                    </button>
+                ))}
+            </div>
             <h4 className="mt-3 mb-2 text-[13px]">Your review *</h4>
             <textarea className="w-full h-60 bg-gray-100 rounded-sm px-4" value={text}
                 onChange={handleTextChange}></textarea>
