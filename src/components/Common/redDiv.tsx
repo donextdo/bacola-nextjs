@@ -77,7 +77,7 @@ export const BestSeller = () => {
   const goToProduct = () => {
     // router.push("./filterProduct");
     router.push("./shop");
-    localStorage.clear();
+    // localStorage.clear();
   };
   return (
     <div className="flex flex-row items-center justify-between mb-9 ">
@@ -107,7 +107,7 @@ export const NewProduct = () => {
   const goToProduct = () => {
     // router.push("./filterProduct");
     router.push("./shop");
-    localStorage.clear();
+    // localStorage.clear();
   };
   return (
     <div className="flex flex-row items-center justify-between mb-9 ">

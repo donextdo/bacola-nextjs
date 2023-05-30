@@ -58,7 +58,7 @@ const Allcategories = () => {
 
   const getProductByCategory = async (categoryId: any) => {
     sessionStorage.clear();
-    localStorage.clear();
+    // localStorage.clear();
     setHomeOpen(false);
     router.push({
       pathname: "/filterProduct",

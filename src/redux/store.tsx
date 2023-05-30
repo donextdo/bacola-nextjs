@@ -5,6 +5,7 @@ import productReducer from "@/features/product/productSlice";
 import cartReducer from "../features/cart/cartSlice";
 import orderSlice from "@/components/Checkout/orderSlice";
 import userReducer from "../../src/features/User/userSlice";
+import recentlyClickedReducer from "@/features/product/recentlyClickedSlice";
 
 // Configure the Redux Persist options
 const persistConfig = {
@@ -20,6 +21,7 @@ const persistedReducer = persistReducer(persistConfig, combineReducers({
   cart: cartReducer,
   order: orderSlice,
   user: userReducer,
+  recentlyClicked: recentlyClickedReducer,
 }));
 
 // Create the Redux store

@@ -1,4 +1,9 @@
-import React, { Dispatch, ReactElement, SetStateAction, useEffect } from "react";
+import React, {
+  Dispatch,
+  ReactElement,
+  SetStateAction,
+  useEffect,
+} from "react";
 import { FaStar, FaHeart } from "react-icons/fa";
 import { SlSizeFullscreen } from "react-icons/sl";
 import { FiHeart } from "react-icons/fi";
@@ -15,8 +20,7 @@ import axios from "axios";
 import baseUrl from "../../../utils/baseUrl";
 import { useRouter } from "next/router";
 import Swal from "sweetalert2";
-
-
+import { addRecentlyClickedProductId } from "./recentlyClickedSlice";
 interface Props {
   product: Product;
   isGrid: string;
@@ -34,13 +38,12 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
   const [grid, setGrid] = useState<string>("");
   const router = useRouter();
 
-
   useEffect(() => {
     if (product.discount >= 0) {
       setIsdiscount(true);
     }
 
-    console.log(product)
+    console.log(product);
   }, []);
 
   useEffect(() => {
@@ -51,6 +54,25 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
       setGrid(getItem || "");
     }
   }, [isGrid]);
+
+  const handleProductClick = (product: any) => {
+    let recentlyAddedProductsString = localStorage.getItem(
+      "recentlyAddedProducts"
+    );
+    let products: any[] = [];
+
+    if (recentlyAddedProductsString) {
+      products = JSON.parse(recentlyAddedProductsString);
+    }
+    products.push(product._id);
+    if (products.length > 4) {
+      products = products.slice(-4);
+    }
+
+    // Save the updated list back to local storage
+    localStorage.setItem("recentlyAddedProducts", JSON.stringify(products));
+    console.log("data - productId: ", products);
+  };
 
   const handleIncrement = (product: Product) => {
     // setQuantity(quantity + 1);
@@ -76,18 +98,10 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
       // dispatch(removeFromCart(id))
       // setIsAddToCart(false)
     }
-    dispatch(calSubTotal(totalAmount))
-
+    dispatch(calSubTotal(totalAmount));
   };
 
   const handleaddToCart = (product: Product) => {
-
-    if (!product.count) {
-      console.log("product.count.undefine == 0: ", product.count);
-    }
-    if (product.count) {
-      console.log("product.count.count == 0: ", product.count);
-    }
     dispatch(addItem(product));
     const newQuantity = (product.count || 0) + 1;
     console.log("handleaddToCart ", product.count);
@@ -95,19 +109,19 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
       updateProductQuantity({ productId: product._id, count: newQuantity })
     );
     console.log(product._id);
-    dispatch(calSubTotal(totalAmount))
+    dispatch(calSubTotal(totalAmount));
     Swal.fire({
-      title: '<span style="font-size: 18px">Item has been added to your card</span>',
+      title:
+        '<span style="font-size: 18px">Item has been added to your card</span>',
       width: 400,
       timer: 1500,
       // padding: '3',
-      color: 'white',
-      background: '#00B853',
+      color: "white",
+      background: "#00B853",
       showConfirmButton: false,
       heightAuto: true,
-      position: 'bottom-end',
-    })
-
+      position: "bottom-end",
+    });
   };
 
   const stars = Array.from({ length: 5 }, (_, i) => (
@@ -121,35 +135,39 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
   ));
 
   let discountprice;
-  discountprice = product.price * (product.discount / 100)
-  let newprice = product.price - discountprice
+  discountprice = product.price * (product.discount / 100);
+  let newprice = product.price - discountprice;
 
   const handleWishlist = async (product: any) => {
-
     if (id) {
       const whishListObj = {
-        "whishList": [{
-          productId: product._id,
-          front: product.front,
-          title: product.title,
-          price: product.price,
-          date: new Date().toLocaleDateString("en-US", {
-            month: "long",
-            day: "numeric",
-            year: "numeric"
-          }),
-          quantity: product.quantity
-        }]
+        whishList: [
+          {
+            productId: product._id,
+            front: product.front,
+            title: product.title,
+            price: product.price,
+            date: new Date().toLocaleDateString("en-US", {
+              month: "long",
+              day: "numeric",
+              year: "numeric",
+            }),
+            quantity: product.quantity,
+          },
+        ],
       };
 
       try {
-        const response = await axios.post(`${baseUrl}/users/wishList/${id}`, whishListObj);
+        const response = await axios.post(
+          `${baseUrl}/users/wishList/${id}`,
+          whishListObj
+        );
         console.log(response.data); // do something with the response data
       } catch (error) {
         console.log(error); // handle the error
       }
     } else {
-      router.push('/account');
+      router.push("/account");
     }
 
     // const whishListObj = {
@@ -173,17 +191,17 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
     // } catch (error) {
     //   console.log(error); // handle the error
     // }
+  };
 
-  }
-
-  let totalAmount = 0
+  let totalAmount = 0;
   for (let i = 0; i < cartItems.length; i++) {
     let item = cartItems[i];
-    let subtotal = item.count * (item.price - item.price * (item.discount / 100));
+    let subtotal =
+      item.count * (item.price - item.price * (item.discount / 100));
     totalAmount += subtotal;
   }
   useEffect(() => {
-    dispatch(calSubTotal(totalAmount))
+    dispatch(calSubTotal(totalAmount));
   });
 
   const handlepopup = (product: any) => {
@@ -197,7 +215,7 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
   for (let i = 1; i <= product.review; i++) {
     yellowstars.push(<FaStar />);
   }
-  for (let i = 1; i <= (5 - product.review); i++) {
+  for (let i = 1; i <= 5 - product.review; i++) {
     graystars.push(<FaStar />);
   }
 
@@ -219,8 +237,9 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
                   <SlSizeFullscreen className="h-[10px] w-[10px] fill-blue-900 group-hover/icon2:fill-white" />
                 </button>
                 <div
-                  className={`absolute top-9 ${product.isFavourite ? "text-white" : "text-blue-900"
-                    }`}
+                  className={`absolute top-9 ${
+                    product.isFavourite ? "text-white" : "text-blue-900"
+                  }`}
                 >
                   <div
                     className={`bg-white flex items-center justify-center rounded-full h-8 w-8 hover:cursor-pointer drop-shadow-lg md:invisible group-hover:visible md:group-hover:-translate-x-3 md:group-hover:ease-in transition duration-150 hover:bg-blue-900 group/icon1`}
@@ -250,18 +269,18 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
                 {product?.speacialtag == "organic" && (
                   <div className=" font-semibold px-2 py-1 bg-emerald-100 text-green-600 rounded-full text-[10px] flex items-center justify-center uppercase tracking-tighter">
                     {product.speacialtag}
-
                   </div>
                 )}
                 {product?.speacialtag == "Recommended" && (
-
                   <div className=" font-semibold px-2 py-1 bg-gray-500 text-white rounded text-[10px] flex items-center justify-center uppercase tracking-tighter">
                     {product.speacialtag}
-
                   </div>
                 )}
               </div>
-              <div className=" h-full w-full  hover:cursor-pointer flex items-center justify-center mb-5">
+              <div
+                className=" h-full w-full  hover:cursor-pointer flex items-center justify-center mb-5"
+                onClick={() => handleProductClick(product)}
+              >
                 <Link href={`/item-preview/${product._id}`}>
                   <Image
                     width={172.95}
@@ -269,14 +288,17 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
                     //src={product.front as string}
                     src={product.front}
                     alt={product.title}
-                  //alt="Man looking at item at a store"
+                    //alt="Man looking at item at a store"
                   />
                 </Link>
               </div>
             </div>{" "}
             <div className="w-2/3 ">
               <div className="mx-5 mb-1 max-h-[155.29px] max-w-[212.95]  mt-5">
-                <div className="text-sm font-medium text-black hover:text-indigo-400  capitalize leading-tight hover:cursor-pointer line-clamp-2">
+                <div
+                  className="text-sm font-medium text-black hover:text-indigo-400  capitalize leading-tight hover:cursor-pointer line-clamp-2"
+                  onClick={() => handleProductClick(product)}
+                >
                   <Link href={`/item-preview/${product._id}`}>
                     {product.title}
                   </Link>
@@ -284,7 +306,7 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
                 <div className="my-1 font-[.6875rem] text-xs pt-2 text-green-600 uppercase font-semibold tracking-[.005em]">
                   {product.quantity > 0 ? "In Stock" : "Out of Stock"}
                 </div>
-                <div className="text-xs pt-2 flex flex-row items-center my-1">
+                <div className="text-xs pt-2 flex flex-row items-center my-1 ">
                   {stars}
                   {/* <p className="text-md text-yellow-400 flex">{yellowstars}</p>
   <p className="text-md text-gray-400 flex">{graystars}</p> */}
@@ -357,24 +379,25 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
               {product?.speacialtag == "organic" && (
                 <div className=" font-semibold px-2 py-1 bg-emerald-100 text-green-600 rounded-full text-[10px] flex items-center justify-center uppercase tracking-tighter">
                   {product.speacialtag}
-
                 </div>
               )}
               {product?.speacialtag == "Recommended" && (
-
                 <div className=" font-semibold px-2 py-1 bg-gray-500 text-white rounded text-[10px] flex items-center justify-center uppercase tracking-tighter">
                   {product.speacialtag}
-
                 </div>
               )}
             </div>
             <div className="max-w-[40px] max-h-[85px] ">
-              <button className="absolute max-w-[24px] max-h-[24px] top-2 right-2 bg-white flex items-center justify-center rounded-full h-8 w-8 hover:cursor-pointer drop-shadow-lg md:invisible group-hover:visible md:group-hover:-translate-x-3 md:group-hover:ease-in transition duration-150 hover:bg-blue-900 group/icon2" onClick={() => handlepopup(product._id)}>
+              <button
+                className="absolute max-w-[24px] max-h-[24px] top-2 right-2 bg-white flex items-center justify-center rounded-full h-8 w-8 hover:cursor-pointer drop-shadow-lg md:invisible group-hover:visible md:group-hover:-translate-x-3 md:group-hover:ease-in transition duration-150 hover:bg-blue-900 group/icon2"
+                onClick={() => handlepopup(product._id)}
+              >
                 <SlSizeFullscreen className="h-[10px] w-[10px] fill-blue-900 group-hover/icon2:fill-white" />
               </button>
 
               <div
-                className={`absolute max-w-[24px] max-h-[24px] top-9 right-2 bg-white flex items-center justify-center rounded-full h-8 w-8 hover:cursor-pointer drop-shadow-lg md:invisible group-hover:visible md:group-hover:-translate-x-3 md:group-hover:ease-in transition duration-150 hover:bg-blue-900 group/icon1`} onClick={() => handleWishlist(product)}
+                className={`absolute max-w-[24px] max-h-[24px] top-9 right-2 bg-white flex items-center justify-center rounded-full h-8 w-8 hover:cursor-pointer drop-shadow-lg md:invisible group-hover:visible md:group-hover:-translate-x-3 md:group-hover:ease-in transition duration-150 hover:bg-blue-900 group/icon1`}
+                onClick={() => handleWishlist(product)}
               >
                 {product.isFavourite ? (
                   <FaHeart className="h-3 w-3 fill-blue-900 group-hover/icon1:fill-white" />
@@ -384,7 +407,10 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
               </div>
             </div>
 
-            <div className=" max-h-[172.95px] min-h-[172.95px] min-w-[154.95px] w-full  hover:cursor-pointer my-2 flex items-center justify-center">
+            <div
+              className=" max-h-[172.95px] min-h-[172.95px] min-w-[154.95px] w-full  hover:cursor-pointer my-2 flex items-center justify-center"
+              onClick={() => handleProductClick(product)}
+            >
               <Link href={`/item-preview/${product._id}`}>
                 <Image
                   width={172.95}
@@ -392,18 +418,18 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
                   //src={product.front as string}
                   src={product.front}
                   alt={product.title}
-                //alt="Man looking at item at a store"
+                  //alt="Man looking at item at a store"
                 />
               </Link>
-
             </div>
             <div className="mx-5 mb-1 max-h-[155.29px] max-w-[212.95] ">
-              <div className="text-sm font-medium text-black hover:text-indigo-400  capitalize leading-tight hover:cursor-pointer line-clamp-2">
+              <div
+                className="text-sm font-medium text-black hover:text-indigo-400  capitalize leading-tight hover:cursor-pointer line-clamp-2"
+                onClick={() => handleProductClick(product)}
+              >
                 <Link href={`/item-preview/${product._id}`}>
-
                   {product.title}
                 </Link>
-
               </div>
               {product?.quantity > 0 ? (
                 <div className="my-1 font-[.6875rem] text-xs pt-2 text-green-600 uppercase font-semibold tracking-[.005em]">
@@ -443,7 +469,6 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
                 )}
               </div>
               <div>
-
                 {product.count >= 1 && (
                   <div className="max-h-[34px] w-full flex grid-cols-3 h-10">
                     <button
@@ -471,11 +496,9 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
         </>
       )}
 
-      {
-        productPopup && (
-          <ProductPopup setProductPopup={setProductPopup} proId={proId} />
-        )
-      }
+      {productPopup && (
+        <ProductPopup setProductPopup={setProductPopup} proId={proId} />
+      )}
     </>
   );
 };

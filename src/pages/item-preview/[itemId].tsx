@@ -28,6 +28,7 @@ import { updateProductQuantity } from "@/features/product/productSlice";
 import Review from "@/components/ViewItem/Details/Review";
 import siteUrl from "../../../utils/siteUrl";
 import default_image from "../../../assets/item/default_image.jpeg";
+import { RecentlyViewProduct } from "@/components/RecentlyViewProduct/RecentlyViewProduct";
 // interface ItemData {
 //     description: string;
 //     quantity: number;
@@ -312,7 +313,7 @@ const ItemPages = () => {
     return (
         <>
             <div className="bg-[#f7f8fd]">
-                <div className="container mx-auto m-8 p-6 ">
+                <div className="container mx-auto m-8 py-6 ">
                     {/* working one */}
                     <div className=" bg-white drop-shadow rounded-md px-6 pt-10 mt-2 ">
                         <div className="w-full mb-[1.875rem]">
@@ -768,6 +769,9 @@ const ItemPages = () => {
                             )}
                         </div>
                     </div>
+                </div>
+                <div className="pb-20 pt-20 px-6">
+                    <RecentlyViewProduct />
                 </div>
 
                 {/* mobile view */}
