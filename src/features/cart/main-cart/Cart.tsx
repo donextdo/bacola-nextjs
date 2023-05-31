@@ -78,6 +78,7 @@ const Cart: FC<CartType> = () => {
         cartshippingEmail: "",
     });
 
+    
     useEffect(() => {
         console.log(cartItems)
         dispatch(calSubTotal(totalAmount))
@@ -86,6 +87,10 @@ const Cart: FC<CartType> = () => {
     useEffect(() => {
         fetchData()
     }, []);
+
+    useEffect(() => {
+        localStorage.setItem('cartItems', JSON.stringify(cartItems));
+    }, [cartItems]);
 
     async function fetchData() {
         try {

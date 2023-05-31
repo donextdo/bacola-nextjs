@@ -23,7 +23,7 @@ import { Product } from "@/features/product/product";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
-import { addItem, addItems, updateItemQuantity } from "@/features/cart/cartSlice";
+import { addItem, updateItemQuantity } from "@/features/cart/cartSlice";
 import { updateProductQuantity } from "@/features/product/productSlice";
 import Review from "@/components/ViewItem/Details/Review";
 import siteUrl from "../../../utils/siteUrl";
@@ -338,8 +338,8 @@ const ItemPages = () => {
     const titleToDisplay = expanded ? data.title : data.title.substring(0, MAX_TITLE_LENGTH) + "...";
     return (
         <>
-            <div className="bg-[#f7f8fd]">
-                <div className="container mx-auto m-8 py-6 ">
+            <div className="bg-[#f7f8fd] ">
+                <div className="container mx-auto xl:px-40 px-5 m-8 py-6 ">
                     <div className=" pb-3">
                         <Breadcrumbs crumbs={breadcrumbs}></Breadcrumbs>
                     </div>
@@ -800,10 +800,10 @@ const ItemPages = () => {
                     </div>
                 </div>
 
-                <div className="">
+                <div className="container mx-auto xl:px-40 px-5">
                     <RelatedProduct findcategory={findcategory} />
                 </div>
-                <div className="pb-20 pt-20 px-6">
+                <div className="pb-20 pt-20 container mx-auto xl:px-40 px-5">
                     <RecentlyViewProduct />
                 </div>
 

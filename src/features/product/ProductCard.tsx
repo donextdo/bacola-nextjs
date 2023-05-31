@@ -132,6 +132,7 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
       heightAuto: true,
       position: "bottom-end",
     });
+ 
   };
 
   const stars = Array.from({ length: 5 }, (_, i) => (

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CartPopup from "../../features/cart/popup-cart/CartPopup";
 import { SearchItem } from "../Search/Search";
 import { AiOutlineUser } from "react-icons/ai";
@@ -22,7 +22,10 @@ const Header = () => {
   const totalAmount = useSelector((state: RootState) => state.cart.totalAmount);
   const router = useRouter();
 
-
+  useEffect(() => {
+    localStorage.setItem('totalCount', totalCount.toString());
+  }, [totalCount]);
+  
   const { publicRuntimeConfig } = getConfig();
 
   const logoUrl = publicRuntimeConfig.APP_LOGO_URL;
@@ -64,8 +67,8 @@ const Header = () => {
   };
 
   const handleClick = () => {
-    // setCart(!cart)
-    router.push("/cart")
+    setCart(!cart)
+    // router.push("/cart")
 
   };
   const hnadleEnter = () => {

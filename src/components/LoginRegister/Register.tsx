@@ -63,7 +63,7 @@ const Register: React.FC<Props> = () => {
           localStorage.setItem("email", response.data.email);
           localStorage.setItem("order", JSON.stringify([]));
 
-          if (response.status == 200 || response.status == 201) {
+          if (response.status == 200 || response.status == 201  ) {
           location.reload();
             router.push("/account");
           }
