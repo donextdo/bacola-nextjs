@@ -4,15 +4,28 @@ import cartReducer from "../features/cart/cartSlice";
 import orderSlice from "@/components/Checkout/orderSlice";
 import userReducer from "../../src/features/User/userSlice";
 import recentlyClickedReducer from "@/features/product/recentlyClickedSlice";
+import storage from 'redux-persist/lib/storage';
+import { persistReducer } from 'redux-persist';
+import { combineReducers } from "@reduxjs/toolkit";
 
-export const store = configureStore({
-  reducer: {
+const persistConfig = {
+  key: "root",
+  version:1,
+  storage
+}
+
+const reducer = combineReducers({
     product: productReducer,
     cart: cartReducer,
     order: orderSlice,
     user: userReducer,
     recentlyClicked: recentlyClickedReducer,
-  },
+})
+
+const persistedReducer = persistReducer(persistConfig, reducer)
+
+export const store = configureStore({
+  reducer: persistedReducer
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

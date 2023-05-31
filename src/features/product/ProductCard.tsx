@@ -343,7 +343,7 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
       ) : (
         <>
           <div
-            className="w-full min-h-[350.24px] mx-auto bg-white border border-gray-200  overflow-hidden relative group hover:drop-shadow-lg rounded-sm"
+            className="w-full min-h-[350.24px] mx-auto bg-white border border-gray-200  overflow-hidden relative group hover:drop-shadow-lg hover:border-secondary rounded-sm"
             key={product._id}
           >
             <div className="absolute max-w-[88.41px] max-h-[49px] flex flex-col items-start gap-1 p-2">

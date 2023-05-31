@@ -57,7 +57,7 @@ const SideNavBar = ({ setShowSideNavbar }: any) => {
             {/* <Allcategories /> */}
           </div>
           <div className="mx-4 mt-4">
-            <AllcategoriesSideNavbar />
+            <AllcategoriesSideNavbar setShowSideNavbar={setShowSideNavbar}/>
           </div>
           <nav>
             <div>

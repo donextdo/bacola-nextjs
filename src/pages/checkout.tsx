@@ -8,6 +8,7 @@ import baseUrl from "../../utils/baseUrl";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { removeAll } from "@/features/cart/cartSlice";
+import Terms from "@/components/Terms/Terms";
 
 
 
@@ -53,6 +54,8 @@ const Checkout = () => {
     const [formError, setFormError] = useState('');
 
     const [isChecked, setIsChecked] = useState(false);
+    const [terms, setTerms] = useState(false);
+
 
     const [ship, setShip] = useState({
     
@@ -340,6 +343,9 @@ const handlePhoneChange = (e:any) => {
     setIsChecked(!isChecked);
   };
 
+  const handleterms = () => {
+    setTerms(!terms)
+  }
   
     return (
         <div className="container mx-auto px-[15px]  ">
@@ -545,9 +551,17 @@ const handlePhoneChange = (e:any) => {
 
                         <p className="text-[13px] mt-8">Your personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our <Link href="/privacy-policy"><span className="text-[#ed174a] underline underline-offset-1 font-semibold">privacy policy.</span></Link></p>
 
+                        {
+                            terms && (
+                                <div className="h-[200px] overflow-y-auto mt-4">
+                                    <Terms />
+                                </div>
+                            )
+                        }
+
                         <div className="flex gap-2 mt-4">
                             <input type="checkbox" name="address" id="address" checked={isChecked} onChange={handletermsandconditions}/>
-                            <p className="text-xs">I have read and agree to the website <span className="text-[#ed174a] underline underline-offset-1">terms and conditions* </span></p>
+                            <p className="text-xs" >I have read and agree to the website<span className="text-[#ed174a] underline underline-offset-1"><button onClick={handleterms}>terms and conditions*</button></span></p>
                         </div>
 
                         {(firstName=="" || lastName=="" || 

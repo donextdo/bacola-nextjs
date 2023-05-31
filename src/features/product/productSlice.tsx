@@ -17,6 +17,7 @@ const initialState: ProductsState = {
 };
 const PRODUCTS_URL = `${baseUrl}/products/getAll/`;
 
+
 export const fetchProducts = createAsyncThunk(
   "product/fetchProducts",
   async () => {
@@ -24,6 +25,7 @@ export const fetchProducts = createAsyncThunk(
     return response.data;
   }
 );
+
 
 export const productSlice = createSlice({
   name: "product",
@@ -57,6 +59,7 @@ export const productSlice = createSlice({
         state.status = "failed";
         state.error = action.error.message ?? "Unknown error";
       });
+
   },
 });
 

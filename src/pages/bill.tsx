@@ -1,10 +1,11 @@
+import Terms from "@/components/Terms/Terms";
 
 
 const ProductPopup = ({setProductPopup, itemId}:any) => {
    
     return ( 
-      <div className="text-secondary text-xl">
-        hi
+      <div className="">
+        <Terms />
       </div>
      );
 }

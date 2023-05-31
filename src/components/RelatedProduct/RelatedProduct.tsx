@@ -3,7 +3,7 @@ import baseUrl from "../../../utils/baseUrl";
 import { useEffect, useState } from "react";
 import { ProductCard } from "@/features/product/ProductCard";
 
-const RelatedProduct = ({passgrid}:any) => {
+const RelatedProduct = ({passgrid,findcategory}:any) => {
     const [relatedProduct,setRelatedProduct] = useState([])
 
     useEffect(() => {
@@ -15,9 +15,9 @@ const RelatedProduct = ({passgrid}:any) => {
       async function fetchData() {
         console.log("hi")
         try {
-          const res = await axios.get(`${baseUrl}/products/`);
-          console.log(res.data)
-        //   setOrder(res.data)
+          const res = await axios.get(`${baseUrl}/products?categoryId=${findcategory}`);
+          console.log(res.data.products)
+          setRelatedProduct(res.data.products)
         } catch (err) {
           console.log(err);
         }
@@ -30,16 +30,16 @@ const RelatedProduct = ({passgrid}:any) => {
             RELATED PRODUCTS
       </div>
         <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 mt-5">
-            {/* {displayedProducts.map((product: any, index) => {
+            {displayedProducts.map((product: any, index) => {
             return (
-            //   <ProductCard
-            //     key={product.id}
-            //     product={product}
-            //     isGrid={passgrid}
-            //   />
-            <div>hi</div>
+              <ProductCard
+                key={product.id}
+                product={product}
+                isGrid={passgrid}
+              />
+            
             );
-          })} */}
+          })}
         </div>
         </div>
      );

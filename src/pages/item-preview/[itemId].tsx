@@ -317,6 +317,11 @@ const ItemPages = () => {
     const closeModal = () => {
         setIsModalOpen(false);
     };
+
+    const MAX_TITLE_LENGTH = 20; // Set your desired character limit
+  const [expanded, setExpanded] = useState(false);
+
+  const titleToDisplay = expanded ? data.title : data.title.substring(0, MAX_TITLE_LENGTH) + "...";
     return (
         <>
             <div className="bg-[#f7f8fd]">
@@ -324,8 +329,8 @@ const ItemPages = () => {
                     {/* working one */}
                     <div className=" bg-white drop-shadow rounded-md px-6 pt-10 mt-2 ">
                         <div className="w-full mb-[1.875rem]">
-                            <h1 className=" capitalize text-[1.5rem] font-semibold">
-                                {data.title}
+                            <h1 className=" capitalize text-[1.5rem] font-semibold max-w-[10px]" onClick={() => setExpanded(!expanded)}>
+                                {titleToDisplay}
                             </h1>
                             <div className="flex flex-row bg-white text-[0.75rem] ">
                                 <span className="text-gray-400 ">Brands: </span>
@@ -779,7 +784,7 @@ const ItemPages = () => {
                 </div>
 
                 <div className="">
-                    <RelatedProduct />
+                    <RelatedProduct findcategory={findcategory}/>
                 </div>
                 <div className="pb-20 pt-20 px-6">
                     <RecentlyViewProduct />
@@ -812,7 +817,7 @@ const ItemPages = () => {
                         <div className="pr-4">
                             <button
                                 type="button"
-                                className=" bg-blue-900 text-white px-12 py-3 rounded-full "
+                                className=" bg-blue-900 text-white px-6 md:px-12 py-3 rounded-full text-[13px]"
                                 onClick={() => handleaddToCart(data)}
                             >
                                 Add to cart

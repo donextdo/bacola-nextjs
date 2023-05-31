@@ -19,7 +19,7 @@ export default function BottomFooter() {
   return (
     <>
       <div className="my-10 ml-2 lg:mx-10">
-        <div className=" lg:flex justify-between">
+        <div className=" flex justify-between">
           <div className="flex">
             <div>
               <button className="p-5 border rounded-full md:ml-40 lg:ml-0">
