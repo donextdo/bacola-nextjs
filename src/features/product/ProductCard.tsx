@@ -73,7 +73,17 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
     localStorage.setItem("recentlyAddedProducts", JSON.stringify(products));
     console.log("data - productId: ", products);
   };
+  const [cateName, setCatName] = useState();
+  let findcategory: any;
+  const saveCategoryName = async (product: any) => {
+    if (product.category.length > 0) {
+      findcategory = product.category[0];
+      const res = await axios.get(`${baseUrl}/categories/get/${findcategory}`);
 
+      console.log("ggggggg: ", res.data[0].name);
+      localStorage.setItem("catName", JSON.stringify(res.data[0].name));
+    }
+  };
   const handleIncrement = (product: Product) => {
     // setQuantity(quantity + 1);
     const newQuantity = (product.count || 0) + 1;
@@ -170,27 +180,6 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
       router.push("/account");
     }
 
-    // const whishListObj = {
-    //   "whishList": [{
-    //     productId: product._id,
-    //     front: product.front,
-    //     title: product.title,
-    //     price: product.price,
-    //     date: new Date().toLocaleDateString("en-US", {
-    //       month: "long",
-    //       day: "numeric",
-    //       year: "numeric"
-    //     }),
-    //     quantity: product.quantity
-    //   }]
-    // };
-
-    // try {
-    //   const response = await axios.post(`${baseUrl}/users/wishList/${id}`, whishListObj);
-    //   console.log(response.data); // do something with the response data
-    // } catch (error) {
-    //   console.log(error); // handle the error
-    // }
   };
 
   let totalAmount = 0;
@@ -279,7 +268,10 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
               </div>
               <div
                 className=" h-full w-full  hover:cursor-pointer flex items-center justify-center mb-5"
-                onClick={() => handleProductClick(product)}
+                onClick={() => {
+                  handleProductClick(product);
+                  saveCategoryName(product);
+                }}
               >
                 <Link href={`/item-preview/${product._id}`}>
                   <Image
@@ -297,7 +289,10 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
               <div className="mx-5 mb-1 max-h-[155.29px] max-w-[212.95]  mt-5">
                 <div
                   className="text-sm font-medium text-black hover:text-indigo-400  capitalize leading-tight hover:cursor-pointer line-clamp-2"
-                  onClick={() => handleProductClick(product)}
+                  onClick={() => {
+                    handleProductClick(product);
+                    saveCategoryName(product);
+                  }}
                 >
                   <Link href={`/item-preview/${product._id}`}>
                     {product.title}
@@ -364,7 +359,7 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
       ) : (
         <>
           <div
-            className="w-full min-h-[350.24px] mx-auto bg-white border border-gray-200  overflow-hidden relative group hover:drop-shadow-lg rounded-sm"
+            className="w-full min-h-[350.24px] mx-auto bg-white border border-gray-200  overflow-hidden relative group hover:drop-shadow-lg hover:border-secondary rounded-sm"
             key={product._id}
           >
             <div className="absolute max-w-[88.41px] max-h-[49px] flex flex-col items-start gap-1 p-2">
@@ -409,7 +404,10 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
 
             <div
               className=" max-h-[172.95px] min-h-[172.95px] min-w-[154.95px] w-full  hover:cursor-pointer my-2 flex items-center justify-center"
-              onClick={() => handleProductClick(product)}
+              onClick={() => {
+                handleProductClick(product);
+                saveCategoryName(product);
+              }}
             >
               <Link href={`/item-preview/${product._id}`}>
                 <Image
@@ -425,7 +423,10 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
             <div className="mx-5 mb-1 max-h-[155.29px] max-w-[212.95] ">
               <div
                 className="text-sm font-medium text-black hover:text-indigo-400  capitalize leading-tight hover:cursor-pointer line-clamp-2"
-                onClick={() => handleProductClick(product)}
+                onClick={() => {
+                  handleProductClick(product);
+                  saveCategoryName(product);
+                }}
               >
                 <Link href={`/item-preview/${product._id}`}>
                   {product.title}
@@ -461,7 +462,7 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
                 {(product.count == undefined || product.count < 1) && (
                   <button
                     type="button"
-                    className=" bg-blue-900 text-white min-h-[34px]  rounded-full w-full "
+                    className=" bg-primary text-white min-h-[34px]  rounded-full w-full "
                     onClick={() => handleaddToCart(product)}
                   >
                     Add to cart

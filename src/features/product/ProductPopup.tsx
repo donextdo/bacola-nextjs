@@ -14,6 +14,7 @@ import { updateProductQuantity } from "./productSlice";
 
 import { RootState } from "@/redux/store";
 import Review from "@/components/ViewItem/Details/Review";
+import { useRouter } from "next/router";
 
 const ProductPopup = ({ setProductPopup, proId }: any) => {
     const [data, setData] = useState<Product>({
@@ -55,6 +56,8 @@ const ProductPopup = ({ setProductPopup, proId }: any) => {
     const [allreview, setAllreview] = useState<Array<Review>>([])
     const [tag, setTag] = useState([]);
     const [myCategory, setMyCategory] = useState([]);
+    const router = useRouter();
+
 
 
 
@@ -130,27 +133,37 @@ const ProductPopup = ({ setProductPopup, proId }: any) => {
     };
 
     const handleWishlist = async (data: any) => {
-        const whishListObj = {
-            "whishList": [{
-                productId: data._id,
-                front: data.front,
-                title: data.title,
-                price: data.price,
-                date: new Date().toLocaleDateString("en-US", {
-                    month: "long",
-                    day: "numeric",
-                    year: "numeric"
-                }),
-                quantity: data.quantity
-            }]
-        };
-
-        try {
-            const response = await axios.post(`${baseUrl}/users/wishList/${id}`, whishListObj);
-            console.log(response.data); // do something with the response data
-        } catch (error) {
-            console.log(error); // handle the error
-        }
+       
+        if (id) {
+            const whishListObj = {
+                whishList: [
+                    {
+                        productId: data._id,
+                        front: data.front,
+                        title: data.title,
+                        price: data.price,
+                        date: new Date().toLocaleDateString("en-US", {
+                            month: "long",
+                            day: "numeric",
+                            year: "numeric",
+                        }),
+                        quantity: data.quantity,
+                    },
+                ],
+            };
+    
+            try {
+                const response = await axios.post(
+                    `${baseUrl}/users/wishList/${id}`,
+                    whishListObj
+                );
+                console.log(response.data); // do something with the response data
+            } catch (error) {
+                console.log(error); // handle the error
+            }
+          } else {
+            router.push("/account");
+          }
 
     }
 

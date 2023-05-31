@@ -74,6 +74,22 @@ export const cartSlice = createSlice({
       state.totalAmount = action.payload 
       
     },
+    addItems: (state, action: PayloadAction<{ product: Product; count: number }>) => {
+      console.log(action.payload)
+      
+      const itemIndex = state.items.findIndex(
+        (item) => item._id === action.payload.product._id
+      );
+      console.log(itemIndex)
+
+      if (itemIndex === -1) {
+        // state.items.push({ ...action.payload, count: action.payload.count });
+      } else {
+        // state.items[itemIndex].count += count;
+      }
+      // state.totalCount += count;
+    },
+    
   },
   extraReducers: (builder) => {
     builder
@@ -97,6 +113,7 @@ export const {
   updateItemQuantity,
   removeAll,
   calSubTotal,
+  addItems,
 } = cartSlice.actions;
 
 export default cartSlice.reducer;

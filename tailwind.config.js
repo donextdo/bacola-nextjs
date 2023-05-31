@@ -12,6 +12,10 @@ module.exports = {
       "ff-headings": ["Dosis", "sans-serif"],
     },
     extend: {
+      colors: {
+        primary: '#824f3c',      // Replace with your primary color
+        secondary: '#f58321',    // Replace with your secondary color
+      },
       placeItems: ["hover", "focus"],
     },
   },

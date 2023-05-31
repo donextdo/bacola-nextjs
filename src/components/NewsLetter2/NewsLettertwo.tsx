@@ -1,12 +1,42 @@
+import axios from "axios";
 import Image from "next/image";
+import { useState } from "react";
 import { CiMail } from "react-icons/ci";
+import baseUrl from "../../../utils/baseUrl";
 
 const NewsLettertwo = () => {
-    return ( 
-        <div className="relative bg-[#233a95]">
-      <div className="px-5 mx-auto sm:px-5 lg:px-10 2xl:px-40">
+  const [email, setEmail] = useState('');
+  
+
+  const handlesubscribe = async (e:any) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.post(`${baseUrl}/subscribe/insert`, { email });
+  
+      if (response.status === 200) {
+        // Handle successful subscription
+        setEmail('');
+        alert('Subscription successful');
+      } else {
+        // Handle subscription error
+        const { message } = response.data;
+        alert(`Subscription failed: ${message}`);
+      }
+    } catch (error) {
+      console.error(error);
+      alert('Subscription successful');
+      // Handle fetch error
+    }
+
+
+  }
+
+  return (
+    <div className=" bg-[#233a95] w-full">
+      <div className="px-5 sm:px-5 lg:px-10 2xl:px-40">
         <div className="grid lg:grid-cols-2">
-          <div className="max-w-5xl lg:max-w-md lg:self-center">
+          <div className="lg:self-center">
             {/* <p className="mt-6 text-base text-gray-300 lg:mt-10">
               Rs 20 discount for your first order
             </p> */}
@@ -17,26 +47,26 @@ const NewsLettertwo = () => {
               Join our email subscription now to get updates on promotions and
               coupons.
             </p>
-            <form className="flex flex-col mt-4">
-              <label htmlFor="email-address" className="sr-only">
+            <form className=" mt-4" onSubmit={handlesubscribe}>
+              {/* <label htmlFor="email-address" className="sr-only">
                 Email address
-              </label>
-              <div className="flex items-center py-1 pr-1 bg-white rounded-md lg:my-5">
-                <span className="pl-2 text-xl text-gray-400 lg:pl-3">
-                  <CiMail />
-                </span>
+              </label> */}
+              <div className="relative bg-white rounded-md flex items-center">
                 <input
-                  id="email-address"
                   name="email"
                   type="email"
-                  autoComplete="email"
                   required
-                  className="flex-1 px-2 text-gray-900 bg-white lg:px-3"
+                  className="pl-8 text-gray-900 bg-white h-[48px] lg:h-[62px] placeholder:text-sm "
                   placeholder="Your email address"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
+                <span className="absolute left-2 mt-2 text-xl text-gray-400 ">
+                  <CiMail />
+                </span>
                 <button
                   type="submit"
-                  className="bg-[#233a95] py-2 px-4 text-white rounded-md lg:py-[15px] lg:px-7"
+                  className="absolute top-1/2 transform -translate-y-1/2 right-2 bg-[#233a95] py-2 px-4 text-white rounded-md lg:py-[15px]"
                 >
                   Subscribe
                 </button>
@@ -55,7 +85,7 @@ const NewsLettertwo = () => {
         </div>
       </div>
     </div>
-     );
+  );
 }
- 
+
 export default NewsLettertwo;

@@ -23,12 +23,14 @@ import { Product } from "@/features/product/product";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
-import { addItem, updateItemQuantity } from "@/features/cart/cartSlice";
+import { addItem, addItems, updateItemQuantity } from "@/features/cart/cartSlice";
 import { updateProductQuantity } from "@/features/product/productSlice";
 import Review from "@/components/ViewItem/Details/Review";
 import siteUrl from "../../../utils/siteUrl";
 import default_image from "../../../assets/item/default_image.jpeg";
 import { RecentlyViewProduct } from "@/components/RecentlyViewProduct/RecentlyViewProduct";
+import RelatedProduct from "@/components/RelatedProduct/RelatedProduct";
+import Breadcrumbs from "@/components/Breadcrumbs/Breadcrumbs";
 // interface ItemData {
 //     description: string;
 //     quantity: number;
@@ -76,6 +78,7 @@ const ItemPages = () => {
     const [hideBackImage, setHideBackImage] = useState(false);
     const [hideFrontImage, setHideFrontImage] = useState(false);
     const [hideSideImage, setHideSideImage] = useState(false);
+    const [categoryName, setcategoryname] = useState();
 
     let id: any;
     if (typeof localStorage !== "undefined") {
@@ -189,31 +192,36 @@ const ItemPages = () => {
     };
 
     const handleWishlist = async (data: any) => {
-        const whishListObj = {
-            whishList: [
-                {
-                    productId: data._id,
-                    front: data.front,
-                    title: data.title,
-                    price: data.price,
-                    date: new Date().toLocaleDateString("en-US", {
-                        month: "long",
-                        day: "numeric",
-                        year: "numeric",
-                    }),
-                    quantity: data.quantity,
-                },
-            ],
-        };
 
-        try {
-            const response = await axios.post(
-                `${baseUrl}/users/wishList/${id}`,
-                whishListObj
-            );
-            console.log(response.data); // do something with the response data
-        } catch (error) {
-            console.log(error); // handle the error
+        if (id) {
+            const whishListObj = {
+                whishList: [
+                    {
+                        productId: data._id,
+                        front: data.front,
+                        title: data.title,
+                        price: data.price,
+                        date: new Date().toLocaleDateString("en-US", {
+                            month: "long",
+                            day: "numeric",
+                            year: "numeric",
+                        }),
+                        quantity: data.quantity,
+                    },
+                ],
+            };
+
+            try {
+                const response = await axios.post(
+                    `${baseUrl}/users/wishList/${id}`,
+                    whishListObj
+                );
+                console.log(response.data); // do something with the response data
+            } catch (error) {
+                console.log(error); // handle the error
+            }
+        } else {
+            router.push("/account");
         }
     };
 
@@ -223,6 +231,7 @@ const ItemPages = () => {
         dispatch(
             updateProductQuantity({ productId: data._id, count: newQuantity })
         );
+        // dispatch(addItems({ product: data, count: item?.count }))
         console.log(data._id);
     };
 
@@ -310,15 +319,35 @@ const ItemPages = () => {
     const closeModal = () => {
         setIsModalOpen(false);
     };
+
+    useEffect(() => {
+        let catName: any = localStorage.getItem("catName");
+        catName = catName?.replace(/"/g, "");
+        setcategoryname(catName);
+        console.log("catname: ", categoryName);
+    });
+    const breadcrumbs = [
+        { title: "Home", url: "/" },
+        { title: `${categoryName}`, url: `/item-preview/${itemId}` },
+        { title: `${data.title}` },
+    ];
+
+    const MAX_TITLE_LENGTH = 20; // Set your desired character limit
+    const [expanded, setExpanded] = useState(false);
+
+    const titleToDisplay = expanded ? data.title : data.title.substring(0, MAX_TITLE_LENGTH) + "...";
     return (
         <>
             <div className="bg-[#f7f8fd]">
                 <div className="container mx-auto m-8 py-6 ">
+                    <div className=" pb-3">
+                        <Breadcrumbs crumbs={breadcrumbs}></Breadcrumbs>
+                    </div>
                     {/* working one */}
                     <div className=" bg-white drop-shadow rounded-md px-6 pt-10 mt-2 ">
                         <div className="w-full mb-[1.875rem]">
-                            <h1 className=" capitalize text-[1.5rem] font-semibold">
-                                {data.title}
+                            <h1 className=" capitalize text-[1.5rem] font-semibold " onClick={() => setExpanded(!expanded)}>
+                                {data.title.length > 20 ? titleToDisplay : data.title}
                             </h1>
                             <div className="flex flex-row bg-white text-[0.75rem] ">
                                 <span className="text-gray-400 ">Brands: </span>
@@ -770,6 +799,10 @@ const ItemPages = () => {
                         </div>
                     </div>
                 </div>
+
+                <div className="">
+                    <RelatedProduct findcategory={findcategory} />
+                </div>
                 <div className="pb-20 pt-20 px-6">
                     <RecentlyViewProduct />
                 </div>
@@ -801,7 +834,7 @@ const ItemPages = () => {
                         <div className="pr-4">
                             <button
                                 type="button"
-                                className=" bg-blue-900 text-white px-12 py-3 rounded-full "
+                                className=" bg-blue-900 text-white px-6 md:px-12 py-3 rounded-full text-[13px]"
                                 onClick={() => handleaddToCart(data)}
                             >
                                 Add to cart

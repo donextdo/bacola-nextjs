@@ -13,7 +13,7 @@ import { Location } from "../Location/Location";
 import SideLocation from "./SideLocation";
 import { IoCloseSharp } from "react-icons/io5";
 
-const SideNavBar = ({setShowSideNavbar}:any) => {
+const SideNavBar = ({ setShowSideNavbar }: any) => {
   const [homeOpen, setHomeOpen] = useState(false);
   const toggleHome = () => {
     setHomeOpen(!homeOpen);
@@ -57,8 +57,8 @@ const SideNavBar = ({setShowSideNavbar}:any) => {
             {/* <Allcategories /> */}
           </div>
           <div className="mx-4 mt-4">
-              <AllcategoriesSideNavbar />
-            </div>
+            <AllcategoriesSideNavbar setShowSideNavbar={setShowSideNavbar}/>
+          </div>
           <nav>
             <div>
               <div className="px-5 text-[#d3d4d7] mt-10">
@@ -70,10 +70,10 @@ const SideNavBar = ({setShowSideNavbar}:any) => {
               <div className="">
                 <div className="flex justify-between px-6" onClick={toggleHome}>
                   <div className="font-ff-headings text-gray-800 text-[15px] font-semibold ">
-                      HOME
+                    HOME
                   </div>
                   <div>
-                  <MdKeyboardArrowDown className="text-xl text-[#d3d4d7]" />
+                    <MdKeyboardArrowDown className="text-xl text-[#d3d4d7]" />
                   </div>
                 </div>
                 {/* {homeOpen && (
@@ -100,13 +100,13 @@ const SideNavBar = ({setShowSideNavbar}:any) => {
 
               {/* Shop */}
               <div className="">
-              
+
                 <div className="flex justify-between px-6" onClick={toggleShop}>
                   <div className="font-ff-headings text-gray-800 text-[15px] font-semibold ">
-                  SHOP
+                    SHOP
                   </div>
                   <div>
-                  <MdKeyboardArrowDown className="text-xl text-[#d3d4d7]" />
+                    <MdKeyboardArrowDown className="text-xl text-[#d3d4d7]" />
                   </div>
                 </div>
 
@@ -193,6 +193,10 @@ const SideNavBar = ({setShowSideNavbar}:any) => {
               <hr className="my-[10px] md:my-[20px]" />
             </div>
           </nav>
+
+          <div className="mx-6 mt-6 text-[#d9d9e3] text-sm">
+          Copyright 2022 © BunTalk WordPress Theme. All rights reserved. Powered by BuntalkTheme.
+          </div>
 
         </div>
       </div>
