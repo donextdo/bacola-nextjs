@@ -7,7 +7,7 @@ const SuccessPage: React.FC = () => {
   useEffect(() => {
     const redirectTimer = setTimeout(() => {
       router.push("/account");
-    }, 30000);
+    }, 2000);
 
     return () => clearTimeout(redirectTimer);
   }, [router]);

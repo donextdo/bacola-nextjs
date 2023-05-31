@@ -5,7 +5,7 @@ import baseUrl from "../../../utils/baseUrl";
 import axios from "axios";
 export const RangeSlider = ({ categoryId }: any) => {
   const [minValue, setMinValue] = useState(0);
-  const [maxValue, setMaxValue] = useState(50);
+  const [maxValue, setMaxValue] = useState(50000);
   const [maxPriceValue, setMaxPriceValue] = useState(0);
   const progressRef = useRef<HTMLDivElement>(null);
 
@@ -18,7 +18,7 @@ export const RangeSlider = ({ categoryId }: any) => {
         const products = response.data.products;
 
         // Extracting all the product prices
-        const prices = products.map((product:any) => product.price);
+        const prices = products.map((product: any) => product.price);
 
         // Finding the maximum price
         const maxPrice = Math.max(...prices);
@@ -52,7 +52,7 @@ export const RangeSlider = ({ categoryId }: any) => {
     e.persist();
     e.preventDefault();
     const newMinValue = parseInt(e.target.value);
-    if (maxValue - newMinValue >= 0 && maxValue <= 50) {
+    if (maxValue - newMinValue >= 0 && maxValue <= 50000) {
       if (newMinValue > parseInt(maxValue.toString())) {
         // Ignore invalid input
       } else {
@@ -71,7 +71,7 @@ export const RangeSlider = ({ categoryId }: any) => {
     e.persist();
     e.preventDefault();
     const newMaxValue = parseInt(e.target.value);
-    if (newMaxValue - minValue >= 0 && newMaxValue <= 50) {
+    if (newMaxValue - minValue >= 0 && newMaxValue <= 50000) {
       if (newMaxValue < parseInt(minValue.toString())) {
         // Ignore invalid input
       } else {
@@ -88,8 +88,8 @@ export const RangeSlider = ({ categoryId }: any) => {
 
   useEffect(() => {
     if (progressRef.current) {
-      progressRef.current.style.left = `${(minValue / 50) * 100}%`;
-      progressRef.current.style.right = `${(1 - maxValue / 50) * 100}%`;
+      progressRef.current.style.left = `${(minValue / 50000) * 100}%`;
+      progressRef.current.style.right = `${(1 - maxValue / 50000) * 100}%`;
     }
   }, [minValue, maxValue]);
 
@@ -139,7 +139,7 @@ export const RangeSlider = ({ categoryId }: any) => {
             value={minValue}
             min={0}
             step={10}
-            max={50}
+            max={50000}
             className="range-min absolute
              w-full -top-1 h-1 bg-transparent appearance-none pointer-events-none "
             placeholder="Select a minimum value"
@@ -151,7 +151,7 @@ export const RangeSlider = ({ categoryId }: any) => {
             value={maxValue}
             min={0}
             step={10}
-            max={50}
+            max={50000}
             className="range-max absolute
              w-full -top-1 h-1 bg-transparent appearance-none pointer-events-none"
             placeholder="Select a maximum value"

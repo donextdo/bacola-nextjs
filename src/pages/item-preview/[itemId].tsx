@@ -30,6 +30,7 @@ import siteUrl from "../../../utils/siteUrl";
 import default_image from "../../../assets/item/default_image.jpeg";
 import { RecentlyViewProduct } from "@/components/RecentlyViewProduct/RecentlyViewProduct";
 import RelatedProduct from "@/components/RelatedProduct/RelatedProduct";
+import Breadcrumbs from "@/components/Breadcrumbs/Breadcrumbs";
 // interface ItemData {
 //     description: string;
 //     quantity: number;
@@ -77,6 +78,7 @@ const ItemPages = () => {
     const [hideBackImage, setHideBackImage] = useState(false);
     const [hideFrontImage, setHideFrontImage] = useState(false);
     const [hideSideImage, setHideSideImage] = useState(false);
+    const [categoryName, setcategoryname] = useState();
 
     let id: any;
     if (typeof localStorage !== "undefined") {
@@ -190,7 +192,7 @@ const ItemPages = () => {
     };
 
     const handleWishlist = async (data: any) => {
-       
+
         if (id) {
             const whishListObj = {
                 whishList: [
@@ -208,7 +210,7 @@ const ItemPages = () => {
                     },
                 ],
             };
-    
+
             try {
                 const response = await axios.post(
                     `${baseUrl}/users/wishList/${id}`,
@@ -218,9 +220,9 @@ const ItemPages = () => {
             } catch (error) {
                 console.log(error); // handle the error
             }
-          } else {
+        } else {
             router.push("/account");
-          }
+        }
     };
 
     const handleaddToCart = (data: any) => {
@@ -318,19 +320,34 @@ const ItemPages = () => {
         setIsModalOpen(false);
     };
 
-    const MAX_TITLE_LENGTH = 20; // Set your desired character limit
-  const [expanded, setExpanded] = useState(false);
+    useEffect(() => {
+        let catName: any = localStorage.getItem("catName");
+        catName = catName?.replace(/"/g, "");
+        setcategoryname(catName);
+        console.log("catname: ", categoryName);
+    });
+    const breadcrumbs = [
+        { title: "Home", url: "/" },
+        { title: `${categoryName}`, url: `/item-preview/${itemId}` },
+        { title: `${data.title}` },
+    ];
 
-  const titleToDisplay = expanded ? data.title : data.title.substring(0, MAX_TITLE_LENGTH) + "...";
+    const MAX_TITLE_LENGTH = 20; // Set your desired character limit
+    const [expanded, setExpanded] = useState(false);
+
+    const titleToDisplay = expanded ? data.title : data.title.substring(0, MAX_TITLE_LENGTH) + "...";
     return (
         <>
             <div className="bg-[#f7f8fd]">
                 <div className="container mx-auto m-8 py-6 ">
+                    <div className=" pb-3">
+                        <Breadcrumbs crumbs={breadcrumbs}></Breadcrumbs>
+                    </div>
                     {/* working one */}
                     <div className=" bg-white drop-shadow rounded-md px-6 pt-10 mt-2 ">
                         <div className="w-full mb-[1.875rem]">
-                            <h1 className=" capitalize text-[1.5rem] font-semibold max-w-[10px]" onClick={() => setExpanded(!expanded)}>
-                                {titleToDisplay}
+                            <h1 className=" capitalize text-[1.5rem] font-semibold " onClick={() => setExpanded(!expanded)}>
+                                {data.title.length > 20 ? titleToDisplay : data.title}
                             </h1>
                             <div className="flex flex-row bg-white text-[0.75rem] ">
                                 <span className="text-gray-400 ">Brands: </span>
@@ -784,7 +801,7 @@ const ItemPages = () => {
                 </div>
 
                 <div className="">
-                    <RelatedProduct findcategory={findcategory}/>
+                    <RelatedProduct findcategory={findcategory} />
                 </div>
                 <div className="pb-20 pt-20 px-6">
                     <RecentlyViewProduct />
