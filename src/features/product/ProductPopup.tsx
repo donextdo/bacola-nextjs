@@ -45,7 +45,9 @@ const ProductPopup = ({ setProductPopup, proId }: any) => {
         category: "",
         tags: "",
         speacialtag: "",
-        additionalInformation: ''
+        additionalInformation: '',
+        isBestSeller: false,
+        isNewArrival:false
 
     })
     const [mainImage, setMainImage] = useState(data?.front);

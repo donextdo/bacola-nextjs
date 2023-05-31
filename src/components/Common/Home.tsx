@@ -18,7 +18,7 @@ const HomePage = () => {
       <div className="md:ml-5 lg:w-3/4 md:w-full w-full">
         <div>
           <BestSeller />
-          <ProductList />
+          <BestSellerProducts />
         </div>
         <TakeCare />
         {/* <RedDiv /> */}

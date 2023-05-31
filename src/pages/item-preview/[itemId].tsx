@@ -69,6 +69,8 @@ const ItemPages = () => {
         tags: "",
         speacialtag: "",
         additionalInformation: "",
+        isBestSeller: false,
+        isNewArrival:false
     });
     const [myCategory, setMyCategory] = useState([]);
     const [isColor, setIsColor] = useState(1);
