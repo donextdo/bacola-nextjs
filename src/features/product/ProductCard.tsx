@@ -73,7 +73,17 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
     localStorage.setItem("recentlyAddedProducts", JSON.stringify(products));
     console.log("data - productId: ", products);
   };
+  const [cateName, setCatName] = useState();
+  let findcategory: any;
+  const saveCategoryName = async (product: any) => {
+    if (product.category.length > 0) {
+      findcategory = product.category[0];
+      const res = await axios.get(`${baseUrl}/categories/get/${findcategory}`);
 
+      console.log("ggggggg: ", res.data[0].name);
+      localStorage.setItem("catName", JSON.stringify(res.data[0].name));
+    }
+  };
   const handleIncrement = (product: Product) => {
     // setQuantity(quantity + 1);
     const newQuantity = (product.count || 0) + 1;
@@ -279,7 +289,10 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
               </div>
               <div
                 className=" h-full w-full  hover:cursor-pointer flex items-center justify-center mb-5"
-                onClick={() => handleProductClick(product)}
+                onClick={() => {
+                  handleProductClick(product);
+                  saveCategoryName(product);
+                }}
               >
                 <Link href={`/item-preview/${product._id}`}>
                   <Image
@@ -297,7 +310,10 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
               <div className="mx-5 mb-1 max-h-[155.29px] max-w-[212.95]  mt-5">
                 <div
                   className="text-sm font-medium text-black hover:text-indigo-400  capitalize leading-tight hover:cursor-pointer line-clamp-2"
-                  onClick={() => handleProductClick(product)}
+                  onClick={() => {
+                    handleProductClick(product);
+                    saveCategoryName(product);
+                  }}
                 >
                   <Link href={`/item-preview/${product._id}`}>
                     {product.title}
@@ -409,7 +425,10 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
 
             <div
               className=" max-h-[172.95px] min-h-[172.95px] min-w-[154.95px] w-full  hover:cursor-pointer my-2 flex items-center justify-center"
-              onClick={() => handleProductClick(product)}
+              onClick={() => {
+                handleProductClick(product);
+                saveCategoryName(product);
+              }}
             >
               <Link href={`/item-preview/${product._id}`}>
                 <Image
@@ -425,7 +444,10 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
             <div className="mx-5 mb-1 max-h-[155.29px] max-w-[212.95] ">
               <div
                 className="text-sm font-medium text-black hover:text-indigo-400  capitalize leading-tight hover:cursor-pointer line-clamp-2"
-                onClick={() => handleProductClick(product)}
+                onClick={() => {
+                  handleProductClick(product);
+                  saveCategoryName(product);
+                }}
               >
                 <Link href={`/item-preview/${product._id}`}>
                   {product.title}

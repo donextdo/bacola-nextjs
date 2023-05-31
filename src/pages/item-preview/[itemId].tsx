@@ -29,6 +29,7 @@ import Review from "@/components/ViewItem/Details/Review";
 import siteUrl from "../../../utils/siteUrl";
 import default_image from "../../../assets/item/default_image.jpeg";
 import { RecentlyViewProduct } from "@/components/RecentlyViewProduct/RecentlyViewProduct";
+import Breadcrumbs from "@/components/Breadcrumbs/Breadcrumbs";
 // interface ItemData {
 //     description: string;
 //     quantity: number;
@@ -76,7 +77,7 @@ const ItemPages = () => {
   const [hideBackImage, setHideBackImage] = useState(false);
   const [hideFrontImage, setHideFrontImage] = useState(false);
   const [hideSideImage, setHideSideImage] = useState(false);
-
+  const [categoryName, setcategoryname] = useState();
   let id: any;
   if (typeof localStorage !== "undefined") {
     id = localStorage.getItem("id");
@@ -101,7 +102,7 @@ const ItemPages = () => {
   async function fetchData() {
     try {
       const res = await axios.get(`${baseUrl}/products/getOne/${itemId}`);
-      console.log(res.data);
+      console.log("getOne : ", res.data);
       setData(res.data);
       setTag(res.data.tags);
       if (res.data.back == "") {
@@ -135,7 +136,7 @@ const ItemPages = () => {
   async function fetchData2() {
     try {
       const res = await axios.get(`${baseUrl}/categories/get/${findcategory}`);
-      console.log(res.data);
+      console.log("categoryyyyyyyyyy: ", res.data);
       setMyCategory(res.data);
     } catch (err) {
       console.log(err);
@@ -310,10 +311,24 @@ const ItemPages = () => {
   const closeModal = () => {
     setIsModalOpen(false);
   };
+  useEffect(() => {
+    let catName: any = localStorage.getItem("catName");
+    catName = catName?.replace(/"/g, "");
+    setcategoryname(catName);
+    console.log("catname: ", categoryName);
+  });
+  const breadcrumbs = [
+    { title: "Home", url: "/" },
+    { title: `${categoryName}`, url: `/item-preview/${itemId}` },
+    { title: `${data.title}` },
+  ];
   return (
     <>
       <div className="bg-[#f7f8fd]">
-        <div className="container mx-auto m-8 p-6 ">
+        <div className="container mx-auto m-8 pt-6 px-6">
+          <div className=" pb-3">
+            <Breadcrumbs crumbs={breadcrumbs}></Breadcrumbs>
+          </div>
           {/* working one */}
           <div className=" bg-white drop-shadow rounded-md px-6 pt-10 mt-2 ">
             <div className="w-full mb-[1.875rem]">
