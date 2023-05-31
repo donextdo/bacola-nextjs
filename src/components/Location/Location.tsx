@@ -25,6 +25,11 @@ export const Location = () => {
   );
 
   useEffect(() => {
+    // const token = sessionStorage.getItem("token")
+    // const response = await axios.get(`${baseUrl}/locations/getAll`, {
+    //   headers: { Authorization: `Bearer ${token}` },
+    // });
+    // const response = await instance.get(`${baseUrl}/locations/getAll`);
     const fetchData = async () => {
       const response = await axios.get(`${baseUrl}/locations/getAll`);
 

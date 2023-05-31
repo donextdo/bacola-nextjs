@@ -4,6 +4,7 @@ import baseUrl from "../../../utils/baseUrl";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import Swal from "sweetalert2";
+import { setUserSession } from "../../../utils/token";
 
 type FormValues = {
   usernameoremail: string;
@@ -61,6 +62,7 @@ const Login: React.FC<Props> = () => {
       localStorage.setItem("order", JSON.stringify([]));
 
       if (response.status == 200) {
+        setUserSession(response.data.token, response.data);
         Swal.fire({
           title:
             '<span style="font-size: 18px">You have successfully logged in.</span>',
