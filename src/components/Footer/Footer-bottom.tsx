@@ -19,7 +19,7 @@ export default function BottomFooter() {
   return (
     <>
       <div className="my-10 ml-2 lg:mx-10">
-        <div className=" flex justify-between">
+        <div className="flex justify-between px-2">
           <div className="flex">
             <div>
               <button className="p-5 border rounded-full md:ml-40 lg:ml-0">
@@ -104,7 +104,7 @@ export default function BottomFooter() {
               </p>
               <p className="text-gray-400 text-[12px]  pl-4 lg:pl-2">
                 <Link
-                  href=""
+                  href="/terms"
                   className="hover:underline hover:underline-offset-1"
                 >
                   Terms and Conditions
@@ -112,7 +112,7 @@ export default function BottomFooter() {
               </p>
               <p className="text-gray-400 text-[12px]  pl-4 lg:pl-2">
                 <Link
-                  href=""
+                  href="/#"
                   className="hover:underline hover:underline-offset-1"
                 >
                   Cookie

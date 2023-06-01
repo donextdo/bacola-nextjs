@@ -8,10 +8,16 @@ import React, {
 import { ProductCard } from "./ProductCard";
 import axios from "axios";
 import baseUrl from "../../../utils/baseUrl";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
+import { Product } from "./product";
 
 const BestSellerProducts = ({ passgrid }: any) => {
     const [isGrid, setIsGrid] = useState<String>();
     const [bestSellerProducts, setBestSellerProducts] = useState([])
+    const products = useSelector(
+        (state: RootState) => state.product.products
+      ) as Product[];
 
     useEffect(() => {
         const getItem = localStorage.getItem("gridType");
@@ -35,8 +41,9 @@ const BestSellerProducts = ({ passgrid }: any) => {
             console.log(err);
         }
     }
+    const bestProducts = products.filter(product => product.isBestSeller === true);
 
-    const displayedProducts = bestSellerProducts.slice(0, 8);
+    const displayedProducts = bestProducts.slice(0, 8);
 
     return (
         <div>

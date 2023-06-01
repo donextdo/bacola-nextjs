@@ -322,7 +322,23 @@ const handlePhoneChange = (e:any) => {
 
         console.log(orderObj)
         try {
-            const response = await axios.post(`${baseUrl}/orders/place`, orderObj);
+
+             //authentication session handle
+             const token = localStorage.getItem("token"); // Retrieve the token from local storage or wherever it's stored
+             if (!token) {
+             alert("Session expired")
+               router.push("/account");
+               return;
+             }
+
+             const config = {
+               headers: {
+                 Authorization: token,
+               },
+             };
+
+            const response = await axios.post(`${baseUrl}/orders/place`, orderObj,config);
+
             console.log(response.data); // do something with the response data
             if (response.status == 201) {
                 const orderData = { orderId: response.data.orderId, message: response.data.messsage };
@@ -336,6 +352,8 @@ const handlePhoneChange = (e:any) => {
             }
         } catch (error) {
             console.log(error); // handle the error
+            alert("Session expired")
+                  router.push("/account");
         }
     }
 

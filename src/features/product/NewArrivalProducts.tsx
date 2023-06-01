@@ -8,11 +8,17 @@ import React, {
   import { ProductCard } from "./ProductCard";
 import axios from "axios";
 import baseUrl from "../../../utils/baseUrl";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
+import { Product } from "./product";
 
 const NewArrivalProducts = ({ passgrid }: any) => {
 
     const [isGrid, setIsGrid] = useState<String>();
   const [newArrivalProducts,setNewArrivalProducts] = useState([])
+  const products = useSelector(
+    (state: RootState) => state.product.products
+  ) as Product[];
 
     useEffect(() => {
         const getItem = localStorage.getItem("gridType");
@@ -36,8 +42,8 @@ const NewArrivalProducts = ({ passgrid }: any) => {
             console.log(err);
         }
     }
-
-    const displayedProducts = newArrivalProducts.slice(0, 8);
+    const bestProducts = products.filter(product => product.isNewArrival === true);
+    const displayedProducts = bestProducts.slice(0, 8);
     return (  
         <div>
         <div className="mx-auto ">

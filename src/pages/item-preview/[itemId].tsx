@@ -23,7 +23,7 @@ import { Product } from "@/features/product/product";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
-import { addItem, addItems, updateItemQuantity } from "@/features/cart/cartSlice";
+import { addItem, updateItemQuantity } from "@/features/cart/cartSlice";
 import { updateProductQuantity } from "@/features/product/productSlice";
 import Review from "@/components/ViewItem/Details/Review";
 import siteUrl from "../../../utils/siteUrl";
@@ -69,6 +69,8 @@ const ItemPages = () => {
         tags: "",
         speacialtag: "",
         additionalInformation: "",
+        isBestSeller: false,
+        isNewArrival:false
     });
     const [myCategory, setMyCategory] = useState([]);
     const [isColor, setIsColor] = useState(1);
@@ -191,8 +193,42 @@ const ItemPages = () => {
         setIsColor(id);
     };
 
-    const handleWishlist = async (data: any) => {
+    // const handleWishlist = async (data: any) => {
 
+    //     if (id) {
+    //         const whishListObj = {
+    //             whishList: [
+    //                 {
+    //                     productId: data._id,
+    //                     front: data.front,
+    //                     title: data.title,
+    //                     price: data.price,
+    //                     date: new Date().toLocaleDateString("en-US", {
+    //                         month: "long",
+    //                         day: "numeric",
+    //                         year: "numeric",
+    //                     }),
+    //                     quantity: data.quantity,
+    //                 },
+    //             ],
+    //         };
+
+    //         try {
+    //             const response = await axios.post(
+    //                 `${baseUrl}/users/wishList/${id}`,
+    //                 whishListObj
+    //             );
+    //             console.log(response.data); // do something with the response data
+    //         } catch (error) {
+    //             console.log(error); // handle the error
+    //         }
+    //     } else {
+    //         router.push("/account");
+    //     }
+    // };
+
+    const handleWishlist = async (data: any) => {
+       
         if (id) {
             const whishListObj = {
                 whishList: [
@@ -210,20 +246,44 @@ const ItemPages = () => {
                     },
                 ],
             };
-
+    
             try {
+
+            //authentication session handle
+                const token = localStorage.getItem("token"); // Retrieve the token from local storage or wherever it's stored
+                if (!token) {
+                alert("Session expired")
+                  router.push("/account");
+                  return;
+                }
+
+                const config = {
+                  headers: {
+                    Authorization: token,
+                  },
+                };
+
                 const response = await axios.post(
                     `${baseUrl}/users/wishList/${id}`,
-                    whishListObj
+                    whishListObj,
+                    config,
+                    
                 );
+
+                
                 console.log(response.data); // do something with the response data
             } catch (error) {
-                console.log(error); // handle the error
+                console.log(error); // handle the error 
+                
+                alert("Session expired")
+                  router.push("/account");
+                
             }
-        } else {
+          } else {
             router.push("/account");
-        }
-    };
+          }
+
+    }
 
     const handleaddToCart = (data: any) => {
         dispatch(addItem(data));
@@ -338,8 +398,8 @@ const ItemPages = () => {
     const titleToDisplay = expanded ? data.title : data.title.substring(0, MAX_TITLE_LENGTH) + "...";
     return (
         <>
-            <div className="bg-[#f7f8fd]">
-                <div className="container mx-auto m-8 py-6 ">
+            <div className="bg-[#f7f8fd] ">
+                <div className="container mx-auto xl:px-40 px-5 m-8 py-6 ">
                     <div className=" pb-3">
                         <Breadcrumbs crumbs={breadcrumbs}></Breadcrumbs>
                     </div>
@@ -800,10 +860,10 @@ const ItemPages = () => {
                     </div>
                 </div>
 
-                <div className="">
+                <div className="container mx-auto xl:px-40 px-5">
                     <RelatedProduct findcategory={findcategory} />
                 </div>
-                <div className="pb-20 pt-20 px-6">
+                <div className="pb-20 pt-20 container mx-auto xl:px-40 px-5">
                     <RecentlyViewProduct />
                 </div>
 

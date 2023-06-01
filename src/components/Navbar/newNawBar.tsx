@@ -35,7 +35,7 @@ const NavbarNew = () => {
           </div>
         </div>
       </div>
-      <hr className="my-0" />
+      <hr className="" />
     </div>
   );
 };
