@@ -112,6 +112,17 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
   };
 
   const handleaddToCart = (product: Product) => {
+  //   console.log(product)
+  //    // Retrieve the existing cart items from local storage
+  //    let cartItemss = JSON.parse(localStorage.getItem('cartItemss') || '[]');
+  // // Add the product to the cart items array
+  // cartItemss.push(product);
+
+  // // Update the local storage with the updated array
+  // localStorage.setItem('cartItemss', JSON.stringify(cartItemss));
+
+  // cartItemss = JSON.parse(localStorage.getItem('cartItemss') || '[]');
+
     dispatch(addItem(product));
     const newQuantity = (product.count || 0) + 1;
     console.log("handleaddToCart ", product.count);
@@ -149,39 +160,96 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
   discountprice = product.price * (product.discount / 100);
   let newprice = product.price - discountprice;
 
-  const handleWishlist = async (product: any) => {
+  // const handleWishlist = async (product: any) => {
+  //   if (id) {
+  //     const whishListObj = {
+  //       whishList: [
+  //         {
+  //           productId: product._id,
+  //           front: product.front,
+  //           title: product.title,
+  //           price: product.price,
+  //           date: new Date().toLocaleDateString("en-US", {
+  //             month: "long",
+  //             day: "numeric",
+  //             year: "numeric",
+  //           }),
+  //           quantity: product.quantity,
+  //         },
+  //       ],
+  //     };
+
+  //     try {
+  //       const response = await axios.post(
+  //         `${baseUrl}/users/wishList/${id}`,
+  //         whishListObj
+  //       );
+  //       console.log(response.data); // do something with the response data
+  //     } catch (error) {
+  //       console.log(error); // handle the error
+  //     }
+  //   } else {
+  //     router.push("/account");
+  //   }
+
+  // };
+  const handleWishlist = async (data: any) => {
+       
     if (id) {
-      const whishListObj = {
-        whishList: [
-          {
-            productId: product._id,
-            front: product.front,
-            title: product.title,
-            price: product.price,
-            date: new Date().toLocaleDateString("en-US", {
-              month: "long",
-              day: "numeric",
-              year: "numeric",
-            }),
-            quantity: product.quantity,
-          },
-        ],
-      };
+        const whishListObj = {
+            whishList: [
+                {
+                    productId: data._id,
+                    front: data.front,
+                    title: data.title,
+                    price: data.price,
+                    date: new Date().toLocaleDateString("en-US", {
+                        month: "long",
+                        day: "numeric",
+                        year: "numeric",
+                    }),
+                    quantity: data.quantity,
+                },
+            ],
+        };
 
-      try {
-        const response = await axios.post(
-          `${baseUrl}/users/wishList/${id}`,
-          whishListObj
-        );
-        console.log(response.data); // do something with the response data
-      } catch (error) {
-        console.log(error); // handle the error
+        try {
+
+        //authentication session handle
+            const token = localStorage.getItem("token"); // Retrieve the token from local storage or wherever it's stored
+            if (!token) {
+            alert("Session expired")
+              router.push("/account");
+              return;
+            }
+
+            const config = {
+              headers: {
+                Authorization: token,
+              },
+            };
+
+            const response = await axios.post(
+                `${baseUrl}/users/wishList/${id}`,
+                whishListObj,
+                config,
+                
+            );
+
+            
+            console.log(response.data); // do something with the response data
+        } catch (error) {
+            console.log(error); // handle the error 
+            
+            alert("Session expired")
+              router.push("/account");
+            
+        }
+      } else {
+        router.push("/account");
       }
-    } else {
-      router.push("/account");
-    }
 
-  };
+}
 
   let totalAmount = 0;
   for (let i = 0; i < cartItems.length; i++) {

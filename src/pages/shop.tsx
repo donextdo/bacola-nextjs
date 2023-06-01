@@ -16,7 +16,7 @@ const PaginationProduct = () => {
   const onSale = query?.on_sale;
 
   return (
-    <div className="xl:px-40 lg:px-5 md:px-5 px-5 ">
+    <div className="container mx-auto xl:px-40 px-5">
       <HomePagination
         brand={brand}
         perpage={perpage}

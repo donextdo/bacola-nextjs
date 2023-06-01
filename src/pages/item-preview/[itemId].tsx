@@ -193,8 +193,42 @@ const ItemPages = () => {
         setIsColor(id);
     };
 
-    const handleWishlist = async (data: any) => {
+    // const handleWishlist = async (data: any) => {
 
+    //     if (id) {
+    //         const whishListObj = {
+    //             whishList: [
+    //                 {
+    //                     productId: data._id,
+    //                     front: data.front,
+    //                     title: data.title,
+    //                     price: data.price,
+    //                     date: new Date().toLocaleDateString("en-US", {
+    //                         month: "long",
+    //                         day: "numeric",
+    //                         year: "numeric",
+    //                     }),
+    //                     quantity: data.quantity,
+    //                 },
+    //             ],
+    //         };
+
+    //         try {
+    //             const response = await axios.post(
+    //                 `${baseUrl}/users/wishList/${id}`,
+    //                 whishListObj
+    //             );
+    //             console.log(response.data); // do something with the response data
+    //         } catch (error) {
+    //             console.log(error); // handle the error
+    //         }
+    //     } else {
+    //         router.push("/account");
+    //     }
+    // };
+
+    const handleWishlist = async (data: any) => {
+       
         if (id) {
             const whishListObj = {
                 whishList: [
@@ -212,20 +246,44 @@ const ItemPages = () => {
                     },
                 ],
             };
-
+    
             try {
+
+            //authentication session handle
+                const token = localStorage.getItem("token"); // Retrieve the token from local storage or wherever it's stored
+                if (!token) {
+                alert("Session expired")
+                  router.push("/account");
+                  return;
+                }
+
+                const config = {
+                  headers: {
+                    Authorization: token,
+                  },
+                };
+
                 const response = await axios.post(
                     `${baseUrl}/users/wishList/${id}`,
-                    whishListObj
+                    whishListObj,
+                    config,
+                    
                 );
+
+                
                 console.log(response.data); // do something with the response data
             } catch (error) {
-                console.log(error); // handle the error
+                console.log(error); // handle the error 
+                
+                alert("Session expired")
+                  router.push("/account");
+                
             }
-        } else {
+          } else {
             router.push("/account");
-        }
-    };
+          }
+
+    }
 
     const handleaddToCart = (data: any) => {
         dispatch(addItem(data));

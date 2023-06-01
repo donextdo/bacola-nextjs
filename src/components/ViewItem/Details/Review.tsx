@@ -77,12 +77,28 @@ const Review = ({ itemId }: any) => {
             console.log(data)
             if (rating > 0 && review) {
                 try {
-                    const response = await axios.post(`${baseUrl}/reviews/insert`, data);
+                    //authentication session handle
+                const token = localStorage.getItem("token"); // Retrieve the token from local storage or wherever it's stored
+                if (!token) {
+                alert("Session expired")
+                  router.push("/account");
+                  return;
+                }
+
+                const config = {
+                  headers: {
+                    Authorization: token,
+                  },
+                };
+
+                    const response = await axios.post(`${baseUrl}/reviews/insert`, data, config);
                     console.log(response.data); // do something with the response data
                     setText("");
 
                 } catch (error) {
                     console.log(error); // handle the error
+                    alert("Session expired")
+                    router.push("/account");
                 }
             } else {
                 alert("please add a rating and review")

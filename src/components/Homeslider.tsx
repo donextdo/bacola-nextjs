@@ -30,7 +30,7 @@ export default function HomeSlider() {
     <>
       <div className="flex flex-row mb-9 z-20">
         <div className="lg:w-1/4"></div>
-        <div className="mt-4 lg:w-3/4 md:w-full w-full cursor-pointer">
+        <div className="mt-4 lg:w-3/4 md:w-full w-full cursor-pointer h-[300px]">
           <Swiper
             spaceBetween={30}
             pagination={{
@@ -38,17 +38,31 @@ export default function HomeSlider() {
             }}
             modules={[Pagination]}
             className=" mySwiper"
-            // style={{ height: "550px" }}
+          // style={{ height: "550px" }}
           >
             <SwiperSlide>
               <div className="relative">
-                <Image
+                {/* <Image
                   src="/images/slider-image-1.jpg"
                   alt="Slider- Image"
                   className="w-full h-1/3 md:h-[260px] lg:h-[500px]"
                   width={500}
                   height={200}
-                />
+                /> */}
+                <div className="h-[300px] w-full">
+                  <Image
+                    src="/images/slider-image-1.jpg"
+                    alt="item1"
+                    style={{
+                      objectFit: "cover",
+                      backgroundColor: "white",
+                      width: "100%",
+                      height: "100%",
+                    }}
+                    width={450}
+                    height={400}
+                  />
+                </div>
                 <div className="absolute ml-4 lg:m-14 inset-0 flex flex-col justify-center max-w-[390px] max-h-[290px] lg:max-w-[610px] lg:max-h-[372px] md:justify-center md:max-w-[450px]">
                   <div className="flex flex-row items-center">
                     <h1 className="text-black text-sm uppercase">
@@ -83,13 +97,27 @@ export default function HomeSlider() {
               </div>
             </SwiperSlide>
             <SwiperSlide className="">
-              <Image
+              {/* <Image
                 src="/images/slider-image-2.jpg"
                 alt="Slider- Image"
                 className="w-full h-1/3 md:h-[260px] lg:h-[500px]"
                 width={500}
                 height={200}
-              />
+              /> */}
+              <div className="h-[300px] w-full">
+                <Image
+                  src="/images/slider-image-2.jpg"
+                  alt="item1"
+                  style={{
+                    objectFit: "cover",
+                    backgroundColor: "white",
+                    width: "100%",
+                    height: "100%",
+                  }}
+                  width={450}
+                  height={400}
+                />
+              </div>
               <div className="absolute ml-4 lg:m-14 inset-0 flex flex-col justify-center max-w-[390px] max-h-[290px] lg:max-w-[610px] lg:max-h-[372px] px-6 md:justify-center lg:mt-24 md:max-w-[450px]">
                 <div className="flex flex-row lg:mt-6 items-center">
                   <h1 className="text-black text-sm uppercase">
@@ -123,13 +151,27 @@ export default function HomeSlider() {
               </div>
             </SwiperSlide>
             <SwiperSlide className="">
-              <Image
+              {/* <Image
                 src="/images/slider-3.jpg"
                 alt="Slider- Image"
                 className="w-full h-1/3 md:h-[260px] lg:h-[500px]"
                 width={500}
                 height={200}
-              />
+              /> */}
+              <div className="h-[300px] w-full">
+                <Image
+                  src="/images/slider-3.jpg"
+                  alt="item1"
+                  style={{
+                    objectFit: "cover",
+                    backgroundColor: "white",
+                    width: "100%",
+                    height: "100%",
+                  }}
+                  width={450}
+                  height={400}
+                />
+              </div>
               <div className="absolute ml-4 lg:m-14 inset-0 flex flex-col justify-center max-w-[390px] max-h-[290px] lg:max-w-[610px] lg:max-h-[372px] px-6 md:justify-center lg:mt-24 md:max-w-[450px]">
                 <div className="flex flex-row lg:mt-6 items-center">
                   <h1 className="text-black text-sm uppercase">
