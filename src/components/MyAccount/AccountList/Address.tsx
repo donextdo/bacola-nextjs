@@ -108,7 +108,7 @@ const Address = () => {
 
     useEffect(() => {
         fetchData()
-    }, []);
+    }, [fetchData]);
 
     async function fetchData() {
         try {
@@ -198,11 +198,11 @@ const Address = () => {
             } */}
 
             {
-                modal && <Bill />
+                modal && <Bill setModal1={setModal1} setModal={setModal}/>
             }
 
             {
-                modal1 && <Ship />
+                modal1 && <Ship setModal1={setModal1} setModal={setModal}/>
             }
         </div >
     );

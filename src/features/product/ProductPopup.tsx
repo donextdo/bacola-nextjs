@@ -9,7 +9,7 @@ import axios from "axios";
 import baseUrl from "../../../utils/baseUrl";
 import { Product } from "./product";
 import { useDispatch, useSelector } from "react-redux";
-import { addItem, updateItemQuantity } from "../cart/cartSlice";
+import { addItem, addItems, updateItemQuantity } from "../cart/cartSlice";
 import { updateProductQuantity } from "./productSlice";
 
 import { RootState } from "@/redux/store";
@@ -59,6 +59,8 @@ const ProductPopup = ({ setProductPopup, proId }: any) => {
     const [tag, setTag] = useState([]);
     const [myCategory, setMyCategory] = useState([]);
     const router = useRouter();
+    let [newQuantity, setNewQuantity] = useState<number>(1)
+
 
 
 
@@ -123,15 +125,23 @@ const ProductPopup = ({ setProductPopup, proId }: any) => {
     const item: Product | undefined = products.find((item) => item._id === proId);
 
     const handleIncrement = (data: Product) => {
-        const newQuantity = (item?.count || 1) + 1;
-        dispatch(updateItemQuantity({ itemId: data._id, count: newQuantity }));
-        dispatch(updateProductQuantity({ productId: data._id, count: newQuantity }))
+        const setQuantity = (item?.count || 1) + 1;
+      setNewQuantity(setQuantity)
+      console.log(newQuantity)
+
+        dispatch(
+            updateProductQuantity({ productId: data._id, count: setQuantity })
+        );
     };
 
     const handleDecrement = (data: Product) => {
-        const newQuantity = Math.max((item?.count || 0) - 1, 0);
-        dispatch(updateItemQuantity({ itemId: data._id, count: newQuantity }));
-        dispatch(updateProductQuantity({ productId: data._id, count: newQuantity }))
+        const setQuantity = Math.max((item?.count || 0) - 1, 0);
+      setNewQuantity(setQuantity)
+        console.log(newQuantity)
+
+        dispatch(
+            updateProductQuantity({ productId: data._id, count: setQuantity })
+        );
     };
 
     // const handleWishlist = async (data: any) => {
@@ -227,12 +237,7 @@ const ProductPopup = ({ setProductPopup, proId }: any) => {
     }
 
     const handleaddToCart = (data: any) => {
-        dispatch(addItem(data));
-        const newQuantity = (data.count || 0) + 1;
-        dispatch(
-            updateProductQuantity({ productId: data._id, count: newQuantity })
-        );
-        console.log(data._id);
+        dispatch(addItems({ product: data, count: newQuantity }));
     };
 
     let discountprice;

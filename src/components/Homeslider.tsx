@@ -30,7 +30,7 @@ export default function HomeSlider() {
     <>
       <div className="flex flex-row mb-9 z-20">
         <div className="lg:w-1/4"></div>
-        <div className="mt-4 lg:w-3/4 md:w-full w-full cursor-pointer h-[300px]">
+        <div className="mt-4 lg:w-3/4 md:w-full w-full cursor-pointer h-[300px] lg:h-[500px]">
           <Swiper
             spaceBetween={30}
             pagination={{
@@ -49,7 +49,7 @@ export default function HomeSlider() {
                   width={500}
                   height={200}
                 /> */}
-                <div className="h-[300px] w-full">
+                <div className="h-[300px] lg:h-[500px] w-full">
                   <Image
                     src="/images/slider-image-1.jpg"
                     alt="item1"
@@ -104,7 +104,7 @@ export default function HomeSlider() {
                 width={500}
                 height={200}
               /> */}
-              <div className="h-[300px] w-full">
+              <div className="h-[300px] lg:h-[500px] w-full">
                 <Image
                   src="/images/slider-image-2.jpg"
                   alt="item1"
@@ -158,7 +158,7 @@ export default function HomeSlider() {
                 width={500}
                 height={200}
               /> */}
-              <div className="h-[300px] w-full">
+              <div className="h-[300px] lg:h-[500px] w-full">
                 <Image
                   src="/images/slider-3.jpg"
                   alt="item1"

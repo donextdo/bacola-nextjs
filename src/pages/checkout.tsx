@@ -366,7 +366,7 @@ const handlePhoneChange = (e:any) => {
   }
   
     return (
-        <div className="container mx-auto px-[15px]  ">
+        <div className="container mx-auto xl:px-40 px-5  ">
 
             {/* <div className="border border-[#e4e5ee] rounded-md space-y-4 py-4 px-4 mt-2">
                 <p className="text-[13px]">
@@ -579,7 +579,7 @@ const handlePhoneChange = (e:any) => {
 
                         <div className="flex gap-2 mt-4">
                             <input type="checkbox" name="address" id="address" checked={isChecked} onChange={handletermsandconditions}/>
-                            <p className="text-xs" >I have read and agree to the website<span className="text-[#ed174a] underline underline-offset-1"><button onClick={handleterms}>terms and conditions*</button></span></p>
+                            <p className="text-xs" >I have read and agree to the website <span className="text-[#ed174a] underline underline-offset-1"><button onClick={handleterms}> terms and conditions*</button></span></p>
                         </div>
 
                         {(firstName=="" || lastName=="" || 
@@ -605,7 +605,7 @@ const handlePhoneChange = (e:any) => {
 
             {/* checkout cart */}
             <div>
-                <div className="w-full border-2 border-[#233a95] mt-10 p-4 rounded-md xl:hidden">
+                <div className="w-full border-2 border-[#233a95] mt-10 p-4 mb-4 rounded-md xl:hidden">
                     <h2 className="font-semibold mb-3">YOUR ORDER</h2>
                     <hr />
                     <table className="w-full">
@@ -691,7 +691,20 @@ const handlePhoneChange = (e:any) => {
                         selectedRadio === "cash" && <p className="text-xs text-[#71778e] mt-3">Pay with cash upon delivery.</p>
                     }
 
-                    <p className="text-[13px] mt-8">Your personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our <span className="text-[#ed174a] underline underline-offset-1 font-semibold">privacy policy.</span></p>
+                    <p className="text-[13px] mt-8">Your personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our <Link href="/privacy-policy"><span className="text-[#ed174a] underline underline-offset-1 font-semibold">privacy policy.</span></Link></p>
+
+                    {
+                            terms && (
+                                <div className="h-[200px] overflow-y-auto mt-4">
+                                    <Terms />
+                                </div>
+                            )
+                        }
+
+                        <div className="flex gap-2 mt-4">
+                            <input type="checkbox" name="address" id="address" checked={isChecked} onChange={handletermsandconditions}/>
+                            <p className="text-xs" >I have read and agree to the website<span className="text-[#ed174a] underline underline-offset-1"><button onClick={handleterms}>terms and conditions*</button></span></p>
+                        </div>
 
                     {(firstName=="" || lastName=="" || 
                     companyName=="" ||
@@ -702,7 +715,10 @@ const handlePhoneChange = (e:any) => {
                     state=="" ||
                     zipCode=="" ||
                     phone=="" ||
-                    email=="" )
+                    email=="" ||
+                    isChecked==false ||
+                    cartItems.length==0
+                    )
                     
                     ?<button className="bg-[#ed174a] opacity-50 text-white py-2.5 rounded-md text-sm h-[50px] w-full text-center mt-6 font-semibold" onClick={handleOrder} disabled={true}>Place order</button>
                     : <button className="bg-[#ed174a] text-white py-2.5 rounded-md text-sm h-[50px] w-full text-center mt-6 font-semibold" onClick={handleOrder}>Place order</button>}

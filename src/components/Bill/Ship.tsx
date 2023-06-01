@@ -4,7 +4,7 @@ import baseUrl from "../../../utils/baseUrl";
 import Swal from "sweetalert2";
 
 
-const Ship = () => {
+const Ship = ({setModal, setModal1}:any) => {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [companyName, setCompanyName] = useState('');
@@ -225,7 +225,9 @@ const Ship = () => {
                       confirmButtonColor: '#8DC14F',
                       
                     })
-            
+                    setModal1(false)
+                    setModal(false)
+                    
                   }
             } catch (error) {
                 console.log(error); // handle the error

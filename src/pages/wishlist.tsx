@@ -126,7 +126,7 @@ const Wishlist = () => {
     }
 
     return (
-        <div className="container mx-auto mb-40">
+        <div className="container mx-auto xl:px-40 px-5 mb-40">
             <h1 className="text-[32px] mt-14 mb-6">Default wishlist</h1>
             <table className="table-auto w-full border-collapse border border-gray-400 ">
                 <thead>

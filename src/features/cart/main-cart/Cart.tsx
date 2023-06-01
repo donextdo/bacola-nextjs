@@ -222,7 +222,7 @@ const Cart: FC<CartType> = () => {
     return (
         <>
             {cartItems.length > 0 ? (
-                <div className="px-3.5 container mx-auto mt-4 mb-20">
+                <div className="container mx-auto xl:px-40 px-5 mt-4 mb-20">
                     <div>
                         <section className="flex justify-between h-full">
                             <div className="w-full h-full pb-10">

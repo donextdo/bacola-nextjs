@@ -23,7 +23,7 @@ import { Product } from "@/features/product/product";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
-import { addItem, updateItemQuantity } from "@/features/cart/cartSlice";
+import { addItem, addItems, updateItemQuantity } from "@/features/cart/cartSlice";
 import { updateProductQuantity } from "@/features/product/productSlice";
 import Review from "@/components/ViewItem/Details/Review";
 import siteUrl from "../../../utils/siteUrl";
@@ -81,6 +81,7 @@ const ItemPages = () => {
     const [hideFrontImage, setHideFrontImage] = useState(false);
     const [hideSideImage, setHideSideImage] = useState(false);
     const [categoryName, setcategoryname] = useState();
+    let [newQuantity, setNewQuantity] = useState<number>(1)
 
     let id: any;
     if (typeof localStorage !== "undefined") {
@@ -162,21 +163,30 @@ const ItemPages = () => {
     const item: Product | undefined = products.find(
         (item) => item._id === itemId
     );
-
+    
     const handleIncrement = (data: Product) => {
-        const newQuantity = (item?.count || 1) + 1;
-        dispatch(updateItemQuantity({ itemId: data._id, count: newQuantity }));
+       const setQuantity = (item?.count || 1) + 1;
+      setNewQuantity(setQuantity)
+      console.log(newQuantity)
+
         dispatch(
-            updateProductQuantity({ productId: data._id, count: newQuantity })
+            updateProductQuantity({ productId: data._id, count: setQuantity })
         );
     };
 
     const handleDecrement = (data: Product) => {
-        const newQuantity = Math.max((item?.count || 0) - 1, 0);
-        dispatch(updateItemQuantity({ itemId: data._id, count: newQuantity }));
+      const setQuantity = Math.max((item?.count || 0) - 1, 0);
+      setNewQuantity(setQuantity)
+        console.log(newQuantity)
+
         dispatch(
-            updateProductQuantity({ productId: data._id, count: newQuantity })
+            updateProductQuantity({ productId: data._id, count: setQuantity })
         );
+    };
+
+    const handleaddToCart = (data: any) => {
+        dispatch(addItems({ product: data, count: newQuantity }));
+        
     };
 
     const stars = Array.from({ length: 5 }, (_, i) => (
@@ -285,15 +295,7 @@ const ItemPages = () => {
 
     }
 
-    const handleaddToCart = (data: any) => {
-        dispatch(addItem(data));
-        const newQuantity = (data.count || 0) + 1;
-        dispatch(
-            updateProductQuantity({ productId: data._id, count: newQuantity })
-        );
-        // dispatch(addItems({ product: data, count: item?.count }))
-        console.log(data._id);
-    };
+    
 
     // console.log(item)
 
