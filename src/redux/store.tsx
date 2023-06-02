@@ -36,7 +36,6 @@ export type AppDispatch = typeof store.dispatch;
 
 // import storage from "redux-persist/lib/storage"; // or choose another storage option
 
-
 // // Import your reducers
 // import productReducer from "@/features/product/productSlice";
 // import cartReducer from "../features/cart/cartSlice";
@@ -76,7 +75,7 @@ export type AppDispatch = typeof store.dispatch;
 
 // });
 
-// // Create the persisted store
+
 // export const persistor = persistStore(store);
 
 // export type RootState = ReturnType<typeof store.getState>;

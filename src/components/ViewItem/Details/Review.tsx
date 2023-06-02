@@ -15,6 +15,7 @@ interface Review {
     body: string;
     submittedDate: string;
     _id: string;
+    reviewStatus:string
     // other properties
 }
 
@@ -149,6 +150,7 @@ const Review = ({ itemId }: any) => {
         <div>
             <h1> REVIEW FOR ALL NATURAL ITALIAN-STYLE CHICKEN MEATBALLS</h1>
             {data.map((review) => (
+                review.reviewStatus === "approved" && (
                 <div className="flex mt-4" key={review._id}>
                     <div className="h-10 w-10 rounded-full bg-[#233a95] flex items-center justify-center text-white text-xl">
                         {/* <Image
@@ -174,7 +176,7 @@ const Review = ({ itemId }: any) => {
                         <p className="text-[13px]">{review.body}</p>
                     </div>
                 </div>
-            ))}
+            )))}
 
             <h1 className="text-lg mt-10 mb-2.5">Add a review</h1>
             <hr />

@@ -148,6 +148,7 @@ const ItemPages = () => {
         }
     }
 
+    // review part 
     useEffect(() => {
         fetchData3();
     }, []);
@@ -158,6 +159,36 @@ const ItemPages = () => {
         } catch (err) {
             console.log(err);
         }
+    }
+
+    let totalReviewCount = 0;
+
+for (let i = 0; i < allreview.length; i++) {
+    if (allreview[i].reviewStatus === 'approved') {
+        totalReviewCount += allreview[i].rating;
+    }
+}
+
+    console.log(totalReviewCount);
+
+    let averageReviewCount = 0;
+    const approvedReviews = allreview.filter(review => review.reviewStatus === 'approved');
+    const approvedReviewsLength = approvedReviews.length;
+
+    if (approvedReviewsLength > 0) {
+        averageReviewCount = Math.round(totalReviewCount / approvedReviewsLength);
+    }
+
+    console.log(averageReviewCount);
+
+    let yellowstars = [];
+    let graystars = [];
+
+    for (let i = 1; i <= averageReviewCount; i++) {
+        yellowstars.push(<FaStar />);
+    }
+    for (let i = 1; i <= 5 - averageReviewCount; i++) {
+        graystars.push(<FaStar />);
     }
 
     const item: Product | undefined = products.find(
@@ -364,15 +395,6 @@ const ItemPages = () => {
         );
     };
 
-    let yellowstars = [];
-    let graystars = [];
-
-    for (let i = 1; i <= data.review; i++) {
-        yellowstars.push(<FaStar />);
-    }
-    for (let i = 1; i <= 5 - data.review; i++) {
-        graystars.push(<FaStar />);
-    }
 
     const openModal = () => {
         setIsModalOpen(true);
@@ -580,7 +602,7 @@ const ItemPages = () => {
                                         <p className=" ">{data.description}</p>
                                     </div>
                                     {/* <div className="fixed bottom-0 left-0 right-0 md:relative md:flex md:flex-row md:items-center md:justify-between md:max-w-[130px] md:mx-auto md:mt-10 md:mb-4 md:px-4">
-                                <div className="w-full flex items-center justify-between min-h-[44px] md:min-h-auto md:flex-1 md:grid md:grid-cols-3"> */}
+                                    <div className="w-full flex items-center justify-between min-h-[44px] md:min-h-auto md:flex-1 md:grid md:grid-cols-3"> */}
                                     <div className="hidden lg:block">
                                         <div className=" w-full lg:min-h-[44px] md:relative md:flex md:flex-row md:w-auto lg:max-w-[130px] md:min-h-[44px] md:max-w-[130px] mt-10 flex flex-row">
                                             <div className=" w-full flex grid-cols-3 min-h-[44px] min-w-[130px]">
@@ -610,7 +632,7 @@ const ItemPages = () => {
                                             </div>
                                             <button
                                                 type="button"
-                                                className=" bg-blue-900 text-white min-h-[34px] min-w-[140px] rounded-full  ml-4"
+                                                className=" bg-blue-900 text-white min-h-[34px] min-w-[140px] rounded-full text-[13px]  ml-4"
                                                 onClick={() => handleaddToCart(data)}
                                             >
                                                 Add to cart
@@ -798,18 +820,18 @@ const ItemPages = () => {
                                     {/* <div className="flex flex-row items-center justify-center max-h-[38px] w-full rounded  bg-red-100  text-[.8125rem] p-6 text-red-800">
                                         Covid-19 Info: We keep delivering.
                                     </div> */}
-                                    <div className=" bg-gray-100  text-[.8125rem] p-6 py-10 space-y-8 mt-4">
+                                    <div className=" bg-gray-100  p-6 py-10 space-y-8 mt-4">
                                         <div className="flex flex-row place-items-center">
                                             <div className="mr-4">
                                                 <FaShippingFast className="min-w-[30px] min-h-[20px]"></FaShippingFast>
                                             </div>
-                                            <div>Free Shipping apply to all orders over Rs 100</div>
+                                            <div className="text-xs">Free Shipping apply to all orders over Rs 100</div>
                                         </div>
                                         <div className="flex flex-row place-items-center ">
                                             <div className="mr-4">
                                                 <GiMedicinePills className="min-w-[30px] min-h-[20px]"></GiMedicinePills>
                                             </div>
-                                            <div>Guranteed 100% Organic from natural farmas</div>
+                                            <div className="text-xs">Guranteed 100% Organic from natural farmas</div>
                                         </div>
                                         {/* <div className="flex flex-row place-items-center ">
                                             <div className="mr-4">
@@ -846,7 +868,7 @@ const ItemPages = () => {
                                     }`}
                                 onClick={() => handleChange(3)}
                             >
-                                REVIEWS({allreview.length})
+                                REVIEWS({approvedReviews.length})
                             </button>
                         </div>
                         <hr />
