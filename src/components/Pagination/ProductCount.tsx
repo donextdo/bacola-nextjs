@@ -5,6 +5,7 @@ import { TfiLayoutGrid4Alt } from "react-icons/tfi";
 import { useRouter } from "next/router";
 import { BiSortAlt2 } from "react-icons/bi";
 import { FiFilter } from "react-icons/fi";
+import SidebarFilter from "./SidebarFilter";
 
 export const ProductCount = ({ passgrid }: any) => {
   const [count, setCount] = useState(12);
@@ -12,6 +13,8 @@ export const ProductCount = ({ passgrid }: any) => {
   const [sortBy, setSortBy] = useState("Sort by popularity");
   const [showSortMenu, setShowSordMenu] = useState(false);
   const [isClick, setIsClick] = useState<string>();
+  const [showFilter, setShowFilter] = useState(false);
+
 
   const router = useRouter();
 
@@ -111,11 +114,14 @@ export const ProductCount = ({ passgrid }: any) => {
     console.log("idClick : ", getItem);
   }, []);
 
+  const handleFilterSiderbar = () => {
+    setShowFilter(!showFilter)
+  }
   return (
     <div className="w-full h-14 bg-gray-100 mt-11 relative">
       <div className="flex flex-row items-center  justify-between py-2">
         <div>
-          <div className="lg:hidden ml-3 flex items gap-2">
+          <div className="lg:hidden ml-3 flex items gap-2" onClick={handleFilterSiderbar}>
             <div className="text-md"><FiFilter /></div>
             <div className="text-[13px]">Filter Products</div>
           </div>
@@ -258,6 +264,11 @@ export const ProductCount = ({ passgrid }: any) => {
           )}
         </div>
       </div>
+      {
+        showFilter && (
+          <SidebarFilter handleFilterSiderbar={handleFilterSiderbar}/>
+        )
+      }
     </div>
   );
 };
