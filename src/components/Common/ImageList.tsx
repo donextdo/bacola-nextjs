@@ -13,8 +13,9 @@ export const ImageOne = () => {
         <Image
           src={banner1}
           alt="banner - Image"
-          className="mb-0 h-[220px] w-full rounded-md"
+          className="mb-0 h-[220px] w-full rounded-md "
         />
+      
         <div className="absolute inset-0 flex flex-col justify-center max-w-[390px] max-h-[290px] lg:max-w-[610px] lg:max-h-[372px] p-8 lg:mt-3 md:justify-center md:mt-14 md:max-w-[450px]">
           <div className="flex flex-row  mt-3 items-center">
             <h1 className="text-green-500 text-sm uppercase font-bold">
@@ -69,13 +70,13 @@ export const ImageTwo = () => {
 
 export const ImageThree = () => {
   return (
-    <div className="mt-9 relative lg:mt-0 cursor-pointer">
+    <div className="mt-9 relative lg:mt-0 cursor-pointer ">
       <Image
         src={banner3}
         alt="banner - Image"
         className="mb-0 h-[220px] w-full rounded-md lg:h-[403px] lg:w-[270px] "
       />
-      <div className="absolute inset-0 flex flex-col justify-center max-w-[390px] max-h-[290px] md:justify-center md:mt-14 md:max-w-[450px] lg:ml-7 lg:mt-0">
+      <div className="absolute inset-0 flex flex-col justify-center max-w-[390px] max-h-[290px] md:justify-center md:mt-14 md:max-w-[450px] lg:ml-7 lg:mt-0 px-8">
         <div className="flex flex-row  mt-3 lg:mt-6 items-center">
           <h1 className="text-white text-sm capitalize">
             buntalk natural foods
@@ -107,7 +108,7 @@ export const ImageFour = () => {
         alt="banner - Image"
         className="mb-0 h-[260px] w-full rounded-md lg:h-[403px] lg:w-[270px]"
       />
-      <div className="absolute inset-0 flex flex-col justify-center max-w-[390px] max-h-[290px] md:justify-center md:mt-14 md:max-w-[450px] lg:ml-7 lg:mt-0">
+      <div className="absolute inset-0 flex flex-col justify-center max-w-[390px] max-h-[290px] md:justify-center md:mt-14 md:max-w-[450px] lg:ml-7 lg:mt-0 px-8">
         <div className="flex flex-row  mt-3 lg:mt-6 items-center">
           <h1 className="text-white text-sm capitalize">
             best bakery products

@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import productReducer from "@/features/product/productSlice";
-import cartReducer from "../features/cart/cartSlice";
+import cartReducer, { addItem, addItems } from "../features/cart/cartSlice";
 import orderSlice from "@/components/Checkout/orderSlice";
 import userReducer from "../../src/features/User/userSlice";
 import recentlyClickedReducer from "@/features/product/recentlyClickedSlice";
@@ -14,6 +14,29 @@ export const store = configureStore({
     recentlyClicked: recentlyClickedReducer,
   },
 });
+
+// store.subscribe(() => {
+//   const { cart } = store.getState();
+//   localStorage.setItem('cart', JSON.stringify(cart));
+// });
+
+// // Retrieve the cart state from local storage and set it as the initial state
+// let cartFromLocalStorage: any;
+// if (typeof localStorage !== 'undefined') {
+//   cartFromLocalStorage = localStorage.getItem('cart');
+// }
+// console.log(cartFromLocalStorage)
+// // if(cartFromLocalStorage.totalCount===null){
+// // console.log("hi")
+// // }
+// if (cartFromLocalStorage !== undefined) {
+//   const parsedCart = JSON.parse(cartFromLocalStorage)  
+//   console.log(parsedCart.totalCount)
+// }
+
+// if (cartFromLocalStorage !== undefined) {
+//   store.dispatch(addItem(cartFromLocalStorage)));
+// }
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>;

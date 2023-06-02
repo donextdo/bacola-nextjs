@@ -47,7 +47,8 @@ const ProductPopup = ({ setProductPopup, proId }: any) => {
         speacialtag: "",
         additionalInformation: '',
         isBestSeller: false,
-        isNewArrival:false
+        isNewArrival:false,
+        imageArray: ""
 
     })
     const [mainImage, setMainImage] = useState(data?.front);
@@ -203,6 +204,8 @@ const ProductPopup = ({ setProductPopup, proId }: any) => {
             //authentication session handle
                 const token = localStorage.getItem("token"); // Retrieve the token from local storage or wherever it's stored
                 if (!token) {
+                    localStorage.removeItem("token");
+                    localStorage.removeItem("id");
                 alert("Session expired")
                   router.push("/account");
                   return;
@@ -225,7 +228,8 @@ const ProductPopup = ({ setProductPopup, proId }: any) => {
                 console.log(response.data); // do something with the response data
             } catch (error) {
                 console.log(error); // handle the error 
-                
+                localStorage.removeItem("token");
+                localStorage.removeItem("id");
                 alert("Session expired")
                   router.push("/account");
                 

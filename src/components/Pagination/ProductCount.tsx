@@ -121,10 +121,10 @@ export const ProductCount = ({ passgrid }: any) => {
     <div className="w-full h-14 bg-gray-100 mt-11 relative">
       <div className="flex flex-row items-center  justify-between py-2">
         <div>
-          <div className="lg:hidden ml-3 flex items gap-2" onClick={handleFilterSiderbar}>
+          <button className="lg:hidden ml-3 flex items gap-2" onClick={handleFilterSiderbar}>
             <div className="text-md"><FiFilter /></div>
             <div className="text-[13px]">Filter Products</div>
-          </div>
+          </button>
           <div className="hidden lg:block">
             <div className="flex flex-row items-center ml-3 ">
               <div className="flex mx-2">

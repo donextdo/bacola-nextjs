@@ -29,4 +29,5 @@ export interface Product {
   additionalInformation: string
   isNewArrival: boolean
   isBestSeller : boolean
+  imageArray: string
 }

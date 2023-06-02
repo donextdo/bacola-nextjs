@@ -31,6 +31,7 @@ import default_image from "../../../assets/item/default_image.jpeg";
 import { RecentlyViewProduct } from "@/components/RecentlyViewProduct/RecentlyViewProduct";
 import RelatedProduct from "@/components/RelatedProduct/RelatedProduct";
 import Breadcrumbs from "@/components/Breadcrumbs/Breadcrumbs";
+import { MdArrowBackIos, MdArrowForwardIos } from "react-icons/md";
 // interface ItemData {
 //     description: string;
 //     quantity: number;
@@ -70,7 +71,8 @@ const ItemPages = () => {
         speacialtag: "",
         additionalInformation: "",
         isBestSeller: false,
-        isNewArrival:false
+        isNewArrival: false,
+        imageArray: ""
     });
     const [myCategory, setMyCategory] = useState([]);
     const [isColor, setIsColor] = useState(1);
@@ -90,6 +92,14 @@ const ItemPages = () => {
 
     const [isClicked, setIsClicked] = useState<string | null>("front");
     const [isModalOpen, setIsModalOpen] = useState(false);
+    let [imageArray1, setImageArray1] = useState<string[]>([]);
+    let [imageArray2, setImageArray2] = useState<string[]>([]);
+    
+
+    const [currentSlide, setCurrentSlide] = useState(0);
+
+
+
 
     const router = useRouter();
     const { itemId } = router.query;
@@ -110,6 +120,7 @@ const ItemPages = () => {
             console.log(res.data);
             setData(res.data);
             setTag(res.data.tags);
+            setImageArray2(res.data.imageArray)
             if (res.data.back == "") {
                 setHideBackImage(true);
             }
@@ -123,6 +134,38 @@ const ItemPages = () => {
             console.log(err);
         }
     }
+
+    // slide image
+    useEffect(() => {
+        setImageArray1([data.back, data.front, data.side]);
+    }, [data.back, data.front, data.side]);
+
+    // useEffect(() => {
+    //     setImageArray2(data.imageArray)
+    // }, [data.imageArray]);
+
+
+    const combinedArray = [...imageArray1, ...imageArray2];
+    console.log(combinedArray[0])
+
+    const [selectedImage, setSelectedImage] = useState(combinedArray[0]);
+    
+    console.log(selectedImage)
+
+
+    const nextSlide = () => {
+        setCurrentSlide((prevSlide) => (prevSlide + 1) % combinedArray.length);
+    };
+
+    const prevSlide = () => {
+        setCurrentSlide((prevSlide) => (prevSlide - 1 + combinedArray.length) % combinedArray.length);
+    };
+
+    const handleImageClick = (index: any) => {
+        setSelectedImage(combinedArray[index]);
+    };
+
+
 
     let findcategory: any;
     if (data && data.category && data.category.length > 0) {
@@ -163,11 +206,11 @@ const ItemPages = () => {
 
     let totalReviewCount = 0;
 
-for (let i = 0; i < allreview.length; i++) {
-    if (allreview[i].reviewStatus === 'approved') {
-        totalReviewCount += allreview[i].rating;
+    for (let i = 0; i < allreview.length; i++) {
+        if (allreview[i].reviewStatus === 'approved') {
+            totalReviewCount += allreview[i].rating;
+        }
     }
-}
 
     console.log(totalReviewCount);
 
@@ -194,11 +237,11 @@ for (let i = 0; i < allreview.length; i++) {
     const item: Product | undefined = products.find(
         (item) => item._id === itemId
     );
-    
+
     const handleIncrement = (data: Product) => {
-       const setQuantity = (item?.count || 1) + 1;
-      setNewQuantity(setQuantity)
-      console.log(newQuantity)
+        const setQuantity = (item?.count || 1) + 1;
+        setNewQuantity(setQuantity)
+        console.log(newQuantity)
 
         dispatch(
             updateProductQuantity({ productId: data._id, count: setQuantity })
@@ -206,8 +249,8 @@ for (let i = 0; i < allreview.length; i++) {
     };
 
     const handleDecrement = (data: Product) => {
-      const setQuantity = Math.max((item?.count || 0) - 1, 0);
-      setNewQuantity(setQuantity)
+        const setQuantity = Math.max((item?.count || 0) - 1, 0);
+        setNewQuantity(setQuantity)
         console.log(newQuantity)
 
         dispatch(
@@ -217,7 +260,7 @@ for (let i = 0; i < allreview.length; i++) {
 
     const handleaddToCart = (data: any) => {
         dispatch(addItems({ product: data, count: newQuantity }));
-        
+
     };
 
     const stars = Array.from({ length: 5 }, (_, i) => (
@@ -234,42 +277,9 @@ for (let i = 0; i < allreview.length; i++) {
         setIsColor(id);
     };
 
-    // const handleWishlist = async (data: any) => {
-
-    //     if (id) {
-    //         const whishListObj = {
-    //             whishList: [
-    //                 {
-    //                     productId: data._id,
-    //                     front: data.front,
-    //                     title: data.title,
-    //                     price: data.price,
-    //                     date: new Date().toLocaleDateString("en-US", {
-    //                         month: "long",
-    //                         day: "numeric",
-    //                         year: "numeric",
-    //                     }),
-    //                     quantity: data.quantity,
-    //                 },
-    //             ],
-    //         };
-
-    //         try {
-    //             const response = await axios.post(
-    //                 `${baseUrl}/users/wishList/${id}`,
-    //                 whishListObj
-    //             );
-    //             console.log(response.data); // do something with the response data
-    //         } catch (error) {
-    //             console.log(error); // handle the error
-    //         }
-    //     } else {
-    //         router.push("/account");
-    //     }
-    // };
 
     const handleWishlist = async (data: any) => {
-       
+
         if (id) {
             const whishListObj = {
                 whishList: [
@@ -287,46 +297,46 @@ for (let i = 0; i < allreview.length; i++) {
                     },
                 ],
             };
-    
+
             try {
 
-            //authentication session handle
+                //authentication session handle
                 const token = localStorage.getItem("token"); // Retrieve the token from local storage or wherever it's stored
                 if (!token) {
-                alert("Session expired")
-                  router.push("/account");
-                  return;
+                    alert("Session expired")
+                    router.push("/account");
+                    return;
                 }
 
                 const config = {
-                  headers: {
-                    Authorization: token,
-                  },
+                    headers: {
+                        Authorization: token,
+                    },
                 };
 
                 const response = await axios.post(
                     `${baseUrl}/users/wishList/${id}`,
                     whishListObj,
                     config,
-                    
+
                 );
 
-                
+
                 console.log(response.data); // do something with the response data
             } catch (error) {
                 console.log(error); // handle the error 
-                
+
                 alert("Session expired")
-                  router.push("/account");
-                
+                router.push("/account");
+
             }
-          } else {
+        } else {
             router.push("/account");
-          }
+        }
 
     }
 
-    
+
 
     // console.log(item)
 
@@ -458,8 +468,8 @@ for (let i = 0; i < allreview.length; i++) {
                             </div>
                         </div>
 
-                        <div className="grid grid-cols-1 lg:grid-cols-2 w-full min-h-[600px]">
-                            <div>
+                        <div className="grid grid-cols-1 lg:grid-cols-7 w-full min-h-[600px]">
+                            <div className="col-span-3">
                                 <div className="relative  max-h-[579.2px] max-w-[466.66px] ">
                                     <div className="absolute max-w-[88.41px] max-h-[49px] flex flex-col items-start gap-1 p-2">
                                         {data?.discount && (
@@ -490,94 +500,53 @@ for (let i = 0; i < allreview.length; i++) {
                                         <Image
                                             width={390}
                                             height={436}
-                                            src={mainImage || data?.front}
+                                            src={selectedImage || combinedArray[0]}
                                             alt="mainImage"
                                         />
                                     </div>
+                                    <div className="flex gap-2 justify-center">
+                                        <button className="arrow left" onClick={prevSlide}>
+                                            <MdArrowBackIos />
+                                        </button>
+                                        <div className="flex items-center justify-center row min-h-[63px] max-w-[421.2px] md:min-h-[67px] md:max-w-[444.66px]">
+                                            {combinedArray.slice(currentSlide, currentSlide + 3).map((photo, index) => (
+                                                <div
+                                                key={index}
+                                                    className={`flex items-center justify-center min-w-[67px] min-h-[67px] lg:min-w-[67px] lg:min-h-[67px] md:min-w-[94.4px] md:min-h-[94.4px] border ${selectedImage === photo
+                                                        ? "border-gray-500"
+                                                        : "border-gray-200"
+                                                        } mr-2 hover:cursor-pointer`}
+                                                        onClick={() => handleImageClick(currentSlide + index)}
 
-                                    <div className="flex items-center justify-center row min-h-[63px] max-w-[421.2px] md:min-h-[67px] md:max-w-[444.66px]">
-                                        <div
-                                            className={`flex items-center justify-center min-w-[67px] min-h-[67px] lg:min-w-[67px] lg:min-h-[67px] md:min-w-[94.4px] md:min-h-[94.4px] border ${isClicked === "side"
-                                                ? "border-gray-500"
-                                                : "border-gray-200"
-                                                } mr-2 hover:cursor-pointer`}
-                                            onClick={() => {
-                                                handleClick(data?.side);
-                                                setIsClicked("side");
-                                            }}
-                                        >
-                                            {!hideSideImage ? (
-                                                <Image
-                                                    width={67}
-                                                    height={67}
-                                                    src={data?.side}
-                                                    alt="Man looking at item at a store"
-                                                />
-                                            ) : (
-                                                <Image
-                                                    width={67}
-                                                    height={67}
-                                                    src={default_image}
-                                                    alt="Man looking at item at a store"
-                                                />
-                                            )}
+                                                >
+                                                    {!hideSideImage ? (
+                                                        <Image
+                                                            width={67}
+                                                            height={67}
+                                                            src={photo}
+                                                            alt="Man looking at item at a store"
+                                                        />
+                                                    ) : (
+                                                        <Image
+                                                            width={67}
+                                                            height={67}
+                                                            src={photo}
+                                                            alt="Man looking at item at a store"
+                                                        />
+                                                    )}
+                                                </div>
+                                            ))}
+
                                         </div>
-                                        <div
-                                            className={`flex items-center justify-center min-w-[67px] min-h-[67px] lg:min-w-[67px] lg:min-h-[67px] md:min-w-[94.4px] md:min-h-[94.4px]   border ${isClicked === "front"
-                                                ? "border-gray-500"
-                                                : "border-gray-200"
-                                                } mr-2 hover:cursor-pointer`}
-                                            onClick={() => {
-                                                handleClick(data?.front);
-                                                setIsClicked("front");
-                                            }}
-                                        >
-                                            {!hideFrontImage ? (
-                                                <Image
-                                                    width={67}
-                                                    height={67}
-                                                    src={data?.front}
-                                                    alt="Man looking at item at a store"
-                                                />
-                                            ) : (
-                                                <Image
-                                                    width={67}
-                                                    height={67}
-                                                    src={default_image}
-                                                    alt="Man looking at item at a store"
-                                                />
-                                            )}
-                                        </div>
-                                        <div
-                                            className={`flex items-center justify-center min-w-[67px] min-h-[67px] lg:min-w-[67px] lg:min-h-[67px] md:min-w-[94.4px] md:min-h-[94.4px]   border ${isClicked === "back"
-                                                ? "border-gray-500"
-                                                : "border-gray-200"
-                                                } hover:cursor-pointer`}
-                                            onClick={() => {
-                                                handleClick(data?.back);
-                                                setIsClicked("back");
-                                            }}
-                                        >
-                                            {!hideBackImage ? (
-                                                <Image
-                                                    width={67}
-                                                    height={67}
-                                                    src={data?.back}
-                                                    alt="Man looking at item at a store"
-                                                />
-                                            ) : (
-                                                <Image
-                                                    width={67}
-                                                    height={67}
-                                                    src={default_image}
-                                                    alt="Man looking at item at a store"
-                                                />
-                                            )}
-                                        </div>
+                                        <button className="arrow right" onClick={nextSlide}>
+                                        <MdArrowForwardIos />
+
+                                        </button>
                                     </div>
+
                                 </div>
                             </div>
-                            <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 w-full ">
+                            <div className="col-span-4 grid grid-cols-1 xl:grid-cols-2 gap-4 w-full ">
                                 <div className=" w-full">
                                     <div className=" flex flex-row">
                                         <span className="text-gray-400 line-through mr-2 my-1 font-[1.125rem] flex items-center justify-center">
@@ -931,7 +900,7 @@ for (let i = 0; i < allreview.length; i++) {
             {/* Modal or Lightbox */}
             {
                 isModalOpen && (
-                    <div className="fixed top-0 left-0 w-screen h-screen bg-black  flex items-center justify-center">
+                    <div className="fixed top-0 left-0 w-screen h-screen bg-black  flex items-center justify-center z-50">
                         <button
                             className="absolute top-2 right-8 text-white text-4xl"
                             onClick={closeModal}
@@ -944,7 +913,7 @@ for (let i = 0; i < allreview.length; i++) {
                             {/* Full screen image */}
                             <div className="flex items-center justify-center">
                                 <Image
-                                    src={mainImage || data?.front}
+                                    src={selectedImage}
                                     alt="mainImage"
                                     width={700} // Adjust the width value as per your requirements
                                     height={700} // Adjust the height value as per your requirements

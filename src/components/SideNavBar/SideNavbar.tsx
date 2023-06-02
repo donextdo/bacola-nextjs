@@ -13,7 +13,7 @@ import { Location } from "../Location/Location";
 import SideLocation from "./SideLocation";
 import { IoCloseSharp } from "react-icons/io5";
 
-const SideNavBar = ({ setShowSideNavbar }: any) => {
+const SideNavBar = ({ setShowSideNavbar, handleSideNavbar }: any) => {
   const [homeOpen, setHomeOpen] = useState(false);
   const toggleHome = () => {
     setHomeOpen(!homeOpen);
@@ -69,9 +69,10 @@ const SideNavBar = ({ setShowSideNavbar }: any) => {
               <hr className="my-[10px] md:my-[20px]" />
               <div className="">
                 <div className="flex justify-between px-6" onClick={toggleHome}>
-                  <div className="font-ff-headings text-gray-800 text-[15px] font-semibold ">
+                  <Link href="/" onClick={handleSideNavbar}> <div className="font-ff-headings text-gray-800 text-[15px] font-semibold ">
                     HOME
                   </div>
+                  </Link>
                   <div>
                     <MdKeyboardArrowDown className="text-xl text-[#d3d4d7]" />
                   </div>
@@ -102,9 +103,10 @@ const SideNavBar = ({ setShowSideNavbar }: any) => {
               <div className="">
 
                 <div className="flex justify-between px-6" onClick={toggleShop}>
-                  <div className="font-ff-headings text-gray-800 text-[15px] font-semibold ">
+                <Link href="/shop" onClick={handleSideNavbar}><div className="font-ff-headings text-gray-800 text-[15px] font-semibold ">
                     SHOP
                   </div>
+                  </Link>
                   <div>
                     <MdKeyboardArrowDown className="text-xl text-[#d3d4d7]" />
                   </div>
@@ -137,7 +139,7 @@ const SideNavBar = ({ setShowSideNavbar }: any) => {
               <div className="px-5 font-semibold font-ff-headings ">
                 <button>
                   <div>
-                    <Link href="#" className="text-black  flex text-[15px]">
+                    <Link href="/filterProduct?categoryId=6450a82507245756e38fe70a" onClick={handleSideNavbar} className="text-black  flex text-[15px]">
                       <GiChickenOven className="mr-5 text-xl text-[#d3d4d7]" />
                       MEATS & SEAFOOD
                     </Link>
@@ -150,7 +152,7 @@ const SideNavBar = ({ setShowSideNavbar }: any) => {
               <div className="px-5 font-semibold font-ff-headings ">
                 <button>
                   <div>
-                    <Link href="#" className="text-black flex text-[15px]">
+                    <Link href="/shop" className="text-black flex text-[15px]" onClick={handleSideNavbar}>
                       <MdOutlineBakeryDining className="mr-5 text-xl text-[#d3d4d7]" />
                       BAKERY
                     </Link>
@@ -164,7 +166,7 @@ const SideNavBar = ({ setShowSideNavbar }: any) => {
               <div className="px-5 font-semibold font-ff-headings ">
                 <button>
                   <div>
-                    <Link href="#" className="text-black flex text-[15px]">
+                    <Link href="/shop" className="text-black flex text-[15px]" onClick={handleSideNavbar}>
                       <FaMugHot className="mr-5 text-xl text-[#d3d4d7]" />
                       BEVERAGES
                     </Link>
