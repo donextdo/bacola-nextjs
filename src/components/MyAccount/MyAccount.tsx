@@ -33,7 +33,7 @@ const MyAccount = () => {
       };
 
     return (
-        <div className='container mx-auto mb-36'>
+        <div className='container mx-auto xl:px-40 px-5 mb-36'>
             <div className='px-3 lg:hidden'>
                 <div className='flex border border-gray-200 bg-gray-100 py-4 rounded-t-md px-2 space-x-4 items-center mt-2 shadow-sm'>
                     <button onClick={handlePopup}>

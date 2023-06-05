@@ -48,7 +48,7 @@ export const FilterSideBar = ({
 
   return (
     <>
-      <div className="flex flex-row mb-9">
+      <div className="container mx-auto xl:px-40 px-5 flex flex-row mb-9">
         <div className="lg:w-1/4 hidden lg:block">
           <div className="grid md:grid-cols-1 grid-cols-1 ">
             <Categories categoryId={categoryId} />
@@ -89,7 +89,7 @@ export const FilterSideBar = ({
           <div>{/* <PageNumber perpage={perpage} /> */}</div>
         </div>
       </div>
-      <div className="pb-20 pt-20">
+      <div className="container mx-auto xl:px-40 px-5 pt-20 mb-8">
         <RecentlyViewProduct passgrid={passgrid} />
       </div>
     </>

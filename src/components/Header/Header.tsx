@@ -79,7 +79,7 @@ const Header = () => {
   };
 
   const handleSideNavbar = () => {
-    setShowSideNavbar(true);
+    setShowSideNavbar(!showSideNavbar);
   };
 
 
@@ -154,7 +154,7 @@ const Header = () => {
               <BsList />
             </button>
             {showSideNavbar && (
-              <SideNavBar setShowSideNavbar={setShowSideNavbar}/>
+              <SideNavBar setShowSideNavbar={setShowSideNavbar} handleSideNavbar={handleSideNavbar}/>
             )}
           </div>
           <div className="h-[50px] w-40 sm:col-span-2">

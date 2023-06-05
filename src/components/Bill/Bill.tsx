@@ -4,7 +4,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 
 
-const Bill = () => {
+const Bill = ({setModal, setModal1}:any) => {
 
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
@@ -228,7 +228,8 @@ const Bill = () => {
                       confirmButtonColor: '#8DC14F',
                       
                     })
-            
+                    setModal1(false)
+                    setModal(false)
                   }
             } catch (error) {
                 console.log(error); // handle the error

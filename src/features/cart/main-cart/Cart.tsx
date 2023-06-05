@@ -29,6 +29,15 @@ interface Coupon {
     _id: string
 }
 
+interface LocationType {
+    dollar_min: any;
+    locationName: any;
+    id: number;
+    name: string;
+    min: string;
+}
+
+
 const Cart: FC<CartType> = () => {
     const cartItems = useSelector((state: RootState) => state.cart.items);
     let totalAmount1 = useSelector((state: RootState) => state.cart.totalAmount);
@@ -62,7 +71,8 @@ const Cart: FC<CartType> = () => {
         _id: ""
     });
     let [fulldiscount, setFulldiscount] = useState(0);
-  
+    const [location, setLocation] = useState<LocationType[]>([]);
+
 
     const [shippingObj, setShippingObj] = useState({
         cartshippingFirstName: "",
@@ -78,7 +88,7 @@ const Cart: FC<CartType> = () => {
         cartshippingEmail: "",
     });
 
-    
+
     useEffect(() => {
         console.log(cartItems)
         dispatch(calSubTotal(totalAmount))
@@ -170,18 +180,22 @@ const Cart: FC<CartType> = () => {
             cartshippingEmail: email,
 
         }
+        const savenewshippingObj = newshippingObj
+        setShippingObj(savenewshippingObj);
+        console.log(savenewshippingObj)
         setShowInputs(false);
-        setShippingObj(newshippingObj);
-        console.log(shippingObj)
+
 
     }
+    console.log(shippingObj)
 
     const handleCheckout = () => {
-        console.log(shippingObj)
-
+        
+        const orderData = {  location:selectedItem, shippingObj:JSON.stringify(shippingObj) };
+        console.log(orderData)
         router.push({
             pathname: '/checkout',
-            query: shippingObj,
+            query: orderData,
         });
     }
 
@@ -217,12 +231,33 @@ const Cart: FC<CartType> = () => {
 
 
     const handleproduct = () => {
-    router.push("./shop");
+        router.push("./shop");
     }
+
+    // location
+    useEffect(() => {
+        fetchData4()
+    }, []);
+
+    const fetchData4 = async () => {
+        const response = await axios.get(`${baseUrl}/locations/getAll`);
+        const locations = response.data;
+        setLocation(locations);
+
+        console.log("location", locations);
+    };
+
+    const [selectedItem, setSelectedItem] = useState('');
+
+  const handleDropdownChange = (event:any) => {
+    setSelectedItem(event.target.value);
+    console.log(event.target.value);
+  };
+
     return (
         <>
             {cartItems.length > 0 ? (
-                <div className="px-3.5 container mx-auto mt-4 mb-20">
+                <div className="container mx-auto xl:px-40 px-5 mt-4 mb-20">
                     <div>
                         <section className="flex justify-between h-full">
                             <div className="w-full h-full pb-10">
@@ -305,13 +340,35 @@ const Cart: FC<CartType> = () => {
                                             </tr>
                                             <tr>
 
-                                                <td className="text-right text-[12.5px] ">
-                                                    {/* Shipping to <span className="font-semibold">AL.</span> */}
+                                                <td className="relative text-right text-[12.5px] ">
+                                                    <select
+                                                        className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+                                                    value={selectedItem}
+                                                    onChange={handleDropdownChange}
+                                                    >
+                                                        <option value="">Pickup your location</option>
+                                                        {location.map((item, index) => (
+                                                            <option key={index} value={item.locationName}>
+                                                                {item.locationName}
+                                                            </option>
+                                                        ))}
+                                                    </select>
+                                                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                                                        <svg
+                                                            className="fill-current h-4 w-4"
+                                                            xmlns="http://www.w3.org/2000/svg"
+                                                            viewBox="0 0 20 20"
+                                                        >
+                                                            <path
+                                                                d="M10 12l-6-6h12l-6 6z"
+                                                            />
+                                                        </svg>
+                                                    </div>
                                                 </td>
                                             </tr>
                                             <tr>
 
-                                                <td className="text-right text-[13px]  text-[#2bbef9] pb-4"><button onClick={handleClick}> Change address</button>
+                                                <td className="text-right text-[13px]  text-[#2bbef9] pb-4 pt-2"><button onClick={handleClick}> Change address</button>
                                                     {showInputs && (
                                                         <div className="flex flex-col justify-end text-right">
                                                             <input
@@ -322,7 +379,10 @@ const Cart: FC<CartType> = () => {
                                                             <input
                                                                 type="text" className="w-full px-4 h-11 bg-gray-100 rounded-md mt-2 ml-2 pl-4 text-sm" placeholder="City"
                                                                 value={townCity}
-                                                                onChange={(e) => setTownCity(e.target.value)}
+                                                               onChange={(e) => {
+        setTownCity(e.target.value);
+        console.log(e.target.value); // Log the value of townCity
+    }}
                                                             />
                                                             <input
                                                                 type="text" className="w-full px-4 h-11 bg-gray-100 rounded-md mt-2 ml-2 pl-4 text-sm" placeholder="Postcode/Zip"
@@ -383,13 +443,57 @@ const Cart: FC<CartType> = () => {
                                     </tr>
                                     <tr>
 
-                                        <td className="text-right text-[12.5px] pb-4">
-                                            {/* Shipping to <span className="font-semibold">AL.</span> */}
-                                        </td>
+                                    <td className="relative text-right text-[12.5px] ">
+                                                    <select
+                                                        className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+                                                    value={selectedItem}
+                                                    onChange={handleDropdownChange}
+                                                    >
+                                                        <option value="">Pickup your location</option>
+                                                        {location.map((item, index) => (
+                                                            <option key={index} value={item.locationName}>
+                                                                {item.locationName}
+                                                            </option>
+                                                        ))}
+                                                    </select>
+                                                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                                                        <svg
+                                                            className="fill-current h-4 w-4"
+                                                            xmlns="http://www.w3.org/2000/svg"
+                                                            viewBox="0 0 20 20"
+                                                        >
+                                                            <path
+                                                                d="M10 12l-6-6h12l-6 6z"
+                                                            />
+                                                        </svg>
+                                                    </div>
+                                                </td>
                                     </tr>
                                     <tr>
 
-                                        <td className="text-right text-[13px] border-b border-[#e4e5ee] text-[#2bbef9] pb-4">Change address</td>
+                                    <td className="text-right text-[13px]  text-[#2bbef9] pb-4 pt-2"><button onClick={handleClick}> Change address</button>
+                                                    {showInputs && (
+                                                        <div className="flex flex-col justify-end text-right">
+                                                            <input
+                                                                type="text" className="w-full px-4 h-11 bg-gray-100 rounded-md mt-2 ml-2 pl-4 text-sm" placeholder="Country"
+                                                                value={country}
+                                                                onChange={(e) => setCountry(e.target.value)}
+                                                            />
+                                                            <input
+                                                                type="text" className="w-full px-4 h-11 bg-gray-100 rounded-md mt-2 ml-2 pl-4 text-sm" placeholder="City"
+                                                                value={townCity}
+                                                                onChange={(e) => setTownCity(e.target.value)}
+                                                            />
+                                                            <input
+                                                                type="text" className="w-full px-4 h-11 bg-gray-100 rounded-md mt-2 ml-2 pl-4 text-sm" placeholder="Postcode/Zip"
+                                                                value={zipCode}
+                                                                onChange={(e) => setZipCode(e.target.value)}
+                                                            />
+
+                                                            <button className="bg-[#233a95] text-white py-2.5 px-4 rounded-md text-xs h-11 w-[104px] mt-3" onClick={handleUpdateShipping}>Update</button>
+                                                        </div>
+                                                    )}
+                                                </td>
                                     </tr>
                                     <tr>
                                         <td className="border-b border-[#e4e5ee] text-[13px] font-semibold pb-4">Total</td>

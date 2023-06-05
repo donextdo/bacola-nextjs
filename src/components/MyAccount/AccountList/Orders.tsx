@@ -17,6 +17,7 @@ interface Order {
   totalprice: number;
   date: string;
   status: string;
+  address:string;
   items: {
     productDetails: {
       name: string;
@@ -66,6 +67,7 @@ const Orders = () => {
     totalprice: 0,
     date: "",
     status: "",
+    address: "",
     items: [
       {
         productId: 0,
@@ -255,6 +257,14 @@ const Orders = () => {
                   </div>
                 </div>
               ))}
+              <div className="flex  ">
+                <div className="w-2/3 font-semibold text-sm px-2 py-2 border border-gray-300 ">
+                  Location
+                </div>
+                <div className="w-1/3 text-sm px-2 py-2 border border-gray-300 ">
+                  {order?.address}
+                </div>
+              </div>
               <div className="flex  ">
                 <div className="w-2/3 font-semibold text-sm px-2 py-2 border border-gray-300 ">
                   Subtotal:

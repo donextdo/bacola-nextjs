@@ -5,7 +5,7 @@ import baseUrl from "../../../utils/baseUrl";
 import axios from "axios";
 export const RangeSlider = ({ categoryId }: any) => {
   const [minValue, setMinValue] = useState(0);
-  const [maxValue, setMaxValue] = useState(50000);
+  const [maxValue, setMaxValue] = useState(5000);
   const [maxPriceValue, setMaxPriceValue] = useState(0);
   const progressRef = useRef<HTMLDivElement>(null);
 
@@ -52,7 +52,7 @@ export const RangeSlider = ({ categoryId }: any) => {
     e.persist();
     e.preventDefault();
     const newMinValue = parseInt(e.target.value);
-    if (maxValue - newMinValue >= 0 && maxValue <= 50000) {
+    if (maxValue - newMinValue >= 0 && maxValue <= 5000) {
       if (newMinValue > parseInt(maxValue.toString())) {
         // Ignore invalid input
       } else {
@@ -71,7 +71,7 @@ export const RangeSlider = ({ categoryId }: any) => {
     e.persist();
     e.preventDefault();
     const newMaxValue = parseInt(e.target.value);
-    if (newMaxValue - minValue >= 0 && newMaxValue <= 50000) {
+    if (newMaxValue - minValue >= 0 && newMaxValue <= 5000) {
       if (newMaxValue < parseInt(minValue.toString())) {
         // Ignore invalid input
       } else {
@@ -88,8 +88,8 @@ export const RangeSlider = ({ categoryId }: any) => {
 
   useEffect(() => {
     if (progressRef.current) {
-      progressRef.current.style.left = `${(minValue / 50000) * 100}%`;
-      progressRef.current.style.right = `${(1 - maxValue / 50000) * 100}%`;
+      progressRef.current.style.left = `${(minValue / 5000) * 100}%`;
+      progressRef.current.style.right = `${(1 - maxValue / 5000) * 100}%`;
     }
   }, [minValue, maxValue]);
 
@@ -120,12 +120,12 @@ export const RangeSlider = ({ categoryId }: any) => {
   };
 
   return (
-    <div className="box-border max-h-[85px] max-w-[270px] lg:mt-12  ">
-      <h4 className="max-h-[18px] max-w-[270px] uppercase tracking-[0] font-[600] text-[.9375rem] mb-[1.25rem] font-ff-headings">
+    <div className="box-border max-h-[85px]  lg:mt-12  ">
+      <h4 className="max-h-[18px]  uppercase tracking-[0] font-[600] text-[.9375rem] mb-[1.25rem] font-ff-headings">
         filter by price
       </h4>
 
-      <div className="mb-4 max-h-[47px] max-w-[270px]">
+      <div className="mb-4 max-h-[47px] ">
         <div className="slider relative h-1 rounded-md bg-gray-300">
           <div
             className="progress absolute h-1 bg-black rounded"
@@ -139,7 +139,7 @@ export const RangeSlider = ({ categoryId }: any) => {
             value={minValue}
             min={0}
             step={10}
-            max={50000}
+            max={5000}
             className="range-min absolute
              w-full -top-1 h-1 bg-transparent appearance-none pointer-events-none "
             placeholder="Select a minimum value"
@@ -151,15 +151,15 @@ export const RangeSlider = ({ categoryId }: any) => {
             value={maxValue}
             min={0}
             step={10}
-            max={50000}
+            max={5000}
             className="range-max absolute
              w-full -top-1 h-1 bg-transparent appearance-none pointer-events-none"
             placeholder="Select a maximum value"
           />
         </div>
       </div>
-      <div className="max-h-[47px] max-w[270px]">
-        <div className="max-h-[18px] max-w[270px] grid gap-0 grid-cols-2 ">
+      <div className="max-h-[47px] ">
+        <div className="max-h-[18px]  flex justify-between ">
           <div className="text-[.75rem]  mt-1 capitalize text-gray-400">
             price:
             <span className="text-black font-semibold">
