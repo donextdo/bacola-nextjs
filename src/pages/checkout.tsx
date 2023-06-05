@@ -77,9 +77,14 @@ const Checkout = () => {
 
     const router = useRouter();
 
-     const { cartshippingFirstName, cartshippingLastName, cartshippingCompanyName, cartshippingcountry, cartshippingstreet, cartshippingapartment, cartshippingtown, cartshippingstate, cartshippingzipCode, cartshippingphone, cartshippingEmail } = router.query;
+     const { shippingObj, location } = router.query;
 
-     
+    
+    const parsedObject = typeof shippingObj === 'string' ? JSON.parse(shippingObj) : undefined;
+     console.log(parsedObject)
+     console.log(location)
+     console.log(parsedObject?.cartshippingtown)
+
 
     const cartItems = useSelector((state: RootState) => state.cart.items);
     const orderList = useSelector((state: RootState) => state.order.orders);
@@ -274,6 +279,7 @@ const handlePhoneChange = (e:any) => {
             userId: id ? id : "",
             totalprice: totalAmount,
             status: "processing",
+            address: location ? location : "No location selected",
             date: new Date().toLocaleDateString("en-US", {
                 month: "long",
                 day: "numeric",
@@ -297,16 +303,16 @@ const handlePhoneChange = (e:any) => {
                 billingEmail: email,
                 note: note,
             },
-            "shippingAddress": (cartshippingFirstName && cartshippingLastName && cartshippingCompanyName && cartshippingcountry && cartshippingstreet && cartshippingapartment && cartshippingtown && cartshippingstate && cartshippingzipCode && cartshippingphone && cartshippingEmail) ? 
+            "shippingAddress": ( parsedObject?.cartshippingcountry &&  parsedObject?.cartshippingtown  && parsedObject?.cartshippingzipCode) ? 
         {
-            shippingFirstName: cartshippingFirstName,
-            shippingLastName: cartshippingLastName,
-            shippingCompanyName: cartshippingCompanyName,
-            country: cartshippingcountry,
-            street: cartshippingstreet,
-            town: cartshippingtown,
-            zipCode: cartshippingzipCode,
-            shippingPhone: cartshippingphone,
+            shippingFirstName: parsedObject?.cartshippingFirstName,
+            shippingLastName: parsedObject?.cartshippingLastName,
+            shippingCompanyName: parsedObject?.cartshippingCompanyName,
+            country: parsedObject?.cartshippingcountry,
+            street: parsedObject?.cartshippingstreet,
+            town: parsedObject?.cartshippingtown,
+            zipCode: parsedObject?.cartshippingzipCode,
+            shippingPhone: parsedObject?.cartshippingphone,
         } :
         {
             shippingFirstName: ship.shippingAddress?.shippingFirstName,
@@ -326,6 +332,8 @@ const handlePhoneChange = (e:any) => {
              //authentication session handle
              const token = localStorage.getItem("token"); // Retrieve the token from local storage or wherever it's stored
              if (!token) {
+                localStorage.removeItem("token");
+                localStorage.removeItem("id");
              alert("Session expired")
                router.push("/account");
                return;
@@ -352,6 +360,8 @@ const handlePhoneChange = (e:any) => {
             }
         } catch (error) {
             console.log(error); // handle the error
+            localStorage.removeItem("token");
+             localStorage.removeItem("id");
             alert("Session expired")
                   router.push("/account");
         }

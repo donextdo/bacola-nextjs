@@ -11,6 +11,8 @@ interface Order {
   userId: string;
   totalprice: number;
   date: string;
+  address: string;
+  orderNumber:string;
   status: string;
   items: {
     productDetails: {
@@ -107,6 +109,8 @@ const OrderMessage = () => {
     totalprice: 0,
     date: "",
     status: "",
+    address: "",
+    orderNumber:"",
     items: [
       {
         productId: 0,
@@ -254,7 +258,7 @@ const OrderMessage = () => {
       <div className="border shadow-md p-5 grid grid-cols-5">
         <div>
           <h1 className="text-sm font-semibold">Order Number</h1>
-          <p className="text-[13px] text-[#2bbef9]">#{order?.orderId}</p>
+          <p className="text-[13px] text-[#2bbef9]">#{order?.orderNumber}</p>
         </div>
         <div>
           <h1 className="text-sm font-semibold">Date</h1>
@@ -293,8 +297,12 @@ const OrderMessage = () => {
           </div>
         ))}
         <div className="flex border border-gray-300 ">
+          <div className="w-2/3 px-2 py-2">Location:</div>
+          <div className="w-1/3 py-2">{order?.address}</div>
+        </div>
+        <div className="flex border border-gray-300 ">
           <div className="w-2/3 px-2 py-2">Subtotal:</div>
-          <div className="w-1/3 py-2">{order?.totalprice.toFixed(2)}</div>
+          <div className="w-1/3 py-2">Rs {order?.totalprice.toFixed(2)}</div>
         </div>
         <div className="flex border border-gray-300 ">
           <div className="w-2/3 px-2 py-2">Payment method:</div>
@@ -302,7 +310,7 @@ const OrderMessage = () => {
         </div>
         <div className="flex border border-gray-300 ">
           <div className="w-2/3 px-2 py-2">Total:</div>
-          <div className="w-1/3 py-2">{order?.totalprice.toFixed(2)}</div>
+          <div className="w-1/3 py-2">Rs {order?.totalprice.toFixed(2)}</div>
         </div>
 
 

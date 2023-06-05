@@ -185,7 +185,7 @@ const SideNavBar = ({ setShowSideNavbar, handleSideNavbar }: any) => {
               </div>
               <hr className="my-[10px] md:my-[20px]" /> */}
               {/* Contact */}
-              <div className="px-5 font-semibold font-ff-headings ">
+              <div className="px-5 font-semibold font-ff-headings " onClick={handleSideNavbar}>
                 <button>
                   <Link href="/contact" className="text-black ">
                     CONTACT

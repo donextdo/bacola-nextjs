@@ -57,7 +57,7 @@ export type AppDispatch = typeof store.dispatch;
 //   REGISTER,
 // } from 'redux-persist'
 
-// import storage from "redux-persist/lib/storage"; // or choose another storage option
+// // import storage from "redux-persist/lib/storage"; // or choose another storage option
 
 // // Import your reducers
 // import productReducer from "@/features/product/productSlice";
@@ -65,6 +65,23 @@ export type AppDispatch = typeof store.dispatch;
 // import orderSlice from "@/components/Checkout/orderSlice";
 // import userReducer from "../../src/features/User/userSlice";
 // import recentlyClickedReducer from "@/features/product/recentlyClickedSlice";
+// import createWebStorage from "redux-persist/lib/storage/createWebStorage";
+
+// const createNoopStorage = () => {
+//   return {
+//     getItem(_key:any) {
+//       return Promise.resolve(null);
+//     },
+//     setItem(_key:any, value:any) {
+//       return Promise.resolve(value);
+//     },
+//     removeItem(_key:any) {
+//       return Promise.resolve();
+//     },
+//   };
+// };
+
+// const storage = typeof window !== "undefined" ? createWebStorage("local") : createNoopStorage();
 
 // const persistConfig = {
 //   key: "root",
