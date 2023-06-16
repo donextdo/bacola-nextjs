@@ -12,6 +12,7 @@ interface Order {
   totalprice: number;
   date: string;
   address: string;
+  payment:string
   orderNumber:string;
   status: string;
   items: {
@@ -110,6 +111,7 @@ const OrderMessage = () => {
     date: "",
     status: "",
     address: "",
+    payment:"",
     orderNumber:"",
     items: [
       {
@@ -274,7 +276,7 @@ const OrderMessage = () => {
         </div>
         <div className="">
           <h1 className="text-sm font-semibold">Payment method:</h1>
-          <p className="text-[13px]">Direct bank transfer</p>
+          <p className="text-[13px]">{order?.payment}</p>
         </div>
       </div>
 
@@ -306,7 +308,7 @@ const OrderMessage = () => {
         </div>
         <div className="flex border border-gray-300 ">
           <div className="w-2/3 px-2 py-2">Payment method:</div>
-          <div className="w-1/3 py-2">Direct bank transfer</div>
+          <div className="w-1/3 py-2">{order?.payment}</div>
         </div>
         <div className="flex border border-gray-300 ">
           <div className="w-2/3 px-2 py-2">Total:</div>

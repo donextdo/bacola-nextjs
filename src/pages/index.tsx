@@ -36,18 +36,17 @@ export default function Home() {
     <div className="container mx-auto xl:px-40 px-5 relative">
       {/* <Header /> */}
       <div className="container mx-auto">
-    
-  
-      <div>
-        <HomeSlider />
+
+
+        <div>
+          <HomeSlider />
+        </div>
+        <HomePage />
+        {/* <CartList /> */}
+        <button className={`fixed bottom-4 right-4 rounded-full p-4 z-50 bg-white shadow-xl border ${showButton ? 'visible' : 'invisible'
+          }`} onClick={scrollToTop}><SlArrowUp /></button>
+
       </div>
-      <HomePage />
-      {/* <CartList /> */}
-      <button className={`fixed bottom-4 right-4 rounded-full p-4 z-50 bg-white shadow-xl border ${
-        showButton ? 'visible' : 'invisible'
-      }`} onClick={scrollToTop}><SlArrowUp /></button>
-      
-    </div>
     </div>
   );
 }

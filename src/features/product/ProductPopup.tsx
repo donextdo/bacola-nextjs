@@ -321,7 +321,7 @@ const ProductPopup = ({ setProductPopup, proId }: any) => {
                                         )}
                                 </div>
                                 <div className="hover:cursor-pointer flex items-center justify-center px-12 ">
-                                    <Image
+                                    <img
                                         width={390}
                                         height={436}
                                         src={mainImage || data?.front}
@@ -333,7 +333,7 @@ const ProductPopup = ({ setProductPopup, proId }: any) => {
                                     <div className="flex items-center justify-center min-w-[67px] min-h-[67px] lg:min-w-[67px] lg:min-h-[67px] md:min-w-[94.4px] md:min-h-[94.4px]  border border-gray-400 mr-2 hover:cursor-pointer"
                                         onClick={() => handleClick(data?.side)}
                                     >
-                                        <Image
+                                        <img
                                             width={67}
                                             height={67}
                                             src={data?.side}
@@ -342,7 +342,7 @@ const ProductPopup = ({ setProductPopup, proId }: any) => {
                                     </div>
                                     <div className="flex items-center justify-center min-w-[67px] min-h-[67px] lg:min-w-[67px] lg:min-h-[67px] md:min-w-[94.4px] md:min-h-[94.4px]   border border-gray-400 mr-2 hover:cursor-pointer"
                                         onClick={() => handleClick(data?.front)}>
-                                        <Image
+                                        <img
                                             width={67}
                                             height={67}
                                             src={data?.front}
@@ -351,7 +351,7 @@ const ProductPopup = ({ setProductPopup, proId }: any) => {
                                     </div>
                                     <div className="flex items-center justify-center min-w-[67px] min-h-[67px] lg:min-w-[67px] lg:min-h-[67px] md:min-w-[94.4px] md:min-h-[94.4px]   border border-gray-400 hover:cursor-pointer"
                                         onClick={() => handleClick(data?.back)}>
-                                        <Image
+                                        <img
                                             width={67}
                                             height={67}
                                             src={data?.back}

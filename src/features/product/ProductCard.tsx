@@ -343,7 +343,7 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
                 }}
               >
                 <Link href={`/item-preview/${product._id}`}>
-                  <Image
+                  <img
                     width={172.95}
                     height={154.95}
                     //src={product.front as string}
@@ -479,7 +479,7 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
               }}
             >
               <Link href={`/item-preview/${product._id}`}>
-                <Image
+                <img
                   width={172.95}
                   height={154.95}
                   //src={product.front as string}
