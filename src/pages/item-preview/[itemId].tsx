@@ -497,7 +497,7 @@ const ItemPages = () => {
                                         className="hover:cursor-pointer flex items-center justify-center px-12 "
                                         onClick={openModal}
                                     >
-                                        <Image
+                                        <img
                                             width={390}
                                             height={436}
                                             src={selectedImage || combinedArray[0]}
@@ -520,14 +520,14 @@ const ItemPages = () => {
 
                                                 >
                                                     {!hideSideImage ? (
-                                                        <Image
+                                                        <img
                                                             width={67}
                                                             height={67}
                                                             src={photo}
                                                             alt="Man looking at item at a store"
                                                         />
                                                     ) : (
-                                                        <Image
+                                                        <img
                                                             width={67}
                                                             height={67}
                                                             src={photo}
@@ -912,7 +912,7 @@ const ItemPages = () => {
 
                             {/* Full screen image */}
                             <div className="flex items-center justify-center">
-                                <Image
+                                <img
                                     src={selectedImage}
                                     alt="mainImage"
                                     width={700} // Adjust the width value as per your requirements

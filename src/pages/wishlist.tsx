@@ -164,7 +164,7 @@ const Wishlist = () => {
                             </td>
                             <td className="border px-4 py-2">
                                 <div className="w-[71px] h-[71px]">
-                                    <Image
+                                    <img
                                         src={item.front}
                                         alt="Header Image"
                                         className="w-full "

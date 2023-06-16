@@ -18,6 +18,7 @@ interface Order {
   date: string;
   status: string;
   address:string;
+  payment:string;
   items: {
     productDetails: {
       name: string;
@@ -67,6 +68,7 @@ const Orders = () => {
     totalprice: 0,
     date: "",
     status: "",
+    payment:"",
     address: "",
     items: [
       {
@@ -190,7 +192,7 @@ const Orders = () => {
                           </span>{" "}
                         </p>
                         <div className="h-[60px] w-[60px] ">
-                          <Image
+                          <img
                             src={item.productDetails?.front}
                             alt="item1"
                             style={{
@@ -227,7 +229,7 @@ const Orders = () => {
         <div className="mt-4 mx-8">
           {/* <MyAccount /> */}
           <h2 className="text-sm">
-            Order #<span className="bg-[#fcf8e3]">{order?.orderId}</span> was
+            Order #<span className="bg-[#fcf8e3]">{order.orderNumber}</span> was
             placed on <span className="bg-[#fcf8e3]">{order?.date}</span> and is
             currently <span className="bg-[#fcf8e3]"> On hold</span>.
           </h2>
@@ -278,7 +280,7 @@ const Orders = () => {
                   Payment method:
                 </div>
                 <div className="w-1/3 text-sm px-2 py-2 border border-gray-300 ">
-                  Direct bank transfer
+                {order?.payment}
                 </div>
               </div>
               <div className="flex  ">

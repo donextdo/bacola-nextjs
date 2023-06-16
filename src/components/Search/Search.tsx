@@ -86,7 +86,7 @@ export const SearchItem = () => {
               >
                 <div className="flex items-center">
                   <li className="cursor-pointer text-start ml-2 border border-gray-100 py-1">
-                    <Image
+                    <img
                       width={40}
                       height={40}
                       src={item.front}

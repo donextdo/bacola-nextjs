@@ -191,7 +191,7 @@ const Cart: FC<CartType> = () => {
 
     const handleCheckout = () => {
         
-        const orderData = {  location:selectedItem, shippingObj:JSON.stringify(shippingObj) };
+        const orderData = {  shippingObj:JSON.stringify(shippingObj) };
         console.log(orderData)
         router.push({
             pathname: '/checkout',
@@ -332,16 +332,18 @@ const Cart: FC<CartType> = () => {
                                             </tr>
                                             <tr>
 
-                                                <td className="text-[13px] pb-3 text-right"><label className="inline-flex -gap-1"><span className="mr-2">Local pickup</span>
+                                                <td className="text-[13px] pb-3 text-right">
+                                                    {/* <label className="inline-flex -gap-1"><span className="mr-2">Local pickup</span>
                                                     <input type="radio" name="cart"
                                                     // onClick={handleClickRadioSubtract5} 
                                                     />
-                                                </label></td>
+                                                </label> */}
+                                                </td>
                                             </tr>
                                             <tr>
 
                                                 <td className="relative text-right text-[12.5px] ">
-                                                    <select
+                                                    {/* <select
                                                         className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
                                                     value={selectedItem}
                                                     onChange={handleDropdownChange}
@@ -352,8 +354,8 @@ const Cart: FC<CartType> = () => {
                                                                 {item.locationName}
                                                             </option>
                                                         ))}
-                                                    </select>
-                                                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                                                    </select> */}
+                                                    {/* <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                                                         <svg
                                                             className="fill-current h-4 w-4"
                                                             xmlns="http://www.w3.org/2000/svg"
@@ -363,7 +365,7 @@ const Cart: FC<CartType> = () => {
                                                                 d="M10 12l-6-6h12l-6 6z"
                                                             />
                                                         </svg>
-                                                    </div>
+                                                    </div> */}
                                                 </td>
                                             </tr>
                                             <tr>
@@ -421,7 +423,7 @@ const Cart: FC<CartType> = () => {
                                 <tbody>
                                     <tr>
                                         <td className="border-b border-[#e4e5ee] py-3 font-semibold text-[13px]">Subtotal</td>
-                                        <td className="border-b border-[#e4e5ee] py-3 text-[15px] text-right">Rs {totalAmount}</td>
+                                        <td className="border-b border-[#e4e5ee] py-3 text-[15px] text-right">Rs {totalAmount.toFixed(2)}</td>
                                     </tr>
                                     <tr>
                                         <td rowSpan={4} className="text-[13px] font-semibold border-b border-[#e4e5ee]">Shipping</td>
@@ -433,18 +435,20 @@ const Cart: FC<CartType> = () => {
                                     </tr>
                                     <tr>
 
-                                        <td className="text-[13px] pb-3 text-right"><label className="inline-flex -gap-1"><span className="mr-2">Local pickup</span>
+                                        <td className="text-[13px] pb-3 text-right">
+                                            {/* <label className="inline-flex -gap-1"><span className="mr-2">Local pickup</span>
                                             <input
                                                 type="radio"
                                                 name="vendor"
                                             // onChange={handleRadioChange}
                                             />
-                                        </label></td>
+                                        </label> */}
+                                        </td>
                                     </tr>
                                     <tr>
 
                                     <td className="relative text-right text-[12.5px] ">
-                                                    <select
+                                                    {/* <select
                                                         className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
                                                     value={selectedItem}
                                                     onChange={handleDropdownChange}
@@ -466,7 +470,7 @@ const Cart: FC<CartType> = () => {
                                                                 d="M10 12l-6-6h12l-6 6z"
                                                             />
                                                         </svg>
-                                                    </div>
+                                                    </div> */}
                                                 </td>
                                     </tr>
                                     <tr>
@@ -496,8 +500,8 @@ const Cart: FC<CartType> = () => {
                                                 </td>
                                     </tr>
                                     <tr>
-                                        <td className="border-b border-[#e4e5ee] text-[13px] font-semibold pb-4">Total</td>
-                                        <td className="border-b border-[#e4e5ee] text-right font-semibold text-xl py-4">Rs {total}</td>
+                                        <td className="border-y border-[#e4e5ee] text-[13px] font-semibold pb-4">Total</td>
+                                        <td className="border-y border-[#e4e5ee] text-right font-semibold text-xl py-4">Rs {total.toFixed(2)}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -511,7 +515,7 @@ const Cart: FC<CartType> = () => {
             ) : (
                 <div className="flex flex-col items-center justify-center">
                     <div className="h-[320px] w-[320px]">
-                        <Image
+                    <Image
                             src={cartimage}
                             alt="item1"
                             style={{
