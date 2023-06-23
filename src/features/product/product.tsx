@@ -27,4 +27,7 @@ export interface Product {
   tags:string;
   speacialtag:string;
   additionalInformation: string
+  isNewArrival: boolean
+  isBestSeller : boolean
+  imageArray: string
 }

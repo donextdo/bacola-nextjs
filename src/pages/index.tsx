@@ -33,21 +33,20 @@ export default function Home() {
     };
   }, []);
   return (
-    <div className="container mx-auto xl:px-40 lg:px-5 md:px-5 px-5 relative">
+    <div className="container mx-auto xl:px-40 px-5 relative">
       {/* <Header /> */}
       <div className="container mx-auto">
-    
-  
-      <div>
-        <HomeSlider />
+
+
+        <div>
+          <HomeSlider />
+        </div>
+        <HomePage />
+        {/* <CartList /> */}
+        <button className={`fixed bottom-4 right-4 rounded-full p-4 z-50 bg-white shadow-xl border ${showButton ? 'visible' : 'invisible'
+          }`} onClick={scrollToTop}><SlArrowUp /></button>
+
       </div>
-      <HomePage />
-      <CartList />
-      <button className={`fixed bottom-4 right-4 rounded-full p-4 z-50 bg-white shadow-xl border ${
-        showButton ? 'visible' : 'invisible'
-      }`} onClick={scrollToTop}><SlArrowUp /></button>
-      
-    </div>
     </div>
   );
 }

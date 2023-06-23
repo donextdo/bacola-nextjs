@@ -60,11 +60,11 @@ export const RecentlyViewProduct = ({ passgrid }: any) => {
     setmatchWithProduct(matchedProducts);
   }, [product, productsRidux]);
   return (
-    <div>
+    <div className="container mx-auto">
       <div className="text-[20px] font-semibold font-ff-headings">
         RECENTLY VIEWED PRODUCTS
       </div>
-      <div className="mx-auto mt-5">
+      <div className=" mt-5">
         <div className="grid 2xl:grid-cols-4 lg:grid-cols-4 md:grid-cols-3 grid-cols-2">
           {matchWithProduct.map((product: any, index) => {
             return (

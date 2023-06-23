@@ -3,6 +3,8 @@ import { TopImage, BottomImage } from "./AllImage";
 import { MainDiv } from "./MainDiv";
 import { BestSeller, NewProduct, RedDiv, TakeCare } from "./redDiv";
 import { useState } from "react";
+import BestSellerProducts from "@/features/product/BestSellerProducts";
+import NewArrivalProducts from "@/features/product/NewArrivalProducts";
 
 
 const HomePage = () => {
@@ -16,13 +18,14 @@ const HomePage = () => {
       <div className="md:ml-5 lg:w-3/4 md:w-full w-full">
         <div>
           <BestSeller />
-          <ProductList />
+          <BestSellerProducts />
+          {/* <ProductList /> */}
         </div>
         <TakeCare />
         {/* <RedDiv /> */}
         <div>
           <NewProduct />
-          <ProductList />
+          <NewArrivalProducts />
         </div>
         <div>
           <TopImage />

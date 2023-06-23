@@ -112,6 +112,17 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
   };
 
   const handleaddToCart = (product: Product) => {
+  //   console.log(product)
+  //    // Retrieve the existing cart items from local storage
+  //    let cartItemss = JSON.parse(localStorage.getItem('cartItemss') || '[]');
+  // // Add the product to the cart items array
+  // cartItemss.push(product);
+
+  // // Update the local storage with the updated array
+  // localStorage.setItem('cartItemss', JSON.stringify(cartItemss));
+
+  // cartItemss = JSON.parse(localStorage.getItem('cartItemss') || '[]');
+
     dispatch(addItem(product));
     const newQuantity = (product.count || 0) + 1;
     console.log("handleaddToCart ", product.count);
@@ -132,6 +143,7 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
       heightAuto: true,
       position: "bottom-end",
     });
+ 
   };
 
   const stars = Array.from({ length: 5 }, (_, i) => (
@@ -148,60 +160,96 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
   discountprice = product.price * (product.discount / 100);
   let newprice = product.price - discountprice;
 
-  const handleWishlist = async (product: any) => {
+  // const handleWishlist = async (product: any) => {
+  //   if (id) {
+  //     const whishListObj = {
+  //       whishList: [
+  //         {
+  //           productId: product._id,
+  //           front: product.front,
+  //           title: product.title,
+  //           price: product.price,
+  //           date: new Date().toLocaleDateString("en-US", {
+  //             month: "long",
+  //             day: "numeric",
+  //             year: "numeric",
+  //           }),
+  //           quantity: product.quantity,
+  //         },
+  //       ],
+  //     };
+
+  //     try {
+  //       const response = await axios.post(
+  //         `${baseUrl}/users/wishList/${id}`,
+  //         whishListObj
+  //       );
+  //       console.log(response.data); // do something with the response data
+  //     } catch (error) {
+  //       console.log(error); // handle the error
+  //     }
+  //   } else {
+  //     router.push("/account");
+  //   }
+
+  // };
+  const handleWishlist = async (data: any) => {
+       
     if (id) {
-      const whishListObj = {
-        whishList: [
-          {
-            productId: product._id,
-            front: product.front,
-            title: product.title,
-            price: product.price,
-            date: new Date().toLocaleDateString("en-US", {
-              month: "long",
-              day: "numeric",
-              year: "numeric",
-            }),
-            quantity: product.quantity,
-          },
-        ],
-      };
+        const whishListObj = {
+            whishList: [
+                {
+                    productId: data._id,
+                    front: data.front,
+                    title: data.title,
+                    price: data.price,
+                    date: new Date().toLocaleDateString("en-US", {
+                        month: "long",
+                        day: "numeric",
+                        year: "numeric",
+                    }),
+                    quantity: data.quantity,
+                },
+            ],
+        };
 
-      try {
-        const response = await axios.post(
-          `${baseUrl}/users/wishList/${id}`,
-          whishListObj
-        );
-        console.log(response.data); // do something with the response data
-      } catch (error) {
-        console.log(error); // handle the error
+        try {
+
+        //authentication session handle
+            const token = localStorage.getItem("token"); // Retrieve the token from local storage or wherever it's stored
+            if (!token) {
+            alert("Session expired")
+              router.push("/account");
+              return;
+            }
+
+            const config = {
+              headers: {
+                Authorization: token,
+              },
+            };
+
+            const response = await axios.post(
+                `${baseUrl}/users/wishList/${id}`,
+                whishListObj,
+                config,
+                
+            );
+
+            
+            console.log(response.data); // do something with the response data
+        } catch (error) {
+            console.log(error); // handle the error 
+            
+            alert("Session expired")
+              router.push("/account");
+            
+        }
+      } else {
+        router.push("/account");
       }
-    } else {
-      router.push("/account");
-    }
 
-    // const whishListObj = {
-    //   "whishList": [{
-    //     productId: product._id,
-    //     front: product.front,
-    //     title: product.title,
-    //     price: product.price,
-    //     date: new Date().toLocaleDateString("en-US", {
-    //       month: "long",
-    //       day: "numeric",
-    //       year: "numeric"
-    //     }),
-    //     quantity: product.quantity
-    //   }]
-    // };
-
-    // try {
-    //   const response = await axios.post(`${baseUrl}/users/wishList/${id}`, whishListObj);
-    //   console.log(response.data); // do something with the response data
-    // } catch (error) {
-    //   console.log(error); // handle the error
-    // }
-  };
+}
 
   let totalAmount = 0;
   for (let i = 0; i < cartItems.length; i++) {
@@ -295,7 +343,7 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
                 }}
               >
                 <Link href={`/item-preview/${product._id}`}>
-                  <Image
+                  <img
                     width={172.95}
                     height={154.95}
                     //src={product.front as string}
@@ -380,7 +428,7 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
       ) : (
         <>
           <div
-            className="w-full min-h-[350.24px] mx-auto bg-white border border-gray-200  overflow-hidden relative group hover:drop-shadow-lg rounded-sm"
+            className="w-full min-h-[350.24px] mx-auto bg-white border border-gray-200  overflow-hidden relative group hover:drop-shadow-lg hover:border-secondary rounded-sm"
             key={product._id}
           >
             <div className="absolute max-w-[88.41px] max-h-[49px] flex flex-col items-start gap-1 p-2">
@@ -431,7 +479,7 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
               }}
             >
               <Link href={`/item-preview/${product._id}`}>
-                <Image
+                <img
                   width={172.95}
                   height={154.95}
                   //src={product.front as string}
@@ -483,7 +531,7 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
                 {(product.count == undefined || product.count < 1) && (
                   <button
                     type="button"
-                    className=" bg-blue-900 text-white min-h-[34px]  rounded-full w-full "
+                    className=" bg-primary text-white min-h-[34px]  rounded-full w-full "
                     onClick={() => handleaddToCart(product)}
                   >
                     Add to cart

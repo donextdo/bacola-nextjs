@@ -2,20 +2,21 @@ import Image from "next/image";
 import { IoClose } from "react-icons/io5";
 import { FC, useEffect, useState } from "react";
 import {
-    FaHeart,
+    FaHeart, FaStar,
 } from "react-icons/fa";
 import { BsCheckLg } from "react-icons/bs";
 import axios from "axios";
 import baseUrl from "../../../utils/baseUrl";
 import { Product } from "./product";
 import { useDispatch, useSelector } from "react-redux";
-import { addItem, updateItemQuantity } from "../cart/cartSlice";
+import { addItem, addItems, updateItemQuantity } from "../cart/cartSlice";
 import { updateProductQuantity } from "./productSlice";
 
 import { RootState } from "@/redux/store";
 import Review from "@/components/ViewItem/Details/Review";
+import { useRouter } from "next/router";
 
-const ProductPopup = ({setProductPopup, proId}:any) => {
+const ProductPopup = ({ setProductPopup, proId }: any) => {
     const [data, setData] = useState<Product>({
         _id: '',
         isRecommended: false,
@@ -44,7 +45,10 @@ const ProductPopup = ({setProductPopup, proId}:any) => {
         category: "",
         tags: "",
         speacialtag: "",
-        additionalInformation: ''
+        additionalInformation: '',
+        isBestSeller: false,
+        isNewArrival:false,
+        imageArray: ""
 
     })
     const [mainImage, setMainImage] = useState(data?.front);
@@ -55,6 +59,10 @@ const ProductPopup = ({setProductPopup, proId}:any) => {
     const [allreview, setAllreview] = useState<Array<Review>>([])
     const [tag, setTag] = useState([]);
     const [myCategory, setMyCategory] = useState([]);
+    const router = useRouter();
+    let [newQuantity, setNewQuantity] = useState<number>(1)
+
+
 
 
 
@@ -89,8 +97,8 @@ const ProductPopup = ({setProductPopup, proId}:any) => {
 
     useEffect(() => {
         if (findcategory) {
-        fetchData2();
-    }
+            fetchData2();
+        }
     }, [findcategory]);
 
     async function fetchData2() {
@@ -118,49 +126,122 @@ const ProductPopup = ({setProductPopup, proId}:any) => {
     const item: Product | undefined = products.find((item) => item._id === proId);
 
     const handleIncrement = (data: Product) => {
-        const newQuantity = (item?.count || 0) + 1;
-        dispatch(updateItemQuantity({ itemId: data._id, count: newQuantity }));
-        dispatch(updateProductQuantity({ productId: data._id, count: newQuantity }))
+        const setQuantity = (item?.count || 1) + 1;
+      setNewQuantity(setQuantity)
+      console.log(newQuantity)
+
+        dispatch(
+            updateProductQuantity({ productId: data._id, count: setQuantity })
+        );
     };
 
     const handleDecrement = (data: Product) => {
-        const newQuantity = Math.max((item?.count || 0) - 1, 0);
-        dispatch(updateItemQuantity({ itemId: data._id, count: newQuantity }));
-        dispatch(updateProductQuantity({ productId: data._id, count: newQuantity }))
+        const setQuantity = Math.max((item?.count || 0) - 1, 0);
+      setNewQuantity(setQuantity)
+        console.log(newQuantity)
+
+        dispatch(
+            updateProductQuantity({ productId: data._id, count: setQuantity })
+        );
     };
 
+    // const handleWishlist = async (data: any) => {
+       
+    //     if (id) {
+    //         const whishListObj = {
+    //             whishList: [
+    //                 {
+    //                     productId: data._id,
+    //                     front: data.front,
+    //                     title: data.title,
+    //                     price: data.price,
+    //                     date: new Date().toLocaleDateString("en-US", {
+    //                         month: "long",
+    //                         day: "numeric",
+    //                         year: "numeric",
+    //                     }),
+    //                     quantity: data.quantity,
+    //                 },
+    //             ],
+    //         };
+    
+    //         try {
+    //             const response = await axios.post(
+    //                 `${baseUrl}/users/wishList/${id}`,
+    //                 whishListObj
+    //             );
+    //             console.log(response.data); // do something with the response data
+    //         } catch (error) {
+    //             console.log(error); // handle the error
+    //         }
+    //       } else {
+    //         router.push("/account");
+    //       }
+
+    // }
     const handleWishlist = async (data: any) => {
-        const whishListObj = {
-            "whishList":[{
-              productId: data._id,
-              front: data.front,
-              title: data.title,
-              price: data.price,
-              date: new Date().toLocaleDateString("en-US", {
-                  month: "long",
-                  day: "numeric",
-                  year: "numeric"
-              }),
-              quantity: data.quantity
-            }]
-          };
-         
-          try {
-            const response = await axios.post(`${baseUrl}/users/wishList/${id}`, whishListObj);
-            console.log(response.data); // do something with the response data
-        } catch (error) {
-            console.log(error); // handle the error
-        }
+       
+        if (id) {
+            const whishListObj = {
+                whishList: [
+                    {
+                        productId: data._id,
+                        front: data.front,
+                        title: data.title,
+                        price: data.price,
+                        date: new Date().toLocaleDateString("en-US", {
+                            month: "long",
+                            day: "numeric",
+                            year: "numeric",
+                        }),
+                        quantity: data.quantity,
+                    },
+                ],
+            };
+    
+            try {
+
+            //authentication session handle
+                const token = localStorage.getItem("token"); // Retrieve the token from local storage or wherever it's stored
+                if (!token) {
+                    localStorage.removeItem("token");
+                    localStorage.removeItem("id");
+                alert("Session expired")
+                  router.push("/account");
+                  return;
+                }
+
+                const config = {
+                  headers: {
+                    Authorization: token,
+                  },
+                };
+
+                const response = await axios.post(
+                    `${baseUrl}/users/wishList/${id}`,
+                    whishListObj,
+                    config,
+                    
+                );
+
+                
+                console.log(response.data); // do something with the response data
+            } catch (error) {
+                console.log(error); // handle the error 
+                localStorage.removeItem("token");
+                localStorage.removeItem("id");
+                alert("Session expired")
+                  router.push("/account");
+                
+            }
+          } else {
+            router.push("/account");
+          }
 
     }
 
     const handleaddToCart = (data: any) => {
-        dispatch(addItem(data));
-        const newQuantity = (data.count || 0) + 1;
-        dispatch(
-            updateProductQuantity({ productId: data._id, count: newQuantity })
-        );
-        console.log(data._id);
+        dispatch(addItems({ product: data, count: newQuantity }));
     };
 
     let discountprice;
@@ -170,15 +251,25 @@ const ProductPopup = ({setProductPopup, proId}:any) => {
     const handleClick = (image: any) => {
         setMainImage(image);
     };
-    
+
     const handleclose = () => {
         setProductPopup(false)
     }
-    return ( 
+
+    let yellowstars = [];
+    let graystars = [];
+
+    for (let i = 1; i <= data.review; i++) {
+        yellowstars.push(<FaStar />);
+    }
+    for (let i = 1; i <= 5 - data.review; i++) {
+        graystars.push(<FaStar />);
+    }
+    return (
         <div className="fixed inset-0 z-50 grid place-items-center bg-slate-900 bg-opacity-50">
             <div className="py-6 px-4 mx-2 flex gap-6 flex-col relative bg-white shadow-md rounded-md w-full lg:w-[1024px]">
-            <div className="flex justify-end px-2"><button onClick={handleclose} className="bg-[#c2c2d3] rounded-full w-8 h-8 flex justify-center items-center"><IoClose className="text-white"/></button></div>
-            <div className=" bg-white  rounded-md px-6 mt-4 ">
+                <div className="flex justify-end px-2"><button onClick={handleclose} className="bg-[#c2c2d3] rounded-full w-8 h-8 flex justify-center items-center"><IoClose className="text-white" /></button></div>
+                <div className=" bg-white  rounded-md px-6 mt-4 ">
                     <div className="w-full mb-[1.875rem]">
                         <h1 className=" capitalize text-[1.5rem] font-semibold">
                             {data.title}
@@ -190,12 +281,15 @@ const ProductPopup = ({setProductPopup, proId}:any) => {
                             <div className="text-gray-400 mx-3">|</div>
                             <span className="text-gray-400 ">
                                 <div className="flex flex-row max-h-[18px] max-w-[130.49px] items-center justify-center">
-                                    {/* {stars} */}
+                                <p className="text-md text-yellow-400 flex">
+                                            {yellowstars}
+                                        </p>
+                                        <p className="text-md text-gray-400 flex">{graystars}</p>
                                 </div>
                             </span>
                             <span className="ml-1">
                                 <div className="uppercase  text-gray-400 font-semibold ml-2 text-[11px] flex items-center justify-center">
-                                {allreview.length} REVIEW
+                                    {allreview.length} REVIEW
                                 </div>
                             </span>
 
@@ -214,19 +308,20 @@ const ProductPopup = ({setProductPopup, proId}:any) => {
                                             {data?.discount != undefined ? data.discount : 0}%
                                         </div>
                                     )}
-                                    {data?.isRecommended && (
-                                        <div className=" font-semibold px-2 py-1 bg-gray-500 text-white rounded text-[10px] flex items-center justify-center uppercase tracking-tighter">
-                                            Recommended
-                                        </div>
-                                    )}
-                                    {data?.speacialtag && (
-                                        <div className=" font-semibold px-2 py-1 bg-emerald-100 text-green-600 rounded-full text-[10px] flex items-center justify-center uppercase tracking-tighter">
-                                            {data.speacialtag}
-                                        </div>
-                                    )}
+                                   
+                                   {data?.speacialtag == "organic" && (
+                                            <div className=" font-semibold px-2 py-1 bg-emerald-100 text-green-600 rounded-full text-[10px] flex items-center justify-center uppercase tracking-tighter">
+                                                {data.speacialtag}
+                                            </div>
+                                        )}
+                                        {data?.speacialtag == "Recommended" && (
+                                            <div className=" font-semibold px-2 py-1 bg-gray-500 text-white rounded text-[10px] flex items-center justify-center uppercase tracking-tighter">
+                                                {data.speacialtag}
+                                            </div>
+                                        )}
                                 </div>
                                 <div className="hover:cursor-pointer flex items-center justify-center px-12 ">
-                                    <Image
+                                    <img
                                         width={390}
                                         height={436}
                                         src={mainImage || data?.front}
@@ -238,7 +333,7 @@ const ProductPopup = ({setProductPopup, proId}:any) => {
                                     <div className="flex items-center justify-center min-w-[67px] min-h-[67px] lg:min-w-[67px] lg:min-h-[67px] md:min-w-[94.4px] md:min-h-[94.4px]  border border-gray-400 mr-2 hover:cursor-pointer"
                                         onClick={() => handleClick(data?.side)}
                                     >
-                                        <Image
+                                        <img
                                             width={67}
                                             height={67}
                                             src={data?.side}
@@ -247,7 +342,7 @@ const ProductPopup = ({setProductPopup, proId}:any) => {
                                     </div>
                                     <div className="flex items-center justify-center min-w-[67px] min-h-[67px] lg:min-w-[67px] lg:min-h-[67px] md:min-w-[94.4px] md:min-h-[94.4px]   border border-gray-400 mr-2 hover:cursor-pointer"
                                         onClick={() => handleClick(data?.front)}>
-                                        <Image
+                                        <img
                                             width={67}
                                             height={67}
                                             src={data?.front}
@@ -256,7 +351,7 @@ const ProductPopup = ({setProductPopup, proId}:any) => {
                                     </div>
                                     <div className="flex items-center justify-center min-w-[67px] min-h-[67px] lg:min-w-[67px] lg:min-h-[67px] md:min-w-[94.4px] md:min-h-[94.4px]   border border-gray-400 hover:cursor-pointer"
                                         onClick={() => handleClick(data?.back)}>
-                                        <Image
+                                        <img
                                             width={67}
                                             height={67}
                                             src={data?.back}
@@ -351,84 +446,97 @@ const ProductPopup = ({setProductPopup, proId}:any) => {
                                         </button> */}
                                     </div>
                                 </div>
-                                <div className="max-h-[66px] max-w-[113.66px] mt-6">
-                                    <div className="flex flex-row text-[.75rem] place-items-start mb-1">
-                                        <div className="mr-2">
-                                            <BsCheckLg className="h-[15px] w-[15px] text-green-600 stroke-[1px]"></BsCheckLg>
+                                <div className="max-h-[66px]  mt-6">
+                                    {data.type && (
+
+                                        <div className="flex flex-row text-[.75rem] place-items-start mb-1">
+                                            <div className="mr-2">
+                                                <BsCheckLg className="h-[15px] w-[15px] text-green-600 stroke-[1px]"></BsCheckLg>
+                                            </div>
+                                            <div className="">
+                                                Type: <span className="">{data.type}</span>
+                                            </div>
+
                                         </div>
-                                        <div className="">
-                                            Type: <span className="">Organic</span>
+                                    )}
+                                    {data.mfgDate && (
+                                        <div className="flex flex-row text-[.75rem] place-items-start mb-1">
+                                            <div className="mr-2 ">
+                                                <BsCheckLg className="h-[15px] w-[15px] text-green-600 stroke-[1px]"></BsCheckLg>
+                                            </div>
+
+                                            <div className="">
+                                                MFG: <span>{data.mfgDate}</span>
+                                            </div>
+
                                         </div>
-                                    </div>
-                                    <div className="flex flex-row text-[.75rem] place-items-start mb-1">
-                                        <div className="mr-2 ">
-                                            <BsCheckLg className="h-[15px] w-[15px] text-green-600 stroke-[1px]"></BsCheckLg>
+                                    )}
+                                    {data.life && (
+                                        <div className="flex flex-row text-[.75rem] place-items-start mb-1">
+                                            <div className="mr-2">
+                                                <BsCheckLg className="h-[15px] w-[15px] text-green-600 stroke-[1px]"></BsCheckLg>
+                                            </div>
+
+                                            <div className="">
+                                                LIFE: <span className="">{data.life}</span>
+                                            </div>
+
                                         </div>
-                                        <div className="">
-                                            MFG: <span>June 4.21</span>
-                                        </div>
-                                    </div>
-                                    <div className="flex flex-row text-[.75rem] place-items-start mb-1">
-                                        <div className="mr-2">
-                                            <BsCheckLg className="h-[15px] w-[15px] text-green-600 stroke-[1px]"></BsCheckLg>
-                                        </div>
-                                        <div className="">
-                                            LIFE: <span className="">30 days</span>
-                                        </div>
-                                    </div>
+                                    )}
                                 </div>
                                 <hr className="max-w-[330px] mt-6"></hr>
                                 <div className="mt-6 max-h-[72.8px] max-w-[308.33px]">
-                                    <div className="flex flex-row">
-                                        <span className="text-gray-400 text-[.8125rem] capitalize">
-                                            Category:
-                                            {myCategory.map((cat:any, index)=>(
-                                                    <a
-                                                    key={index}
-                                                    href=""
-                                                    rel="tag"
-                                                    className="ml-2 text-gray-600 text-xs capitalize"
-                                                >
-                                                        {cat.name}
-                                                    </a>
-                                                ))} 
-                                        </span>
-                                    </div>
-                                    <div className="flex flex-row">
-                                        <span className="text-gray-400 text-[.8125rem] capitalize">
-                                            Tags:
-                                           
-                                        </span>
-                                        <div className="flex">
-                                            {tag.map((tag: any, index: number) => (
-                                                <div key={index} className="flex">
+                                {myCategory.length > 0 && (
+                                            <div className="flex flex-row">
+                                                <span className="text-gray-400 text-xs capitalize">
+                                                    Category:
+                                                    {myCategory.map((cat: any, index) => (
+                                                        <a
+                                                            key={index}
+                                                            href=""
+                                                            rel="tag"
+                                                            className="ml-2 text-gray-600 text-xs capitalize"
+                                                        >
+                                                            {cat.name}
+                                                        </a>
+                                                    ))}
+                                                </span>
+                                            </div>
+                                        )}
 
-                                                    <div className="text-xs">
-                                                        {index > 0 && ','}
-                                                    </div>
-                                                    <a
-                                                        href=""
-                                                        rel="tag"
-                                                        className="ml-2 text-gray-600 text-xs capitalize flex"
-                                                    >
-                                                        {tag.name}
-                                                    </a>
+                                        {tag.length > 0 && (
+                                            <div className="flex">
+                                                <span className="text-gray-400 text-xs capitalize">
+                                                    Tags:
+                                                </span>
+                                                <div className="flex">
+                                                    {tag.map((tag: any, index: number) => (
+                                                        <div key={index} className="flex">
+                                                            <div className="text-xs">{index > 0 && ","}</div>
+                                                            <a
+                                                                href=""
+                                                                rel="tag"
+                                                                className="ml-2 text-gray-600 text-xs capitalize flex"
+                                                            >
+                                                                {tag.name}
+                                                            </a>
+                                                        </div>
+                                                    ))}
                                                 </div>
-                                            ))}
-                                        </div>
-                                    </div>
-                                    
+                                            </div>
+                                        )}
+
                                 </div>
                             </div>
-                            
+
                         </div>
                     </div>
 
                 </div>
-</div>
-</div>
-   
-     );
+            </div>
+        </div>
+
+    );
 }
- 
+
 export default ProductPopup;

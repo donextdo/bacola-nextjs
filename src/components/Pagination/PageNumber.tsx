@@ -13,6 +13,8 @@ export const PageNumber = ({ perpage }: any) => {
   const [pageArray, setPageArray] = useState<{ id: number }[]>([]);
   const router = useRouter();
 
+  
+
   useEffect(() => {
     setCurrentPage(
       localStorage.getItem("selectedPage")

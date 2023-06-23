@@ -1,6 +1,6 @@
 const Privacy_Policy = () => {
     return (
-        <div className="px-2 xl:px-12 2xl:px-20 my-16">
+        <div className="container mx-auto xl:px-40 px-5 my-16">
            <div className="">
             <h1 className="text-[28px] mb-4 font-semibold">Who we are</h1>
             <p className="text-sm">Our website address is: https://buntalk.lk.</p>

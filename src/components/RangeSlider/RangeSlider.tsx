@@ -120,12 +120,12 @@ export const RangeSlider = ({ categoryId }: any) => {
   };
 
   return (
-    <div className="box-border max-h-[85px] max-w-[270px] lg:mt-12  ">
-      <h4 className="max-h-[18px] max-w-[270px] uppercase tracking-[0] font-[600] text-[.9375rem] mb-[1.25rem] font-ff-headings">
+    <div className="box-border max-h-[85px]  lg:mt-12  ">
+      <h4 className="max-h-[18px]  uppercase tracking-[0] font-[600] text-[.9375rem] mb-[1.25rem] font-ff-headings">
         filter by price
       </h4>
 
-      <div className="mb-4 max-h-[47px] max-w-[270px]">
+      <div className="mb-4 max-h-[47px] ">
         <div className="slider relative h-1 rounded-md bg-gray-300">
           <div
             className="progress absolute h-1 bg-black rounded"
@@ -158,8 +158,8 @@ export const RangeSlider = ({ categoryId }: any) => {
           />
         </div>
       </div>
-      <div className="max-h-[47px] max-w[270px]">
-        <div className="max-h-[18px] max-w[270px] grid gap-0 grid-cols-2 ">
+      <div className="max-h-[47px] ">
+        <div className="max-h-[18px]  flex justify-between ">
           <div className="text-[.75rem]  mt-1 capitalize text-gray-400">
             price:
             <span className="text-black font-semibold">

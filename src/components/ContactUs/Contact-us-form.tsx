@@ -113,7 +113,7 @@ const ContactForm: React.FC<Props> = () => {
           <div className="mx-2 mt-10 mb-10">
             <button
               type="submit"
-              className="rounded-md bg-[#233a95] px-3.5 py-2.5 text-center text-sm font-semibold text-white"
+              className="rounded-md bg-primary px-3.5 py-2.5 text-center text-sm font-semibold text-white"
             >
               Send Message
             </button>

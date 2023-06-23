@@ -9,6 +9,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { calSubTotal, removeItem, updateItemQuantity } from "../cartSlice";
 import { updateProductQuantity } from "@/features/product/productSlice";
 import { Product } from "@/features/product/product";
+// import { Tooltip } from 'react-tooltip';
+// import Tooltip from '@mui/material/Tooltip';
+
+
 
 
 const CartCard = ({item, index,totalAmount}:any) => {
@@ -54,10 +58,22 @@ const CartCard = ({item, index,totalAmount}:any) => {
 let newprice=item.price-discountprice
 
 let subtotal = (item.count) * (newprice)
+
+const MAX_LENGTH = 20; // Maximum number of characters to display
+
+//   let displayName = item.title;
+//   if (item.title.length > MAX_LENGTH) {
+//     displayName = item.title.substring(0, MAX_LENGTH) + '...';
+//   }
+
+  const MAX_TITLE_LENGTH = 20; // Set your desired character limit
+  const [expanded, setExpanded] = useState(false);
+
+  const titleToDisplay = expanded ? item.title : item.title.substring(0, MAX_TITLE_LENGTH) + "...";
     return ( 
         <div className="grid grid-cols-4 sm:grid-cols-12 grid-2 gap-1 border-b border-[#e4e5ee] py-3 h-28 items-center relative" key={index}>
                                     <div className="h-[95px] sm:col-span-2">
-                                        <Image
+                                        <img
                                             src={item.front}
                                             alt="item1"
                                             style={{
@@ -71,9 +87,16 @@ let subtotal = (item.count) * (newprice)
                                         />
 
                                     </div>
-                                    <div className="col-span-2 sm:col-span-4 text-sm  ">
-                                        {item.title}
+                                    
+                                   
+                                  
+                                    {/* <Tooltip title={item.title} followCursor> */}
+                                    <div className="col-span-2 sm:col-span-4 text-sm " onClick={() => setExpanded(!expanded)}>
+                                        {titleToDisplay}
+                                        
                                     </div>
+                                    {/* </Tooltip> */}
+                                   
                                     <div className="col-span-1 hidden sm:block">{newprice.toFixed(2)}</div>
                                     <div className="flex sm:col-span-2">
                                         <button className="p-2.5 bg-[#edeef5] rounded-full w-[30px] flex items-center" onClick={()=>handleDecrement(item)}>

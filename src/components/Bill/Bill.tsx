@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import baseUrl from "../../../utils/baseUrl";
 import axios from "axios";
+import Swal from "sweetalert2";
 
-const Bill = () => {
+
+const Bill = ({setModal, setModal1}:any) => {
 
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
@@ -217,8 +219,21 @@ const Bill = () => {
             try {
                 const response = await axios.patch(`${baseUrl}/users/${id}`, data);
                 console.log(response.data); // do something with the response data
+                if (response.status==200){
+                    Swal.fire({
+                      title: 'Success',
+                      text: 'Your billing address has been updated successfully',
+                      icon: 'success',
+                      confirmButtonText: 'Done',
+                      confirmButtonColor: '#8DC14F',
+                      
+                    })
+                    setModal1(false)
+                    setModal(false)
+                  }
             } catch (error) {
                 console.log(error); // handle the error
+                
             }
           }
     };
@@ -291,7 +306,7 @@ const Bill = () => {
             <input type="text" className="w-full px-4 h-10 bg-gray-100 rounded-md mt-2 mb-4" value={email} onChange={handleEmailChange} required/>
             {emailError && <div className='text-red-500'>{emailError}</div>}
 
-            <button type="submit" className="bg-[#233a95] text-white py-2.5 px-4 mb-4 rounded-md text-sm" 
+            <button type="submit" className="bg-primary text-white py-2.5 px-4 mb-4 rounded-md text-sm" 
             // onClick={handleSave}
             >Save Changes</button>
              {formError && <div className='text-red-500'>{formError}</div>}

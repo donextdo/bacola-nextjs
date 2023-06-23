@@ -11,7 +11,7 @@ module.exports = {
       "i5.walmartimages.com",
       "sangabrielcomidas.com",
       "spoonfulapp.com",
-      "klbtheme.com",
+      // "klbtheme.com",
       "ongolemart.com",
     ],
   },

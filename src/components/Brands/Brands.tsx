@@ -70,8 +70,8 @@ const Brands = ({ categoryId }: any) => {
     <div>
       {categoryId
         ? !isEmpty && (
-            <div className="box-border max-h-[106px] max-w-[270px] lg:mt-12">
-              <h4 className="max-h-[18px] max-w-[270px] uppercase tracking-[0] font-[600] text-[.9375rem] mb-[1.25rem] font-ff-headings">
+            <div className="box-border max-h-[106px]  lg:mt-12">
+              <h4 className="max-h-[18px]  uppercase tracking-[0] font-[600] text-[.9375rem] mb-[1.25rem] font-ff-headings">
                 brands
               </h4>
               {brand.map((category: any, index) => {
@@ -104,15 +104,15 @@ const Brands = ({ categoryId }: any) => {
             </div>
           )
         : !isEmpty && (
-            <div className="box-border max-h-[106px] max-w-[270px] lg:mt-12">
-              <h4 className="max-h-[18px] max-w-[270px] uppercase tracking-[0] font-[600] text-[.9375rem] mb-[1.25rem] font-ff-headings">
+            <div className="box-border max-h-[106px]  lg:mt-12">
+              <h4 className="max-h-[18px] uppercase tracking-[0] font-[600] text-[.9375rem] mb-[1.25rem] font-ff-headings">
                 brands
               </h4>
               {brandPage.map((brand: any, index: any) => {
                 const isChecked = checkedBrands[brand.id];
                 return (
                   <div
-                    className="relative  max-h-[59px] max-w-[270px] items-center hover:cursor-pointer flex "
+                    className="relative  max-h-[59px]  items-center hover:cursor-pointer flex "
                     key={index}
                   >
                     <div className="mb-3  w-full flex flex-row justify-between ">
