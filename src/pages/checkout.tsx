@@ -11,6 +11,9 @@ import { removeAll } from "@/features/cart/cartSlice";
 import Terms from "@/components/Terms/Terms";
 import Script from "next/script";
 import { IoClose } from "react-icons/io5";
+import { FaCheckCircle } from "react-icons/fa";
+import { FaTimesCircle } from "react-icons/fa";
+import { AiOutlineArrowRight } from "react-icons/ai";
 
 export interface OrderObj {
   userId: string;
@@ -62,31 +65,40 @@ const Checkout = () => {
   const [terms, setTerms] = useState(false);
 
   const [openModal, setOpenModal] = useState(false);
+  const [openPaymentModal, setOpenPaymentModal] = useState(false);
+  const [paymentSuccess, setPaymentSuccess] = useState(false);
+  const [paymentFail, setPaymentFail] = useState(false);
+  const [totPayment, settotPayment]: any = useState(false);
+  const [resultOut, setResult] = useState();
+  const [transactionId, settransactionId] = useState();
+  const [orderObject, setOrderObject]: any = useState();
 
   //payment
+  const gotohome = () => {
+    router.push({
+      pathname: "/",
+    });
+  };
 
   const handleclose = () => {
     setOpenModal(false);
   };
 
-  const [cardNo, setCardNo] = useState("");
-  const [expDate, setExpDate] = useState("");
-  const [csv, setCsv] = useState("");
-  const [cardHolderName, setCardHolderName] = useState("");
-
   const handlePayment = () => {
+    // setOpenPaymentModal(false);
     // Initialize DirectPay Card Payment
     window.DirectPayCardPayment.init({
       container: "card_container",
       merchantId: "ID15415",
-      amount: "100.00",
+      amount: totPayment,
       refCode: "DP12345",
       currency: "LKR",
       type: "ONE_TIME_PAYMENT",
-      customerEmail: "donextweb@gmail.com",
-      customerMobile: "+94712345674",
+      customerEmail: email,
+      // customerMobile: orderObject?.billingAddress?.billingPhone,
+      customerMobile: "+94709876554",
       description: "test products",
-      debug: true,
+      debug: false,
       responseCallback: responseCallback,
       errorCallback: errorCallback,
       logo: "https://test.com/directpay_logo.png",
@@ -107,13 +119,17 @@ const Checkout = () => {
     //response callback.
     function responseCallback(result: any) {
       console.log("successCallback-Client", result);
-      alert(JSON.stringify(result));
+      setResult(result);
+      settransactionId(result.data.transactionId);
+      // console.log("result", resultOut);
+      // console.log("order object : ", orderObject);
+      alert(JSON.stringify(result.status));
     }
 
     //error callback
     function errorCallback(result: any) {
       console.log("errorCallback-Client", result);
-      alert(JSON.stringify(result));
+      alert(JSON.stringify(result.status));
     }
   };
 
@@ -125,12 +141,14 @@ const Checkout = () => {
     console.log("Amount:", paymentData.amount);
     console.log("Currency:", paymentData.currency);
     // Perform any necessary actions, e.g., update order status, display success message, etc.
+    setPaymentSuccess(true);
   };
 
   const handlePaymentFailure = (event: any) => {
     // Handle payment failure
     const { error } = event.detail;
     console.log("Payment error:", error);
+    setPaymentFail(true);
 
     //Parameter Missing
     // Perform any necessary actions, e.g., display error message, retry payment, etc.
@@ -142,7 +160,9 @@ const Checkout = () => {
     script.src = "https://cdn.directpay.lk/dev/v1/directpayCardPayment.js?v=1";
     document.head.appendChild(script);
     script.async = true;
-    script.onload = handlePayment;
+    script.onload = () => {
+      handlePayment();
+    };
     document.head.appendChild(script);
 
     // Clean up event listeners on component unmount
@@ -299,7 +319,7 @@ const Checkout = () => {
   const handlePhoneChange = (e: any) => {
     const newPhone = e.target.value;
     setPhone(newPhone);
-    if (!/^\+?[0-9]{7,}$/i.test(newPhone)) {
+    if (!/^\+?[0-9]{1,10}$/i.test(newPhone)) {
       setPhoneError("Invalid phone number format");
     } else {
       setPhoneError("");
@@ -401,7 +421,7 @@ const Checkout = () => {
         town: townCity,
         state: state,
         zipCode: zipCode,
-        billingPhone: phone,
+        billingPhone: "+94" + phone,
         billingEmail: email,
         note: note,
       },
@@ -430,7 +450,11 @@ const Checkout = () => {
               shippingPhone: ship.shippingAddress?.shippingphone,
             },
     };
+    console.log("phone numbe : ", orderObj);
 
+    settotPayment(orderObj.totalprice);
+    setOrderObject(orderObj);
+    console.log("order object : ", orderObject);
     console.log(orderObj);
     try {
       //authentication session handle
@@ -449,6 +473,8 @@ const Checkout = () => {
         },
       };
       setOpenModal(true);
+      setOpenPaymentModal(true);
+      setPaymentFail(false);
       //   const response = await axios.post(
       //     `${baseUrl}/orders/place`,
       //     orderObj,
@@ -467,6 +493,53 @@ const Checkout = () => {
       //     });
       //     dispatch(removeAll());
       //   }
+    } catch (error) {
+      console.log(error); // handle the error
+      localStorage.removeItem("token");
+      localStorage.removeItem("id");
+      alert("Session expired");
+      router.push("/account");
+    }
+  };
+
+  const handlePlaceOrder = async (event: any) => {
+    event.preventDefault();
+
+    try {
+      //authentication session handle
+      const token = localStorage.getItem("token"); // Retrieve the token from local storage or wherever it's stored
+      if (!token) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("id");
+        alert("Session expired");
+        router.push("/account");
+        return;
+      }
+
+      const config = {
+        headers: {
+          Authorization: token,
+        },
+      };
+
+      const response = await axios.post(
+        `${baseUrl}/orders/place`,
+        orderObject,
+        config
+      );
+
+      console.log(response.data); // do something with the response data
+      if (response.status == 201) {
+        const orderData = {
+          orderId: response.data.orderId,
+          message: response.data.messsage,
+        };
+        router.push({
+          pathname: "/orderMessage",
+          query: orderData,
+        });
+        dispatch(removeAll());
+      }
     } catch (error) {
       console.log(error); // handle the error
       localStorage.removeItem("token");
@@ -633,6 +706,7 @@ const Checkout = () => {
                 <input
                   type="text"
                   className="w-full px-4 h-11 bg-gray-100 rounded-md mt-2 "
+                  placeholder="703409876"
                   value={phone}
                   onChange={handlePhoneChange}
                   required
@@ -1045,24 +1119,165 @@ const Checkout = () => {
           <div className="px-4 mx-2 flex gap-6 flex-col relative  rounded-md w-full lg:w-[1060px]">
             <div
               id="card_container"
-              className="w-full lg:w-[1024px] mx-auto bg-gray-100 shadow-md rounded-md overflow-hidden"
-              style={{ maxHeight: "400px", overflowY: "auto" }}
+              className="w-full lg:w-[600px] mx-auto bg-gray-100 shadow-md rounded-md overflow-hidden"
+              style={{ maxHeight: "700px", overflowY: "auto" }}
             >
-              <div className="bg-[#ed174a] text-white p-2 flex justify-between h-11">
+              <div className="bg-gray-300 text-white p-2 flex justify-between h-11 ">
+                <div className="font-bold text-lg text-black pl-4">
+                  Payment Details
+                </div>
                 <div className="flex justify-end px-2">
                   <button
                     onClick={handleclose}
                     className="bg-[#c2c2d3] rounded-full w-8 h-8 flex justify-center items-center"
                   >
-                    <IoClose className="text-white" />
+                    <IoClose className="text-black" />
                   </button>
                 </div>
-                <div className="font-bold text-lg">Credit Card</div>
-                <div className="text-lg">
-                  <i className="fab fa-cc-visa"></i>
-                </div>
               </div>
-              <div className="p-6">
+              {openPaymentModal && (
+                <div>
+                  <div className="mt-12">
+                    <div className="flex justify-center">
+                      <div className="w-1/2  text-right mr-8 text-gray-500">
+                        Customer Name
+                      </div>
+                      <div className="w-1/2 text-gray-500">{firstName}</div>
+                    </div>
+                    <div className="flex justify-center mt-6">
+                      <div className="w-1/2  text-right mr-8 text-gray-500">
+                        Mobile
+                      </div>
+                      <div className="w-1/2 text-gray-500">{phone}</div>
+                    </div>
+                    <div className="flex justify-center mt-6">
+                      <div className="w-1/2  text-right mr-8 text-gray-500">
+                        Email
+                      </div>
+                      <div className="w-1/2 text-gray-500">{email}</div>
+                    </div>
+                    <div className="flex justify-center mt-6">
+                      <div className="w-1/2  text-right mr-8 text-gray-500">
+                        Amount Paid
+                      </div>
+                      <div className="w-1/2 text-gray-500">{totPayment}</div>
+                    </div>
+                  </div>
+
+                  <div className="flex justify-center items-center my-10">
+                    <button
+                      className="bg-[#ed174a] text-white rounded-md text-sm h-[50px] w-[150px] text-center font-semibold"
+                      onClick={handlePayment}
+                    >
+                      Go to Payment
+                    </button>
+                  </div>
+                </div>
+              )}
+              {paymentSuccess && (
+                <div className="p-6 ">
+                  <div className="text-center text-green-500 text-lg font-semibold mb-4">
+                    <FaCheckCircle className="inline-block w-8 h-8 mr-2" />
+                  </div>
+                  <div className="text-center text-green-500 text-2xl ">
+                    Payment Successful!
+                  </div>
+
+                  <table className="min-w-full border border-none mt-12">
+                    <tbody>
+                      <tr>
+                        <td className="py-2 px-6 font-semibold text-gray-500 text-sm">
+                          Payment Type
+                        </td>
+                        <td className="py-2 px-4 text-right text-gray-600 font-semibold text-sm">
+                          Online Banking
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td className="py-2 px-6  font-semibold text-gray-500 text-sm">
+                          Mobile
+                        </td>
+                        <td className="py-2 px-4 text-right text-gray-600 font-semibold text-sm">
+                          {phone}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="py-2 px-6  font-semibold text-gray-500 text-sm">
+                          Email
+                        </td>
+                        <td className="py-2 px-4 text-right text-gray-600 font-semibold text-sm">
+                          {email}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="py-8 px-6  font-bold text-gray-600 text-base">
+                          Amount Paid
+                        </td>
+                        <td className="py-2 px-4 text-right text-gray-800 font-bold text-base">
+                          {totPayment}.00
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="py-2 px-6  font-semibold text-gray-500 text-sm">
+                          Transaction Id
+                        </td>
+                        <td className="py-2 px-4 text-right text-gray-600 font-semibold text-sm">
+                          {transactionId}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <div className="flex justify-center mt-12">
+                    <button
+                      className="bg-green-500  text-white py-2 px-4 rounded font-bold hover:bg-green-700  focus:outline-none focus:shadow-outline"
+                      onClick={handlePlaceOrder}
+                    >
+                      Continue
+                    </button>
+                  </div>
+                  <div className="flex justify-end mt-4">
+                    <button
+                      className="  text-green-500 py-2 px-4 rounded font-semibold focus:outline-none focus:shadow-outline"
+                      onClick={gotohome}
+                    >
+                      Back to Home
+                      <AiOutlineArrowRight className="inline-block w-5 h-5 ml-2" />
+                    </button>
+                  </div>
+                </div>
+              )}
+              {paymentFail && (
+                <div className="p-6 ">
+                  <div className="text-center text-red-500 text-lg font-semibold mb-4">
+                    <FaTimesCircle className="inline-block w-8 h-8 mr-2" />
+                  </div>
+                  <div className="text-center text-red-500 text-lg font-semibold mb-4">
+                    Opps Something went wrong!
+                  </div>
+                  <div className="text-center text-gray-500 text-sm font-semibold mb-4">
+                    Unfortunately we have an issue with your payment. try again
+                  </div>
+                  <div className="flex justify-center mt-12">
+                    <button
+                      className="bg-red-500  text-white py-2 px-4 rounded font-bold hover:bg-red-700  focus:outline-none focus:shadow-outline"
+                      onClick={handleOrder}
+                    >
+                      Try Again
+                    </button>
+                  </div>
+                  <div className="flex justify-end mt-4">
+                    <button
+                      className="  text-green-500 py-2 px-4 rounded font-semibold focus:outline-none focus:shadow-outline"
+                      onClick={gotohome}
+                    >
+                      Back to Home
+                      <AiOutlineArrowRight className="inline-block w-5 h-5 ml-2" />
+                    </button>
+                  </div>
+                </div>
+              )}
+              {/* <div className="p-6">
                 <div className="mb-4">
                   <label
                     className="block text-gray-700 font-bold mb-2"
@@ -1076,7 +1291,14 @@ const Checkout = () => {
                     type="text"
                     value={cardNo}
                     onChange={(e) => {
-                      setCardNo(e.target.value);
+                      const input = e.target.value;
+                      const formattedValue = input
+                        .replace(/\s/g, "") // Remove any existing spaces
+                        .replace(/[^0-9]/g, "") // Remove non-digit characters
+                        .substring(0, 16) // Limit the input to a maximum of 16 characters
+                        .replace(/(.{4})/g, "$1 "); // Add a space after every 4 characters
+
+                      setCardNo(formattedValue);
                     }}
                     placeholder="xxxx xxxx xxxx xxxx"
                   />
@@ -1096,7 +1318,17 @@ const Checkout = () => {
                       placeholder="MM/YY"
                       value={expDate}
                       onChange={(e) => {
-                        setExpDate(e.target.value);
+                        let input = e.target.value;
+
+                        // Remove any non-digit characters
+                        input = input.replace(/[^0-9]/g, "");
+
+                        // Format the input with a slash after the two-digit month
+                        if (input.length > 2) {
+                          input = input.slice(0, 2) + "/" + input.slice(2);
+                        }
+
+                        setExpDate(input);
                       }}
                     />
                   </div>
@@ -1143,7 +1375,7 @@ const Checkout = () => {
                 >
                   Save Card
                 </button>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
