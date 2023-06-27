@@ -32,6 +32,8 @@ import { RecentlyViewProduct } from "@/components/RecentlyViewProduct/RecentlyVi
 import RelatedProduct from "@/components/RelatedProduct/RelatedProduct";
 import Breadcrumbs from "@/components/Breadcrumbs/Breadcrumbs";
 import { MdArrowBackIos, MdArrowForwardIos } from "react-icons/md";
+import Swal from "sweetalert2";
+
 // interface ItemData {
 //     description: string;
 //     quantity: number;
@@ -84,6 +86,7 @@ const ItemPages = () => {
     const [hideSideImage, setHideSideImage] = useState(false);
     const [categoryName, setcategoryname] = useState();
     let [newQuantity, setNewQuantity] = useState<number>(1)
+    const [count, setCount] = useState(1);
 
     let id: any;
     if (typeof localStorage !== "undefined") {
@@ -94,7 +97,7 @@ const ItemPages = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     let [imageArray1, setImageArray1] = useState<string[]>([]);
     let [imageArray2, setImageArray2] = useState<string[]>([]);
-    
+
 
     const [currentSlide, setCurrentSlide] = useState(0);
 
@@ -149,7 +152,7 @@ const ItemPages = () => {
     console.log(combinedArray[0])
 
     const [selectedImage, setSelectedImage] = useState(combinedArray[0]);
-    
+
     console.log(selectedImage)
 
 
@@ -239,28 +242,42 @@ const ItemPages = () => {
     );
 
     const handleIncrement = (data: Product) => {
-        const setQuantity = (item?.count || 1) + 1;
-        setNewQuantity(setQuantity)
-        console.log(newQuantity)
-
-        dispatch(
-            updateProductQuantity({ productId: data._id, count: setQuantity })
-        );
+        setCount(count + 1);
     };
 
     const handleDecrement = (data: Product) => {
-        const setQuantity = Math.max((item?.count || 0) - 1, 0);
-        setNewQuantity(setQuantity)
-        console.log(newQuantity)
-
-        dispatch(
-            updateProductQuantity({ productId: data._id, count: setQuantity })
-        );
+        if (count > 0) {
+            setCount(count - 1);
+        }
     };
 
     const handleaddToCart = (data: any) => {
-        dispatch(addItems({ product: data, count: newQuantity }));
+        const cartItemsString = localStorage.getItem('cartItems');
+        const items = cartItemsString ? JSON.parse(cartItemsString) : [];
 
+        const itemIndex = items.findIndex((item: any) => item._id === data._id);
+
+        if (itemIndex === -1) {
+            const newItem = { ...data, count: count };
+            items.push(newItem);
+            localStorage.setItem('cartItems', JSON.stringify(items));
+        } else {
+            items[itemIndex].count += count;
+            localStorage.setItem('cartItems', JSON.stringify(items));
+        }
+
+        Swal.fire({
+            title:
+              '<span style="font-size: 18px">Item has been added to your card</span>',
+            width: 400,
+            timer: 1500,
+            // padding: '3',
+            color: "white",
+            background: "#00B853",
+            showConfirmButton: false,
+            heightAuto: true,
+            position: "bottom-end",
+          });
     };
 
     const stars = Array.from({ length: 5 }, (_, i) => (
@@ -511,12 +528,12 @@ const ItemPages = () => {
                                         <div className="flex items-center justify-center row min-h-[63px] max-w-[421.2px] md:min-h-[67px] md:max-w-[444.66px]">
                                             {combinedArray.slice(currentSlide, currentSlide + 3).map((photo, index) => (
                                                 <div
-                                                key={index}
+                                                    key={index}
                                                     className={`flex items-center justify-center min-w-[67px] min-h-[67px] lg:min-w-[67px] lg:min-h-[67px] md:min-w-[94.4px] md:min-h-[94.4px] border ${selectedImage === photo
                                                         ? "border-gray-500"
                                                         : "border-gray-200"
                                                         } mr-2 hover:cursor-pointer`}
-                                                        onClick={() => handleImageClick(currentSlide + index)}
+                                                    onClick={() => handleImageClick(currentSlide + index)}
 
                                                 >
                                                     {!hideSideImage ? (
@@ -539,7 +556,7 @@ const ItemPages = () => {
 
                                         </div>
                                         <button className="arrow right" onClick={nextSlide}>
-                                        <MdArrowForwardIos />
+                                            <MdArrowForwardIos />
 
                                         </button>
                                     </div>
@@ -584,7 +601,7 @@ const ItemPages = () => {
                                                 </button>
 
                                                 <div className=" flex items-center justify-center w-full text-center ">
-                                                    {item?.count || 1}
+                                                    {count}
                                                 </div>
 
                                                 {/* <div className=" flex items-center justify-center w-full text-center ">
@@ -709,7 +726,7 @@ const ItemPages = () => {
                                             </div>
                                         )}
 
-                                        <div className="flex flex-row gap-1.5 max-w-[229px] mt-6">
+                                        <div className="flex flex-row gap-1.5 max-w-[229px] mt-6 ">
                                             <div className="">
                                                 <a
                                                     href={facebookShareUrl}
@@ -873,7 +890,7 @@ const ItemPages = () => {
                             </button>
 
                             <div className=" flex items-center justify-center w-full text-center ">
-                                {item?.count || 1}
+                                {count}
                             </div>
 
                             <button

@@ -5,12 +5,22 @@ import { RootState } from "../../../redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import Link from "next/link";
 import CartPopupCard from "@/features/cart/popup-cart/CartPopupCard";
-import { calSubTotal, fetchCart } from "../cartSlice";
+import { calSubTotal } from "../cartSlice";
 import cart from "../../../../assets/cart/Untitled.jpg"
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { Product } from "@/features/product/product";
 
 const CartPopup = ({ setCart, }: any) => {
-  const cartItems = useSelector((state: RootState) => state.cart.items);
+  // const cartItems = useSelector((state: RootState) => state.cart.items);
+  const [cartItems, setCartItems] = useState<Product[]>([])
+
+  useEffect(() => {
+    const cartItemsString = localStorage.getItem('cartItems');
+    const cartItemsArray = cartItemsString ? JSON.parse(cartItemsString) : [];
+    setCartItems(cartItemsArray)
+  },[]);
+
+
   let totalAmount1 = useSelector((state: RootState) => state.cart.totalAmount);
 
 
@@ -18,10 +28,6 @@ const CartPopup = ({ setCart, }: any) => {
   const dispatch = useDispatch();
 
   let totalSubtotal = 0;
-  // cartItems.forEach(price  =>{
-  //     totalSubtotal += price.subtotal
-  // }
-  // )
   console.log(totalSubtotal);
 
   let totalAmount = 0
@@ -41,8 +47,8 @@ const CartPopup = ({ setCart, }: any) => {
       {cartItems.length > 0 ?
         <div className="absolute w-[300px] max-h-[540px] bg-white right-0 z-50 px-5 py-4 shadow-lg">
           <div className="max-h-[260px] overflow-y-auto overflow-x-hidden">
-            {cartItems.map((item:any, index) => (
-              <CartPopupCard item={item} key={index} />
+            {cartItems.map((item: any, index: number) => (
+              <CartPopupCard item={item} key={index} setCartItems={setCartItems}/>
             ))}
           </div>
           <div className="flex justify-between mt-6 mb-4">
@@ -72,7 +78,7 @@ const CartPopup = ({ setCart, }: any) => {
         :
         <div className="absolute w-[300px] max-h-[540px] min-h-[220px] bg-white right-0 z-50 px-5 py-4 shadow-lg">
           <div className="h-[160px] sm:col-span-2">
-          <Image
+            <Image
               src={cart}
               alt="item1"
               style={{

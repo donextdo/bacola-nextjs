@@ -15,38 +15,79 @@ import { Product } from "@/features/product/product";
 
 
 
-const CartCard = ({item, index,totalAmount}:any) => {
+const CartCard = ({item, index,totalAmount, setCount}:any) => {
     const dispatch = useDispatch()
     const cartItems = useSelector((state: RootState) => state.cart.items);
   let totalAmount1 = useSelector((state: RootState) => state.cart.totalAmount);
+  
+
 
 
 
     const handleCheckboxChange = () => {
 
     }
-    const handleIncrement = (item: Product) => {
-        const newQuantity = (item.count || 0) + 1;
-    dispatch(updateItemQuantity({ itemId: item._id, count: newQuantity }));
-    dispatch(updateProductQuantity({ productId: item._id, count: newQuantity }))
-    dispatch(calSubTotal(totalAmount))
+    const handleIncrement = (product: Product) => {
+    //     const newQuantity = (item.count || 0) + 1;
+    // dispatch(updateItemQuantity({ itemId: item._id, count: newQuantity }));
+    // dispatch(updateProductQuantity({ productId: item._id, count: newQuantity }))
+    // dispatch(calSubTotal(totalAmount))
+    
+     const cartItemsString = localStorage.getItem('cartItems');
+  const items = cartItemsString ? JSON.parse(cartItemsString) : [];
+
+  const itemIndex = items.findIndex((item:any) => item._id === product._id);
+  
+    if (itemIndex) {     
+      items[itemIndex].count += 1;
+      localStorage.setItem('cartItems', JSON.stringify(items));
+      setCount(items[itemIndex].count)
+      console.log("hi",items[itemIndex].count)
+    }
+
     };
 
-    const handleDecrement = (item: Product) => {
-        const newQuantity = Math.max((item.count || 0) - 1, 0);
-    dispatch(updateItemQuantity({ itemId: item._id, count: newQuantity }));
-    dispatch(updateProductQuantity({ productId: item._id, count: newQuantity }))
-    dispatch(calSubTotal(totalAmount))
+    const handleDecrement = (product: Product) => {
+    //     const newQuantity = Math.max((item.count || 0) - 1, 0);
+    // dispatch(updateItemQuantity({ itemId: item._id, count: newQuantity }));
+    // dispatch(updateProductQuantity({ productId: item._id, count: newQuantity }))
+    // dispatch(calSubTotal(totalAmount))
+      const cartItemsString = localStorage.getItem('cartItems');
+    const items = cartItemsString ? JSON.parse(cartItemsString) : [];
+  
+    const itemIndex = items.findIndex((item:any) => item._id === product._id);
+    console.log(itemIndex)
+      if (itemIndex) {
+        if (items[itemIndex].count > 0) { // Check if count is greater than 0
+            items[itemIndex].count -= 1;
+            localStorage.setItem('cartItems', JSON.stringify(items));
+            setCount(items[itemIndex].count);
+          }
+
+      }
 
     };
+
     useEffect(() => {
         console.log(cartItems)
         
     });
     
     const handleDelete = (_id: string) => {
-        dispatch(removeItem(_id));
-        dispatch(calSubTotal(totalAmount))
+        // dispatch(removeItem(_id));
+        // dispatch(calSubTotal(totalAmount))
+       
+        const cartItemsString = localStorage.getItem('cartItems');
+        const items = cartItemsString ? JSON.parse(cartItemsString) : [];
+    
+    
+        const filteredCartItems = items.filter((item:any) => item._id !== _id);
+    
+        if (filteredCartItems.length == 0) {
+          localStorage.removeItem("cartItems");
+        } else {
+          localStorage.setItem("cartItems", JSON.stringify(filteredCartItems));
+        }
 
         
     }

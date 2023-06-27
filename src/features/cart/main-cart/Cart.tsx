@@ -12,6 +12,7 @@ import axios from "axios";
 import baseUrl from "../../../../utils/baseUrl";
 import { useRouter } from "next/router";
 import cartimage from "../../../../assets/cart/cartimage2.png"
+import { Product } from "@/features/product/product";
 
 
 
@@ -39,7 +40,18 @@ interface LocationType {
 
 
 const Cart: FC<CartType> = () => {
-    const cartItems = useSelector((state: RootState) => state.cart.items);
+    // const cartItems = useSelector((state: RootState) => state.cart.items);
+
+    const [cartItems, setCartItems] = useState<Product[]>([]);
+    const [count, setCount] = useState(0);
+
+    useEffect(() => {
+        const cartItemsString = localStorage.getItem('cartItems');
+        const parsedCartItems = cartItemsString ? JSON.parse(cartItemsString) : [];
+        setCartItems(parsedCartItems);
+       
+    }, [count]);
+
     let totalAmount1 = useSelector((state: RootState) => state.cart.totalAmount);
 
     const [selectedValue, setSelectedValue] = useState("Ship");
@@ -55,7 +67,7 @@ const Cart: FC<CartType> = () => {
     const [zipCode, setZipCode] = useState('');
     const [phone, setPhone] = useState('');
     const [email, setEmail] = useState('');
-    let id: any;
+    let id: any; 
     if (typeof localStorage !== 'undefined') {
         id = localStorage.getItem("id");
     }
@@ -90,17 +102,12 @@ const Cart: FC<CartType> = () => {
 
 
     useEffect(() => {
-        console.log(cartItems)
         dispatch(calSubTotal(totalAmount))
     });
 
     useEffect(() => {
         fetchData()
     }, []);
-
-    useEffect(() => {
-        localStorage.setItem('cartItems', JSON.stringify(cartItems));
-    }, [cartItems]);
 
     async function fetchData() {
         try {
@@ -127,13 +134,12 @@ const Cart: FC<CartType> = () => {
 
 
     let totalAmount = 0
-    for (let i = 0; i < cartItems.length; i++) {
+    for (let i = 0; i < cartItems?.length; i++) {
         let item = cartItems[i];
         let subtotal = item.count * (item.price - item.price * (item.discount / 100));
         totalAmount += subtotal;
     }
     useEffect(() => {
-        console.log(cartItems)
         dispatch(calSubTotal(totalAmount))
     });
 
@@ -156,8 +162,8 @@ const Cart: FC<CartType> = () => {
 
     const handleClear = () => {
 
-        dispatch(removeAll())
-
+        // Set the cartItems in localStorage to an empty array
+        localStorage.setItem('cartItems', '[]');
 
     }
 
@@ -190,8 +196,8 @@ const Cart: FC<CartType> = () => {
     console.log(shippingObj)
 
     const handleCheckout = () => {
-        
-        const orderData = {  shippingObj:JSON.stringify(shippingObj) };
+
+        const orderData = { shippingObj: JSON.stringify(shippingObj) };
         console.log(orderData)
         router.push({
             pathname: '/checkout',
@@ -249,14 +255,15 @@ const Cart: FC<CartType> = () => {
 
     const [selectedItem, setSelectedItem] = useState('');
 
-  const handleDropdownChange = (event:any) => {
-    setSelectedItem(event.target.value);
-    console.log(event.target.value);
-  };
+    const handleDropdownChange = (event: any) => {
+        setSelectedItem(event.target.value);
+        console.log(event.target.value);
+    };
 
+    console.log(cartItems)
     return (
         <>
-            {cartItems.length > 0 ? (
+            {cartItems?.length > 0 ? (
                 <div className="container mx-auto xl:px-40 px-5 mt-4 mb-20">
                     <div>
                         <section className="flex justify-between h-full">
@@ -282,9 +289,9 @@ const Cart: FC<CartType> = () => {
 
                                     {/* products */}
                                     <div>
-                                        {cartItems.map((item, index) => (
+                                        {cartItems.map((item: any, index: number) => (
 
-                                            <CartCard item={item} key={index} totalAmount={totalAmount} />
+                                            <CartCard item={item} key={index} totalAmount={totalAmount} setCount={setCount} />
                                         ))}
 
                                     </div>
@@ -381,10 +388,10 @@ const Cart: FC<CartType> = () => {
                                                             <input
                                                                 type="text" className="w-full px-4 h-11 bg-gray-100 rounded-md mt-2 ml-2 pl-4 text-sm" placeholder="City"
                                                                 value={townCity}
-                                                               onChange={(e) => {
-        setTownCity(e.target.value);
-        console.log(e.target.value); // Log the value of townCity
-    }}
+                                                                onChange={(e) => {
+                                                                    setTownCity(e.target.value);
+                                                                    console.log(e.target.value); // Log the value of townCity
+                                                                }}
                                                             />
                                                             <input
                                                                 type="text" className="w-full px-4 h-11 bg-gray-100 rounded-md mt-2 ml-2 pl-4 text-sm" placeholder="Postcode/Zip"
@@ -447,8 +454,8 @@ const Cart: FC<CartType> = () => {
                                     </tr>
                                     <tr>
 
-                                    <td className="relative text-right text-[12.5px] ">
-                                                    {/* <select
+                                        <td className="relative text-right text-[12.5px] ">
+                                            {/* <select
                                                         className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
                                                     value={selectedItem}
                                                     onChange={handleDropdownChange}
@@ -471,33 +478,33 @@ const Cart: FC<CartType> = () => {
                                                             />
                                                         </svg>
                                                     </div> */}
-                                                </td>
+                                        </td>
                                     </tr>
                                     <tr>
 
-                                    <td className="text-right text-[13px]  text-[#2bbef9] pb-4 pt-2"><button onClick={handleClick}> Change address</button>
-                                                    {showInputs && (
-                                                        <div className="flex flex-col justify-end text-right">
-                                                            <input
-                                                                type="text" className="w-full px-4 h-11 bg-gray-100 rounded-md mt-2 ml-2 pl-4 text-sm" placeholder="Country"
-                                                                value={country}
-                                                                onChange={(e) => setCountry(e.target.value)}
-                                                            />
-                                                            <input
-                                                                type="text" className="w-full px-4 h-11 bg-gray-100 rounded-md mt-2 ml-2 pl-4 text-sm" placeholder="City"
-                                                                value={townCity}
-                                                                onChange={(e) => setTownCity(e.target.value)}
-                                                            />
-                                                            <input
-                                                                type="text" className="w-full px-4 h-11 bg-gray-100 rounded-md mt-2 ml-2 pl-4 text-sm" placeholder="Postcode/Zip"
-                                                                value={zipCode}
-                                                                onChange={(e) => setZipCode(e.target.value)}
-                                                            />
+                                        <td className="text-right text-[13px]  text-[#2bbef9] pb-4 pt-2"><button onClick={handleClick}> Change address</button>
+                                            {showInputs && (
+                                                <div className="flex flex-col justify-end text-right">
+                                                    <input
+                                                        type="text" className="w-full px-4 h-11 bg-gray-100 rounded-md mt-2 ml-2 pl-4 text-sm" placeholder="Country"
+                                                        value={country}
+                                                        onChange={(e) => setCountry(e.target.value)}
+                                                    />
+                                                    <input
+                                                        type="text" className="w-full px-4 h-11 bg-gray-100 rounded-md mt-2 ml-2 pl-4 text-sm" placeholder="City"
+                                                        value={townCity}
+                                                        onChange={(e) => setTownCity(e.target.value)}
+                                                    />
+                                                    <input
+                                                        type="text" className="w-full px-4 h-11 bg-gray-100 rounded-md mt-2 ml-2 pl-4 text-sm" placeholder="Postcode/Zip"
+                                                        value={zipCode}
+                                                        onChange={(e) => setZipCode(e.target.value)}
+                                                    />
 
-                                                            <button className="bg-[#233a95] text-white py-2.5 px-4 rounded-md text-xs h-11 w-[104px] mt-3" onClick={handleUpdateShipping}>Update</button>
-                                                        </div>
-                                                    )}
-                                                </td>
+                                                    <button className="bg-[#233a95] text-white py-2.5 px-4 rounded-md text-xs h-11 w-[104px] mt-3" onClick={handleUpdateShipping}>Update</button>
+                                                </div>
+                                            )}
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td className="border-y border-[#e4e5ee] text-[13px] font-semibold pb-4">Total</td>
@@ -515,7 +522,7 @@ const Cart: FC<CartType> = () => {
             ) : (
                 <div className="flex flex-col items-center justify-center">
                     <div className="h-[320px] w-[320px]">
-                    <Image
+                        <Image
                             src={cartimage}
                             alt="item1"
                             style={{

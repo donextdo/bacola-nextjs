@@ -38,274 +38,243 @@ const MyList: React.FC<{
   CartBottomItems: CartBottomItem[];
   productCounts: any;
 }> = ({ CartBottomItems, productCounts }) => {
-  const router = useRouter();
+  // const router = useRouter();
 
-  const getProductByCategory = async (categoryId: any) => {
-    sessionStorage.clear();
-    localStorage.clear();
+  // const getProductByCategory = async (categoryId: any) => {
+  //   sessionStorage.clear();
+  //   localStorage.clear();
 
-    router.push({
-      pathname: "/filterProduct",
-      query: { categoryId: categoryId },
-    });
-  };
+  //   router.push({
+  //     pathname: "/filterProduct",
+  //     query: { categoryId: categoryId },
+  //   });
+  // };
 
-  const slicedItems = CartBottomItems.slice(1, 8);
+  // const slicedItems = CartBottomItems.slice(1, 8);
 
   return (
     <div className="container mx-auto  grid grid-rows-5 md:grid-rows-4  lg:grid-rows-2 md:grid-flow-col w-full p-2 border lg:border-transparent my-4">
-      {/* <div className="lg:col-span-1 ">
-
-        {slicedItems.map((CartBottomItem, index) => {
-          if (index === 0) {
-            return (
-              <div key={CartBottomItem._id} className="py-5  ">
-                <div
-                  className="flex flex-col items-center justify-center"
-                  onClick={() => getProductByCategory(CartBottomItem._id)}
-                >
-                  <img
-                    src={images[index]}
-                    alt={CartBottomItem.name}
-                    className="cursor-pointer justify-center w-auto h-[360px] lg:h-[186px] "
-                  />
-                  <div className="">
-                    <p className="cursor-pointer font-bold text-[14px] lg:text-left text-center ">
-                      {CartBottomItem.name}
-                    </p>
-                    <div className="flex flex-col text-center ">
-                      <p className="cursor-pointer text-[12px] mt-1 text-gray-400">
-                        {productCounts[CartBottomItem._id]} Items
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            );
-          }
-          return null; // Return null for other items to skip rendering them
-        })}
-      </div> */}
+     
       <div className="col-span-2 md:row-span-4 lg:row-span-2 flex flex-col justify-center items-center lg:border">
         <div className="h-[150px] w-[150px]">
-        <Link href="/filterProduct?categoryId=6450a82507245756e38fe70a#">
-          <Image
-            src={bevarage}
-            alt="bevarage"
-            style={{
-              objectFit: "contain",
-              backgroundColor: "white",
-              width: "100%",
-              height: "100%",
-            }}
-            width={450}
-            height={400}
-          />
-                    </Link>
+          <Link href="/filterProduct?categoryId=6450a82507245756e38fe70a#">
+            <Image
+              src={bevarage}
+              alt="bevarage"
+              style={{
+                objectFit: "contain",
+                backgroundColor: "white",
+                width: "100%",
+                height: "100%",
+              }}
+              width={450}
+              height={400}
+            />
+          </Link>
 
         </div>
         <Link href="/filterProduct?categoryId=6450a82507245756e38fe70a#">
-<h2 className="text-sm">Beverages</h2>          </Link>
+          <h2 className="text-sm">Beverages</h2>          </Link>
 
         <h2 className="text-xs text-[#202435]">11 Items</h2>
       </div>
       <div className="flex flex-col lg:flex-row items-center lg:border p-5">
         <div className="h-[70px] w-auto mr-3">
-        <Link href="/filterProduct?categoryId=6450a82507245756e38fe70a#">
+          <Link href="/filterProduct?categoryId=6450a82507245756e38fe70a#">
 
-          <Image
-            src={meat}
-            alt="bevarage"
-            style={{
-              objectFit: "contain",
-              backgroundColor: "white",
-              width: "100%",
-              height: "100%",
-            }}
-            width={450}
-            height={400}
-          />
+            <Image
+              src={meat}
+              alt="bevarage"
+              style={{
+                objectFit: "contain",
+                backgroundColor: "white",
+                width: "100%",
+                height: "100%",
+              }}
+              width={450}
+              height={400}
+            />
           </Link>
         </div>
         <div>
-        <Link href="/filterProduct?categoryId=6450a82507245756e38fe70a#">
-<h2 className="text-sm">Meats & Seafood</h2>          </Link>
+          <Link href="/filterProduct?categoryId=6450a82507245756e38fe70a#">
+            <h2 className="text-sm">Meats & Seafood</h2>          </Link>
 
           <h2 className="text-xs text-[#202435]">11 Items</h2>
         </div>
       </div>
       <div className="flex flex-col lg:flex-row items-center lg:border p-5">
         <div className="h-[70px] w-auto mr-3">
-        <Link href="/filterProduct?categoryId=6450a82507245756e38fe70a#">
+          <Link href="/filterProduct?categoryId=6450a82507245756e38fe70a#">
 
-          <Image
-            src={household}
-            alt="bevarage"
-            style={{
-              objectFit: "contain",
-              backgroundColor: "white",
-              width: "100%",
-              height: "100%",
-            }}
-            width={450}
-            height={400}
-          />
-                    </Link>
+            <Image
+              src={household}
+              alt="bevarage"
+              style={{
+                objectFit: "contain",
+                backgroundColor: "white",
+                width: "100%",
+                height: "100%",
+              }}
+              width={450}
+              height={400}
+            />
+          </Link>
 
         </div>
         <div>
-        <Link href="/filterProduct?categoryId=6450a82507245756e38fe70a#">
-<h2 className="text-sm">Household Needs</h2>          </Link>
+          <Link href="/filterProduct?categoryId=6450a82507245756e38fe70a#">
+            <h2 className="text-sm">Household Needs</h2>          </Link>
 
           <h2 className="text-xs text-[#202435]">11 Items</h2>
         </div>
       </div>
       <div className="flex flex-col lg:flex-row items-center lg:border p-5">
         <div className="h-[70px] w-auto mr-3">
-        <Link href="/filterProduct?categoryId=6450a82507245756e38fe70a#">
+          <Link href="/filterProduct?categoryId=6450a82507245756e38fe70a#">
 
-          <Image
-            src={grocery}
-            alt="bevarage"
-            style={{
-              objectFit: "contain",
-              backgroundColor: "white",
-              width: "100%",
-              height: "100%",
-            }}
-            width={450}
-            height={400}
-          />
-                    </Link>
+            <Image
+              src={grocery}
+              alt="bevarage"
+              style={{
+                objectFit: "contain",
+                backgroundColor: "white",
+                width: "100%",
+                height: "100%",
+              }}
+              width={450}
+              height={400}
+            />
+          </Link>
 
         </div>
         <div>
-        <Link href="/filterProduct?categoryId=6450a82507245756e38fe70a#">
- <h2 className="text-sm">Grocery & Staples</h2>          </Link>
+          <Link href="/filterProduct?categoryId=6450a82507245756e38fe70a#">
+            <h2 className="text-sm">Grocery & Staples</h2>          </Link>
 
           <h2 className="text-xs text-[#202435]">11 Items</h2>
         </div>
       </div>
       <div className="flex flex-col lg:flex-row items-center lg:border p-5">
         <div className="h-[70px] w-auto mr-3">
-        <Link href="/filterProduct?categoryId=6450a80707245756e38fe708">
-          <Image
-            src={fruitvegetables}
-            alt="bevarage"
-            style={{
-              objectFit: "contain",
-              backgroundColor: "white",
-              width: "100%",
-              height: "100%",
-            }}
-            width={450}
-            height={400}
-          />
+          <Link href="/filterProduct?categoryId=6450a80707245756e38fe708">
+            <Image
+              src={fruitvegetables}
+              alt="bevarage"
+              style={{
+                objectFit: "contain",
+                backgroundColor: "white",
+                width: "100%",
+                height: "100%",
+              }}
+              width={450}
+              height={400}
+            />
           </Link>
         </div>
         <div>
-        <Link href="/filterProduct?categoryId=6450a80707245756e38fe708">
-          <h2 className="text-sm">Fruits & Vegetables</h2>          </Link>
+          <Link href="/filterProduct?categoryId=6450a80707245756e38fe708">
+            <h2 className="text-sm">Fruits & Vegetables</h2>          </Link>
 
           <h2 className="text-xs text-[#202435]">11 Items</h2>
         </div>
       </div>
       <div className="flex flex-col lg:flex-row items-center lg:border p-5">
         <div className="h-[70px] w-auto mr-3">
-        <Link href="/filterProduct?categoryId=6450a83907245756e38fe70c#">
-          <Image
-            src={frozenfoods}
-            alt="bevarage"
-            style={{
-              objectFit: "contain",
-              backgroundColor: "white",
-              width: "100%",
-              height: "100%",
-            }}
-            width={450}
-            height={400}
-          />
+          <Link href="/filterProduct?categoryId=6450a83907245756e38fe70c#">
+            <Image
+              src={frozenfoods}
+              alt="bevarage"
+              style={{
+                objectFit: "contain",
+                backgroundColor: "white",
+                width: "100%",
+                height: "100%",
+              }}
+              width={450}
+              height={400}
+            />
           </Link>
         </div>
         <div>
-        <Link href="/filterProduct?categoryId=6450a83907245756e38fe70c#">
-          <h2 className="text-sm">Frozen Foods</h2>          </Link>
+          <Link href="/filterProduct?categoryId=6450a83907245756e38fe70c#">
+            <h2 className="text-sm">Frozen Foods</h2>          </Link>
 
           <h2 className="text-xs text-[#202435]">11 Items</h2>
         </div>
       </div>
       <div className="flex flex-col lg:flex-row items-center lg:border p-5">
         <div className="h-[70px] w-auto mr-3">
-        <Link href="/filterProduct?categoryId=6450a83907245756e38fe70c#">
+          <Link href="/filterProduct?categoryId=6450a83907245756e38fe70c#">
 
-          <Image
-            src={dairy}
-            alt="bevarage"
-            style={{
-              objectFit: "contain",
-              backgroundColor: "white",
-              width: "100%",
-              height: "100%",
-            }}
-            width={450}
-            height={400}
-          />
-                    </Link>
+            <Image
+              src={dairy}
+              alt="bevarage"
+              style={{
+                objectFit: "contain",
+                backgroundColor: "white",
+                width: "100%",
+                height: "100%",
+              }}
+              width={450}
+              height={400}
+            />
+          </Link>
 
         </div>
         <div>
-        <Link href="/filterProduct?categoryId=6450a83907245756e38fe70c#">
-<h2 className="text-sm">Breakfast & Dairy</h2>          </Link>
+          <Link href="/filterProduct?categoryId=6450a83907245756e38fe70c#">
+            <h2 className="text-sm">Breakfast & Dairy</h2>          </Link>
 
           <h2 className="text-xs text-[#202435]">11 Items</h2>
         </div>
       </div>
       <div className="flex flex-col lg:flex-row items-center lg:border p-5">
         <div className="h-[70px] w-auto mr-3">
-        <Link href="/filterProduct?categoryId=6450a85507245756e38fe70e#">
-          <Image
-            src={buscuits}
-            alt="bevarage"
-            style={{
-              objectFit: "contain",
-              backgroundColor: "white",
-              width: "100%",
-              height: "100%",
-            }}
-            width={450}
-            height={400}
-          />
+          <Link href="/filterProduct?categoryId=6450a85507245756e38fe70e#">
+            <Image
+              src={buscuits}
+              alt="bevarage"
+              style={{
+                objectFit: "contain",
+                backgroundColor: "white",
+                width: "100%",
+                height: "100%",
+              }}
+              width={450}
+              height={400}
+            />
           </Link>
         </div>
         <div>
-        <Link href="/filterProduct?categoryId=6450a85507245756e38fe70e#">
-          <h2 className="text-sm">Biscuits & Snacks</h2>          </Link>
+          <Link href="/filterProduct?categoryId=6450a85507245756e38fe70e#">
+            <h2 className="text-sm">Biscuits & Snacks</h2>          </Link>
 
           <h2 className="text-xs text-[#202435]">11 Items</h2>
         </div>
       </div>
       <div className="flex flex-col lg:flex-row items-center lg:border p-5">
         <div className="h-[70px] w-auto mr-3">
-        <Link href="/filterProduct?categoryId=6450a85507245756e38fe70e#">
+          <Link href="/filterProduct?categoryId=6450a85507245756e38fe70e#">
 
-          <Image
-            src={breads}
-            alt="bevarage"
-            style={{
-              objectFit: "contain",
-              backgroundColor: "white",
-              width: "100%",
-              height: "100%",
-            }}
-            width={450}
-            height={400}
-          />
-                    </Link>
+            <Image
+              src={breads}
+              alt="bevarage"
+              style={{
+                objectFit: "contain",
+                backgroundColor: "white",
+                width: "100%",
+                height: "100%",
+              }}
+              width={450}
+              height={400}
+            />
+          </Link>
 
         </div>
         <div>
-        <Link href="/filterProduct?categoryId=6450a85507245756e38fe70e#">
-<h2 className="text-sm">Breads & Bakery</h2>          </Link>
+          <Link href="/filterProduct?categoryId=6450a85507245756e38fe70e#">
+            <h2 className="text-sm">Breads & Bakery</h2>          </Link>
 
           <h2 className="text-xs text-[#202435]">11 Items</h2>
         </div>
@@ -341,6 +310,8 @@ const MyList: React.FC<{
     </div>
   );
 };
+
+
 const CartList: React.FC = () => {
   const [CartBottomItems, setCartBottomItems] = useState([]);
   const [productCounts, setProductCounts] = useState({});

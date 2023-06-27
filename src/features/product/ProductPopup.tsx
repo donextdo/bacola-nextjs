@@ -15,6 +15,8 @@ import { updateProductQuantity } from "./productSlice";
 import { RootState } from "@/redux/store";
 import Review from "@/components/ViewItem/Details/Review";
 import { useRouter } from "next/router";
+import Swal from "sweetalert2";
+
 
 const ProductPopup = ({ setProductPopup, proId }: any) => {
     const [data, setData] = useState<Product>({
@@ -61,9 +63,7 @@ const ProductPopup = ({ setProductPopup, proId }: any) => {
     const [myCategory, setMyCategory] = useState([]);
     const router = useRouter();
     let [newQuantity, setNewQuantity] = useState<number>(1)
-
-
-
+    const [count, setCount] = useState(1);
 
 
     const dispatch = useDispatch()
@@ -126,23 +126,13 @@ const ProductPopup = ({ setProductPopup, proId }: any) => {
     const item: Product | undefined = products.find((item) => item._id === proId);
 
     const handleIncrement = (data: Product) => {
-        const setQuantity = (item?.count || 1) + 1;
-      setNewQuantity(setQuantity)
-      console.log(newQuantity)
-
-        dispatch(
-            updateProductQuantity({ productId: data._id, count: setQuantity })
-        );
+        setCount(count + 1);
     };
 
     const handleDecrement = (data: Product) => {
-        const setQuantity = Math.max((item?.count || 0) - 1, 0);
-      setNewQuantity(setQuantity)
-        console.log(newQuantity)
-
-        dispatch(
-            updateProductQuantity({ productId: data._id, count: setQuantity })
-        );
+        if (count > 0) {
+            setCount(count - 1);
+        }
     };
 
     // const handleWishlist = async (data: any) => {
@@ -241,7 +231,32 @@ const ProductPopup = ({ setProductPopup, proId }: any) => {
     }
 
     const handleaddToCart = (data: any) => {
-        dispatch(addItems({ product: data, count: newQuantity }));
+        const cartItemsString = localStorage.getItem('cartItems');
+        const items = cartItemsString ? JSON.parse(cartItemsString) : [];
+
+        const itemIndex = items.findIndex((item: any) => item._id === data._id);
+
+        if (itemIndex === -1) {
+            const newItem = { ...data, count: count };
+            items.push(newItem);
+            localStorage.setItem('cartItems', JSON.stringify(items));
+        } else {
+            items[itemIndex].count += count;
+            localStorage.setItem('cartItems', JSON.stringify(items));
+        }
+
+        Swal.fire({
+            title:
+              '<span style="font-size: 18px">Item has been added to your card</span>',
+            width: 400,
+            timer: 1500,
+            // padding: '3',
+            color: "white",
+            background: "#00B853",
+            showConfirmButton: false,
+            heightAuto: true,
+            position: "bottom-end",
+          });
     };
 
     let discountprice;
@@ -404,7 +419,7 @@ const ProductPopup = ({ setProductPopup, proId }: any) => {
 
                                             <div className=" flex items-center justify-center w-full text-center ">
 
-                                                {item?.count || 1}
+                                                {count}
                                             </div>
 
                                             {/* <div className=" flex items-center justify-center w-full text-center ">

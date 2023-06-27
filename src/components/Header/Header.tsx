@@ -32,7 +32,7 @@ const Header = () => {
 
   const Logo = () => {
     if (logoUrl !== "") {
-      console.log("logo url");
+      // console.log("logo url");
       return (
         <Image
           src={logoUrl}
@@ -48,7 +48,7 @@ const Header = () => {
         />
       );
     } else {
-      console.log("logo url");
+      // console.log("logo url");
       return (
         <Image
           src={logo}

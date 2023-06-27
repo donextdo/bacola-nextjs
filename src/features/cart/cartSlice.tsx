@@ -121,11 +121,11 @@ export const {
 export default cartSlice.reducer;
 
 
-
 // import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 // import { Product } from "../product/product";
 // import baseUrl from "../../../utils/baseUrl";
 // import axios from "axios";
+// import { useEffect, useState } from "react";
 
 // interface CartState {
 //   items: Product[];
@@ -135,44 +135,24 @@ export default cartSlice.reducer;
 //   error: string | null;
 // }
 
-// const loadCartState = (): CartState => {
-//   try {
-//     console.log("err")
-//     const serializedState = localStorage.getItem("cart");
-//     if (serializedState === null) {
-//     console.log("er1r")
-//       return {
-//         items: [],
-//         totalCount: 0,
-//         totalAmount: 0,
-//         status: "idle",
-//         error: null,
-//       };
+
+// const [cartItems, setCartItems] = useState([]);
+
+//     useEffect(() => {
+//       const cartItemsString = localStorage.getItem('cartItems');
+//       const parsedCartItems = cartItemsString ? JSON.parse(cartItemsString) : [];
+//       setCartItems(parsedCartItems);
+//     }, []);
+
+// let savedTotalCount 
+//     if (typeof localStorage !== 'undefined') {
+//       savedTotalCount = localStorage.getItem("myTotalCount");
 //     }
-//     return JSON.parse(serializedState);
-//   } catch (err) {
-//     console.log(err)
-//     return {
-//       items: [],
-//       totalCount: 0,
-//       totalAmount: 0,
-//       status: "idle",
-//       error: null,
-//     };
-//   }
-// };
+// const parsedTotalCount = savedTotalCount ? parseInt(savedTotalCount, 10) : 0;
 
-// // const saveCartState = (state: CartState): void => {
-// //   try {
-// //     const serializedState = JSON.stringify(state);
-// //     localStorage.setItem("cart", serializedState);
-// //   } catch {
-// //     // Ignore write errors
-// //   }
-// // };
 
-// const initialState: CartState = loadCartState() || {
-//   items: [],
+// const initialState: CartState = {
+//   items: cartItems,
 //   totalCount: 0,
 //   totalAmount: 0,
 //   status: "idle",
@@ -184,7 +164,6 @@ export default cartSlice.reducer;
 //   initialState,
 //   reducers: {
 //     addItem: (state, action: PayloadAction<Product>) => {
-//       console.log(action.payload);
 //       const itemIndex = state.items.findIndex(
 //         (item) => item._id === action.payload._id
 //       );
@@ -194,7 +173,8 @@ export default cartSlice.reducer;
 //         state.items[itemIndex].count++;
 //       }
 //       state.totalCount++;
-//       // saveCartState(state);
+//       localStorage.setItem("myItems", JSON.stringify(state.items));
+//       localStorage.setItem("myTotalCount", state.totalCount.toString());
 //     },
 //     addItems: (state, action: PayloadAction<{ product: Product; count: number }>) => {
 //       const { product, count } = action.payload;
@@ -207,38 +187,45 @@ export default cartSlice.reducer;
 //       }
 
 //       state.totalCount += count;
-//       // saveCartState(state);
+//       localStorage.setItem("myItems", JSON.stringify(state.items));
+//       localStorage.setItem("myTotalCount", state.totalCount.toString());
 //     },
 //     removeItem: (state, action: PayloadAction<string>) => {
-//       const itemIndex = state.items.findIndex((item) => item._id === action.payload);
+//       const itemIndex = state.items.findIndex(
+//         (item) => item._id === action.payload
+//       );
 //       if (itemIndex !== -1) {
 //         const count = state.items[itemIndex].count;
 //         state.items.splice(itemIndex, 1);
 //         state.totalCount -= count;
 //       }
-//       // saveCartState(state);
+//       localStorage.setItem("myItems", JSON.stringify(state.items));
+//       localStorage.setItem("myTotalCount", state.totalCount.toString());
 //     },
 //     updateItemQuantity: (
 //       state,
 //       action: PayloadAction<{ itemId: string; count: number }>
 //     ) => {
-//       const item = state.items.find((item) => item._id === action.payload.itemId);
+//       const item = state.items.find(
+//         (item) => item._id === action.payload.itemId
+//       );
 //       if (item) {
 //         const countDiff = action.payload.count - item.count;
 //         item.count = action.payload.count;
 //         state.totalCount += countDiff;
 //       }
-//       // saveCartState(state);
+//       localStorage.setItem("myItems", JSON.stringify(state.items));
+//       localStorage.setItem("myTotalCount", state.totalCount.toString());
 //     },
 //     removeAll: (state) => {
 //       state.items = [];
 //       state.totalCount = 0;
 //       state.totalAmount = 0;
-//       // saveCartState(state);
+//       localStorage.removeItem("myItems");
+//       localStorage.removeItem("myTotalCount");
 //     },
 //     calSubTotal: (state, action) => {
 //       state.totalAmount = action.payload;
-//       // saveCartState(state);
 //     },
 //   },
 // });
@@ -253,3 +240,4 @@ export default cartSlice.reducer;
 // } = cartSlice.actions;
 
 // export default cartSlice.reducer;
+
