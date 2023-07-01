@@ -127,7 +127,7 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
     }
 
   
-    // dispatch(calSubTotal(totalAmount));
+    dispatch(calSubTotal(12));
   };
 
   const handleDecrement = (product: Product) => {
@@ -144,7 +144,7 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
 
       }
     
-    dispatch(calSubTotal(totalAmount));
+      dispatch(calSubTotal(12));
   };
 
   const handleaddToCart = (product: Product) => {
@@ -159,10 +159,12 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
       items.push(newItem);
       localStorage.setItem('cartItems', JSON.stringify(items));
       setCount(newItem.count)
+      dispatch(calSubTotal(12));
     } else {
       items[itemIndex].count += 1;
       localStorage.setItem('cartItems', JSON.stringify(items));
       setCount(items[itemIndex].count)
+      dispatch(calSubTotal(12));
     }
 
 

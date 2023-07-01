@@ -9,6 +9,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import { removeAll } from "@/features/cart/cartSlice";
 import Terms from "@/components/Terms/Terms";
+import { Product } from "@/features/product/product";
 
 
 
@@ -96,7 +97,14 @@ const Checkout = () => {
     console.log(parsedObject?.cartshippingtown)
 
 
-    const cartItems = useSelector((state: RootState) => state.cart.items);
+    const [cartItems, setCartItems] = useState<Product[]>([])
+
+    useEffect(() => {
+      const cartItemsString = localStorage.getItem('cartItems');
+      const cartItemsArray = cartItemsString ? JSON.parse(cartItemsString) : [];
+      setCartItems(cartItemsArray)
+    },[]);
+    
     const orderList = useSelector((state: RootState) => state.order.orders);
     const dispatch = useDispatch<AppDispatch>();
     let id: any;

@@ -88,7 +88,7 @@ export const cartSlice = createSlice({
     },
     calSubTotal: (state, action) => {
       // console.log('Order inserted:', action.payload);
-      state.totalAmount = action.payload 
+      state.totalAmount += action.payload 
       
     },
     

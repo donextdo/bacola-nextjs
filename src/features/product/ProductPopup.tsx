@@ -9,7 +9,7 @@ import axios from "axios";
 import baseUrl from "../../../utils/baseUrl";
 import { Product } from "./product";
 import { useDispatch, useSelector } from "react-redux";
-import { addItem, addItems, updateItemQuantity } from "../cart/cartSlice";
+import { addItem, addItems, calSubTotal, updateItemQuantity } from "../cart/cartSlice";
 import { updateProductQuantity } from "./productSlice";
 
 import { RootState } from "@/redux/store";
@@ -49,7 +49,7 @@ const ProductPopup = ({ setProductPopup, proId }: any) => {
         speacialtag: "",
         additionalInformation: '',
         isBestSeller: false,
-        isNewArrival:false,
+        isNewArrival: false,
         imageArray: ""
 
     })
@@ -127,16 +127,20 @@ const ProductPopup = ({ setProductPopup, proId }: any) => {
 
     const handleIncrement = (data: Product) => {
         setCount(count + 1);
+        dispatch(calSubTotal(12));
+
     };
 
     const handleDecrement = (data: Product) => {
         if (count > 0) {
             setCount(count - 1);
         }
+        dispatch(calSubTotal(12));
+
     };
 
     // const handleWishlist = async (data: any) => {
-       
+
     //     if (id) {
     //         const whishListObj = {
     //             whishList: [
@@ -154,7 +158,7 @@ const ProductPopup = ({ setProductPopup, proId }: any) => {
     //                 },
     //             ],
     //         };
-    
+
     //         try {
     //             const response = await axios.post(
     //                 `${baseUrl}/users/wishList/${id}`,
@@ -170,7 +174,7 @@ const ProductPopup = ({ setProductPopup, proId }: any) => {
 
     // }
     const handleWishlist = async (data: any) => {
-       
+
         if (id) {
             const whishListObj = {
                 whishList: [
@@ -188,45 +192,45 @@ const ProductPopup = ({ setProductPopup, proId }: any) => {
                     },
                 ],
             };
-    
+
             try {
 
-            //authentication session handle
+                //authentication session handle
                 const token = localStorage.getItem("token"); // Retrieve the token from local storage or wherever it's stored
                 if (!token) {
                     localStorage.removeItem("token");
                     localStorage.removeItem("id");
-                alert("Session expired")
-                  router.push("/account");
-                  return;
+                    alert("Session expired")
+                    router.push("/account");
+                    return;
                 }
 
                 const config = {
-                  headers: {
-                    Authorization: token,
-                  },
+                    headers: {
+                        Authorization: token,
+                    },
                 };
 
                 const response = await axios.post(
                     `${baseUrl}/users/wishList/${id}`,
                     whishListObj,
                     config,
-                    
+
                 );
 
-                
+
                 console.log(response.data); // do something with the response data
             } catch (error) {
                 console.log(error); // handle the error 
                 localStorage.removeItem("token");
                 localStorage.removeItem("id");
                 alert("Session expired")
-                  router.push("/account");
-                
+                router.push("/account");
+
             }
-          } else {
+        } else {
             router.push("/account");
-          }
+        }
 
     }
 
@@ -240,14 +244,18 @@ const ProductPopup = ({ setProductPopup, proId }: any) => {
             const newItem = { ...data, count: count };
             items.push(newItem);
             localStorage.setItem('cartItems', JSON.stringify(items));
+            dispatch(calSubTotal(12));
+
         } else {
             items[itemIndex].count += count;
             localStorage.setItem('cartItems', JSON.stringify(items));
+            dispatch(calSubTotal(12));
+
         }
 
         Swal.fire({
             title:
-              '<span style="font-size: 18px">Item has been added to your card</span>',
+                '<span style="font-size: 18px">Item has been added to your card</span>',
             width: 400,
             timer: 1500,
             // padding: '3',
@@ -256,7 +264,7 @@ const ProductPopup = ({ setProductPopup, proId }: any) => {
             showConfirmButton: false,
             heightAuto: true,
             position: "bottom-end",
-          });
+        });
     };
 
     let discountprice;
@@ -296,10 +304,10 @@ const ProductPopup = ({ setProductPopup, proId }: any) => {
                             <div className="text-gray-400 mx-3">|</div>
                             <span className="text-gray-400 ">
                                 <div className="flex flex-row max-h-[18px] max-w-[130.49px] items-center justify-center">
-                                <p className="text-md text-yellow-400 flex">
-                                            {yellowstars}
-                                        </p>
-                                        <p className="text-md text-gray-400 flex">{graystars}</p>
+                                    <p className="text-md text-yellow-400 flex">
+                                        {yellowstars}
+                                    </p>
+                                    <p className="text-md text-gray-400 flex">{graystars}</p>
                                 </div>
                             </span>
                             <span className="ml-1">
@@ -323,17 +331,17 @@ const ProductPopup = ({ setProductPopup, proId }: any) => {
                                             {data?.discount != undefined ? data.discount : 0}%
                                         </div>
                                     )}
-                                   
-                                   {data?.speacialtag == "organic" && (
-                                            <div className=" font-semibold px-2 py-1 bg-emerald-100 text-green-600 rounded-full text-[10px] flex items-center justify-center uppercase tracking-tighter">
-                                                {data.speacialtag}
-                                            </div>
-                                        )}
-                                        {data?.speacialtag == "Recommended" && (
-                                            <div className=" font-semibold px-2 py-1 bg-gray-500 text-white rounded text-[10px] flex items-center justify-center uppercase tracking-tighter">
-                                                {data.speacialtag}
-                                            </div>
-                                        )}
+
+                                    {data?.speacialtag == "organic" && (
+                                        <div className=" font-semibold px-2 py-1 bg-emerald-100 text-green-600 rounded-full text-[10px] flex items-center justify-center uppercase tracking-tighter">
+                                            {data.speacialtag}
+                                        </div>
+                                    )}
+                                    {data?.speacialtag == "Recommended" && (
+                                        <div className=" font-semibold px-2 py-1 bg-gray-500 text-white rounded text-[10px] flex items-center justify-center uppercase tracking-tighter">
+                                            {data.speacialtag}
+                                        </div>
+                                    )}
                                 </div>
                                 <div className="hover:cursor-pointer flex items-center justify-center px-12 ">
                                     <img
@@ -501,45 +509,45 @@ const ProductPopup = ({ setProductPopup, proId }: any) => {
                                 </div>
                                 <hr className="max-w-[330px] mt-6"></hr>
                                 <div className="mt-6 max-h-[72.8px] max-w-[308.33px]">
-                                {myCategory.length > 0 && (
-                                            <div className="flex flex-row">
-                                                <span className="text-gray-400 text-xs capitalize">
-                                                    Category:
-                                                    {myCategory.map((cat: any, index) => (
+                                    {myCategory.length > 0 && (
+                                        <div className="flex flex-row">
+                                            <span className="text-gray-400 text-xs capitalize">
+                                                Category:
+                                                {myCategory.map((cat: any, index) => (
+                                                    <a
+                                                        key={index}
+                                                        href=""
+                                                        rel="tag"
+                                                        className="ml-2 text-gray-600 text-xs capitalize"
+                                                    >
+                                                        {cat.name}
+                                                    </a>
+                                                ))}
+                                            </span>
+                                        </div>
+                                    )}
+
+                                    {tag.length > 0 && (
+                                        <div className="flex">
+                                            <span className="text-gray-400 text-xs capitalize">
+                                                Tags:
+                                            </span>
+                                            <div className="flex">
+                                                {tag.map((tag: any, index: number) => (
+                                                    <div key={index} className="flex">
+                                                        <div className="text-xs">{index > 0 && ","}</div>
                                                         <a
-                                                            key={index}
                                                             href=""
                                                             rel="tag"
-                                                            className="ml-2 text-gray-600 text-xs capitalize"
+                                                            className="ml-2 text-gray-600 text-xs capitalize flex"
                                                         >
-                                                            {cat.name}
+                                                            {tag.name}
                                                         </a>
-                                                    ))}
-                                                </span>
+                                                    </div>
+                                                ))}
                                             </div>
-                                        )}
-
-                                        {tag.length > 0 && (
-                                            <div className="flex">
-                                                <span className="text-gray-400 text-xs capitalize">
-                                                    Tags:
-                                                </span>
-                                                <div className="flex">
-                                                    {tag.map((tag: any, index: number) => (
-                                                        <div key={index} className="flex">
-                                                            <div className="text-xs">{index > 0 && ","}</div>
-                                                            <a
-                                                                href=""
-                                                                rel="tag"
-                                                                className="ml-2 text-gray-600 text-xs capitalize flex"
-                                                            >
-                                                                {tag.name}
-                                                            </a>
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            </div>
-                                        )}
+                                        </div>
+                                    )}
 
                                 </div>
                             </div>

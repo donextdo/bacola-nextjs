@@ -2,7 +2,7 @@ import Image from "next/image";
 import product from '../../../assets/product/product.jpg'
 import { IoClose } from "react-icons/io5";
 import { useDispatch } from "react-redux";
-import { removeItem } from "../cartSlice";
+import { calSubTotal, removeItem } from "../cartSlice";
 // import Tooltip from '@mui/material/Tooltip';
 
 
@@ -21,11 +21,14 @@ const CartPopupCard = ({ item, setCartItems }: any) => {
 
         if (filteredCartItems.length == 0) {
             localStorage.removeItem("cartItems");
+
         } else {
             localStorage.setItem("cartItems", JSON.stringify(filteredCartItems));
         }
 
         setCartItems(filteredCartItems)
+        dispatch(calSubTotal(12));
+
     }
 
     let discountprice;
@@ -35,9 +38,10 @@ const CartPopupCard = ({ item, setCartItems }: any) => {
     const MAX_LENGTH = 30; // Maximum number of characters to display
 
     let displayName = item.title;
-    if (item.title.length > MAX_LENGTH) {
+    if (item.title?.length > MAX_LENGTH) {
         displayName = item.title.substring(0, MAX_LENGTH) + '...';
     }
+
     return (
         <div className=" grid grid-cols-3 w-[258px] mb-4 pt-2 relative">
             <div className="text-left h-20  border-b border-[#e3e4e6] ">

@@ -23,7 +23,7 @@ import { Product } from "@/features/product/product";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
-import { addItem, addItems, updateItemQuantity } from "@/features/cart/cartSlice";
+import { addItem, addItems, calSubTotal, updateItemQuantity } from "@/features/cart/cartSlice";
 import { updateProductQuantity } from "@/features/product/productSlice";
 import Review from "@/components/ViewItem/Details/Review";
 import siteUrl from "../../../utils/siteUrl";
@@ -243,12 +243,16 @@ const ItemPages = () => {
 
     const handleIncrement = (data: Product) => {
         setCount(count + 1);
+        dispatch(calSubTotal(12));
+
     };
 
     const handleDecrement = (data: Product) => {
         if (count > 0) {
             setCount(count - 1);
         }
+        dispatch(calSubTotal(12));
+
     };
 
     const handleaddToCart = (data: any) => {
@@ -261,14 +265,18 @@ const ItemPages = () => {
             const newItem = { ...data, count: count };
             items.push(newItem);
             localStorage.setItem('cartItems', JSON.stringify(items));
+            dispatch(calSubTotal(12));
+
         } else {
             items[itemIndex].count += count;
             localStorage.setItem('cartItems', JSON.stringify(items));
+            dispatch(calSubTotal(12));
+
         }
 
         Swal.fire({
             title:
-              '<span style="font-size: 18px">Item has been added to your card</span>',
+                '<span style="font-size: 18px">Item has been added to your card</span>',
             width: 400,
             timer: 1500,
             // padding: '3',
@@ -277,7 +285,7 @@ const ItemPages = () => {
             showConfirmButton: false,
             heightAuto: true,
             position: "bottom-end",
-          });
+        });
     };
 
     const stars = Array.from({ length: 5 }, (_, i) => (
@@ -564,7 +572,7 @@ const ItemPages = () => {
                                 </div>
                             </div>
                             <div className="col-span-4 grid grid-cols-1 xl:grid-cols-2 gap-4 w-full ">
-                                <div className=" w-full">
+                                <div className="mb-2 w-full">
                                     <div className=" flex flex-row">
                                         <span className="text-gray-400 line-through mr-2 my-1 font-[1.125rem] flex items-center justify-center">
                                             Rs {data?.price.toFixed(2)}
@@ -646,7 +654,7 @@ const ItemPages = () => {
                                         </button> */}
                                         </div>
                                     </div>
-                                    <div className="max-h-[66px] w-full mt-6">
+                                    <div className="w-full mt-6">
                                         {data.type && (
                                             <div className="flex flex-row text-[.75rem] place-items-start mb-1">
                                                 <div className="mr-2">
@@ -685,7 +693,7 @@ const ItemPages = () => {
                                         )}
                                     </div>
                                     <hr className="max-w-[330px] mt-6"></hr>
-                                    <div className="mt-6 max-h-[72.8px] max-w-[308.33px]">
+                                    <div className="mt-6  max-w-[308.33px]">
                                         {myCategory.length > 0 && (
                                             <div className="flex flex-row">
                                                 <span className="text-gray-400 text-xs capitalize">

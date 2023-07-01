@@ -101,10 +101,7 @@ const Cart: FC<CartType> = () => {
     });
 
 
-    useEffect(() => {
-        dispatch(calSubTotal(totalAmount))
-    });
-
+    
     useEffect(() => {
         fetchData()
     }, []);
@@ -139,9 +136,10 @@ const Cart: FC<CartType> = () => {
         let subtotal = item.count * (item.price - item.price * (item.discount / 100));
         totalAmount += subtotal;
     }
+
     useEffect(() => {
-        dispatch(calSubTotal(totalAmount))
-    });
+              dispatch(calSubTotal(12));
+    },[]);
 
     // calculate discount
 
@@ -164,7 +162,8 @@ const Cart: FC<CartType> = () => {
 
         // Set the cartItems in localStorage to an empty array
         localStorage.setItem('cartItems', '[]');
-
+        setCartItems([])
+        dispatch(calSubTotal(12));
     }
 
     function handleClick() {
@@ -291,7 +290,7 @@ const Cart: FC<CartType> = () => {
                                     <div>
                                         {cartItems.map((item: any, index: number) => (
 
-                                            <CartCard item={item} key={index} totalAmount={totalAmount} setCount={setCount} />
+                                            <CartCard item={item} key={index} totalAmount={totalAmount} setCount={setCount} setCartItems={setCartItems}/>
                                         ))}
 
                                     </div>
