@@ -6,7 +6,7 @@ import { GrFormClose } from "react-icons/gr";
 import { IoCloseSharp, IoClose } from "react-icons/io5";
 import { RootState } from "../../../redux/store"
 import { useDispatch, useSelector } from "react-redux";
-import { calSubTotal, removeItem, updateItemQuantity } from "../cartSlice";
+import { calSubTotal} from "../cartSlice";
 import { updateProductQuantity } from "@/features/product/productSlice";
 import { Product } from "@/features/product/product";
 import { useRouter } from "next/navigation";
@@ -75,6 +75,7 @@ const CartCard = ({ item, index, totalAmount, setCount,setCartItems }: any) => {
       setCartItems([])
       dispatch(calSubTotal(12));
     } else {
+      console.log("remove item aaa")
       localStorage.setItem("cartItems", JSON.stringify(filteredCartItems));
       setCartItems(filteredCartItems)
       dispatch(calSubTotal(12));

@@ -11,8 +11,7 @@ import { FC, useState } from "react";
 import Image from "next/image";
 import { RootState } from "../../redux/store";
 import { useDispatch, useSelector } from "react-redux";
-import { addItem, calSubTotal, updateItemQuantity } from "../cart/cartSlice";
-import { updateProductQuantity } from "./productSlice";
+import { calSubTotal, } from "../cart/cartSlice";
 import { Product } from "./product";
 import Link from "next/link";
 import ProductPopup from "./ProductPopup";
@@ -31,24 +30,15 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
   // const [productPopup, setProductPopup] = useState(false);
   const [wishlist, setWishlist] = useState([]);
   const dispatch = useDispatch();
-  const cartItems = useSelector((state: RootState) => state.cart.items);
+  // const cartItems = useSelector((state: RootState) => state.cart.cartItems);
   let id = localStorage.getItem("id");
   const [productPopup, setProductPopup] = useState(false);
   const [proId, setProId] = useState("");
   const [grid, setGrid] = useState<string>("");
   const router = useRouter();
   const [count, setCount] = useState(0);
+  const totalAmountCal = useSelector((state: RootState) => state.cart.totalAmount);
 
-  // const cartItemsString = localStorage.getItem('cartItems');
-  // const items = cartItemsString ? JSON.parse(cartItemsString) : [];
-  // const itemone = items.find(
-  //   (item:any) => item._id === product._id
-  // );
-  
-  // console.log(itemone)
-
-  const myProductsString = localStorage.getItem('myProducts');
-  const myProducts = myProductsString ? JSON.parse(myProductsString) : [];
 
   useEffect(() => {
     if (product.discount >= 0) {
@@ -67,8 +57,8 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
       (item:any) => item._id === product._id
     );
     setCount(itemone?.count ?? 0)
-    console.log(itemone)
-  },[count])
+    // console.log(itemone)
+  },[count, totalAmountCal])
 
   useEffect(() => {
     const getItem: string | null = localStorage.getItem("gridType");
@@ -205,39 +195,7 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
   discountprice = product.price * (product.discount / 100);
   let newprice = product.price - discountprice;
 
-  // const handleWishlist = async (product: any) => {
-  //   if (id) {
-  //     const whishListObj = {
-  //       whishList: [
-  //         {
-  //           productId: product._id,
-  //           front: product.front,
-  //           title: product.title,
-  //           price: product.price,
-  //           date: new Date().toLocaleDateString("en-US", {
-  //             month: "long",
-  //             day: "numeric",
-  //             year: "numeric",
-  //           }),
-  //           quantity: product.quantity,
-  //         },
-  //       ],
-  //     };
 
-  //     try {
-  //       const response = await axios.post(
-  //         `${baseUrl}/users/wishList/${id}`,
-  //         whishListObj
-  //       );
-  //       console.log(response.data); // do something with the response data
-  //     } catch (error) {
-  //       console.log(error); // handle the error
-  //     }
-  //   } else {
-  //     router.push("/account");
-  //   }
-
-  // };
   const handleWishlist = async (data: any) => {
        
     if (id) {
@@ -296,16 +254,17 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
 
 }
 
-  let totalAmount = 0;
-  for (let i = 0; i < cartItems.length; i++) {
-    let item = cartItems[i];
-    let subtotal =
-      item.count * (item.price - item.price * (item.discount / 100));
-    totalAmount += subtotal;
-  }
+  // let totalAmount = 0;
+  // for (let i = 0; i < cartItems.length; i++) {
+  //   let item = cartItems[i];
+  //   let subtotal =
+  //     item.count * (item.price - item.price * (item.discount / 100));
+  //   totalAmount += subtotal;
+  // }
+
   useEffect(() => {
-    dispatch(calSubTotal(totalAmount));
-  });
+    dispatch(calSubTotal(12));
+  },[]);
 
   const handlepopup = (product: any) => {
     setProductPopup(true);

@@ -7,7 +7,7 @@ import Link from "next/link";
 import { RootState } from "../../../redux/store"
 import { useDispatch, useSelector } from "react-redux";
 import CartCard from "./CartCard";
-import { calSubTotal, removeAll } from "../cartSlice";
+import { calSubTotal } from "../cartSlice";
 import axios from "axios";
 import baseUrl from "../../../../utils/baseUrl";
 import { useRouter } from "next/router";

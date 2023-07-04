@@ -23,7 +23,7 @@ import { Product } from "@/features/product/product";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
-import { addItem, addItems, calSubTotal, updateItemQuantity } from "@/features/cart/cartSlice";
+import { calSubTotal} from "@/features/cart/cartSlice";
 import { updateProductQuantity } from "@/features/product/productSlice";
 import Review from "@/components/ViewItem/Details/Review";
 import siteUrl from "../../../utils/siteUrl";

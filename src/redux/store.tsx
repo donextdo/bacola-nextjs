@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import productReducer from "@/features/product/productSlice";
-import cartReducer, { addItem, addItems } from "../features/cart/cartSlice";
+import cartReducer from "../features/cart/cartSlice";
 import orderSlice from "@/components/Checkout/orderSlice";
 import userReducer from "../../src/features/User/userSlice";
 import recentlyClickedReducer from "@/features/product/recentlyClickedSlice";

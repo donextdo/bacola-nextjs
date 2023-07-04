@@ -17,16 +17,13 @@ import SideNavBar from "../SideNavBar/SideNavbar";
 const Header = () => {
   const [cart, setCart] = useState(false);
   const [showSideNavbar, setShowSideNavbar] = useState(false)
-  // const [totalCount, setTotalCount] = useState(0)
   const totalCount = useSelector((state: RootState) => state.cart.totalCount);
   const totalAmount = useSelector((state: RootState) => state.cart.totalAmount);
   const router = useRouter();
   const [totalPrice, setTotalPrice] = useState(0)
   const [totalQuantity, setTotalQuantity] = useState(0)
 
-  // useEffect(() => {
-  //   localStorage.setItem('totalCount', totalCount.toString());
-  // }, [totalCount]);
+  
 
   useEffect(() => {
     const cartItemsString = localStorage.getItem('cartItems');
@@ -34,7 +31,6 @@ const Header = () => {
     if (cartItemsArray.length > 0){
       const sum = cartItemsArray.reduce((accumulator:any, currentValue:any) => {
         const updatedUnitPrice = currentValue.price - (currentValue.price * (currentValue.discount / 100));
-        console.log((currentValue.price * (currentValue.discount / 100)))
         return accumulator + (currentValue.count * updatedUnitPrice);
       }, 0);
       
@@ -42,9 +38,14 @@ const Header = () => {
       setTotalPrice(sum)
       setTotalQuantity(sumQuantity)
       
+    } else {
+      setTotalPrice(0)
+      setTotalQuantity(0)
     }
     
     console.log("head total",totalAmount)
+    
+
   },[totalAmount]);
 
   
@@ -104,6 +105,8 @@ const Header = () => {
     setShowSideNavbar(!showSideNavbar);
   };
 
+  console.log("head amount",totalPrice)
+  console.log("head count",totalQuantity)
 
   return (
     <>

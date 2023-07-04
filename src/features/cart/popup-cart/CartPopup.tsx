@@ -11,7 +11,6 @@ import { useEffect, useState } from "react";
 import { Product } from "@/features/product/product";
 
 const CartPopup = ({ setCart, }: any) => {
-  // const cartItems = useSelector((state: RootState) => state.cart.items);
   const [cartItems, setCartItems] = useState<Product[]>([])
 
   useEffect(() => {
@@ -28,7 +27,7 @@ const CartPopup = ({ setCart, }: any) => {
   const dispatch = useDispatch();
 
   let totalSubtotal = 0;
-  console.log(totalSubtotal);
+  // console.log(totalSubtotal);
 
   let totalAmount = 0
   for (let i = 0; i < cartItems.length; i++) {
@@ -36,8 +35,8 @@ const CartPopup = ({ setCart, }: any) => {
     let subtotal = item.count * (item.price - item.price * (item.discount / 100));
     totalAmount += subtotal;
   }
+
   useEffect(() => {
-    console.log(totalAmount)
     totalAmount1 = totalAmount
     dispatch(calSubTotal(12));
   },[]);

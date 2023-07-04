@@ -9,7 +9,7 @@ import axios from "axios";
 import baseUrl from "../../../utils/baseUrl";
 import { Product } from "./product";
 import { useDispatch, useSelector } from "react-redux";
-import { addItem, addItems, calSubTotal, updateItemQuantity } from "../cart/cartSlice";
+import { calSubTotal } from "../cart/cartSlice";
 import { updateProductQuantity } from "./productSlice";
 
 import { RootState } from "@/redux/store";

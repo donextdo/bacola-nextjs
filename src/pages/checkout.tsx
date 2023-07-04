@@ -7,9 +7,9 @@ import { useDispatch, useSelector } from "react-redux";
 import baseUrl from "../../utils/baseUrl";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import { removeAll } from "@/features/cart/cartSlice";
 import Terms from "@/components/Terms/Terms";
 import { Product } from "@/features/product/product";
+import { calSubTotal } from "@/features/cart/cartSlice";
 
 
 
@@ -376,7 +376,9 @@ const Checkout = () => {
                     pathname: '/orderMessage',
                     query: orderData,
                 });
-                dispatch(removeAll())
+                localStorage.removeItem("cartItems");
+        dispatch(calSubTotal(12));
+
 
 
             }

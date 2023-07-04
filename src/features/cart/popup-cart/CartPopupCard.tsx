@@ -2,7 +2,7 @@ import Image from "next/image";
 import product from '../../../assets/product/product.jpg'
 import { IoClose } from "react-icons/io5";
 import { useDispatch } from "react-redux";
-import { calSubTotal, removeItem } from "../cartSlice";
+import { calSubTotal} from "../cartSlice";
 // import Tooltip from '@mui/material/Tooltip';
 
 
@@ -20,6 +20,8 @@ const CartPopupCard = ({ item, setCartItems }: any) => {
         const filteredCartItems = items.filter((item: any) => item._id !== _id);
 
         if (filteredCartItems.length == 0) {
+      console.log("remove item")
+
             localStorage.removeItem("cartItems");
 
         } else {
@@ -43,7 +45,7 @@ const CartPopupCard = ({ item, setCartItems }: any) => {
     }
 
     return (
-        <div className=" grid grid-cols-3 w-[258px] mb-4 pt-2 relative">
+        <div className="grid grid-cols-3 gap-1 w-[258px] mb-4 pt-2 relative">
             <div className="text-left h-20  border-b border-[#e3e4e6] ">
                 <img
                     src={item.front}

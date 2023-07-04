@@ -1,4 +1,4 @@
-import { addItem, calSubTotal } from "@/features/cart/cartSlice";
+import { calSubTotal } from "@/features/cart/cartSlice";
 import { updateProductQuantity } from "@/features/product/productSlice";
 import axios from "axios";
 import Image from "next/image";
