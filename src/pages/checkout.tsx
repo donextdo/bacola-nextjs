@@ -2,18 +2,20 @@ import CheckoutSidebar from "@/components/Checkout/CheckoutSidebar";
 import { addOrder, insertOrderAsync } from "@/components/Checkout/orderSlice";
 import { AppDispatch, RootState } from "@/redux/store";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import baseUrl from "../../utils/baseUrl";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { removeAll } from "@/features/cart/cartSlice";
 import Terms from "@/components/Terms/Terms";
-import Script from "next/script";
 import { IoClose } from "react-icons/io5";
 import { FaCheckCircle } from "react-icons/fa";
 import { FaTimesCircle } from "react-icons/fa";
 import { AiOutlineArrowRight } from "react-icons/ai";
+import { Init } from "directpay-ipg-js";
+import CryptoJS from "crypto-js";
+import Script from "next/script";
 
 export interface OrderObj {
   userId: string;
@@ -68,7 +70,7 @@ const Checkout = () => {
   const [openPaymentModal, setOpenPaymentModal] = useState(false);
   const [paymentSuccess, setPaymentSuccess] = useState(false);
   const [paymentFail, setPaymentFail] = useState(false);
-  const [totPayment, settotPayment]: any = useState(false);
+  const [totPayment, settotPayment]: any = useState();
   const [resultOut, setResult] = useState();
   const [transactionId, settransactionId] = useState();
   const [orderObject, setOrderObject]: any = useState();
@@ -84,101 +86,169 @@ const Checkout = () => {
     setOpenModal(false);
   };
 
-  const handlePayment = () => {
-    // setOpenPaymentModal(false);
-    // Initialize DirectPay Card Payment
-    window.DirectPayCardPayment.init({
-      container: "card_container",
-      merchantId: "ID15415",
-      amount: totPayment,
-      refCode: "DP12345",
+  // const handlePayment = async () => {
+  //   setOpenPaymentModal(false);
+  //   // Initialize DirectPay Card Payment
+  //   window.DirectPayCardPayment.init({
+  //     container: "card_container",
+  //     merchantId: "ID15415",
+  //     amount: "100.00",
+  //     refCode: "DP12356",
+  //     currency: "LKR",
+  //     type: "ONE_TIME_PAYMENT",
+  //     // customerEmail: email,
+  //     customerEmail: "thisararpg@gmail.com",
+  //     // customerMobile: orderObject?.billingAddress?.billingPhone,
+  //     customerMobile: "+94709876554",
+  //     description: "test products",
+  //     debug: false,
+  //     responseCallback: responseCallback,
+  //     errorCallback: errorCallback,
+  //     logo: "https://test.com/directpay_logo.png",
+  //     apiKey:
+  //       "4344869ac5430d9e0b1a5ab13ba44210d7e85fc7836d241d277e0dea894d0875",
+  //   });
+
+  //   // Add event listeners for payment success and failure
+  //   window.addEventListener(
+  //     "DirectPayCardPayment:success",
+  //     handlePaymentSuccess
+  //   );
+  //   window.addEventListener(
+  //     "DirectPayCardPayment:failure",
+  //     handlePaymentFailure
+  //   );
+
+  //   //response callback.
+  //   function responseCallback(result: any) {
+  //     console.log("successCallback-Client", result);
+  //     setResult(result);
+  //     settransactionId(result.data.transactionId);
+  //     // console.log("result", resultOut);
+  //     // console.log("order object : ", orderObject);
+  //     alert(JSON.stringify(result.status));
+  //   }
+
+  //   //error callback
+  //   function errorCallback(result: any) {
+  //     console.log("errorCallback-Client", result);
+  //     alert(JSON.stringify(result.status));
+  //   }
+  // };
+
+  // const handlePaymentSuccess = (event: any) => {
+  //   // Handle payment success
+  //   const { paymentData } = event.detail;
+  //   console.log("Payment successful:", paymentData.type);
+  //   console.log("Order ID:", paymentData.customerEmail);
+  //   console.log("Amount:", paymentData.amount);
+  //   console.log("Currency:", paymentData.currency);
+  //   // Perform any necessary actions, e.g., update order status, display success message, etc.
+  //   setPaymentSuccess(true);
+  // };
+
+  // const handlePaymentFailure = (event: any) => {
+  //   // Handle payment failure
+  //   const { error } = event.detail;
+  //   console.log("Payment error:", error);
+  //   setPaymentFail(true);
+
+  //   //Parameter Missing
+  //   // Perform any necessary actions, e.g., display error message, retry payment, etc.
+  // };
+
+  // useEffect(() => {
+  //   // Load DirectPay library dynamically
+  //   const script = document.createElement("script");
+  //   script.src = "https://cdn.directpay.lk/v3/directpayipg.min.js";
+  //   document.head.appendChild(script);
+  //   script.async = true;
+  //   script.onload = () => {
+  //     handlePayment();
+  //   };
+  //   document.head.appendChild(script);
+
+  //   // Clean up event listeners on component unmount
+  //   return () => {
+  //     window.removeEventListener(
+  //       "DirectPayCardPayment:success",
+  //       handlePaymentSuccess
+  //     );
+  //     window.removeEventListener(
+  //       "DirectPayCardPayment:failure",
+  //       handlePaymentFailure
+  //     );
+  //   };
+  // }, []);
+
+  const cardContainerRef = useRef<HTMLDivElement>(null);
+
+  const handleCheckout = async () => {
+    const payload = {
+      merchant_id: "ID15415",
+      amount: "10.00",
+      type: "ONE_TIME",
+      order_id: "CP123456789",
       currency: "LKR",
-      type: "ONE_TIME_PAYMENT",
-      customerEmail: email,
-      // customerMobile: orderObject?.billingAddress?.billingPhone,
-      customerMobile: "+94709876554",
-      description: "test products",
-      debug: false,
-      responseCallback: responseCallback,
-      errorCallback: errorCallback,
-      logo: "https://test.com/directpay_logo.png",
-      apiKey:
-        "4344869ac5430d9e0b1a5ab13ba44210d7e85fc7836d241d277e0dea894d0875",
+      response_url: "https://test.com/response-endpoint",
+      first_name: "Thisara",
+      last_name: "Ruwanpathirana",
+      email: "thisararpg@email.com",
+      phone: "0703499272",
+      logo: "",
+    };
+
+    // Encode payload to Base64
+    const encodedPayload = CryptoJS.enc.Base64.stringify(
+      CryptoJS.enc.Utf8.parse(JSON.stringify(payload))
+    );
+
+    // Generate signature using HMAC-SHA256
+    const secret =
+      "77ff91722cb90907c3ff941134da2a8a24e2f3535651ec5d3c490a6afc759c14";
+    const signature = CryptoJS.HmacSHA256(encodedPayload, secret);
+
+    // Create DirectPay IPG instance
+    const dp = new Init({
+      signature: signature,
+      dataString: encodedPayload,
+      stage: "DEV",
+      container: "card_container",
     });
 
-    // Add event listeners for payment success and failure
-    window.addEventListener(
-      "DirectPayCardPayment:success",
-      handlePaymentSuccess
-    );
-    window.addEventListener(
-      "DirectPayCardPayment:failure",
-      handlePaymentFailure
-    );
+    try {
+      // Open IPG inside page component
+      const data = await dp.doInAppCheckout();
+      console.log("Payment success:", JSON.stringify(data));
+      // Redirect to a success page or handle success response
+      setPaymentSuccess(true);
+      console.log("status : ", paymentSuccess);
+    } catch (error) {
+      console.log("Payment error:", JSON.stringify(error));
+      // Redirect to an error page or handle error response
+      // setPaymentFail(true);
+      setPaymentSuccess(true);
+      console.log("status : ", paymentFail);
 
-    //response callback.
-    function responseCallback(result: any) {
-      console.log("successCallback-Client", result);
-      setResult(result);
-      settransactionId(result.data.transactionId);
-      // console.log("result", resultOut);
-      // console.log("order object : ", orderObject);
-      alert(JSON.stringify(result.status));
-    }
-
-    //error callback
-    function errorCallback(result: any) {
-      console.log("errorCallback-Client", result);
-      alert(JSON.stringify(result.status));
+      // router.push("/error");
     }
   };
-
-  const handlePaymentSuccess = (event: any) => {
-    // Handle payment success
-    const { paymentData } = event.detail;
-    console.log("Payment successful:", paymentData.type);
-    console.log("Order ID:", paymentData.customerEmail);
-    console.log("Amount:", paymentData.amount);
-    console.log("Currency:", paymentData.currency);
-    // Perform any necessary actions, e.g., update order status, display success message, etc.
-    setPaymentSuccess(true);
-  };
-
-  const handlePaymentFailure = (event: any) => {
-    // Handle payment failure
-    const { error } = event.detail;
-    console.log("Payment error:", error);
-    setPaymentFail(true);
-
-    //Parameter Missing
-    // Perform any necessary actions, e.g., display error message, retry payment, etc.
-  };
-
   useEffect(() => {
-    // Load DirectPay library dynamically
-    const script = document.createElement("script");
-    script.src = "https://cdn.directpay.lk/dev/v1/directpayCardPayment.js?v=1";
-    document.head.appendChild(script);
-    script.async = true;
-    script.onload = () => {
-      handlePayment();
-    };
-    document.head.appendChild(script);
+    if (!cardContainerRef.current) return;
 
-    // Clean up event listeners on component unmount
+    // Load DirectPay IPG script
+    const script = document.createElement("script");
+    script.src = "https://cdn.directpay.lk/v3/directpayipg.min.js";
+    script.async = true;
+
+    // Append the script to the card container element
+    cardContainerRef.current.appendChild(script);
+
+    // Clean up the script element on unmount
     return () => {
-      window.removeEventListener(
-        "DirectPayCardPayment:success",
-        handlePaymentSuccess
-      );
-      window.removeEventListener(
-        "DirectPayCardPayment:failure",
-        handlePaymentFailure
-      );
+      cardContainerRef.current?.removeChild(script);
     };
   }, []);
-
-  //end payment code
 
   const [ship, setShip] = useState({
     shippingAddress: {
@@ -1115,7 +1185,7 @@ const Checkout = () => {
       </div>
 
       {openModal && (
-        <div className="fixed inset-0 z-50 grid place-items-center bg-slate-900 bg-opacity-50">
+        <div className="fixed inset-0 z-50 grid place-items-center bg-slate-300 bg-opacity-50">
           <div className="px-4 mx-2 flex gap-6 flex-col relative  rounded-md w-full lg:w-[1060px]">
             <div
               id="card_container"
@@ -1167,7 +1237,9 @@ const Checkout = () => {
                   <div className="flex justify-center items-center my-10">
                     <button
                       className="bg-[#ed174a] text-white rounded-md text-sm h-[50px] w-[150px] text-center font-semibold"
-                      onClick={handlePayment}
+                      onClick={handleCheckout}
+                      id="card_container"
+                      ref={cardContainerRef}
                     >
                       Go to Payment
                     </button>
