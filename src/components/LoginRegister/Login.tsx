@@ -109,13 +109,13 @@ const Login: React.FC<Props> = () => {
             );
             break;
           case 404:
-            setErrorMsg("Such user does not exist");
+            setErrorMsg(error.response.data.message);
             break;
           case 500:
-            setErrorMsg("Such user does not exist check your credentials");
+            setErrorMsg(error.response.data.message);
             break;
           default:
-            setErrorMsg("Something went wrong. Please try again later.");
+            setErrorMsg(error.response.data.message);
         }
       }
     }

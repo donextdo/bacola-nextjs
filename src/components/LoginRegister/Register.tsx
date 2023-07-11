@@ -6,7 +6,6 @@ import baseUrl from "../../../utils/baseUrl";
 import { useRouter } from "next/router";
 import Swal from "sweetalert2";
 
-
 type FormValues = {
   email: string;
   password: string;
@@ -272,20 +271,21 @@ const Register: React.FC<Props> = () => {
       const response = await axios.post(`${baseUrl}/users/register`, data);
       console.log(response.data);
       if (response.status == 201 || response.status == 200) {
-        console.log("dwddq")
+        console.log("dwddq");
         Swal.fire({
-          title: '<span style="font-size: 18px">Congratulations, your account has been successfully created.</span>',
+          title:
+            '<span style="font-size: 18px">Congratulations, your account has been successfully created.</span>',
           width: 400,
           timer: 2000,
           // padding: '3',
-          color: 'white',
-          background : '#00B853',
+          color: "white",
+          background: "#00B853",
           showConfirmButton: false,
           heightAuto: true,
-          position: 'bottom',
-        })
+          position: "bottom",
+        });
         try {
-          console.log("dwddwd")
+          console.log("dwddwd");
           const response = await axios.post(`${baseUrl}/users/login`, details);
           console.log(response.data);
           localStorage.setItem("token", response.data.token);
@@ -295,20 +295,31 @@ const Register: React.FC<Props> = () => {
           localStorage.setItem("order", JSON.stringify([]));
 
           if (response.status == 200 || response.status == 201) {
-          location.reload();
+            location.reload();
             router.push("/account");
           }
-        } catch (error) {
-          console.log(error);
+        } catch (error: any) {
+          if (
+            error.response &&
+            error.response.data &&
+            error.response.data.message
+          ) {
+            setErrorMsg(error.response.data.message);
+          } else {
+            setErrorMsg("An error occurred during login. Please try again.");
+          }
         }
       }
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
-      if (error) {
-        const errorData = error;
-        if (errorData) {
-          setErrorMsg(errorData.toString());
-        }
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        setErrorMsg(error.response.data.message);
+      } else {
+        setErrorMsg("An error occurred during registration. Please try again.");
       }
     } finally {
       setIsLoading(false);
@@ -449,7 +460,13 @@ const Register: React.FC<Props> = () => {
               Your personal data will be used to support your experience
               throughout this website, to manage access to your account, and for
               other purposes described in our{" "}
-              <Link className="text-red-600 cursor-pointer" href="/privacy-policy">privacy policy</Link>.
+              <Link
+                className="text-red-600 cursor-pointer"
+                href="/privacy-policy"
+              >
+                privacy policy
+              </Link>
+              .
             </span>
           </div>
 
