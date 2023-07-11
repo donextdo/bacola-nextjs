@@ -442,7 +442,7 @@ const Checkout = () => {
 
       const config = {
         headers: {
-          Authorization: token,
+          authorization: `Bearer ${token}`,
         },
       };
       setOpenModal(true);
@@ -491,7 +491,7 @@ const Checkout = () => {
 
       const config = {
         headers: {
-          Authorization: token,
+          authorization: `Bearer ${token}`,
         },
       };
 

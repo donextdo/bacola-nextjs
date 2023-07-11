@@ -88,7 +88,7 @@ const Review = ({ itemId }: any) => {
 
                 const config = {
                   headers: {
-                    Authorization: token,
+                    authorization: `Bearer ${token}`,
                   },
                 };
 

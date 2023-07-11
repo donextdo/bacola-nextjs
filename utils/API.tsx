@@ -12,7 +12,7 @@ instance.interceptors.request.use(
 
     if (token) {
       console.log("has token");
-      config.headers["Authorization"] = `Bearer ${token}`;
+      config.headers["authorization"] = `Bearer ${token}`;
       config.headers["Access-Control-Allow-Origin"] = "*";
       config.headers["Access-Control-Allow-Headers"] = "Content-Type";
     } else {

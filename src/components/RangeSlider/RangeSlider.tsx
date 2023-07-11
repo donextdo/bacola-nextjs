@@ -3,6 +3,7 @@ import { useState, useEffect, useRef, ReactElement } from "react";
 import { ChangeEvent } from "react";
 import baseUrl from "../../../utils/baseUrl";
 import axios from "axios";
+import { logOut } from "../../../utils/logout";
 export const RangeSlider = ({ categoryId }: any) => {
   const [minValue, setMinValue] = useState(0);
   const [maxValue, setMaxValue] = useState(50000);
@@ -12,24 +13,42 @@ export const RangeSlider = ({ categoryId }: any) => {
   useEffect(() => {
     if (categoryId) {
       const fetchData = async () => {
-        const response = await axios(
-          `${baseUrl}/productDetails?categoryId=${categoryId}`
-        );
-        const products = response.data.products;
+        try {
+          const token = localStorage.getItem("token");
 
-        // Extracting all the product prices
-        const prices = products.map((product: any) => product.price);
+          const response = await axios(
+            `${baseUrl}/productDetails?categoryId=${categoryId}`,
+            {
+              headers: {
+                authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          const products = response.data.products;
 
-        // Finding the maximum price
-        const maxPrice = Math.max(...prices);
+          // Extracting all the product prices
+          const prices = products.map((product: any) => product.price);
 
-        // Rounding the maximum price
-        let roundedPrice;
+          // Finding the maximum price
+          const maxPrice = Math.max(...prices);
 
-        roundedPrice = Math.ceil(maxPrice / 10) * 10;
-        // setMaxPriceValue(roundedPrice);
-        // setMaxValue(maxPriceValue);
-        console.log("Rounded maximum price: ", roundedPrice);
+          // Rounding the maximum price
+          let roundedPrice;
+
+          roundedPrice = Math.ceil(maxPrice / 10) * 10;
+          // setMaxPriceValue(roundedPrice);
+          // setMaxValue(maxPriceValue);
+          console.log("Rounded maximum price: ", roundedPrice);
+        } catch (error: any) {
+          if (
+            error?.response?.status == 403 ||
+            error?.response?.status == 401
+          ) {
+            logOut();
+            router.push("/account");
+          }
+          console.log("erro price range : ", error);
+        }
       };
 
       fetchData();

@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import { Product } from "@/features/product/product";
 import { RootState } from "@/redux/store";
 import { uniqBy } from "lodash";
+import { logOut } from "../../../utils/logout";
 
 const Brands = ({ categoryId }: any) => {
   const [brand, setBrand] = useState([]);
@@ -25,11 +26,20 @@ const Brands = ({ categoryId }: any) => {
 
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${baseUrl}/products/${categoryId}`);
+        const token = localStorage.getItem("token");
+
+        const response = await axios.get(`${baseUrl}/products/${categoryId}`, {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        });
         setBrand(response.data);
         setIsEmpty(response.data.length === 0);
-      } catch (error) {
-        console.log(error);
+      } catch (error: any) {
+        if (error?.response?.status == 403 || error?.response?.status == 401) {
+          logOut();
+          router.push("/account");
+        }
       }
     };
     fetchData();
@@ -61,12 +71,21 @@ const Brands = ({ categoryId }: any) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${baseUrl}/productDetails/brand`);
+        const token = localStorage.getItem("token");
+
+        const response = await axios.get(`${baseUrl}/productDetails/brand`, {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        });
         console.log(response.data);
         setBrandPage(response.data);
         setIsEmpty(response.data.length === 0);
-      } catch (error) {
-        console.log(error);
+      } catch (error: any) {
+        if (error?.response?.status == 403 || error?.response?.status == 401) {
+          logOut();
+          router.push("/account");
+        }
       }
     };
     fetchData();

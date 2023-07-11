@@ -222,7 +222,7 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
 
         const config = {
           headers: {
-            Authorization: token,
+            authorization: `Bearer ${token}`,
           },
         };
 
@@ -383,7 +383,7 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
                 {(product.count == undefined || product.count < 1) && (
                   <button
                     type="button"
-                    className=" bg-blue-900 text-white min-h-[34px]  rounded-full w-40"
+                    className=" bg-primary text-white min-h-[34px]  rounded-full w-40"
                     onClick={() => handleaddToCart(product)}
                   >
                     Add to cart

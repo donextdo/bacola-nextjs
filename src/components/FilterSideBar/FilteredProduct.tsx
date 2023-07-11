@@ -8,6 +8,7 @@ import { ProductCard } from "@/features/product/ProductCard";
 import baseUrl from "../../../utils/baseUrl";
 import axios from "axios";
 import { useRouter } from "next/router";
+import { logOut } from "../../../utils/logout";
 
 export const FilteredProduct = ({
   categoryId,
@@ -70,13 +71,22 @@ export const FilteredProduct = ({
         if (perpage) {
           url += `&perpage=${perpage}`;
         }
+        const token = localStorage.getItem("token");
 
-        const response = await axios.get(url);
+        const response = await axios.get(url, {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        });
         const products = response.data.products;
-        console.log("response.data: ", response.data.products);
+        console.log("response.data: ", response);
         setProduct(products);
-      } catch (error) {
-        console.error(error);
+      } catch (error: any) {
+        if (error?.response?.status == 403 || error?.response?.status == 401) {
+          logOut();
+          router.push("/account");
+        }
+        console.error("error :", error.response.status);
       }
     };
     fetchData();

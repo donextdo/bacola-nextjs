@@ -307,7 +307,7 @@ const ItemPages = () => {
 
         const config = {
           headers: {
-            Authorization: token,
+            authorization: `Bearer ${token}`,
           },
         };
 
@@ -597,7 +597,7 @@ const ItemPages = () => {
                       </div>
                       <button
                         type="button"
-                        className=" bg-blue-900 text-white min-h-[34px] min-w-[140px] rounded-full text-[13px]  ml-4"
+                        className=" bg-primary text-white min-h-[34px] min-w-[140px] rounded-full text-[13px]  ml-4"
                         onClick={() => handleaddToCart(data)}
                       >
                         Add to cart
@@ -887,7 +887,7 @@ const ItemPages = () => {
             <div className="pr-4">
               <button
                 type="button"
-                className=" bg-blue-900 text-white px-6 md:px-12 py-3 rounded-full text-[13px]"
+                className=" bg-primary text-white px-6 md:px-12 py-3 rounded-full text-[13px]"
                 onClick={() => handleaddToCart(data)}
               >
                 Add to cart

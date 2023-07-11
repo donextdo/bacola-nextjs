@@ -3,6 +3,7 @@ import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
 import axios from "axios";
 import baseUrl from "../../../utils/baseUrl";
 import { useRouter } from "next/router";
+import { logOut } from "../../../utils/logout";
 
 export const PageNumber = ({ perpage }: any) => {
   let [num, setNum] = useState(1);
@@ -13,8 +14,6 @@ export const PageNumber = ({ perpage }: any) => {
   const [pageArray, setPageArray] = useState<{ id: number }[]>([]);
   const router = useRouter();
 
-  
-
   useEffect(() => {
     setCurrentPage(
       localStorage.getItem("selectedPage")
@@ -24,43 +23,77 @@ export const PageNumber = ({ perpage }: any) => {
 
     if (!perpage) {
       const fetchData = async () => {
-        const response = await axios.get(
-          `${baseUrl}/products?page=${currentPage}`
-        );
+        try {
+          const token = localStorage.getItem("token");
 
-        const products = response.data.products;
-        if (products.length == 0) {
-          console.log("ddddddd");
-          setHidePagination(true);
+          const response = await axios.get(
+            `${baseUrl}/products?page=${currentPage}`,
+            {
+              headers: {
+                authorization: `Bearer ${token}`,
+              },
+            }
+          );
+
+          const products = response.data.products;
+          if (products.length == 0) {
+            console.log("ddddddd");
+            setHidePagination(true);
+          }
+          setTotalPage(response.data.totalPages);
+          setCurrentPage(
+            localStorage.getItem("selectedPage")
+              ? parseInt(localStorage.getItem("selectedPage")!)
+              : response.data.currentPage
+          );
+          setNum(products.length);
+        } catch (error: any) {
+          if (
+            error?.response?.status == 403 ||
+            error?.response?.status == 401
+          ) {
+            logOut();
+            router.push("/account");
+          }
         }
-        setTotalPage(response.data.totalPages);
-        setCurrentPage(
-          localStorage.getItem("selectedPage")
-            ? parseInt(localStorage.getItem("selectedPage")!)
-            : response.data.currentPage
-        );
-        setNum(products.length);
       };
       fetchData();
     } else if (perpage || currentPage) {
       const fetchData = async () => {
-        const response = await axios.get(
-          `${baseUrl}/products?page=${currentPage}&perpage=${perpage}`
-        );
+        try {
+          const token = localStorage.getItem("token");
 
-        const products = response.data.products;
-        if (products.length == 0) {
-          console.log("ddddddd");
-          setHidePagination(true);
+          const response = await axios.get(
+            `${baseUrl}/products?page=${currentPage}&perpage=${perpage}`,
+            {
+              headers: {
+                authorization: `Bearer ${token}`,
+              },
+            }
+          );
+
+          const products = response.data.products;
+          if (products.length == 0) {
+            console.log("ddddddd");
+            setHidePagination(true);
+          }
+
+          setTotalPage(response.data.totalPages);
+          setCurrentPage(
+            localStorage.getItem("selectedPage")
+              ? parseInt(localStorage.getItem("selectedPage")!)
+              : response.data.currentPage
+          );
+          setNum(products.length);
+        } catch (error: any) {
+          if (
+            error?.response?.status == 403 ||
+            error?.response?.status == 401
+          ) {
+            logOut();
+            router.push("/account");
+          }
         }
-
-        setTotalPage(response.data.totalPages);
-        setCurrentPage(
-          localStorage.getItem("selectedPage")
-            ? parseInt(localStorage.getItem("selectedPage")!)
-            : response.data.currentPage
-        );
-        setNum(products.length);
       };
       fetchData();
     }

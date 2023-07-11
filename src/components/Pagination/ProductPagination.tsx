@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 import { Product } from "@/features/product/product";
 import { fetchProducts } from "@/features/product/productSlice";
+import { logOut } from "../../../utils/logout";
 
 export const ProductPagination = ({
   brand,
@@ -50,8 +51,13 @@ export const ProductPagination = ({
           if (onSale) {
             url += `&on_sale=${onSale}`;
           }
+          const token = localStorage.getItem("token");
 
-          const response = await axios.get(url);
+          const response = await axios.get(url, {
+            headers: {
+              authorization: `Bearer ${token}`,
+            },
+          });
           const products = response.data.products;
 
           if (products.length === 0) {
@@ -59,8 +65,14 @@ export const ProductPagination = ({
           }
 
           setProduct(products);
-        } catch (error) {
-          console.error(error);
+        } catch (error: any) {
+          if (
+            error?.response?.status == 403 ||
+            error?.response?.status == 401
+          ) {
+            logOut();
+            router.push("/account");
+          }
         }
       };
 
@@ -82,8 +94,12 @@ export const ProductPagination = ({
           if (onSale) {
             url += `&on_sale=${onSale}`;
           }
-
-          const response = await axios.get(url);
+          const token = localStorage.getItem("token");
+          const response = await axios.get(url, {
+            headers: {
+              authorization: `Bearer ${token}`,
+            },
+          });
           const products = response.data.products;
 
           if (products.length === 0) {
@@ -91,8 +107,14 @@ export const ProductPagination = ({
           }
 
           setProduct(products);
-        } catch (error) {
-          console.error(error);
+        } catch (error: any) {
+          if (
+            error?.response?.status == 403 ||
+            error?.response?.status == 401
+          ) {
+            logOut();
+            router.push("/account");
+          }
         }
       };
 

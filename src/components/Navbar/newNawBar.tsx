@@ -1,18 +1,34 @@
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 
 import Allcategories from "../AllCategories/Allcategories";
 import PageNavBar from "./pageNavBar";
 import baseUrl from "../../../utils/baseUrl";
 import axios from "axios";
+import { logOut } from "../../../utils/logout";
 
 const NavbarNew = () => {
-  const [totalProduct, setTotalProduct] = useState();
+  const [totalProduct, setTotalProduct] = useState("10");
+  const router = useRouter();
   useEffect(() => {
     const fetchData = async () => {
-      const response = await axios.get(`${baseUrl}/products`);
-      setTotalProduct(response.data.totalItems);
-      console.log("response: ", response.data.totalItems);
+      try {
+        const token = localStorage.getItem("token");
+
+        const response = await axios.get(`${baseUrl}/products`, {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        });
+        setTotalProduct(response.data.totalItems);
+        console.log("response: ", response.data.totalItems);
+      } catch (error: any) {
+        if (error?.response?.status == 403 || error?.response?.status == 401) {
+          logOut();
+          router.push("/account");
+        }
+      }
     };
     fetchData();
   }, []);
