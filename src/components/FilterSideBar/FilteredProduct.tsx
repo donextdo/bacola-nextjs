@@ -110,7 +110,10 @@ export const FilteredProduct = ({
       product.some((p: any) => p?._id === pr?._id)
     );
     setmatchWithProduct(matchedProducts);
+    console.log({ product });
+    console.log({ matchWithProduct });
   }, [product, productsRidux]);
+
   return (
     <div>
       {matchWithProduct.length != 0 ? (

@@ -36,7 +36,7 @@ export const ProductPagination = ({
     if (!perpage) {
       const fetchData = async () => {
         try {
-          let url = `${baseUrl}/products?page=${page}&sort=${orderby}`;
+          let url = `${baseUrl}/products?sort=${orderby}&page=${page}`;
 
           if (brand) {
             url += `&brands=${brand}`;
@@ -68,7 +68,7 @@ export const ProductPagination = ({
     } else if (perpage || orderby) {
       const fetchData = async () => {
         try {
-          let url = `${baseUrl}/products?page=${page}&perpage=${perpage}&sort=${orderby}`;
+          let url = `${baseUrl}/products?sort=${orderby}&page=${page}&perpage=${perpage}`;
 
           if (brand) {
             url += `&brands=${brand}`;
@@ -113,10 +113,11 @@ export const ProductPagination = ({
   }, [passgrid]);
   useEffect(() => {
     const matchedProducts = productsRidux.filter((pr: Product) =>
-      product.some((p: any) => p?._id === pr?._id)
+      product.map((p: any) => p?._id).includes(pr?._id)
     );
     setmatchWithProduct(matchedProducts);
   }, [product, productsRidux]);
+
   return (
     <div>
       {matchWithProduct.length != 0 ? (

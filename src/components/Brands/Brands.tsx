@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import { Product } from "@/features/product/product";
 import { RootState } from "@/redux/store";
+import { uniqBy } from "lodash";
 
 const Brands = ({ categoryId }: any) => {
   const [brand, setBrand] = useState([]);
@@ -13,6 +14,11 @@ const Brands = ({ categoryId }: any) => {
   const [checkedBrands, setCheckedBrands] = useState<any>({});
   const [brandPage, setBrandPage] = useState<string[]>([]);
   const router = useRouter();
+
+  const [showAllBrands, setShowAllBrands] = useState(false);
+  const displayedBrands = showAllBrands ? brand : brand.slice(0, 10);
+  const uniqueBrands = uniqBy(displayedBrands, "brand");
+  const shouldShowSeeLess = showAllBrands && brand.length > 10;
 
   useEffect(() => {
     setCheckedBrands([]);
@@ -74,7 +80,7 @@ const Brands = ({ categoryId }: any) => {
               <h4 className="max-h-[18px]  uppercase tracking-[0] font-[600] text-[.9375rem] mb-[1.25rem] font-ff-headings">
                 brands
               </h4>
-              {brand.map((category: any, index) => {
+              {uniqueBrands.map((category: any, index) => {
                 const isChecked = checkedBrands[category._id];
                 return (
                   <div
@@ -101,6 +107,25 @@ const Brands = ({ categoryId }: any) => {
                   </div>
                 );
               })}
+              {brand.length > 10 && (
+                <div>
+                  {shouldShowSeeLess ? (
+                    <div
+                      className="text-[.8125rem] font-medium text-blue-900 hover:underline hover:cursor-pointer"
+                      onClick={() => setShowAllBrands(false)}
+                    >
+                      See Less
+                    </div>
+                  ) : (
+                    <div
+                      className="text-[.8125rem] font-medium text-blue-900 hover:underline hover:cursor-pointer"
+                      onClick={() => setShowAllBrands(true)}
+                    >
+                      See All
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           )
         : !isEmpty && (
