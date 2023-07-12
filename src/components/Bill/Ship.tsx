@@ -45,7 +45,7 @@ const Ship = ({ setModal, setModal1 }: any) => {
           authorization: `Bearer ${token}`,
         },
       });
-      console.log(res.data);
+
       const data = res.data;
       setFirstName(data.shippingAddress.shippingFirstName);
       setLastName(data.shippingAddress.shippingLastName);
@@ -89,31 +89,6 @@ const Ship = ({ setModal, setModal1 }: any) => {
       }
     }
   }
-
-  // const handleSave = async () => {
-  //     const data = {
-
-  //         "shippingAddress": {
-  //            shippingFirstName: firstName,
-  //            shippingLastName: lastName,
-  //            shippingCompanyName: companyName,
-  //             country: country,
-  //             street: streetAddress,
-  //             apartment: apartment,
-  //             town: townCity,
-  //             state: state,
-  //             zipCode: zipCode,
-  //             shippingphone: phone,
-  //            shippingEmail: email,
-  //         }
-  //       };
-  //     try {
-  //         const response = await axios.patch(`${baseUrl}/users/${id}`, data);
-  //         console.log(response.data); // do something with the response data
-  //     } catch (error) {
-  //         console.log(error); // handle the error
-  //     }
-  // };
 
   const handleEmailChange = (e: any) => {
     const newEmail = e.target.value;
@@ -252,7 +227,6 @@ const Ship = ({ setModal, setModal1 }: any) => {
             authorization: `Bearer ${token}`,
           },
         });
-        console.log(response.data); // do something with the response data
         if (response.status == 200) {
           Swal.fire({
             title: "Success",

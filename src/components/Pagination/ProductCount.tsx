@@ -68,7 +68,6 @@ export const ProductCount = ({ passgrid }: any) => {
   };
 
   useEffect(() => {
-    console.log("router.query.perpage ", router.query.perpage);
     if (router.query.perpage == undefined) {
       setCount(12);
     } else {
@@ -100,18 +99,15 @@ export const ProductCount = ({ passgrid }: any) => {
     setIsClick(gridType);
     localStorage.setItem("gridType", gridType);
     passgrid(gridType);
-    console.log("clicked", gridType);
   };
 
   useEffect(() => {
     const getItem: string | null = localStorage.getItem("gridType");
     setIsClick(getItem || "");
     if (!getItem) {
-      console.log("empty : ");
       setIsClick("layoutGrid");
     }
 
-    console.log("idClick : ", getItem);
   }, []);
 
   const handleFilterSiderbar = () => {

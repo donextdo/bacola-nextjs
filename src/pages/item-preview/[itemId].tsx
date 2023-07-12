@@ -107,7 +107,6 @@ const ItemPages = () => {
 
   const router = useRouter();
   const { itemId } = router.query;
-  // console.log(itemId)
 
   const dispatch = useDispatch();
   const products = useSelector(
@@ -144,8 +143,7 @@ const ItemPages = () => {
         );
       }
     } catch (err) {
-      console.log(err);
-    }
+return err ;    }
   }
 
   // slide image
@@ -181,11 +179,9 @@ const ItemPages = () => {
   // }, [data.imageArray]);
 
   const combinedArray = [...imageArray1, ...imageArray2];
-  console.log(combinedArray[0]);
 
   const [selectedImage, setSelectedImage] = useState(combinedArray[0]);
 
-  console.log(selectedImage);
 
   const nextSlide = () => {
     setCurrentSlide((prevSlide) => (prevSlide + 1) % combinedArray.length);
@@ -208,7 +204,6 @@ const ItemPages = () => {
   } else {
     findcategory = undefined;
   }
-  console.log(findcategory);
 
   useEffect(() => {
     if (findcategory) {
@@ -219,11 +214,9 @@ const ItemPages = () => {
   async function fetchData2() {
     try {
       const res = await axios.get(`${baseUrl}/categories/get/${findcategory}`);
-      console.log(res.data);
       setMyCategory(res.data);
     } catch (err) {
-      console.log(err);
-    }
+return err;    }
   }
 
   // review part
@@ -235,7 +228,7 @@ const ItemPages = () => {
       const res = await axios.get(`${baseUrl}/reviews/getReview/${itemId}`);
       setAllreview(res.data);
     } catch (err) {
-      console.log(err);
+      return err;
     }
   }
 
@@ -247,7 +240,6 @@ const ItemPages = () => {
     }
   }
 
-  console.log(totalReviewCount);
 
   let averageReviewCount = 0;
   const approvedReviews = allreview.filter(
@@ -259,7 +251,6 @@ const ItemPages = () => {
     averageReviewCount = Math.round(totalReviewCount / approvedReviewsLength);
   }
 
-  console.log(averageReviewCount);
 
   let yellowstars = [];
   let graystars = [];
@@ -278,7 +269,6 @@ const ItemPages = () => {
   const handleIncrement = (data: Product) => {
     const setQuantity = (item?.count || 1) + 1;
     setNewQuantity(setQuantity);
-    console.log(newQuantity);
 
     dispatch(
       updateProductQuantity({ productId: data._id, count: setQuantity })
@@ -288,7 +278,6 @@ const ItemPages = () => {
   const handleDecrement = (data: Product) => {
     const setQuantity = Math.max((item?.count || 0) - 1, 0);
     setNewQuantity(setQuantity);
-    console.log(newQuantity);
 
     dispatch(
       updateProductQuantity({ productId: data._id, count: setQuantity })
@@ -353,7 +342,6 @@ const ItemPages = () => {
           config
         );
 
-        console.log(response.data); // do something with the response data
       } catch (error: any) {
         if (error?.response?.status == 403 || error?.response?.status == 401) {
           Swal.fire({
@@ -389,7 +377,6 @@ const ItemPages = () => {
     }
   };
 
-  // console.log(item)
 
   const handleClick = (image: any) => {
     setMainImage(image);
@@ -468,7 +455,6 @@ const ItemPages = () => {
     let catName: any = localStorage.getItem("catName");
     catName = catName?.replace(/"/g, "");
     setcategoryname(catName);
-    console.log("catname: ", categoryName);
   });
   const breadcrumbs = [
     { title: "Home", url: "/" },

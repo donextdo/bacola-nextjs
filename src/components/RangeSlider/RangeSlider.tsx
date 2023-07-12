@@ -39,7 +39,6 @@ export const RangeSlider = ({ categoryId }: any) => {
           roundedPrice = Math.ceil(maxPrice / 10) * 10;
           // setMaxPriceValue(roundedPrice);
           // setMaxValue(maxPriceValue);
-          console.log("Rounded maximum price: ", roundedPrice);
         } catch (error: any) {
           if (
             error?.response?.status == 403 ||
@@ -72,7 +71,6 @@ export const RangeSlider = ({ categoryId }: any) => {
               }
             });
           }
-          console.log("erro price range : ", error);
         }
       };
 

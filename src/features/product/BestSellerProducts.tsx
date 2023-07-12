@@ -37,11 +37,9 @@ const BestSellerProducts = ({ passgrid }: any) => {
       const res = await axios.get(
         `${baseUrl}/products/getAllBestSellerProducts`
       );
-      console.log(res.data);
       setBestSellerProducts(res.data);
     } catch (err) {
-      console.log(err);
-    }
+return err ;    }
   }
   const bestProducts = products.filter(
     (product) => product.isBestSeller === true

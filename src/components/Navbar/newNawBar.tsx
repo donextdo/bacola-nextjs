@@ -23,7 +23,6 @@ const NavbarNew = () => {
           },
         });
         setTotalProduct(response.data.totalItems);
-        console.log("response: ", response.data.totalItems);
       } catch (error: any) {
         if (error?.response?.status == 403 || error?.response?.status == 401) {
           Swal.fire({

@@ -39,10 +39,7 @@ const CartCard = ({item, index,totalAmount}:any) => {
     dispatch(calSubTotal(totalAmount))
 
     };
-    useEffect(() => {
-        console.log(cartItems)
-        
-    });
+   
     
     const handleDelete = (_id: string) => {
         dispatch(removeItem(_id));

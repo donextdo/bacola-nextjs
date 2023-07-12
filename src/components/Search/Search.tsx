@@ -64,7 +64,6 @@ export const SearchItem = () => {
       findcategory = product.category[0];
       const res = await axios.get(`${baseUrl}/categories/get/${findcategory}`);
 
-      console.log("ggggggg: ", res.data[0].name);
       localStorage.setItem("catName", JSON.stringify(res.data[0].name));
     }
   };

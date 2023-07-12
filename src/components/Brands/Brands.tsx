@@ -103,7 +103,6 @@ const Brands = ({ categoryId }: any) => {
             authorization: `Bearer ${token}`,
           },
         });
-        console.log(response.data);
         setBrandPage(response.data);
         setIsEmpty(response.data.length === 0);
       } catch (error: any) {

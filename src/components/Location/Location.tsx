@@ -36,7 +36,6 @@ export const Location = () => {
       const locations = response.data;
 
       setLocation(locations);
-      console.log("location", locations);
     };
     fetchData();
     setLocationName(locationName);

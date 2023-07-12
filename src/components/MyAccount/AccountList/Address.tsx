@@ -120,7 +120,6 @@ const Address = () => {
           authorization: `Bearer ${token}`,
         },
       });
-      console.log(res.data);
       setAddress(res.data);
     } catch (error: any) {
       if (error?.response?.status == 403 || error?.response?.status == 401) {

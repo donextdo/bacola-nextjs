@@ -38,7 +38,7 @@ export const PageNumber = ({ perpage }: any) => {
 
           const products = response.data.products;
           if (products.length == 0) {
-            console.log("ddddddd");
+            
             setHidePagination(true);
           }
           setTotalPage(response.data.totalPages);
@@ -99,7 +99,7 @@ export const PageNumber = ({ perpage }: any) => {
 
           const products = response.data.products;
           if (products.length == 0) {
-            console.log("ddddddd");
+            
             setHidePagination(true);
           }
 

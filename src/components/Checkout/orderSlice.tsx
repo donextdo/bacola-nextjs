@@ -21,22 +21,15 @@ const initialState: OrderState = {
 
 const PRODUCTS_URL = `${baseUrl}/orders/get`;
 const PRODUCTS_URL_SET = `${baseUrl}/orders/place`;
-// const token = localStorage.getItem("token");
-// const router = useRouter();
 
 export const insertOrderAsync = createAsyncThunk(
   "order/insertOrderAsync",
   async (orderObj: OrderObj) => {
     try {
-      console.log("Response object:", orderObj);
       const response = await axios.post(PRODUCTS_URL_SET, orderObj);
       return response.data;
     } catch (error: any) {
-      console.log(error);
-      // if (error?.response?.status == 403 || error?.response?.status == 401) {
-      //   logOut();
-      //   router.push("/account");
-      // }
+      return error;
     }
   }
 );
@@ -45,17 +38,11 @@ export const getOrdersByUserIdAsync = createAsyncThunk(
   "order/getOrdersByUserIdAsync",
   async (id: string) => {
     try {
-      console.log("Response data:", id);
       const res = await axios.get(`${PRODUCTS_URL}/${id}`);
-      console.log("Response data:", res.data);
       return res.data;
     } catch (error: any) {
-      console.log(error);
-
-      // if (error?.response?.status == 403 || error?.response?.status == 401) {
-      //   logOut();
-      //   router.push("/account");
-      // }
+      return error;
+     
     }
   }
 );
@@ -65,7 +52,6 @@ const orderSlice = createSlice({
   initialState,
   reducers: {
     addOrder: (state, action: PayloadAction<OrderItem>) => {
-      console.log("Adding order:", action.payload);
       state.orders.push(action.payload);
     },
   },

@@ -179,9 +179,6 @@ const Checkout = () => {
 
   const parsedObject =
     typeof shippingObj === "string" ? JSON.parse(shippingObj) : undefined;
-  console.log(parsedObject);
-  console.log(location);
-  console.log(parsedObject?.cartshippingtown);
 
   const cartItems = useSelector((state: RootState) => state.cart.items);
   const orderList = useSelector((state: RootState) => state.order.orders);
@@ -301,18 +298,6 @@ const Checkout = () => {
     }
   };
 
-  // form handle submit for example
-  // const handleSubmit = (e:any) => {
-  //     e.preventDefault();
-  //     // perform form submission or validation here
-  //     if (emailError || phoneError) {
-  //         setFormError('Please fix the errors and try again');
-  //       } else {
-  //         // perform form submission
-  //         console.log('Form submitted!');
-  //       }
-  // };
-
   let totalAmount = 0;
   for (let i = 0; i < cartItems.length; i++) {
     let item = cartItems[i];
@@ -333,7 +318,6 @@ const Checkout = () => {
           authorization: `Bearer ${token}`,
         },
       });
-      console.log(res.data);
       const data = res.data;
       setFirstName(data.billingAddress.billingFirstName);
       setLastName(data.billingAddress.billingLastName);
@@ -389,7 +373,6 @@ const Checkout = () => {
           authorization: `Bearer ${token}`,
         },
       });
-      console.log(res.data);
       setShip(res.data);
     } catch (error: any) {
       if (error?.response?.status == 403 || error?.response?.status == 401) {
@@ -429,7 +412,6 @@ const Checkout = () => {
   const handleCheckboxChange = (e: any) => {
     setSelectedRadio(e.target.value);
   };
-  console.log(selectedRadio);
 
   const handleOrder = async (event: any) => {
     event.preventDefault();
@@ -488,22 +470,13 @@ const Checkout = () => {
               shippingPhone: ship.shippingAddress?.shippingphone,
             },
     };
-    console.log("phone numbe : ", orderObj);
 
     settotPayment(orderObj.totalprice);
     setOrderObject(orderObj);
-    console.log("order object : ", orderObject);
-    console.log(orderObj);
+
     try {
       //authentication session handle
       const token = localStorage.getItem("token"); // Retrieve the token from local storage or wherever it's stored
-      if (!token) {
-        localStorage.removeItem("token");
-        localStorage.removeItem("id");
-        alert("Session expired");
-        router.push("/account");
-        return;
-      }
 
       const config = {
         headers: {
@@ -531,12 +504,35 @@ const Checkout = () => {
       //     });
       //     dispatch(removeAll());
       //   }
-    } catch (error) {
-      console.log(error); // handle the error
-      localStorage.removeItem("token");
-      localStorage.removeItem("id");
-      alert("Session expired");
-      router.push("/account");
+    } catch (error: any) {
+      if (error?.response?.status == 403 || error?.response?.status == 401) {
+        Swal.fire({
+          width: 700,
+          color: "black",
+          background: "white",
+          html: `
+            <div style="text-align: left;">
+              <h2 style="font-size: 20px; font-weight: bold; margin-bottom: 10px;">Session Expired</h2>
+              <hr style="margin-bottom: 20px;" />
+              <p style="font-size: 14px;margin-bottom: 10px;">Your session has expired</p>
+              <hr style="margin-bottom: 20px;" />
+            </div>
+          `,
+          showConfirmButton: true,
+          confirmButtonText: "Ok",
+          confirmButtonColor: "blue",
+          heightAuto: true,
+          customClass: {
+            confirmButton:
+              "bg-blue-500 text-white rounded-full px-4 py-2 text-sm absolute right-4 bottom-4 ",
+          },
+        }).then((result) => {
+          if (result.value) {
+            logOut();
+            router.push("/account");
+          }
+        });
+      }
     }
   };
 
@@ -546,13 +542,6 @@ const Checkout = () => {
     try {
       //authentication session handle
       const token = localStorage.getItem("token"); // Retrieve the token from local storage or wherever it's stored
-      if (!token) {
-        localStorage.removeItem("token");
-        localStorage.removeItem("id");
-        alert("Session expired");
-        router.push("/account");
-        return;
-      }
 
       const config = {
         headers: {
@@ -566,7 +555,6 @@ const Checkout = () => {
         config
       );
 
-      console.log(response.data); // do something with the response data
       if (response.status == 201) {
         const orderData = {
           orderId: response.data.orderId,
@@ -578,12 +566,35 @@ const Checkout = () => {
         });
         dispatch(removeAll());
       }
-    } catch (error) {
-      console.log(error); // handle the error
-      localStorage.removeItem("token");
-      localStorage.removeItem("id");
-      alert("Session expired");
-      router.push("/account");
+    } catch (error: any) {
+      if (error?.response?.status == 403 || error?.response?.status == 401) {
+        Swal.fire({
+          width: 700,
+          color: "black",
+          background: "white",
+          html: `
+            <div style="text-align: left;">
+              <h2 style="font-size: 20px; font-weight: bold; margin-bottom: 10px;">Session Expired</h2>
+              <hr style="margin-bottom: 20px;" />
+              <p style="font-size: 14px;margin-bottom: 10px;">Your session has expired</p>
+              <hr style="margin-bottom: 20px;" />
+            </div>
+          `,
+          showConfirmButton: true,
+          confirmButtonText: "Ok",
+          confirmButtonColor: "blue",
+          heightAuto: true,
+          customClass: {
+            confirmButton:
+              "bg-blue-500 text-white rounded-full px-4 py-2 text-sm absolute right-4 bottom-4 ",
+          },
+        }).then((result) => {
+          if (result.value) {
+            logOut();
+            router.push("/account");
+          }
+        });
+      }
     }
   };
 
@@ -605,14 +616,12 @@ const Checkout = () => {
     const locations = response.data;
     setLocation(locations);
 
-    console.log("location", locations);
   };
 
   const [selectedItem, setSelectedItem] = useState("");
 
   const handleDropdownChange = (event: any) => {
     setSelectedItem(event.target.value);
-    console.log(event.target.value);
   };
 
   return (

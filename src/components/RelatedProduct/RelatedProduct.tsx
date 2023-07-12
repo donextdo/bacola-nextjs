@@ -13,13 +13,13 @@ const RelatedProduct = ({passgrid,findcategory}:any) => {
       }, []);
     
       async function fetchData() {
-        console.log("hi")
+       
         try {
           const res = await axios.get(`${baseUrl}/products?categoryId=${findcategory}`);
-          console.log(res.data.products)
+         
           setRelatedProduct(res.data.products)
         } catch (err) {
-          console.log(err);
+          return null;
         }
       }
   const displayedProducts = relatedProduct.slice(0, 4);

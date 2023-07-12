@@ -30,7 +30,6 @@ export const ProductPagination = ({
   ) as Product[];
   useEffect(() => {
     dispatch(fetchProducts());
-    console.log("data data", productsRidux);
   }, [dispatch]);
   const router = useRouter();
 
@@ -62,7 +61,6 @@ export const ProductPagination = ({
           const products = response.data.products;
 
           if (products.length === 0) {
-            console.log("No products found.");
           }
 
           setProduct(products);
@@ -128,7 +126,6 @@ export const ProductPagination = ({
           const products = response.data.products;
 
           if (products.length === 0) {
-            console.log("No products found.");
           }
 
           setProduct(products);
@@ -174,13 +171,11 @@ export const ProductPagination = ({
   useEffect(() => {
     const getItem = localStorage.getItem("gridType");
     if (!getItem) {
-      console.log("empty : ");
       setIsGrid("layoutGrid");
     } else {
       setIsGrid(getItem);
     }
 
-    console.log("setIsGrid : ", getItem);
   }, [passgrid]);
   useEffect(() => {
     const matchedProducts = productsRidux.filter((pr: Product) =>

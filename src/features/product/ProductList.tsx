@@ -27,8 +27,6 @@ export const ProductList: FC<ComponentProps> = ({ passgrid }: any) => {
 
   useEffect(() => {
     dispatch(fetchProducts());
-    console.log("data ", products);
-    console.log(products);
   }, [dispatch]);
 
   useEffect(() => {

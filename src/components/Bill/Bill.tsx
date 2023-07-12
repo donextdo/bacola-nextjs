@@ -46,7 +46,6 @@ const Bill = ({ setModal, setModal1 }: any) => {
           authorization: `Bearer ${token}`,
         },
       });
-      console.log(res.data);
       const data = res.data;
       setFirstName(data.billingAddress.billingFirstName);
       setLastName(data.billingAddress.billingLastName);
@@ -90,31 +89,6 @@ const Bill = ({ setModal, setModal1 }: any) => {
       }
     }
   }
-
-  // const handleSave = async () => {
-  //     const data = {
-
-  //         "billingAddress": {
-  //             billingFirstName: firstName,
-  //             billingLastName: lastName,
-  //             billingCompanyName: companyName,
-  //             country: country,
-  //             street: streetAddress,
-  //             apartment: apartment,
-  //             town: townCity,
-  //             state: state,
-  //             zipCode: zipCode,
-  //             billingPhone: phone,
-  //             billingEmail: email,
-  //         }
-  //       };
-  //     try {
-  //         const response = await axios.patch(`${baseUrl}/users/${id}`, data);
-  //         console.log(response.data); // do something with the response data
-  //     } catch (error) {
-  //         console.log(error); // handle the error
-  //     }
-  // };
 
   const handleEmailChange = (e: any) => {
     const newEmail = e.target.value;
@@ -251,7 +225,6 @@ const Bill = ({ setModal, setModal1 }: any) => {
             authorization: `Bearer ${token}`,
           },
         });
-        console.log(response.data); // do something with the response data
         if (response.status == 200) {
           Swal.fire({
             title: "Success",

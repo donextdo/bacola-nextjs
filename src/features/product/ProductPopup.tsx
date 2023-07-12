@@ -72,19 +72,16 @@ const ProductPopup = ({ setProductPopup, proId }: any) => {
 
     useEffect(() => {
         fetchData();
-        console.log(proId)
     }, []);
 
     async function fetchData() {
         try {
             const res = await axios.get(`${baseUrl}/products/getOne/${proId}`);
-            console.log(res)
             setData(res.data);
             setTag(res.data.tags)
 
         } catch (err) {
-            console.log(err);
-        }
+return err;        }
     }
 
     let findcategory: any
@@ -93,7 +90,6 @@ const ProductPopup = ({ setProductPopup, proId }: any) => {
     } else {
         findcategory = undefined;
     }
-    console.log(findcategory)
 
     useEffect(() => {
         if (findcategory) {
@@ -104,11 +100,9 @@ const ProductPopup = ({ setProductPopup, proId }: any) => {
     async function fetchData2() {
         try {
             const res = await axios.get(`${baseUrl}/categories/get/${findcategory}`);
-            console.log(res.data)
             setMyCategory(res.data);
         } catch (err) {
-            console.log(err);
-        }
+return err;        }
     }
 
     useEffect(() => {
@@ -119,8 +113,7 @@ const ProductPopup = ({ setProductPopup, proId }: any) => {
             const res = await axios.get(`${baseUrl}/reviews/getReview/${proId}`);
             setAllreview(res.data);
         } catch (err) {
-            console.log(err);
-        }
+return err ;        }
     }
 
     const item: Product | undefined = products.find((item) => item._id === proId);
@@ -128,7 +121,6 @@ const ProductPopup = ({ setProductPopup, proId }: any) => {
     const handleIncrement = (data: Product) => {
         const setQuantity = (item?.count || 1) + 1;
       setNewQuantity(setQuantity)
-      console.log(newQuantity)
 
         dispatch(
             updateProductQuantity({ productId: data._id, count: setQuantity })
@@ -138,47 +130,13 @@ const ProductPopup = ({ setProductPopup, proId }: any) => {
     const handleDecrement = (data: Product) => {
         const setQuantity = Math.max((item?.count || 0) - 1, 0);
       setNewQuantity(setQuantity)
-        console.log(newQuantity)
 
         dispatch(
             updateProductQuantity({ productId: data._id, count: setQuantity })
         );
     };
 
-    // const handleWishlist = async (data: any) => {
-       
-    //     if (id) {
-    //         const whishListObj = {
-    //             whishList: [
-    //                 {
-    //                     productId: data._id,
-    //                     front: data.front,
-    //                     title: data.title,
-    //                     price: data.price,
-    //                     date: new Date().toLocaleDateString("en-US", {
-    //                         month: "long",
-    //                         day: "numeric",
-    //                         year: "numeric",
-    //                     }),
-    //                     quantity: data.quantity,
-    //                 },
-    //             ],
-    //         };
-    
-    //         try {
-    //             const response = await axios.post(
-    //                 `${baseUrl}/users/wishList/${id}`,
-    //                 whishListObj
-    //             );
-    //             console.log(response.data); // do something with the response data
-    //         } catch (error) {
-    //             console.log(error); // handle the error
-    //         }
-    //       } else {
-    //         router.push("/account");
-    //       }
-
-    // }
+   
     const handleWishlist = async (data: any) => {
        
         if (id) {
@@ -225,9 +183,7 @@ const ProductPopup = ({ setProductPopup, proId }: any) => {
                 );
 
                 
-                console.log(response.data); // do something with the response data
             } catch (error) {
-                console.log(error); // handle the error 
                 localStorage.removeItem("token");
                 localStorage.removeItem("id");
                 alert("Session expired")

@@ -10,7 +10,6 @@ const Dashboard = ({
   handleAccountDetailsClick,
 }: any) => {
   const orderList = useSelector((state: RootState) => state.order.orders);
-  console.log(orderList);
 
   const handleClick = () => {
     localStorage.removeItem("token");
@@ -34,7 +33,6 @@ const Dashboard = ({
   // review name
   if (localStorage.getItem("email") !== null) {
     email = localStorage.getItem("email");
-    console.log(email);
     if (email !== null) {
       username = email.split("@")[0]; // Extract the username from the email
       extractedUsername = username.replace(/"/g, "");

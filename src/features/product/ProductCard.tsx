@@ -44,7 +44,7 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
       setIsdiscount(true);
     }
 
-    console.log(product);
+    
   }, []);
 
   useEffect(() => {
@@ -72,7 +72,6 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
 
     // Save the updated list back to local storage
     localStorage.setItem("recentlyAddedProducts", JSON.stringify(products));
-    console.log("data - productId: ", products);
   };
   const [cateName, setCatName] = useState();
   let findcategory: any;
@@ -81,7 +80,6 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
       findcategory = product.category[0];
       const res = await axios.get(`${baseUrl}/categories/get/${findcategory}`);
 
-      console.log("ggggggg: ", res.data[0].name);
       localStorage.setItem("catName", JSON.stringify(res.data[0].name));
     }
   };
@@ -93,7 +91,6 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
       updateProductQuantity({ productId: product._id, count: newQuantity })
     );
 
-    console.log("handleIncrement ", product.count);
     dispatch(calSubTotal(totalAmount));
   };
 
@@ -104,7 +101,6 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
     dispatch(
       updateProductQuantity({ productId: product._id, count: newQuantity })
     );
-    console.log("handleDecrement ", product.count);
     if (product.count === 1) {
       // dispatch(removeFromCart(id))
       // setIsAddToCart(false)
@@ -113,24 +109,12 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
   };
 
   const handleaddToCart = (product: Product) => {
-    //   console.log(product)
-    //    // Retrieve the existing cart items from local storage
-    //    let cartItemss = JSON.parse(localStorage.getItem('cartItemss') || '[]');
-    // // Add the product to the cart items array
-    // cartItemss.push(product);
-
-    // // Update the local storage with the updated array
-    // localStorage.setItem('cartItemss', JSON.stringify(cartItemss));
-
-    // cartItemss = JSON.parse(localStorage.getItem('cartItemss') || '[]');
-
+    
     dispatch(addItem(product));
     const newQuantity = (product.count || 0) + 1;
-    console.log("handleaddToCart ", product.count);
     dispatch(
       updateProductQuantity({ productId: product._id, count: newQuantity })
     );
-    console.log(product._id);
     dispatch(calSubTotal(totalAmount));
     Swal.fire({
       title:
@@ -160,39 +144,7 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
   discountprice = product.price * (product.discount / 100);
   let newprice = product.price - discountprice;
 
-  // const handleWishlist = async (product: any) => {
-  //   if (id) {
-  //     const whishListObj = {
-  //       whishList: [
-  //         {
-  //           productId: product._id,
-  //           front: product.front,
-  //           title: product.title,
-  //           price: product.price,
-  //           date: new Date().toLocaleDateString("en-US", {
-  //             month: "long",
-  //             day: "numeric",
-  //             year: "numeric",
-  //           }),
-  //           quantity: product.quantity,
-  //         },
-  //       ],
-  //     };
 
-  //     try {
-  //       const response = await axios.post(
-  //         `${baseUrl}/users/wishList/${id}`,
-  //         whishListObj
-  //       );
-  //       console.log(response.data); // do something with the response data
-  //     } catch (error) {
-  //       console.log(error); // handle the error
-  //     }
-  //   } else {
-  //     router.push("/account");
-  //   }
-
-  // };
   const handleWishlist = async (data: any) => {
     if (id) {
       const whishListObj = {
@@ -228,7 +180,6 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
           config
         );
 
-        console.log(response.data); // do something with the response data
       } catch (error: any) {
         if (error?.response?.status == 403 || error?.response?.status == 401) {
           Swal.fire({

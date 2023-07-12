@@ -155,52 +155,9 @@ const OrderMessage = () => {
       zipCode: "",
     },
   });
-  // const [ship, setShip] = useState({
-  //   displayName: "",
-  //   email: "",
-  //   firstName: "",
-  //   lastName: "",
-  //   password: "",
-  //   shippingAddress: {
-  //     apartment: "",
-  //     country: "",
-  //     shippingCompanyName: "",
-  //     shippingEmail: "",
-  //     shippingFirstName: "",
-  //     shippingLastName: "",
-  //     shippingphone: "",
-  //     state: "",
-  //     street: "",
-  //     town: "",
-  //     zipCode: ""
-  //   },
-  //   billingAddress: {
-  //     apartment: "",
-  //     country: "",
-  //     billingCompanyName: "",
-  //     billingEmail: "",
-  //     billingFirstName: "",
-  //     billingLastName: "",
-  //     billingphone: "",
-  //     state: "",
-  //     street: "",
-  //     town: "",
-  //     zipCode: ""
-  //   },
-  //   userName: "",
-  //   _id: "",
-
-  // });
 
   const router = useRouter();
   const { orderId, message } = router.query;
-
-  // const orderList = useSelector((state: RootState) => state.order.orders);
-  // console.log(orderList)
-  console.log(orderId);
-  // useEffect(() => {
-  //   fetchData2()
-  // }, []);
 
   let id: any;
 
@@ -213,7 +170,6 @@ const OrderMessage = () => {
   }, [orderId]);
 
   async function fetchData() {
-    console.log("hi");
     try {
       const token = localStorage.getItem("token");
 
@@ -222,7 +178,6 @@ const OrderMessage = () => {
           authorization: `Bearer ${token}`,
         },
       });
-      console.log(res.data);
       setOrder(res.data);
     } catch (error: any) {
       if (error?.response?.status == 403 || error?.response?.status == 401) {
@@ -255,28 +210,6 @@ const OrderMessage = () => {
       }
     }
   }
-
-  // async function fetchData2() {
-  //   try {
-  //     const res = await axios.get(`${baseUrl}/users/${id}`);
-  //     console.log(res.data)
-  //     setShip(res.data)
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // }
-
-  // console.log(ship)
-
-  //  let email
-  // if (typeof localStorage !== "undefined") {
-  //    email = localStorage.getItem('email');
-  //   // rest of your code here
-  // } else {
-  //   // handle error here
-  // }
-
-  // const email = typeof localStorage !== 'undefined' ? localStorage.getItem('email') : undefined;
 
   return (
     <div className="mx-20 xl:mx-36">

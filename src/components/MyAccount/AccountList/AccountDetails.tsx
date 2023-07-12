@@ -30,7 +30,6 @@ const AccountDetails = () => {
           authorization: `Bearer ${token}`,
         },
       });
-      console.log(res.data);
       const data = res.data;
       setFirstName(data.firstName);
       setLastName(data.lastName);
@@ -81,7 +80,6 @@ const AccountDetails = () => {
           authorization: `Bearer ${token}`,
         },
       });
-      console.log(response.data); // do something with the response data
       if (response.status == 200) {
         Swal.fire({
           title: "Success",

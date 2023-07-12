@@ -45,7 +45,6 @@ const Wishlist = () => {
           authorization: `Bearer ${token}`,
         },
       });
-      console.log(res.data.whishList);
       setData(res.data.whishList);
     } catch (error: any) {
       if (error?.response?.status == 403 || error?.response?.status == 401) {
@@ -107,7 +106,6 @@ const Wishlist = () => {
           authorization: `Bearer ${token}`,
         },
       });
-      console.log(res.data);
       const newItems = data.filter((item) => item.productId !== _id);
       setData(newItems);
     } catch (error: any) {
@@ -144,16 +142,14 @@ const Wishlist = () => {
   const dispatch = useDispatch();
 
   const handleCart = async (item: any) => {
-    console.log(item);
     try {
       const res = await axios.get(
         `${baseUrl}/products/getOne/${item.productId}`
       );
-      console.log(res.data);
       const itemProduct = res.data;
       dispatch(addItem(itemProduct));
     } catch (err) {
-      console.log(err);
+      return err;
     }
   };
 
@@ -164,11 +160,10 @@ const Wishlist = () => {
         const res = await axios.get(
           `${baseUrl}/products/getOne/${item.productId}`
         );
-        console.log(res.data);
         const itemProduct = res.data;
         dispatch(addItem(itemProduct));
       } catch (err) {
-        console.log(err);
+        return err;
       }
     });
   };
@@ -180,11 +175,10 @@ const Wishlist = () => {
         const res = await axios.get(
           `${baseUrl}/products/getOne/${item.productId}`
         );
-        console.log(res.data);
         const itemProduct = res.data;
         dispatch(addItem(itemProduct));
       } catch (err) {
-        console.log(err);
+        return err;
       }
     });
   };

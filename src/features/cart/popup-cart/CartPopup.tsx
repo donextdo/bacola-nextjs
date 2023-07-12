@@ -14,15 +14,11 @@ const CartPopup = ({ setCart, }: any) => {
   let totalAmount1 = useSelector((state: RootState) => state.cart.totalAmount);
 
 
-  console.log(cartItems)
+
   const dispatch = useDispatch();
 
   let totalSubtotal = 0;
-  // cartItems.forEach(price  =>{
-  //     totalSubtotal += price.subtotal
-  // }
-  // )
-  console.log(totalSubtotal);
+ 
 
   let totalAmount = 0
   for (let i = 0; i < cartItems.length; i++) {
@@ -31,7 +27,7 @@ const CartPopup = ({ setCart, }: any) => {
     totalAmount += subtotal;
   }
   useEffect(() => {
-    console.log(totalAmount)
+  
     totalAmount1 = totalAmount
     dispatch(calSubTotal(totalAmount))
   });

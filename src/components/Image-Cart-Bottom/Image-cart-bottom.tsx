@@ -344,8 +344,6 @@ const CartList: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       const response = await axios.get(`${baseUrl}/categories`);
-      console.log("bottum : ", response.data);
-      console.log("bottum : ", response.data[0].subcategories.length);
       setCartBottomItems(response.data);
       const productCountsData: any = {};
       for (const category of response.data) {
@@ -397,7 +395,6 @@ const CartList: React.FC = () => {
         }
       }
       setProductCounts(productCountsData);
-      console.log("productCounts : ", productCounts);
     };
     fetchData();
   }, []);

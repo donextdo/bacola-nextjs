@@ -34,7 +34,6 @@ export const FilteredProduct = ({
   ) as Product[];
   useEffect(() => {
     dispatch(fetchProducts());
-    console.log("data data", productsRidux);
   }, [dispatch]);
 
   const router = useRouter();
@@ -80,7 +79,6 @@ export const FilteredProduct = ({
           },
         });
         const products = response.data.products;
-        console.log("response.data: ", response);
         setProducts(products);
       } catch (error: any) {
         if (error?.response?.status == 403 || error?.response?.status == 401) {
@@ -155,13 +153,11 @@ export const FilteredProduct = ({
   useEffect(() => {
     const getItem = localStorage.getItem("gridType");
     if (!getItem) {
-      console.log("empty : ");
       setIsGrid("layoutGrid");
     } else {
       setIsGrid(getItem);
     }
 
-    console.log("setIsGrid : ", getItem);
   }, [passgrid]);
 
   useEffect(() => {
@@ -169,8 +165,7 @@ export const FilteredProduct = ({
       products.some((p: any) => p?._id === pr?._id)
     );
     setmatchWithProduct(matchedProducts);
-    console.log({ products });
-    console.log({ matchWithProduct });
+   
   }, [products, productsRidux]);
 
   return (

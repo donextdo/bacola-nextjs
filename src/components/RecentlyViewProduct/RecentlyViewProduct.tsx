@@ -16,7 +16,6 @@ export const RecentlyViewProduct = ({ passgrid }: any) => {
   ) as Product[];
   useEffect(() => {
     dispatch(fetchProducts());
-    console.log("data data", productsRidux);
   }, [dispatch]);
 
   useEffect(() => {
@@ -37,7 +36,6 @@ export const RecentlyViewProduct = ({ passgrid }: any) => {
             );
             return response.data; // Assuming the API response contains the product data
           } catch (error) {
-            console.log(`Error fetching product with ID ${productId}:`, error);
             return null;
           }
         }
@@ -47,7 +45,7 @@ export const RecentlyViewProduct = ({ passgrid }: any) => {
         const fetchedProducts = await Promise.all(productPromises);
         setProduct(fetchedProducts.filter((product) => product !== null));
       } catch (error) {
-        console.log("Error fetching recently viewed products:", error);
+        return null;
       }
     };
 

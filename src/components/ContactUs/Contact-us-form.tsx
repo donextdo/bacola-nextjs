@@ -19,7 +19,6 @@ const ContactForm: React.FC<Props> = () => {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log({ name, email, subject, message });
     setName("");
     setEmail("");
     setSubject("");

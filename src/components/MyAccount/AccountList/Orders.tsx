@@ -116,7 +116,6 @@ const Orders = () => {
   const [hideOrder, setHideOrder] = useState(true);
   const dispatch = useDispatch<AppDispatch>();
   const orderList = useSelector((state: RootState) => state.order.orders);
-  console.log(orderList);
   const router = useRouter();
 
   let id: string | null;
@@ -139,7 +138,6 @@ const Orders = () => {
           authorization: `Bearer ${token}`,
         },
       });
-      console.log(res.data);
       setOrder(res.data);
     } catch (error: any) {
       if (error?.response?.status == 403 || error?.response?.status == 401) {

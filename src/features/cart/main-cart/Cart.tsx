@@ -88,7 +88,6 @@ const Cart: FC<CartType> = () => {
   const token = localStorage.getItem("token");
 
   useEffect(() => {
-    console.log(cartItems);
     dispatch(calSubTotal(totalAmount));
   });
 
@@ -107,7 +106,6 @@ const Cart: FC<CartType> = () => {
           authorization: `Bearer ${token}`,
         },
       });
-      console.log(res.data);
       const data = res.data;
       setFirstName(data.shippingAddress.shippingFirstName);
       setLastName(data.shippingAddress.shippingLastName);
@@ -160,15 +158,14 @@ const Cart: FC<CartType> = () => {
     totalAmount += subtotal;
   }
   useEffect(() => {
-    console.log(cartItems);
+   
     dispatch(calSubTotal(totalAmount));
   });
 
   // calculate discount
 
   fulldiscount = totalAmount * (couponDiscount.dicount_amount / 100);
-  console.log(fulldiscount);
-  console.log(couponDiscount);
+ 
 
   const [total, setTotal] = useState(totalAmount + 5);
 
@@ -204,14 +201,13 @@ const Cart: FC<CartType> = () => {
     };
     const savenewshippingObj = newshippingObj;
     setShippingObj(savenewshippingObj);
-    console.log(savenewshippingObj);
+    
     setShowInputs(false);
   };
-  console.log(shippingObj);
+ 
 
   const handleCheckout = () => {
     const orderData = { shippingObj: JSON.stringify(shippingObj) };
-    console.log(orderData);
     router.push({
       pathname: "/checkout",
       query: orderData,
@@ -227,7 +223,6 @@ const Cart: FC<CartType> = () => {
           authorization: `Bearer ${token}`,
         },
       });
-      console.log(res.data);
       if (res.status == 200) {
         setCouponDiscount(res.data);
         setErrorMessage("");
@@ -291,14 +286,12 @@ const Cart: FC<CartType> = () => {
     const locations = response.data;
     setLocation(locations);
 
-    console.log("location", locations);
   };
 
   const [selectedItem, setSelectedItem] = useState("");
 
   const handleDropdownChange = (event: any) => {
     setSelectedItem(event.target.value);
-    console.log(event.target.value);
   };
 
   return (
@@ -474,7 +467,6 @@ const Cart: FC<CartType> = () => {
                                 value={townCity}
                                 onChange={(e) => {
                                   setTownCity(e.target.value);
-                                  console.log(e.target.value); // Log the value of townCity
                                 }}
                               />
                               <input

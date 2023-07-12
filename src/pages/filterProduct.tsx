@@ -15,18 +15,9 @@ const FilterProduct = () => {
   const maxValue = query?.max_price;
   const inStock = query?.stock_status;
   const onSale = query?.on_sale;
-  console.log("min_price : ", minValue);
-  console.log("max_price : ", maxValue);
-  console.log("stock_status : ", inStock);
-  console.log("on_sale : ", onSale);
-
   const perpage = query?.perpage;
   const page = query?.page;
   const orderby = query?.orderby;
-
-  console.log("perpage filter", perpage);
-  console.log("page filter", page);
-  console.log("orderby filter", orderby);
 
   return (
     <div className="xl:px-40 lg:px-5 md:px-5 px-5 ">

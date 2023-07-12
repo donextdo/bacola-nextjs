@@ -54,7 +54,6 @@ const Login: React.FC<Props> = () => {
     };
     try {
       const response = await axios.post(`${baseUrl}/users/login`, details);
-      console.log(response.data);
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("id", response.data._id);
       localStorage.setItem("email", response.data.email);
@@ -79,7 +78,6 @@ const Login: React.FC<Props> = () => {
         router.push("/account");
       }
     } catch (error: any) {
-      console.log(error);
       if (error.response) {
         const statusCode = error.response.status;
         switch (statusCode) {

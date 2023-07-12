@@ -18,9 +18,8 @@ const Categories = ({ categoryId, onSuCatChange }: any) => {
         const response = await axios.get(`${baseUrl}/categories/${categoryId}`);
         setSubCategory(response.data);
         setIsEmpty(response.data.length === 0);
-        console.log("data awad? ", response.data);
       } catch (error) {
-        console.log(error);
+        return error;
       }
     };
     fetchData();
