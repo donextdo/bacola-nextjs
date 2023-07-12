@@ -67,7 +67,7 @@ export const RecentlyViewProduct = ({ passgrid }: any) => {
           {matchWithProduct.map((product: any, index) => {
             return (
               <ProductCard
-                key={product.id}
+                key={product._id}
                 product={product}
                 isGrid={passgrid}
               />
