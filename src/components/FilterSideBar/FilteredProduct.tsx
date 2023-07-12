@@ -79,6 +79,7 @@ export const FilteredProduct = ({
           },
         });
         const products = response.data.products;
+
         setProducts(products);
       } catch (error: any) {
         if (error?.response?.status == 403 || error?.response?.status == 401) {
@@ -109,13 +110,13 @@ export const FilteredProduct = ({
                 color: "black",
                 background: "white",
                 html: `
-                  <div style="text-align: left;">
-                    <h2 style="font-size: 20px; font-weight: bold; margin-bottom: 10px;">Session Expired</h2>
-                    <hr style="margin-bottom: 20px;" />
-                    <p style="font-size: 14px;margin-bottom: 10px;">Your session has expired</p>
-                    <hr style="margin-bottom: 20px;" />
-                  </div>
-                `,
+              <div style="text-align: left;">
+                <h2 style="font-size: 20px; font-weight: bold; margin-bottom: 10px;">Session Expired</h2>
+                <hr style="margin-bottom: 20px;" />
+                <p style="font-size: 14px;margin-bottom: 10px;">Your session has expired</p>
+                <hr style="margin-bottom: 20px;" />
+              </div>
+            `,
                 showConfirmButton: true,
                 confirmButtonText: "Ok",
                 confirmButtonColor: "blue",
@@ -157,7 +158,6 @@ export const FilteredProduct = ({
     } else {
       setIsGrid(getItem);
     }
-
   }, [passgrid]);
 
   useEffect(() => {
@@ -165,7 +165,6 @@ export const FilteredProduct = ({
       products.some((p: any) => p?._id === pr?._id)
     );
     setmatchWithProduct(matchedProducts);
-   
   }, [products, productsRidux]);
 
   return (
