@@ -4,6 +4,8 @@ import axios from "axios";
 import baseUrl from "../../../utils/baseUrl";
 import orderList from "./data.json";
 import { OrderObj } from "./ordertest";
+import { logOut } from "../../../utils/logout";
+import { useRouter } from "next/router";
 
 interface OrderState {
   orders: OrderItem[];
@@ -19,23 +21,42 @@ const initialState: OrderState = {
 
 const PRODUCTS_URL = `${baseUrl}/orders/get`;
 const PRODUCTS_URL_SET = `${baseUrl}/orders/place`;
+// const token = localStorage.getItem("token");
+// const router = useRouter();
 
 export const insertOrderAsync = createAsyncThunk(
   "order/insertOrderAsync",
   async (orderObj: OrderObj) => {
-    console.log("Response object:", orderObj);
-    const response = await axios.post(PRODUCTS_URL_SET, orderObj);
-    return response.data;
+    try {
+      console.log("Response object:", orderObj);
+      const response = await axios.post(PRODUCTS_URL_SET, orderObj);
+      return response.data;
+    } catch (error: any) {
+      console.log(error);
+      // if (error?.response?.status == 403 || error?.response?.status == 401) {
+      //   logOut();
+      //   router.push("/account");
+      // }
+    }
   }
 );
 
 export const getOrdersByUserIdAsync = createAsyncThunk(
   "order/getOrdersByUserIdAsync",
   async (id: string) => {
-    console.log("Response data:", id);
-    const res = await axios.get(`${PRODUCTS_URL}/${id}`);
-    console.log("Response data:", res.data);
-    return res.data;
+    try {
+      console.log("Response data:", id);
+      const res = await axios.get(`${PRODUCTS_URL}/${id}`);
+      console.log("Response data:", res.data);
+      return res.data;
+    } catch (error: any) {
+      console.log(error);
+
+      // if (error?.response?.status == 403 || error?.response?.status == 401) {
+      //   logOut();
+      //   router.push("/account");
+      // }
+    }
   }
 );
 

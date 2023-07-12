@@ -36,6 +36,8 @@ import { RecentlyViewProduct } from "@/components/RecentlyViewProduct/RecentlyVi
 import RelatedProduct from "@/components/RelatedProduct/RelatedProduct";
 import Breadcrumbs from "@/components/Breadcrumbs/Breadcrumbs";
 import { MdArrowBackIos, MdArrowForwardIos } from "react-icons/md";
+import { logOut } from "../../../utils/logout";
+import Swal from "sweetalert2";
 // interface ItemData {
 //     description: string;
 //     quantity: number;
@@ -83,9 +85,11 @@ const ItemPages = () => {
   const [mainImage, setMainImage] = useState(data?.front);
   const [tag, setTag] = useState([]);
   const [allreview, setAllreview] = useState<Array<Review>>([]);
-  const [hideBackImage, setHideBackImage] = useState(false);
-  const [hideFrontImage, setHideFrontImage] = useState(false);
-  const [hideSideImage, setHideSideImage] = useState(false);
+  const [hideBackImage, setHideBackImage] = useState(true);
+  const [hideFrontImage, setHideFrontImage] = useState(true);
+  const [hideSideImage, setHideSideImage] = useState(true);
+  const [defaultImage, setDefaultImage] = useState("");
+
   const [categoryName, setcategoryname] = useState();
   let [newQuantity, setNewQuantity] = useState<number>(1);
 
@@ -117,18 +121,27 @@ const ItemPages = () => {
   async function fetchData() {
     try {
       const res = await axios.get(`${baseUrl}/products/getOne/${itemId}`);
-      console.log(res.data);
+
       setData(res.data);
       setTag(res.data.tags);
       setImageArray2(res.data.imageArray);
       if (res.data.back == "") {
-        setHideBackImage(true);
+        setHideBackImage(false);
+        setDefaultImage(
+          "https://www.tiffincurry.ca/wp-content/uploads/2021/02/default-product.png"
+        );
       }
       if (res.data.front == "") {
-        setHideFrontImage(true);
+        setHideFrontImage(false);
+        setDefaultImage(
+          "https://www.tiffincurry.ca/wp-content/uploads/2021/02/default-product.png"
+        );
       }
       if (res.data.side == "") {
-        setHideSideImage(true);
+        setHideSideImage(false);
+        setDefaultImage(
+          "https://www.tiffincurry.ca/wp-content/uploads/2021/02/default-product.png"
+        );
       }
     } catch (err) {
       console.log(err);
@@ -137,7 +150,30 @@ const ItemPages = () => {
 
   // slide image
   useEffect(() => {
-    setImageArray1([data.back, data.front, data.side]);
+    const imageArray = [];
+
+    if (data.back) {
+      imageArray.push(data.back);
+    }
+    // else {
+    //   imageArray.push(defaultImage);
+    // }
+
+    if (data.front) {
+      imageArray.push(data.front);
+    }
+    // else {
+    //   imageArray.push(defaultImage);
+    // }
+
+    if (data.side) {
+      imageArray.push(data.side);
+    }
+    // else {
+    //   imageArray.push(defaultImage);
+    // }
+
+    setImageArray1(imageArray);
   }, [data.back, data.front, data.side]);
 
   // useEffect(() => {
@@ -299,11 +335,11 @@ const ItemPages = () => {
       try {
         //authentication session handle
         const token = localStorage.getItem("token"); // Retrieve the token from local storage or wherever it's stored
-        if (!token) {
-          alert("Session expired");
-          router.push("/account");
-          return;
-        }
+        // if (!token) {
+        //   alert("Session expired");
+        //   router.push("/account");
+        //   return;
+        // }
 
         const config = {
           headers: {
@@ -318,11 +354,35 @@ const ItemPages = () => {
         );
 
         console.log(response.data); // do something with the response data
-      } catch (error) {
-        console.log(error); // handle the error
-
-        alert("Session expired");
-        router.push("/account");
+      } catch (error: any) {
+        if (error?.response?.status == 403 || error?.response?.status == 401) {
+          Swal.fire({
+            width: 700,
+            color: "black",
+            background: "white",
+            html: `
+              <div style="text-align: left;">
+                <h2 style="font-size: 20px; font-weight: bold; margin-bottom: 10px;">Session Expired</h2>
+                <hr style="margin-bottom: 20px;" />
+                <p style="font-size: 14px;margin-bottom: 10px;">Your session has expired</p>
+                <hr style="margin-bottom: 20px;" />
+              </div>
+            `,
+            showConfirmButton: true,
+            confirmButtonText: "Ok",
+            confirmButtonColor: "blue",
+            heightAuto: true,
+            customClass: {
+              confirmButton:
+                "bg-blue-500 text-white rounded-full px-4 py-2 text-sm absolute right-4 bottom-4 ",
+            },
+          }).then((result) => {
+            if (result.value) {
+              logOut();
+              router.push("/account");
+            }
+          });
+        }
       }
     } else {
       router.push("/account");
@@ -518,7 +578,10 @@ const ItemPages = () => {
                               handleImageClick(currentSlide + index)
                             }
                           >
-                            {!hideSideImage ? (
+                            {(!hideSideImage ||
+                              !hideBackImage ||
+                              !hideFrontImage) &&
+                            photo ? (
                               <img
                                 width={67}
                                 height={67}
@@ -530,7 +593,7 @@ const ItemPages = () => {
                                 width={67}
                                 height={67}
                                 src={photo}
-                                alt="Man looking at item at a store"
+                                alt="Default image"
                               />
                             )}
                           </div>
@@ -597,7 +660,7 @@ const ItemPages = () => {
                       </div>
                       <button
                         type="button"
-                        className=" bg-primary text-white min-h-[34px] min-w-[140px] rounded-full text-[13px]  ml-4"
+                        className=" bg-primary hover:bg-opacity-70 text-white min-h-[34px] min-w-[140px] rounded-full text-[13px]  ml-4 "
                         onClick={() => handleaddToCart(data)}
                       >
                         Add to cart

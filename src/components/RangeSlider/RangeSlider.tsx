@@ -4,6 +4,7 @@ import { ChangeEvent } from "react";
 import baseUrl from "../../../utils/baseUrl";
 import axios from "axios";
 import { logOut } from "../../../utils/logout";
+import Swal from "sweetalert2";
 export const RangeSlider = ({ categoryId }: any) => {
   const [minValue, setMinValue] = useState(0);
   const [maxValue, setMaxValue] = useState(50000);
@@ -44,8 +45,32 @@ export const RangeSlider = ({ categoryId }: any) => {
             error?.response?.status == 403 ||
             error?.response?.status == 401
           ) {
-            logOut();
-            router.push("/account");
+            Swal.fire({
+              width: 700,
+              color: "black",
+              background: "white",
+              html: `
+                <div style="text-align: left;">
+                  <h2 style="font-size: 20px; font-weight: bold; margin-bottom: 10px;">Session Expired</h2>
+                  <hr style="margin-bottom: 20px;" />
+                  <p style="font-size: 14px;margin-bottom: 10px;">Your session has expired</p>
+                  <hr style="margin-bottom: 20px;" />
+                </div>
+              `,
+              showConfirmButton: true,
+              confirmButtonText: "Ok",
+              confirmButtonColor: "blue",
+              heightAuto: true,
+              customClass: {
+                confirmButton:
+                  "bg-blue-500 text-white rounded-full px-4 py-2 text-sm absolute right-4 bottom-4 ",
+              },
+            }).then((result) => {
+              if (result.value) {
+                logOut();
+                router.push("/account");
+              }
+            });
           }
           console.log("erro price range : ", error);
         }

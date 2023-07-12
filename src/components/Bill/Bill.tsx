@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import baseUrl from "../../../utils/baseUrl";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { useRouter } from "next/router";
+import { logOut } from "../../../utils/logout";
 
 const Bill = ({ setModal, setModal1 }: any) => {
   const [firstName, setFirstName] = useState("");
@@ -34,9 +36,16 @@ const Bill = ({ setModal, setModal1 }: any) => {
     fetchData();
   }, []);
 
+  const router = useRouter();
+  const token = localStorage.getItem("token");
+
   async function fetchData() {
     try {
-      const res = await axios.get(`${baseUrl}/users/${id}`);
+      const res = await axios.get(`${baseUrl}/users/${id}`, {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
       console.log(res.data);
       const data = res.data;
       setFirstName(data.billingAddress.billingFirstName);
@@ -50,8 +59,35 @@ const Bill = ({ setModal, setModal1 }: any) => {
       setZipCode(data.billingAddress.zipCode);
       setPhone(data.billingAddress.billingPhone);
       setEmail(data.billingAddress.billingEmail);
-    } catch (err) {
-      console.log(err);
+    } catch (error: any) {
+      if (error?.response?.status == 403 || error?.response?.status == 401) {
+        Swal.fire({
+          width: 700,
+          color: "black",
+          background: "white",
+          html: `
+            <div style="text-align: left;">
+              <h2 style="font-size: 20px; font-weight: bold; margin-bottom: 10px;">Session Expired</h2>
+              <hr style="margin-bottom: 20px;" />
+              <p style="font-size: 14px;margin-bottom: 10px;">Your session has expired</p>
+              <hr style="margin-bottom: 20px;" />
+            </div>
+          `,
+          showConfirmButton: true,
+          confirmButtonText: "Ok",
+          confirmButtonColor: "blue",
+          heightAuto: true,
+          customClass: {
+            confirmButton:
+              "bg-blue-500 text-white rounded-full px-4 py-2 text-sm absolute right-4 bottom-4 ",
+          },
+        }).then((result) => {
+          if (result.value) {
+            logOut();
+            router.push("/account");
+          }
+        });
+      }
     }
   }
 
@@ -210,7 +246,11 @@ const Bill = ({ setModal, setModal1 }: any) => {
         },
       };
       try {
-        const response = await axios.patch(`${baseUrl}/users/${id}`, data);
+        const response = await axios.patch(`${baseUrl}/users/${id}`, data, {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        });
         console.log(response.data); // do something with the response data
         if (response.status == 200) {
           Swal.fire({
@@ -223,8 +263,35 @@ const Bill = ({ setModal, setModal1 }: any) => {
           setModal1(false);
           setModal(false);
         }
-      } catch (error) {
-        console.log(error); // handle the error
+      } catch (error: any) {
+        if (error?.response?.status == 403 || error?.response?.status == 401) {
+          Swal.fire({
+            width: 700,
+            color: "black",
+            background: "white",
+            html: `
+              <div style="text-align: left;">
+                <h2 style="font-size: 20px; font-weight: bold; margin-bottom: 10px;">Session Expired</h2>
+                <hr style="margin-bottom: 20px;" />
+                <p style="font-size: 14px;margin-bottom: 10px;">Your session has expired</p>
+                <hr style="margin-bottom: 20px;" />
+              </div>
+            `,
+            showConfirmButton: true,
+            confirmButtonText: "Ok",
+            confirmButtonColor: "blue",
+            heightAuto: true,
+            customClass: {
+              confirmButton:
+                "bg-blue-500 text-white rounded-full px-4 py-2 text-sm absolute right-4 bottom-4 ",
+            },
+          }).then((result) => {
+            if (result.value) {
+              logOut();
+              router.push("/account");
+            }
+          });
+        }
       }
     }
   };

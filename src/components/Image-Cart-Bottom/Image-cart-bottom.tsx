@@ -15,6 +15,7 @@ import household from "./../../../assets/categary/household.jpg";
 import meat from "./../../../assets/categary/meat.jpg";
 import Link from "next/link";
 import { logOut } from "../../../utils/logout";
+import Swal from "sweetalert2";
 
 interface CartBottomItem {
   _id: any;
@@ -366,8 +367,32 @@ const CartList: React.FC = () => {
             error?.response?.status == 403 ||
             error?.response?.status == 401
           ) {
-            logOut();
-            router.push("/account");
+            Swal.fire({
+              width: 700,
+              color: "black",
+              background: "white",
+              html: `
+                <div style="text-align: left;">
+                  <h2 style="font-size: 20px; font-weight: bold; margin-bottom: 10px;">Session Expired</h2>
+                  <hr style="margin-bottom: 20px;" />
+                  <p style="font-size: 14px;margin-bottom: 10px;">Your session has expired</p>
+                  <hr style="margin-bottom: 20px;" />
+                </div>
+              `,
+              showConfirmButton: true,
+              confirmButtonText: "Ok",
+              confirmButtonColor: "blue",
+              heightAuto: true,
+              customClass: {
+                confirmButton:
+                  "bg-blue-500 text-white rounded-full px-4 py-2 text-sm absolute right-4 bottom-4 ",
+              },
+            }).then((result) => {
+              if (result.value) {
+                logOut();
+                router.push("/account");
+              }
+            });
           }
         }
       }

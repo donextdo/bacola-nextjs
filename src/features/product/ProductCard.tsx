@@ -21,6 +21,7 @@ import baseUrl from "../../../utils/baseUrl";
 import { useRouter } from "next/router";
 import Swal from "sweetalert2";
 import { addRecentlyClickedProductId } from "./recentlyClickedSlice";
+import { logOut } from "../../../utils/logout";
 interface Props {
   product: Product;
   isGrid: string;
@@ -214,11 +215,6 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
       try {
         //authentication session handle
         const token = localStorage.getItem("token"); // Retrieve the token from local storage or wherever it's stored
-        if (!token) {
-          alert("Session expired");
-          router.push("/account");
-          return;
-        }
 
         const config = {
           headers: {
@@ -233,11 +229,35 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
         );
 
         console.log(response.data); // do something with the response data
-      } catch (error) {
-        console.log(error); // handle the error
-
-        alert("Session expired");
-        router.push("/account");
+      } catch (error: any) {
+        if (error?.response?.status == 403 || error?.response?.status == 401) {
+          Swal.fire({
+            width: 700,
+            color: "black",
+            background: "white",
+            html: `
+              <div style="text-align: left;">
+                <h2 style="font-size: 20px; font-weight: bold; margin-bottom: 10px;">Session Expired</h2>
+                <hr style="margin-bottom: 20px;" />
+                <p style="font-size: 14px;margin-bottom: 10px;">Your session has expired</p>
+                <hr style="margin-bottom: 20px;" />
+              </div>
+            `,
+            showConfirmButton: true,
+            confirmButtonText: "Ok",
+            confirmButtonColor: "blue",
+            heightAuto: true,
+            customClass: {
+              confirmButton:
+                "bg-blue-500 text-white rounded-full px-4 py-2 text-sm absolute right-4 bottom-4 ",
+            },
+          }).then((result) => {
+            if (result.value) {
+              logOut();
+              router.push("/account");
+            }
+          });
+        }
       }
     } else {
       router.push("/account");

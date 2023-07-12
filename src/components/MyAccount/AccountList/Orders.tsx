@@ -9,6 +9,8 @@ import { getOrdersByUserIdAsync } from "@/components/Checkout/orderSlice";
 import { useRouter } from "next/router";
 import axios from "axios";
 import baseUrl from "../../../../utils/baseUrl";
+import { logOut } from "../../../../utils/logout";
+import Swal from "sweetalert2";
 
 interface Order {
   orderId: string;
@@ -17,8 +19,8 @@ interface Order {
   totalprice: number;
   date: string;
   status: string;
-  address:string;
-  payment:string;
+  address: string;
+  payment: string;
   items: {
     productDetails: {
       name: string;
@@ -68,7 +70,7 @@ const Orders = () => {
     totalprice: 0,
     date: "",
     status: "",
-    payment:"",
+    payment: "",
     address: "",
     items: [
       {
@@ -130,11 +132,44 @@ const Orders = () => {
   const handleView = async (orderId: any) => {
     setHideOrder(false);
     try {
-      const res = await axios.get(`${baseUrl}/orders/${orderId}`);
+      const token = localStorage.getItem("token");
+
+      const res = await axios.get(`${baseUrl}/orders/${orderId}`, {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
       console.log(res.data);
       setOrder(res.data);
-    } catch (err) {
-      console.log(err);
+    } catch (error: any) {
+      if (error?.response?.status == 403 || error?.response?.status == 401) {
+        Swal.fire({
+          width: 700,
+          color: "black",
+          background: "white",
+          html: `
+            <div style="text-align: left;">
+              <h2 style="font-size: 20px; font-weight: bold; margin-bottom: 10px;">Session Expired</h2>
+              <hr style="margin-bottom: 20px;" />
+              <p style="font-size: 14px;margin-bottom: 10px;">Your session has expired</p>
+              <hr style="margin-bottom: 20px;" />
+            </div>
+          `,
+          showConfirmButton: true,
+          confirmButtonText: "Ok",
+          confirmButtonColor: "blue",
+          heightAuto: true,
+          customClass: {
+            confirmButton:
+              "bg-blue-500 text-white rounded-full px-4 py-2 text-sm absolute right-4 bottom-4 ",
+          },
+        }).then((result) => {
+          if (result.value) {
+            logOut();
+            router.push("/account");
+          }
+        });
+      }
     }
   };
 
@@ -145,7 +180,7 @@ const Orders = () => {
     <div>
       {hideOrder ? (
         <div>
-          {orderList.length > 0 ? (
+          {orderList?.length > 0 ? (
             <div className="">
               {orderList.map((order) => (
                 <div className="mb-8" key={order.orderId}>
@@ -280,7 +315,7 @@ const Orders = () => {
                   Payment method:
                 </div>
                 <div className="w-1/3 text-sm px-2 py-2 border border-gray-300 ">
-                {order?.payment}
+                  {order?.payment}
                 </div>
               </div>
               <div className="flex  ">

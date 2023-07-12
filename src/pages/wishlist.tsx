@@ -7,6 +7,9 @@ import { IoClose } from "react-icons/io5";
 import { useDispatch } from "react-redux";
 import baseUrl from "../../utils/baseUrl";
 import { Product } from "@/features/product/product";
+import { logOut } from "../../utils/logout";
+import { useRouter } from "next/router";
+import Swal from "sweetalert2";
 
 interface WIshlist {
   selected: boolean;
@@ -29,18 +32,50 @@ const Wishlist = () => {
   if (typeof localStorage !== "undefined") {
     id = localStorage.getItem("id");
   }
-
+  const token = localStorage.getItem("token");
+  const router = useRouter();
   useEffect(() => {
     fetchData();
   }, []);
 
   async function fetchData() {
     try {
-      const res = await axios.get(`${baseUrl}/users/${id}`);
+      const res = await axios.get(`${baseUrl}/users/${id}`, {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
       console.log(res.data.whishList);
       setData(res.data.whishList);
-    } catch (err) {
-      console.log(err);
+    } catch (error: any) {
+      if (error?.response?.status == 403 || error?.response?.status == 401) {
+        Swal.fire({
+          width: 700,
+          color: "black",
+          background: "white",
+          html: `
+            <div style="text-align: left;">
+              <h2 style="font-size: 20px; font-weight: bold; margin-bottom: 10px;">Session Expired</h2>
+              <hr style="margin-bottom: 20px;" />
+              <p style="font-size: 14px;margin-bottom: 10px;">Your session has expired</p>
+              <hr style="margin-bottom: 20px;" />
+            </div>
+          `,
+          showConfirmButton: true,
+          confirmButtonText: "Ok",
+          confirmButtonColor: "blue",
+          heightAuto: true,
+          customClass: {
+            confirmButton:
+              "bg-blue-500 text-white rounded-full px-4 py-2 text-sm absolute right-4 bottom-4 ",
+          },
+        }).then((result) => {
+          if (result.value) {
+            logOut();
+            router.push("/account");
+          }
+        });
+      }
     }
   }
 
@@ -67,12 +102,43 @@ const Wishlist = () => {
 
   const handleDelete = async (_id: any) => {
     try {
-      const res = await axios.delete(`${baseUrl}/users/${id}/wishList/${_id}`);
+      const res = await axios.delete(`${baseUrl}/users/${id}/wishList/${_id}`, {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
       console.log(res.data);
       const newItems = data.filter((item) => item.productId !== _id);
       setData(newItems);
-    } catch (err) {
-      console.log(err);
+    } catch (error: any) {
+      if (error?.response?.status == 403 || error?.response?.status == 401) {
+        Swal.fire({
+          width: 700,
+          color: "black",
+          background: "white",
+          html: `
+            <div style="text-align: left;">
+              <h2 style="font-size: 20px; font-weight: bold; margin-bottom: 10px;">Session Expired</h2>
+              <hr style="margin-bottom: 20px;" />
+              <p style="font-size: 14px;margin-bottom: 10px;">Your session has expired</p>
+              <hr style="margin-bottom: 20px;" />
+            </div>
+          `,
+          showConfirmButton: true,
+          confirmButtonText: "Ok",
+          confirmButtonColor: "blue",
+          heightAuto: true,
+          customClass: {
+            confirmButton:
+              "bg-blue-500 text-white rounded-full px-4 py-2 text-sm absolute right-4 bottom-4 ",
+          },
+        }).then((result) => {
+          if (result.value) {
+            logOut();
+            router.push("/account");
+          }
+        });
+      }
     }
   };
   const dispatch = useDispatch();

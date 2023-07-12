@@ -16,6 +16,8 @@ import { AiOutlineArrowRight } from "react-icons/ai";
 import CryptoJS from "crypto-js";
 // @ts-ignore
 import { Init } from "directpay-ipg-js";
+import { logOut } from "../../utils/logout";
+import Swal from "sweetalert2";
 
 export interface OrderObj {
   userId: string;
@@ -322,10 +324,15 @@ const Checkout = () => {
   useEffect(() => {
     fetchData();
   }, []);
+  const token = localStorage.getItem("token");
 
   async function fetchData() {
     try {
-      const res = await axios.get(`${baseUrl}/users/${id}`);
+      const res = await axios.get(`${baseUrl}/users/${id}`, {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
       console.log(res.data);
       const data = res.data;
       setFirstName(data.billingAddress.billingFirstName);
@@ -339,8 +346,35 @@ const Checkout = () => {
       setZipCode(data.billingAddress.zipCode);
       setPhone(data.billingAddress.billingPhone);
       setEmail(data.billingAddress.billingEmail);
-    } catch (err) {
-      console.log(err);
+    } catch (error: any) {
+      if (error?.response?.status == 403 || error?.response?.status == 401) {
+        Swal.fire({
+          width: 700,
+          color: "black",
+          background: "white",
+          html: `
+            <div style="text-align: left;">
+              <h2 style="font-size: 20px; font-weight: bold; margin-bottom: 10px;">Session Expired</h2>
+              <hr style="margin-bottom: 20px;" />
+              <p style="font-size: 14px;margin-bottom: 10px;">Your session has expired</p>
+              <hr style="margin-bottom: 20px;" />
+            </div>
+          `,
+          showConfirmButton: true,
+          confirmButtonText: "Ok",
+          confirmButtonColor: "blue",
+          heightAuto: true,
+          customClass: {
+            confirmButton:
+              "bg-blue-500 text-white rounded-full px-4 py-2 text-sm absolute right-4 bottom-4 ",
+          },
+        }).then((result) => {
+          if (result.value) {
+            logOut();
+            router.push("/account");
+          }
+        });
+      }
     }
   }
 
@@ -350,11 +384,42 @@ const Checkout = () => {
 
   async function fetchData2() {
     try {
-      const res = await axios.get(`${baseUrl}/users/${id}`);
+      const res = await axios.get(`${baseUrl}/users/${id}`, {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
       console.log(res.data);
       setShip(res.data);
-    } catch (err) {
-      console.log(err);
+    } catch (error: any) {
+      if (error?.response?.status == 403 || error?.response?.status == 401) {
+        Swal.fire({
+          width: 700,
+          color: "black",
+          background: "white",
+          html: `
+            <div style="text-align: left;">
+              <h2 style="font-size: 20px; font-weight: bold; margin-bottom: 10px;">Session Expired</h2>
+              <hr style="margin-bottom: 20px;" />
+              <p style="font-size: 14px;margin-bottom: 10px;">Your session has expired</p>
+              <hr style="margin-bottom: 20px;" />
+            </div>
+          `,
+          showConfirmButton: true,
+          confirmButtonText: "Ok",
+          confirmButtonColor: "blue",
+          heightAuto: true,
+          customClass: {
+            confirmButton:
+              "bg-blue-500 text-white rounded-full px-4 py-2 text-sm absolute right-4 bottom-4 ",
+          },
+        }).then((result) => {
+          if (result.value) {
+            logOut();
+            router.push("/account");
+          }
+        });
+      }
     }
   }
 
