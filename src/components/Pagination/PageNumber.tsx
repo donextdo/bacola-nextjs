@@ -38,7 +38,6 @@ export const PageNumber = ({ perpage }: any) => {
 
           const products = response.data.products;
           if (products.length == 0) {
-            
             setHidePagination(true);
           }
           setTotalPage(response.data.totalPages);
@@ -71,7 +70,7 @@ export const PageNumber = ({ perpage }: any) => {
               heightAuto: true,
               customClass: {
                 confirmButton:
-                  "bg-blue-500 text-white rounded-full px-4 py-2 text-sm absolute right-4 bottom-4 ",
+                  "bg-primary text-white rounded-full px-4 py-2 text-sm absolute right-4 bottom-4 ",
               },
             }).then((result) => {
               if (result.value) {
@@ -99,7 +98,6 @@ export const PageNumber = ({ perpage }: any) => {
 
           const products = response.data.products;
           if (products.length == 0) {
-            
             setHidePagination(true);
           }
 
@@ -133,7 +131,7 @@ export const PageNumber = ({ perpage }: any) => {
               heightAuto: true,
               customClass: {
                 confirmButton:
-                  "bg-blue-500 text-white rounded-full px-4 py-2 text-sm absolute right-4 bottom-4 ",
+                  "bg-primary text-white rounded-full px-4 py-2 text-sm absolute right-4 bottom-4 ",
               },
             }).then((result) => {
               if (result.value) {

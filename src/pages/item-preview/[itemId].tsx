@@ -143,7 +143,8 @@ const ItemPages = () => {
         );
       }
     } catch (err) {
-return err ;    }
+      return err;
+    }
   }
 
   // slide image
@@ -182,7 +183,6 @@ return err ;    }
 
   const [selectedImage, setSelectedImage] = useState(combinedArray[0]);
 
-
   const nextSlide = () => {
     setCurrentSlide((prevSlide) => (prevSlide + 1) % combinedArray.length);
   };
@@ -216,7 +216,8 @@ return err ;    }
       const res = await axios.get(`${baseUrl}/categories/get/${findcategory}`);
       setMyCategory(res.data);
     } catch (err) {
-return err;    }
+      return err;
+    }
   }
 
   // review part
@@ -240,7 +241,6 @@ return err;    }
     }
   }
 
-
   let averageReviewCount = 0;
   const approvedReviews = allreview.filter(
     (review) => review.reviewStatus === "approved"
@@ -250,7 +250,6 @@ return err;    }
   if (approvedReviewsLength > 0) {
     averageReviewCount = Math.round(totalReviewCount / approvedReviewsLength);
   }
-
 
   let yellowstars = [];
   let graystars = [];
@@ -341,7 +340,6 @@ return err;    }
           whishListObj,
           config
         );
-
       } catch (error: any) {
         if (error?.response?.status == 403 || error?.response?.status == 401) {
           Swal.fire({
@@ -358,11 +356,11 @@ return err;    }
             `,
             showConfirmButton: true,
             confirmButtonText: "Ok",
-            confirmButtonColor: "blue",
+            confirmButtonColor: "bg-primary",
             heightAuto: true,
             customClass: {
               confirmButton:
-                "bg-blue-500 text-white rounded-full px-4 py-2 text-sm absolute right-4 bottom-4 ",
+                "bg-primary text-white rounded-full px-4 py-2 text-sm absolute right-4 bottom-4 ",
             },
           }).then((result) => {
             if (result.value) {
@@ -376,7 +374,6 @@ return err;    }
       router.push("/account");
     }
   };
-
 
   const handleClick = (image: any) => {
     setMainImage(image);

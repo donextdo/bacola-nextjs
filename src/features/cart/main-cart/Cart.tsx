@@ -134,11 +134,11 @@ const Cart: FC<CartType> = () => {
           `,
           showConfirmButton: true,
           confirmButtonText: "Ok",
-          confirmButtonColor: "blue",
+          confirmButtonColor: "bg-primary",
           heightAuto: true,
           customClass: {
             confirmButton:
-              "bg-blue-500 text-white rounded-full px-4 py-2 text-sm absolute right-4 bottom-4 ",
+              "bg-primary text-white rounded-full px-4 py-2 text-sm absolute right-4 bottom-4 ",
           },
         }).then((result) => {
           if (result.value) {
@@ -158,14 +158,12 @@ const Cart: FC<CartType> = () => {
     totalAmount += subtotal;
   }
   useEffect(() => {
-   
     dispatch(calSubTotal(totalAmount));
   });
 
   // calculate discount
 
   fulldiscount = totalAmount * (couponDiscount.dicount_amount / 100);
- 
 
   const [total, setTotal] = useState(totalAmount + 5);
 
@@ -201,10 +199,9 @@ const Cart: FC<CartType> = () => {
     };
     const savenewshippingObj = newshippingObj;
     setShippingObj(savenewshippingObj);
-    
+
     setShowInputs(false);
   };
- 
 
   const handleCheckout = () => {
     const orderData = { shippingObj: JSON.stringify(shippingObj) };
@@ -243,11 +240,11 @@ const Cart: FC<CartType> = () => {
           `,
           showConfirmButton: true,
           confirmButtonText: "Ok",
-          confirmButtonColor: "blue",
+          confirmButtonColor: "bg-primary",
           heightAuto: true,
           customClass: {
             confirmButton:
-              "bg-blue-500 text-white rounded-full px-4 py-2 text-sm absolute right-4 bottom-4 ",
+              "bg-primary text-white rounded-full px-4 py-2 text-sm absolute right-4 bottom-4 ",
           },
         }).then((result) => {
           if (result.value) {
@@ -285,7 +282,6 @@ const Cart: FC<CartType> = () => {
     const response = await axios.get(`${baseUrl}/locations/getAll`);
     const locations = response.data;
     setLocation(locations);
-
   };
 
   const [selectedItem, setSelectedItem] = useState("");

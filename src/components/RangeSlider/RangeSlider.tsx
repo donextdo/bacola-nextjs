@@ -62,7 +62,7 @@ export const RangeSlider = ({ categoryId }: any) => {
               heightAuto: true,
               customClass: {
                 confirmButton:
-                  "bg-blue-500 text-white rounded-full px-4 py-2 text-sm absolute right-4 bottom-4 ",
+                  "bg-primary text-white rounded-full px-4 py-2 text-sm absolute right-4 bottom-4 ",
               },
             }).then((result) => {
               if (result.value) {
