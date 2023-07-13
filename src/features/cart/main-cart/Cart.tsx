@@ -13,6 +13,8 @@ import baseUrl from "../../../../utils/baseUrl";
 import { useRouter } from "next/router";
 import cartimage from "../../../../assets/cart/cartimage2.png"
 import { Product } from "@/features/product/product";
+import { logOut } from "../../../../utils/logout";
+import Swal from "sweetalert2";
 
 
 
@@ -85,6 +87,8 @@ const Cart: FC<CartType> = () => {
     let [fulldiscount, setFulldiscount] = useState(0);
     const [location, setLocation] = useState<LocationType[]>([]);
 
+    const token = localStorage.getItem("token");
+
 
     const [shippingObj, setShippingObj] = useState({
         cartshippingFirstName: "",
@@ -107,25 +111,54 @@ const Cart: FC<CartType> = () => {
     }, []);
 
     async function fetchData() {
-        try {
-            const res = await axios.get(`${baseUrl}/users/${id}`);
-            console.log(res.data)
-            const data = res.data;
-            setFirstName(data.shippingAddress.shippingFirstName);
-            setLastName(data.shippingAddress.shippingLastName);
-            setCompanyName(data.shippingAddress.shippingCompanyName);
-            setCountry(data.shippingAddress.country)
-            setStreetAddress(data.shippingAddress.street)
-            setApartment(data.shippingAddress.apartment)
-            setTownCity(data.shippingAddress.town)
-            setState(data.shippingAddress.state)
-            setZipCode(data.shippingAddress.zipCode)
-            setPhone(data.shippingAddress.shippingphone)
-            setEmail(data.shippingAddress.shippingEmail);
-
-        } catch (err) {
-            console.log(err);
+      try {
+        const res = await axios.get(`${baseUrl}/users/${id}`, {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        });
+        const data = res.data;
+        setFirstName(data.shippingAddress.shippingFirstName);
+        setLastName(data.shippingAddress.shippingLastName);
+        setCompanyName(data.shippingAddress.shippingCompanyName);
+        setCountry(data.shippingAddress.country);
+        setStreetAddress(data.shippingAddress.street);
+        setApartment(data.shippingAddress.apartment);
+        setTownCity(data.shippingAddress.town);
+        setState(data.shippingAddress.state);
+        setZipCode(data.shippingAddress.zipCode);
+        setPhone(data.shippingAddress.shippingphone);
+        setEmail(data.shippingAddress.shippingEmail);
+      } catch (error: any) {
+        if (error?.response?.status == 403 || error?.response?.status == 401) {
+          Swal.fire({
+            width: 700,
+            color: "black",
+            background: "white",
+            html: `
+              <div style="text-align: left;">
+                <h2 style="font-size: 20px; font-weight: bold; margin-bottom: 10px;">Session Expired</h2>
+                <hr style="margin-bottom: 20px;" />
+                <p style="font-size: 14px;margin-bottom: 10px;">Your session has expired</p>
+                <hr style="margin-bottom: 20px;" />
+              </div>
+            `,
+            showConfirmButton: true,
+            confirmButtonText: "Ok",
+            confirmButtonColor: "bg-primary",
+            heightAuto: true,
+            customClass: {
+              confirmButton:
+                "bg-primary text-white rounded-full px-4 py-2 text-sm absolute right-4 bottom-4 ",
+            },
+          }).then((result) => {
+            if (result.value) {
+              logOut();
+              router.push("/account");
+            }
+          });
         }
+      }
     }
 
 
@@ -144,8 +177,7 @@ const Cart: FC<CartType> = () => {
     // calculate discount
 
     fulldiscount = totalAmount * (couponDiscount.dicount_amount / 100)
-    console.log(fulldiscount)
-    console.log(couponDiscount)
+    
 
 
     const [total, setTotal] = useState(totalAmount + 5);
@@ -187,17 +219,16 @@ const Cart: FC<CartType> = () => {
         }
         const savenewshippingObj = newshippingObj
         setShippingObj(savenewshippingObj);
-        console.log(savenewshippingObj)
         setShowInputs(false);
 
 
     }
-    console.log(shippingObj)
+   
 
     const handleCheckout = () => {
 
         const orderData = { shippingObj: JSON.stringify(shippingObj) };
-        console.log(orderData)
+        
         router.push({
             pathname: '/checkout',
             query: orderData,
@@ -205,22 +236,50 @@ const Cart: FC<CartType> = () => {
     }
 
     const handlecoupon = async () => {
-        try {
-            const res = await axios.get(`${baseUrl}/coupons/getOne/${coupon}`);
-            console.log(res.data)
-            if (res.status == 200) {
-                setCouponDiscount(res.data);
-                setErrorMessage('');
-
-            }
-
-        } catch (err) {
-            console.log(err);
-            setErrorMessage('There is no such coupon.');
-
+      try {
+        const token = localStorage.getItem("token");
+  
+        const res = await axios.get(`${baseUrl}/coupons/getOne/${coupon}`, {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        });
+        if (res.status == 200) {
+          setCouponDiscount(res.data);
+          setErrorMessage("");
         }
-
-    }
+      } catch (error: any) {
+        if (error?.response?.status == 403 || error?.response?.status == 401) {
+          Swal.fire({
+            width: 700,
+            color: "black",
+            background: "white",
+            html: `
+              <div style="text-align: left;">
+                <h2 style="font-size: 20px; font-weight: bold; margin-bottom: 10px;">Session Expired</h2>
+                <hr style="margin-bottom: 20px;" />
+                <p style="font-size: 14px;margin-bottom: 10px;">Your session has expired</p>
+                <hr style="margin-bottom: 20px;" />
+              </div>
+            `,
+            showConfirmButton: true,
+            confirmButtonText: "Ok",
+            confirmButtonColor: "bg-primary",
+            heightAuto: true,
+            customClass: {
+              confirmButton:
+                "bg-primary text-white rounded-full px-4 py-2 text-sm absolute right-4 bottom-4 ",
+            },
+          }).then((result) => {
+            if (result.value) {
+              logOut();
+              router.push("/account");
+            }
+          });
+        }
+        setErrorMessage("There is no such coupon.");
+      }
+    };
 
     let finalAmount = totalAmount - fulldiscount
 
@@ -249,17 +308,17 @@ const Cart: FC<CartType> = () => {
         const locations = response.data;
         setLocation(locations);
 
-        console.log("location", locations);
+       
     };
 
     const [selectedItem, setSelectedItem] = useState('');
 
     const handleDropdownChange = (event: any) => {
         setSelectedItem(event.target.value);
-        console.log(event.target.value);
+       
     };
 
-    console.log(cartItems)
+   
     return (
         <>
             {cartItems?.length > 0 ? (
@@ -267,14 +326,7 @@ const Cart: FC<CartType> = () => {
                     <div>
                         <section className="flex justify-between h-full">
                             <div className="w-full h-full pb-10">
-                                {/* <div className="border border-[#e4e5ee] rounded-md space-y-4 py-4 px-4">
-                            <p className="text-sm">
-                                Add <span className="text-[#ed174a] font-semibold">Rs 15.93</span> to
-                                cart and get free shipping!
-                            </p>
-                            <hr className="h-2 rounded-md bg-[#ed174a]" />
-                        </div> */}
-
+                             
                                 <div className="mt-8">
                                     {/* header */}
                                     <div className="grid grid-cols-4 sm:grid-cols-12 gap-2 border-b border-[#e4e5ee] pb-3">
@@ -328,50 +380,19 @@ const Cart: FC<CartType> = () => {
                                             <tr>
                                                 <td rowSpan={4} className="text-[13px] font-semibold "></td>
                                                 <td className="text-right text-[13px] py-3">
-                                                    {/* Free shipping <span className="inline-flex text-[#d51243] text-sm gap-2">
-                                                $5.00
-                                        <input type="radio" name="cart"  
-                                        onClick={handleClickRadioAdd5} 
-                                        />
-                                        </span> */}
+                                                  
                                                 </td>
                                             </tr>
                                             <tr>
 
                                                 <td className="text-[13px] pb-3 text-right">
-                                                    {/* <label className="inline-flex -gap-1"><span className="mr-2">Local pickup</span>
-                                                    <input type="radio" name="cart"
-                                                    // onClick={handleClickRadioSubtract5} 
-                                                    />
-                                                </label> */}
+                                                   
                                                 </td>
                                             </tr>
                                             <tr>
 
                                                 <td className="relative text-right text-[12.5px] ">
-                                                    {/* <select
-                                                        className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
-                                                    value={selectedItem}
-                                                    onChange={handleDropdownChange}
-                                                    >
-                                                        <option value="">Pickup your location</option>
-                                                        {location.map((item, index) => (
-                                                            <option key={index} value={item.locationName}>
-                                                                {item.locationName}
-                                                            </option>
-                                                        ))}
-                                                    </select> */}
-                                                    {/* <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                                                        <svg
-                                                            className="fill-current h-4 w-4"
-                                                            xmlns="http://www.w3.org/2000/svg"
-                                                            viewBox="0 0 20 20"
-                                                        >
-                                                            <path
-                                                                d="M10 12l-6-6h12l-6 6z"
-                                                            />
-                                                        </svg>
-                                                    </div> */}
+                                                   
                                                 </td>
                                             </tr>
                                             <tr>
@@ -389,7 +410,7 @@ const Cart: FC<CartType> = () => {
                                                                 value={townCity}
                                                                 onChange={(e) => {
                                                                     setTownCity(e.target.value);
-                                                                    console.log(e.target.value); // Log the value of townCity
+                                                                    
                                                                 }}
                                                             />
                                                             <input
@@ -434,49 +455,19 @@ const Cart: FC<CartType> = () => {
                                     <tr>
                                         <td rowSpan={4} className="text-[13px] font-semibold border-b border-[#e4e5ee]">Shipping</td>
                                         <td className="text-right text-[13px] py-3">
-                                            {/* Flat rate: <span className="inline-flex text-[#d51243] text-sm gap-2">Rs 5.00<input type="radio" name="vendor"
-                                // onChange={handleRadioChange} 
-                                /></span> */}
+                                           
                                         </td>
                                     </tr>
                                     <tr>
 
                                         <td className="text-[13px] pb-3 text-right">
-                                            {/* <label className="inline-flex -gap-1"><span className="mr-2">Local pickup</span>
-                                            <input
-                                                type="radio"
-                                                name="vendor"
-                                            // onChange={handleRadioChange}
-                                            />
-                                        </label> */}
+                                           
                                         </td>
                                     </tr>
                                     <tr>
 
                                         <td className="relative text-right text-[12.5px] ">
-                                            {/* <select
-                                                        className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
-                                                    value={selectedItem}
-                                                    onChange={handleDropdownChange}
-                                                    >
-                                                        <option value="">Pickup your location</option>
-                                                        {location.map((item, index) => (
-                                                            <option key={index} value={item.locationName}>
-                                                                {item.locationName}
-                                                            </option>
-                                                        ))}
-                                                    </select>
-                                                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                                                        <svg
-                                                            className="fill-current h-4 w-4"
-                                                            xmlns="http://www.w3.org/2000/svg"
-                                                            viewBox="0 0 20 20"
-                                                        >
-                                                            <path
-                                                                d="M10 12l-6-6h12l-6 6z"
-                                                            />
-                                                        </svg>
-                                                    </div> */}
+                                          
                                         </td>
                                     </tr>
                                     <tr>

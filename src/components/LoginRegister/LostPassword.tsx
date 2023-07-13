@@ -1,45 +1,48 @@
 import axios from "axios";
 import { useState } from "react";
 import baseUrl from "../../../utils/baseUrl";
+import ChangePasswords from "@/pages/changepassword";
+import { useRouter } from "next/router";
 
 export const LostPassword = () => {
-  const [email, setEmail] = useState('');
-  const [message, setMessage] = useState('');
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+  const router = useRouter();
 
-  const handleUser = async (e:any) => {
+  const handleUser = async (e: any) => {
     e.preventDefault();
 
     try {
-      const response = await fetch('/api/forgot-password', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const response = await fetch(`${baseUrl}/users/forgot-password`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),
       });
 
       const data = await response.json();
-
       if (response.ok) {
-        setMessage(data.message);
+        setMessage("Please verify the email");
       } else {
-        setMessage(data.error);
+        setMessage(data.message);
       }
     } catch (error) {
-      setMessage('An error occurred. Please try again later.');
+      setMessage("An error occurred. Please try again later.");
     }
-
   };
 
   return (
     <div className=" mt-10 container mx-auto xl:px-40 px-5">
-     
       <div className=" mt-10 ">
         <p className="text-black text-sm font-normal">
-          Lost your password? Please enter your email address. You
-          will receive a link to create a new password via email.
+          Lost your password? Please enter your email address. You will receive
+          a link to create a new password via email.
         </p>
       </div>
       <div className="sm:col-span-2">
-        <label htmlFor="password" className="block text-[13px] text-gray-900 mt-5">
+        <label
+          htmlFor="password"
+          className="block text-[13px] text-gray-900 mt-5"
+        >
           Email
         </label>
         <div className="mt-2.5">

@@ -22,14 +22,9 @@ export const HomePagination = ({
   onSale,
 }: any) => {
   const [passgrid, setPassgrid] = useState();
-  useEffect(() => {
-    // console.log("perpage-homepagination ", perpage);
-    // console.log("page-homepagination ", page);
-    // console.log("orderby-homepagination ", orderby);
-  });
+
   const handleGridChange = (grid: any) => {
     setPassgrid(grid);
-    console.log("grid ", grid);
   };
   return (
     <>

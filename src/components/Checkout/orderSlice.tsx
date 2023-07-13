@@ -4,6 +4,8 @@ import axios from "axios";
 import baseUrl from "../../../utils/baseUrl";
 import orderList from "./data.json";
 import { OrderObj } from "./ordertest";
+import { logOut } from "../../../utils/logout";
+import { useRouter } from "next/router";
 
 interface OrderState {
   orders: OrderItem[];
@@ -23,19 +25,25 @@ const PRODUCTS_URL_SET = `${baseUrl}/orders/place`;
 export const insertOrderAsync = createAsyncThunk(
   "order/insertOrderAsync",
   async (orderObj: OrderObj) => {
-    console.log("Response object:", orderObj);
-    const response = await axios.post(PRODUCTS_URL_SET, orderObj);
-    return response.data;
+    try {
+      const response = await axios.post(PRODUCTS_URL_SET, orderObj);
+      return response.data;
+    } catch (error: any) {
+      return error;
+    }
   }
 );
 
 export const getOrdersByUserIdAsync = createAsyncThunk(
   "order/getOrdersByUserIdAsync",
   async (id: string) => {
-    console.log("Response data:", id);
-    const res = await axios.get(`${PRODUCTS_URL}/${id}`);
-    console.log("Response data:", res.data);
-    return res.data;
+    try {
+      const res = await axios.get(`${PRODUCTS_URL}/${id}`);
+      return res.data;
+    } catch (error: any) {
+      return error;
+     
+    }
   }
 );
 
@@ -44,7 +52,6 @@ const orderSlice = createSlice({
   initialState,
   reducers: {
     addOrder: (state, action: PayloadAction<OrderItem>) => {
-      console.log("Adding order:", action.payload);
       state.orders.push(action.payload);
     },
   },

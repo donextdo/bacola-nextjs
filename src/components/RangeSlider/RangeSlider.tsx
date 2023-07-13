@@ -3,33 +3,75 @@ import { useState, useEffect, useRef, ReactElement } from "react";
 import { ChangeEvent } from "react";
 import baseUrl from "../../../utils/baseUrl";
 import axios from "axios";
+import { logOut } from "../../../utils/logout";
+import Swal from "sweetalert2";
 export const RangeSlider = ({ categoryId }: any) => {
   const [minValue, setMinValue] = useState(0);
-  const [maxValue, setMaxValue] = useState(5000);
+  const [maxValue, setMaxValue] = useState(50000);
   const [maxPriceValue, setMaxPriceValue] = useState(0);
   const progressRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (categoryId) {
       const fetchData = async () => {
-        const response = await axios(
-          `${baseUrl}/productDetails?categoryId=${categoryId}`
-        );
-        const products = response.data.products;
+        try {
+          const token = localStorage.getItem("token");
 
-        // Extracting all the product prices
-        const prices = products.map((product: any) => product.price);
+          const response = await axios(
+            `${baseUrl}/productDetails?categoryId=${categoryId}`,
+            {
+              headers: {
+                authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          const products = response.data.products;
 
-        // Finding the maximum price
-        const maxPrice = Math.max(...prices);
+          // Extracting all the product prices
+          const prices = products.map((product: any) => product.price);
 
-        // Rounding the maximum price
-        let roundedPrice;
+          // Finding the maximum price
+          const maxPrice = Math.max(...prices);
 
-        roundedPrice = Math.ceil(maxPrice / 10) * 10;
-        // setMaxPriceValue(roundedPrice);
-        // setMaxValue(maxPriceValue);
-        console.log("Rounded maximum price: ", roundedPrice);
+          // Rounding the maximum price
+          let roundedPrice;
+
+          roundedPrice = Math.ceil(maxPrice / 10) * 10;
+          // setMaxPriceValue(roundedPrice);
+          // setMaxValue(maxPriceValue);
+        } catch (error: any) {
+          if (
+            error?.response?.status == 403 ||
+            error?.response?.status == 401
+          ) {
+            Swal.fire({
+              width: 700,
+              color: "black",
+              background: "white",
+              html: `
+                <div style="text-align: left;">
+                  <h2 style="font-size: 20px; font-weight: bold; margin-bottom: 10px;">Session Expired</h2>
+                  <hr style="margin-bottom: 20px;" />
+                  <p style="font-size: 14px;margin-bottom: 10px;">Your session has expired</p>
+                  <hr style="margin-bottom: 20px;" />
+                </div>
+              `,
+              showConfirmButton: true,
+              confirmButtonText: "Ok",
+              confirmButtonColor: "blue",
+              heightAuto: true,
+              customClass: {
+                confirmButton:
+                  "bg-primary text-white rounded-full px-4 py-2 text-sm absolute right-4 bottom-4 ",
+              },
+            }).then((result) => {
+              if (result.value) {
+                logOut();
+                router.push("/account");
+              }
+            });
+          }
+        }
       };
 
       fetchData();
@@ -52,7 +94,7 @@ export const RangeSlider = ({ categoryId }: any) => {
     e.persist();
     e.preventDefault();
     const newMinValue = parseInt(e.target.value);
-    if (maxValue - newMinValue >= 0 && maxValue <= 5000) {
+    if (maxValue - newMinValue >= 0 && maxValue <= 50000) {
       if (newMinValue > parseInt(maxValue.toString())) {
         // Ignore invalid input
       } else {
@@ -71,7 +113,7 @@ export const RangeSlider = ({ categoryId }: any) => {
     e.persist();
     e.preventDefault();
     const newMaxValue = parseInt(e.target.value);
-    if (newMaxValue - minValue >= 0 && newMaxValue <= 5000) {
+    if (newMaxValue - minValue >= 0 && newMaxValue <= 50000) {
       if (newMaxValue < parseInt(minValue.toString())) {
         // Ignore invalid input
       } else {
@@ -88,8 +130,8 @@ export const RangeSlider = ({ categoryId }: any) => {
 
   useEffect(() => {
     if (progressRef.current) {
-      progressRef.current.style.left = `${(minValue / 5000) * 100}%`;
-      progressRef.current.style.right = `${(1 - maxValue / 5000) * 100}%`;
+      progressRef.current.style.left = `${(minValue / 50000) * 100}%`;
+      progressRef.current.style.right = `${(1 - maxValue / 50000) * 100}%`;
     }
   }, [minValue, maxValue]);
 
@@ -139,7 +181,7 @@ export const RangeSlider = ({ categoryId }: any) => {
             value={minValue}
             min={0}
             step={10}
-            max={5000}
+            max={50000}
             className="range-min absolute
              w-full -top-1 h-1 bg-transparent appearance-none pointer-events-none "
             placeholder="Select a minimum value"
@@ -151,7 +193,7 @@ export const RangeSlider = ({ categoryId }: any) => {
             value={maxValue}
             min={0}
             step={10}
-            max={5000}
+            max={50000}
             className="range-max absolute
              w-full -top-1 h-1 bg-transparent appearance-none pointer-events-none"
             placeholder="Select a maximum value"

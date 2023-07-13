@@ -97,7 +97,8 @@ const ItemPages = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     let [imageArray1, setImageArray1] = useState<string[]>([]);
     let [imageArray2, setImageArray2] = useState<string[]>([]);
-
+   
+  const [defaultImage, setDefaultImage] = useState("");
 
     const [currentSlide, setCurrentSlide] = useState(0);
 
@@ -118,29 +119,61 @@ const ItemPages = () => {
     }, [itemId]);
 
     async function fetchData() {
-        try {
-            const res = await axios.get(`${baseUrl}/products/getOne/${itemId}`);
-            console.log(res.data);
-            setData(res.data);
-            setTag(res.data.tags);
-            setImageArray2(res.data.imageArray)
-            if (res.data.back == "") {
-                setHideBackImage(true);
-            }
-            if (res.data.front == "") {
-                setHideFrontImage(true);
-            }
-            if (res.data.side == "") {
-                setHideSideImage(true);
-            }
-        } catch (err) {
-            console.log(err);
+      try {
+        const res = await axios.get(`${baseUrl}/products/getOne/${itemId}`);
+  
+        setData(res.data);
+        setTag(res.data.tags);
+        setImageArray2(res.data.imageArray);
+        if (res.data.back == "") {
+          setHideBackImage(false);
+          setDefaultImage(
+            "https://www.tiffincurry.ca/wp-content/uploads/2021/02/default-product.png"
+          );
         }
+        if (res.data.front == "") {
+          setHideFrontImage(false);
+          setDefaultImage(
+            "https://www.tiffincurry.ca/wp-content/uploads/2021/02/default-product.png"
+          );
+        }
+        if (res.data.side == "") {
+          setHideSideImage(false);
+          setDefaultImage(
+            "https://www.tiffincurry.ca/wp-content/uploads/2021/02/default-product.png"
+          );
+        }
+      } catch (err) {
+        return err;
+      }
     }
 
     // slide image
     useEffect(() => {
-        setImageArray1([data.back, data.front, data.side]);
+      const imageArray = [];
+  
+      if (data.back) {
+        imageArray.push(data.back);
+      }
+      // else {
+      //   imageArray.push(defaultImage);
+      // }
+  
+      if (data.front) {
+        imageArray.push(data.front);
+      }
+      // else {
+      //   imageArray.push(defaultImage);
+      // }
+  
+      if (data.side) {
+        imageArray.push(data.side);
+      }
+      // else {
+      //   imageArray.push(defaultImage);
+      // }
+  
+      setImageArray1(imageArray);
     }, [data.back, data.front, data.side]);
 
     // useEffect(() => {
@@ -544,21 +577,24 @@ const ItemPages = () => {
                                                     onClick={() => handleImageClick(currentSlide + index)}
 
                                                 >
-                                                    {!hideSideImage ? (
-                                                        <img
-                                                            width={67}
-                                                            height={67}
-                                                            src={photo}
-                                                            alt="Man looking at item at a store"
-                                                        />
-                                                    ) : (
-                                                        <img
-                                                            width={67}
-                                                            height={67}
-                                                            src={photo}
-                                                            alt="Man looking at item at a store"
-                                                        />
-                                                    )}
+                                                    {(!hideSideImage ||
+                              !hideBackImage ||
+                              !hideFrontImage) &&
+                            photo ? (
+                              <img
+                                width={67}
+                                height={67}
+                                src={photo}
+                                alt="Man looking at item at a store"
+                              />
+                            ) : (
+                              <img
+                                width={67}
+                                height={67}
+                                src={photo}
+                                alt="Default image"
+                              />
+                            )}
                                                 </div>
                                             ))}
 

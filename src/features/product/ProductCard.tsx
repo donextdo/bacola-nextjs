@@ -20,6 +20,7 @@ import baseUrl from "../../../utils/baseUrl";
 import { useRouter } from "next/router";
 import Swal from "sweetalert2";
 import { addRecentlyClickedProductId } from "./recentlyClickedSlice";
+import { logOut } from "../../../utils/logout";
 interface Props {
   product: Product;
   isGrid: string;
@@ -197,70 +198,74 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
 
 
   const handleWishlist = async (data: any) => {
-       
     if (id) {
-        const whishListObj = {
-            whishList: [
-                {
-                    productId: data._id,
-                    front: data.front,
-                    title: data.title,
-                    price: data.price,
-                    date: new Date().toLocaleDateString("en-US", {
-                        month: "long",
-                        day: "numeric",
-                        year: "numeric",
-                    }),
-                    quantity: data.quantity,
-                },
-            ],
+      const whishListObj = {
+        whishList: [
+          {
+            productId: data._id,
+            front: data.front,
+            title: data.title,
+            price: data.price,
+            date: new Date().toLocaleDateString("en-US", {
+              month: "long",
+              day: "numeric",
+              year: "numeric",
+            }),
+            quantity: data.quantity,
+          },
+        ],
+      };
+
+      try {
+        //authentication session handle
+        const token = localStorage.getItem("token"); // Retrieve the token from local storage or wherever it's stored
+
+        const config = {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
         };
 
-        try {
+        const response = await axios.post(
+          `${baseUrl}/users/wishList/${id}`,
+          whishListObj,
+          config
+        );
 
-        //authentication session handle
-            const token = localStorage.getItem("token"); // Retrieve the token from local storage or wherever it's stored
-            if (!token) {
-            alert("Session expired")
+      } catch (error: any) {
+        if (error?.response?.status == 403 || error?.response?.status == 401) {
+          Swal.fire({
+            width: 700,
+            color: "black",
+            background: "white",
+            html: `
+              <div style="text-align: left;">
+                <h2 style="font-size: 20px; font-weight: bold; margin-bottom: 10px;">Session Expired</h2>
+                <hr style="margin-bottom: 20px;" />
+                <p style="font-size: 14px;margin-bottom: 10px;">Your session has expired</p>
+                <hr style="margin-bottom: 20px;" />
+              </div>
+            `,
+            showConfirmButton: true,
+            confirmButtonText: "Ok",
+            confirmButtonColor: "bg-primary",
+            heightAuto: true,
+            customClass: {
+              confirmButton:
+                "bg-primary text-white rounded-full px-4 py-2 text-sm absolute right-4 bottom-4 ",
+            },
+          }).then((result) => {
+            if (result.value) {
+              logOut();
               router.push("/account");
-              return;
             }
-
-            const config = {
-              headers: {
-                Authorization: token,
-              },
-            };
-
-            const response = await axios.post(
-                `${baseUrl}/users/wishList/${id}`,
-                whishListObj,
-                config,
-                
-            );
-
-            
-            console.log(response.data); // do something with the response data
-        } catch (error) {
-            console.log(error); // handle the error 
-            
-            alert("Session expired")
-              router.push("/account");
-            
+          });
         }
-      } else {
-        router.push("/account");
       }
-
-}
-
-  // let totalAmount = 0;
-  // for (let i = 0; i < cartItems.length; i++) {
-  //   let item = cartItems[i];
-  //   let subtotal =
-  //     item.count * (item.price - item.price * (item.discount / 100));
-  //   totalAmount += subtotal;
-  // }
+    } else {
+      router.push("/account");
+    }
+  };
 
   useEffect(() => {
     dispatch(calSubTotal(12));

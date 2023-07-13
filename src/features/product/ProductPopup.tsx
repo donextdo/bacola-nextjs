@@ -16,6 +16,7 @@ import { RootState } from "@/redux/store";
 import Review from "@/components/ViewItem/Details/Review";
 import { useRouter } from "next/router";
 import Swal from "sweetalert2";
+import { logOut } from "../../../utils/logout";
 
 
 const ProductPopup = ({ setProductPopup, proId }: any) => {
@@ -72,19 +73,16 @@ const ProductPopup = ({ setProductPopup, proId }: any) => {
 
     useEffect(() => {
         fetchData();
-        console.log(proId)
     }, []);
 
     async function fetchData() {
         try {
             const res = await axios.get(`${baseUrl}/products/getOne/${proId}`);
-            console.log(res)
             setData(res.data);
             setTag(res.data.tags)
 
         } catch (err) {
-            console.log(err);
-        }
+return err;        }
     }
 
     let findcategory: any
@@ -93,7 +91,6 @@ const ProductPopup = ({ setProductPopup, proId }: any) => {
     } else {
         findcategory = undefined;
     }
-    console.log(findcategory)
 
     useEffect(() => {
         if (findcategory) {
@@ -104,11 +101,9 @@ const ProductPopup = ({ setProductPopup, proId }: any) => {
     async function fetchData2() {
         try {
             const res = await axios.get(`${baseUrl}/categories/get/${findcategory}`);
-            console.log(res.data)
             setMyCategory(res.data);
         } catch (err) {
-            console.log(err);
-        }
+return err;        }
     }
 
     useEffect(() => {
@@ -119,8 +114,7 @@ const ProductPopup = ({ setProductPopup, proId }: any) => {
             const res = await axios.get(`${baseUrl}/reviews/getReview/${proId}`);
             setAllreview(res.data);
         } catch (err) {
-            console.log(err);
-        }
+return err ;        }
     }
 
     const item: Product | undefined = products.find((item) => item._id === proId);
@@ -139,40 +133,7 @@ const ProductPopup = ({ setProductPopup, proId }: any) => {
 
     };
 
-    // const handleWishlist = async (data: any) => {
-
-    //     if (id) {
-    //         const whishListObj = {
-    //             whishList: [
-    //                 {
-    //                     productId: data._id,
-    //                     front: data.front,
-    //                     title: data.title,
-    //                     price: data.price,
-    //                     date: new Date().toLocaleDateString("en-US", {
-    //                         month: "long",
-    //                         day: "numeric",
-    //                         year: "numeric",
-    //                     }),
-    //                     quantity: data.quantity,
-    //                 },
-    //             ],
-    //         };
-
-    //         try {
-    //             const response = await axios.post(
-    //                 `${baseUrl}/users/wishList/${id}`,
-    //                 whishListObj
-    //             );
-    //             console.log(response.data); // do something with the response data
-    //         } catch (error) {
-    //             console.log(error); // handle the error
-    //         }
-    //       } else {
-    //         router.push("/account");
-    //       }
-
-    // }
+   
     const handleWishlist = async (data: any) => {
 
         if (id) {
@@ -197,18 +158,12 @@ const ProductPopup = ({ setProductPopup, proId }: any) => {
 
                 //authentication session handle
                 const token = localStorage.getItem("token"); // Retrieve the token from local storage or wherever it's stored
-                if (!token) {
-                    localStorage.removeItem("token");
-                    localStorage.removeItem("id");
-                    alert("Session expired")
-                    router.push("/account");
-                    return;
-                }
+               
 
                 const config = {
-                    headers: {
-                        Authorization: token,
-                    },
+                  headers: {
+                    authorization: `Bearer ${token}`,
+                  },
                 };
 
                 const response = await axios.post(
@@ -218,16 +173,37 @@ const ProductPopup = ({ setProductPopup, proId }: any) => {
 
                 );
 
-
-                console.log(response.data); // do something with the response data
-            } catch (error) {
-                console.log(error); // handle the error 
-                localStorage.removeItem("token");
-                localStorage.removeItem("id");
-                alert("Session expired")
-                router.push("/account");
-
-            }
+                
+            } catch (error: any) {
+                if (error?.response?.status == 403 || error?.response?.status == 401) {
+                  Swal.fire({
+                    width: 700,
+                    color: "black",
+                    background: "white",
+                    html: `
+                      <div style="text-align: left;">
+                        <h2 style="font-size: 20px; font-weight: bold; margin-bottom: 10px;">Session Expired</h2>
+                        <hr style="margin-bottom: 20px;" />
+                        <p style="font-size: 14px;margin-bottom: 10px;">Your session has expired</p>
+                        <hr style="margin-bottom: 20px;" />
+                      </div>
+                    `,
+                    showConfirmButton: true,
+                    confirmButtonText: "Ok",
+                    confirmButtonColor: "bg-primary",
+                    heightAuto: true,
+                    customClass: {
+                      confirmButton:
+                        "bg-primary text-white rounded-full px-4 py-2 text-sm absolute right-4 bottom-4 ",
+                    },
+                  }).then((result) => {
+                    if (result.value) {
+                      logOut();
+                      router.push("/account");
+                    }
+                  });
+                }
+              }
         } else {
             router.push("/account");
         }
@@ -444,7 +420,7 @@ const ProductPopup = ({ setProductPopup, proId }: any) => {
                                         </div>
                                         <button
                                             type="button"
-                                            className=" bg-blue-900 text-white min-h-[34px] min-w-[140px] rounded-full  ml-4"
+                                            className=" bg-primary text-white min-h-[34px] min-w-[140px] rounded-full  ml-4"
                                             onClick={() => handleaddToCart(data)}
                                         >
                                             Add to cart

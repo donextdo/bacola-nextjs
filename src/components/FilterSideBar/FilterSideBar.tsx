@@ -25,25 +25,10 @@ export const FilterSideBar = ({
   orderby,
 }: any) => {
   const [passgrid, setPassgrid] = useState();
-  useEffect(() => {
-    console.log("categoryId ? ", categoryId);
 
-    console.log("brands ? ", brand);
-
-    console.log("subCat ? ", subcategory);
-    console.log("minValue ? ", minValue);
-    console.log("maxValue ? ", maxValue);
-    console.log("inStock ? ", inStock);
-    console.log("onSale ? ", onSale);
-
-    console.log("perpage-homepagination? ", perpage);
-    console.log("page-homepagination? ", page);
-    console.log("orderby-homepagination? ", orderby);
-  }, []);
 
   const handleGridChange = (grid: any) => {
     setPassgrid(grid);
-    console.log("grid ", grid);
   };
 
   return (

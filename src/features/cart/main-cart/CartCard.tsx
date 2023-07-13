@@ -38,19 +38,18 @@ const CartCard = ({ item, index, totalAmount, setCount,setCartItems }: any) => {
       items[itemIndex].count += 1;
       localStorage.setItem('cartItems', JSON.stringify(items));
       setCount(items[itemIndex].count)
-      console.log("hi", items[itemIndex].count)
+      
     }
     dispatch(calSubTotal(12));
 
   };
 
-  const handleDecrement = (product: Product) => {
-    
+  const handleDecrement = (product: Product) => { 
     const cartItemsString = localStorage.getItem('cartItems');
     const items = cartItemsString ? JSON.parse(cartItemsString) : [];
 
     const itemIndex = items.findIndex((item: any) => item._id === product._id);
-    console.log(itemIndex)
+    
     if (itemIndex != -1) {
       if (items[itemIndex].count > 0) { // Check if count is greater than 0
         items[itemIndex].count -= 1;
@@ -75,7 +74,6 @@ const CartCard = ({ item, index, totalAmount, setCount,setCartItems }: any) => {
       setCartItems([])
       dispatch(calSubTotal(12));
     } else {
-      console.log("remove item aaa")
       localStorage.setItem("cartItems", JSON.stringify(filteredCartItems));
       setCartItems(filteredCartItems)
       dispatch(calSubTotal(12));

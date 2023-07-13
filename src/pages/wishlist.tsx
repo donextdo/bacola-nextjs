@@ -7,6 +7,9 @@ import { IoClose } from "react-icons/io5";
 import { useDispatch } from "react-redux";
 import baseUrl from "../../utils/baseUrl";
 import { Product } from "@/features/product/product";
+import { useRouter } from "next/router";
+import Swal from "sweetalert2";
+import { logOut } from "../../utils/logout";
 
 interface WIshlist {
     selected: boolean;
@@ -25,6 +28,8 @@ interface WIshlist {
 const Wishlist = () => {
     const [data, setData] = useState<Array<WIshlist>>([]);
     const dispatch = useDispatch()
+    const token = localStorage.getItem("token");
+  const router = useRouter();
 
     let id: any;
     if (typeof localStorage !== 'undefined') {
@@ -36,13 +41,43 @@ const Wishlist = () => {
     }, []);
 
     async function fetchData() {
-        try {
-            const res = await axios.get(`${baseUrl}/users/${id}`);
-            console.log(res.data.whishList)
-            setData(res.data.whishList)
-        } catch (err) {
-            console.log(err);
+      try {
+        const res = await axios.get(`${baseUrl}/users/${id}`, {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        });
+        setData(res.data.whishList);
+      } catch (error: any) {
+        if (error?.response?.status == 403 || error?.response?.status == 401) {
+          Swal.fire({
+            width: 700,
+            color: "black",
+            background: "white",
+            html: `
+              <div style="text-align: left;">
+                <h2 style="font-size: 20px; font-weight: bold; margin-bottom: 10px;">Session Expired</h2>
+                <hr style="margin-bottom: 20px;" />
+                <p style="font-size: 14px;margin-bottom: 10px;">Your session has expired</p>
+                <hr style="margin-bottom: 20px;" />
+              </div>
+            `,
+            showConfirmButton: true,
+            confirmButtonText: "Ok",
+            confirmButtonColor: "bg-primary",
+            heightAuto: true,
+            customClass: {
+              confirmButton:
+                "bg-primary text-white rounded-full px-4 py-2 text-sm absolute right-4 bottom-4 ",
+            },
+          }).then((result) => {
+            if (result.value) {
+              logOut();
+              router.push("/account");
+            }
+          });
         }
+      }
     }
 
     const [checkAll, setCheckAll] = useState(false);
@@ -72,12 +107,43 @@ const Wishlist = () => {
         const items = cartItemsString ? JSON.parse(cartItemsString) : [];
 
         try {
-            const res = await axios.delete(`${baseUrl}/users/${id}/wishList/${_id}`);
+          const res = await axios.delete(`${baseUrl}/users/${id}/wishList/${_id}`, {
+            headers: {
+              authorization: `Bearer ${token}`,
+            },
+          })
             console.log(res.data)
             const newItems = data.filter((item) => item.productId !== _id);
             setData(newItems)
-        } catch (err) {
-            console.log(err);
+        } catch (error:any) {
+          if (error?.response?.status == 403 || error?.response?.status == 401) {
+            Swal.fire({
+              width: 700,
+              color: "black",
+              background: "white",
+              html: `
+                <div style="text-align: left;">
+                  <h2 style="font-size: 20px; font-weight: bold; margin-bottom: 10px;">Session Expired</h2>
+                  <hr style="margin-bottom: 20px;" />
+                  <p style="font-size: 14px;margin-bottom: 10px;">Your session has expired</p>
+                  <hr style="margin-bottom: 20px;" />
+                </div>
+              `,
+              showConfirmButton: true,
+              confirmButtonText: "Ok",
+              confirmButtonColor: "bg-primary",
+              heightAuto: true,
+              customClass: {
+                confirmButton:
+                  "bg-primary text-white rounded-full px-4 py-2 text-sm absolute right-4 bottom-4 ",
+              },
+            }).then((result) => {
+              if (result.value) {
+                logOut();
+                router.push("/account");
+              }
+            });
+          }
         }
     };
 
