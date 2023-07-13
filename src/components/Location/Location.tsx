@@ -25,11 +25,6 @@ export const Location = () => {
   );
 
   useEffect(() => {
-    // const token = sessionStorage.getItem("token")
-    // const response = await axios.get(`${baseUrl}/locations/getAll`, {
-    //   headers: { Authorization: `Bearer ${token}` },
-    // });
-    // const response = await instance.get(`${baseUrl}/locations/getAll`);
     const fetchData = async () => {
       const response = await axios.get(`${baseUrl}/locations/getAll`);
 
@@ -182,9 +177,6 @@ export const Location = () => {
                         <div className="hover:text-[#233a95]">
                           {item.locationName}
                         </div>
-                        {/* <div className="rounded-full text-gray-400 font-semibold w-20 px-2 text-xs h-8 border border-gray-200 flex justify-center items-center">
-                          Rs:{item.dollar_min}
-                        </div> */}
                       </div>
                       <hr />
                     </div>

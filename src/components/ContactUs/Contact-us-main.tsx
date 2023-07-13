@@ -1,5 +1,4 @@
 import ContactForm from "./Contact-us-form";
-//import icons
 import { FiMail } from "react-icons/fi";
 import { FiPhoneCall } from "react-icons/fi";
 import { IoLocationSharp } from "react-icons/io5";

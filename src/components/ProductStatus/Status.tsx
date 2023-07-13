@@ -77,8 +77,3 @@ const Status = () => {
 };
 
 export default Status;
-
-{
-  /* <CheckBoxRow inputId="status1" htmlForId="status1" name="in stock" />
-      <CheckBoxRow inputId="status2" htmlForId="status2" name="on sale" /> */
-}

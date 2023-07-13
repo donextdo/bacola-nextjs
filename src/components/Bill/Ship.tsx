@@ -31,7 +31,10 @@ const Ship = ({ setModal, setModal1 }: any) => {
   const [zipCodeError, setZipCodeError] = useState("");
   const [phoneError, setPhoneError] = useState("");
   const [formError, setFormError] = useState("");
-  const token = localStorage.getItem("token");
+  let token: any;
+  if (typeof localStorage !== "undefined") {
+    token = localStorage.getItem("token");
+  }
   const router = useRouter();
 
   useEffect(() => {

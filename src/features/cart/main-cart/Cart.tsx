@@ -87,8 +87,10 @@ const Cart: FC<CartType> = () => {
     let [fulldiscount, setFulldiscount] = useState(0);
     const [location, setLocation] = useState<LocationType[]>([]);
 
-    const token = localStorage.getItem("token");
-
+    let token: any;
+    if (typeof localStorage !== "undefined") {
+       token = localStorage.getItem("token");
+    }
 
     const [shippingObj, setShippingObj] = useState({
         cartshippingFirstName: "",
@@ -237,8 +239,10 @@ const Cart: FC<CartType> = () => {
 
     const handlecoupon = async () => {
       try {
-        const token = localStorage.getItem("token");
-  
+        let token: any;
+        if (typeof localStorage !== "undefined") {
+           token = localStorage.getItem("token");
+        }  
         const res = await axios.get(`${baseUrl}/coupons/getOne/${coupon}`, {
           headers: {
             authorization: `Bearer ${token}`,

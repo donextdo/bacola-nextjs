@@ -57,52 +57,6 @@ interface Order {
     shippingEmail: string;
   };
 }
-// interface OrderMsg {
-//   orderId: string;
-//   userId: string;
-//   totalprice: number;
-//   date: string;
-//   status: string;
-//   items: {
-//     productDetails: {
-//       name: string;
-//       price: number;
-//       brand: string;
-//       description: string;
-
-//     }
-//     orderquantity: number;
-
-//     productId: number;
-//   }[];
-//   billingAddress: {
-//     billingFirstName: string;
-//     billingLastName: string;
-//     billingCompanyName: string;
-//     country: string;
-//     street: string;
-//     apartment: string;
-//     town: string;
-//     state: string;
-//     zipCode: string;
-//     billingPhone: string;
-//     billingEmail: string;
-//     note: string;
-//   };
-//   shippingAddress: {
-//     shippingFirstName: string;
-//     shippingLastName: string;
-//     shippingCompanyName: string;
-//     country: string;
-//     street: string;
-//     apartment: string;
-//     town: string;
-//     state: string;
-//     zipCode: string;
-//     shippingPhone: string;
-//     shippingEmail: string;
-//   };
-// }
 
 const OrderMessage = () => {
   const [order, setOrder] = useState<Order>({
@@ -171,8 +125,10 @@ const OrderMessage = () => {
 
   async function fetchData() {
     try {
-      const token = localStorage.getItem("token");
-
+      let token: any;
+      if (typeof localStorage !== "undefined") {
+        token = localStorage.getItem("token");
+      }
       const res = await axios.get(`${baseUrl}/orders/${orderId}`, {
         headers: {
           authorization: `Bearer ${token}`,

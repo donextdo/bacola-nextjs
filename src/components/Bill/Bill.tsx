@@ -37,7 +37,10 @@ const Bill = ({ setModal, setModal1 }: any) => {
   }, []);
 
   const router = useRouter();
-  const token = localStorage.getItem("token");
+  let token: any;
+  if (typeof localStorage !== "undefined") {
+    token = localStorage.getItem("token");
+  }
 
   async function fetchData() {
     try {
@@ -153,7 +156,6 @@ const Bill = ({ setModal, setModal1 }: any) => {
   const handleApartmentChange = (e: any) => {
     const newApartment = e.target.value;
     setApartment(newApartment);
-    // No validation logic for apartment, assuming it can be empty
   };
 
   const handleTownCityChange = (e: any) => {

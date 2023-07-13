@@ -27,7 +27,10 @@ const Brands = ({ categoryId }: any) => {
 
     const fetchData = async () => {
       try {
-        const token = localStorage.getItem("token");
+        let token: any;
+        if (typeof localStorage !== "undefined") {
+          token = localStorage.getItem("token");
+        }
 
         const response = await axios.get(`${baseUrl}/products/${categoryId}`, {
           headers: {
@@ -96,7 +99,10 @@ const Brands = ({ categoryId }: any) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const token = localStorage.getItem("token");
+        let token: any;
+        if (typeof localStorage !== "undefined") {
+          token = localStorage.getItem("token");
+        }
 
         const response = await axios.get(`${baseUrl}/productDetails/brand`, {
           headers: {

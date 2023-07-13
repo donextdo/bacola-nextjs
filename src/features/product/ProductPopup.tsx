@@ -157,8 +157,10 @@ return err ;        }
             try {
 
                 //authentication session handle
-                const token = localStorage.getItem("token"); // Retrieve the token from local storage or wherever it's stored
-               
+                let token: any;
+                if (typeof localStorage !== "undefined") {
+                   token = localStorage.getItem("token");
+                }               
 
                 const config = {
                   headers: {
@@ -405,11 +407,6 @@ return err ;        }
 
                                                 {count}
                                             </div>
-
-                                            {/* <div className=" flex items-center justify-center w-full text-center ">
-                                                    {data.count}
-                                                </div> */}
-
                                             <button
                                                 type="button"
                                                 className="px-4 hover:bg-yellow-400 border-gray-500 bg-gray-300  text-[20px]   rounded-full  font-medium"
@@ -437,12 +434,7 @@ return err ;        }
                                         </button>
                                     </div>
                                     <div className="ml-4 flex flex-row items-center justify-center">
-                                        {/* <button type="button" className="flex flex-row ">
-                                            <TbArrowsDownUp className="h-[15px] w-[15px] text-gray-500"></TbArrowsDownUp>
-                                            <span className="text-[11px] ml-2 tracking-[-0.05em] text-gray-500 font-semibold uppercase">
-                                                compare
-                                            </span>
-                                        </button> */}
+                                       
                                     </div>
                                 </div>
                                 <div className="max-h-[66px]  mt-6">

@@ -6,10 +6,7 @@ import { useState } from "react";
 import BestSellerProducts from "@/features/product/BestSellerProducts";
 import NewArrivalProducts from "@/features/product/NewArrivalProducts";
 
-
 const HomePage = () => {
-  
-
   return (
     <div className="lg:flex lg:flex-row lg:mb-9">
       <div className="lg:w-1/4 ">
@@ -19,10 +16,8 @@ const HomePage = () => {
         <div>
           <BestSeller />
           <BestSellerProducts />
-          {/* <ProductList /> */}
         </div>
         <TakeCare />
-        {/* <RedDiv /> */}
         <div>
           <NewProduct />
           <NewArrivalProducts />

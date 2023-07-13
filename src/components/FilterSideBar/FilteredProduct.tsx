@@ -71,7 +71,10 @@ export const FilteredProduct = ({
         if (perpage) {
           url += `&perpage=${perpage}`;
         }
-        const token = localStorage.getItem("token");
+        let token: any;
+        if (typeof localStorage !== "undefined") {
+          token = localStorage.getItem("token");
+        }
 
         const response = await axios.get(url, {
           headers: {
@@ -134,7 +137,6 @@ export const FilteredProduct = ({
             }
           });
         }
-        console.error("error :", error.response.status);
       }
     };
     fetchData();

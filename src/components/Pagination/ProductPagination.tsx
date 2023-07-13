@@ -51,8 +51,10 @@ export const ProductPagination = ({
           if (onSale) {
             url += `&on_sale=${onSale}`;
           }
-          const token = localStorage.getItem("token");
-
+          let token: any;
+          if (typeof localStorage !== "undefined") {
+            token = localStorage.getItem("token");
+          }
           const response = await axios.get(url, {
             headers: {
               authorization: `Bearer ${token}`,
@@ -117,7 +119,10 @@ export const ProductPagination = ({
           if (onSale) {
             url += `&on_sale=${onSale}`;
           }
-          const token = localStorage.getItem("token");
+          let token: any;
+          if (typeof localStorage !== "undefined") {
+            token = localStorage.getItem("token");
+          }
           const response = await axios.get(url, {
             headers: {
               authorization: `Bearer ${token}`,

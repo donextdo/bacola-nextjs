@@ -17,7 +17,10 @@ const AccountDetails = () => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   let id = localStorage.getItem("id");
-  const token = localStorage.getItem("token");
+  let token: any;
+  if (typeof localStorage !== "undefined") {
+    token = localStorage.getItem("token");
+  }
   const router = useRouter();
   useEffect(() => {
     fetchData();

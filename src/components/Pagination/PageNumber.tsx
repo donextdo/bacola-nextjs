@@ -25,8 +25,10 @@ export const PageNumber = ({ perpage }: any) => {
     if (!perpage) {
       const fetchData = async () => {
         try {
-          const token = localStorage.getItem("token");
-
+          let token: any;
+          if (typeof localStorage !== "undefined") {
+            token = localStorage.getItem("token");
+          }
           const response = await axios.get(
             `${baseUrl}/products?page=${currentPage}`,
             {
@@ -85,8 +87,10 @@ export const PageNumber = ({ perpage }: any) => {
     } else if (perpage || currentPage) {
       const fetchData = async () => {
         try {
-          const token = localStorage.getItem("token");
-
+          let token: any;
+          if (typeof localStorage !== "undefined") {
+            token = localStorage.getItem("token");
+          }
           const response = await axios.get(
             `${baseUrl}/products?page=${currentPage}&perpage=${perpage}`,
             {

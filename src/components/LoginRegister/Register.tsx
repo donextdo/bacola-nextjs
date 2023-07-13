@@ -121,8 +121,8 @@ const Register: React.FC<Props> = () => {
         } else {
           setErrorMsg("");
         }
-      } catch (error) {
-        console.error(error);
+      } catch (error: any) {
+        setErrorMsg(error);
       }
     }
     setIsLoading(false);

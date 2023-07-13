@@ -16,39 +16,40 @@ import SideNavBar from "../SideNavBar/SideNavbar";
 
 const Header = () => {
   const [cart, setCart] = useState(false);
-  const [showSideNavbar, setShowSideNavbar] = useState(false)
+  const [showSideNavbar, setShowSideNavbar] = useState(false);
   const totalCount = useSelector((state: RootState) => state.cart.totalCount);
   const totalAmount = useSelector((state: RootState) => state.cart.totalAmount);
   const router = useRouter();
-  const [totalPrice, setTotalPrice] = useState(0)
-  const [totalQuantity, setTotalQuantity] = useState(0)
-
-  
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [totalQuantity, setTotalQuantity] = useState(0);
 
   useEffect(() => {
-    const cartItemsString = localStorage.getItem('cartItems');
+    const cartItemsString = localStorage.getItem("cartItems");
     const cartItemsArray = cartItemsString ? JSON.parse(cartItemsString) : [];
-    if (cartItemsArray.length > 0){
-      const sum = cartItemsArray.reduce((accumulator:any, currentValue:any) => {
-        const updatedUnitPrice = currentValue.price - (currentValue.price * (currentValue.discount / 100));
-        return accumulator + (currentValue.count * updatedUnitPrice);
-      }, 0);
-      
-      const sumQuantity = cartItemsArray.reduce((accumulator: any, currentValue: any) => accumulator + currentValue.count, 0);
-      setTotalPrice(sum)
-      setTotalQuantity(sumQuantity)
-      
+    if (cartItemsArray.length > 0) {
+      const sum = cartItemsArray.reduce(
+        (accumulator: any, currentValue: any) => {
+          const updatedUnitPrice =
+            currentValue.price -
+            currentValue.price * (currentValue.discount / 100);
+          return accumulator + currentValue.count * updatedUnitPrice;
+        },
+        0
+      );
+
+      const sumQuantity = cartItemsArray.reduce(
+        (accumulator: any, currentValue: any) =>
+          accumulator + currentValue.count,
+        0
+      );
+      setTotalPrice(sum);
+      setTotalQuantity(sumQuantity);
     } else {
-      setTotalPrice(0)
-      setTotalQuantity(0)
+      setTotalPrice(0);
+      setTotalQuantity(0);
     }
-    
-    console.log("head total",totalAmount)
-    
+  }, [totalAmount]);
 
-  },[totalAmount]);
-
-  
   const { publicRuntimeConfig } = getConfig();
 
   const logoUrl = publicRuntimeConfig.APP_LOGO_URL;
@@ -88,9 +89,7 @@ const Header = () => {
   };
 
   const handleClick = () => {
-    setCart(!cart)
-    // router.push("/cart")
-
+    setCart(!cart);
   };
   const hnadleEnter = () => {
     setCart(true);
@@ -103,9 +102,6 @@ const Header = () => {
     setShowSideNavbar(!showSideNavbar);
   };
 
-  console.log("head amount",totalPrice)
-  console.log("head count",totalQuantity)
-
   return (
     <>
       <div className="container mx-auto hidden md:block">
@@ -114,18 +110,6 @@ const Header = () => {
             <Link href="/">
               <div className="h-[95px] w-40 sm:col-span-2">
                 <Logo />
-                {/* <Image
-                  src={logo}
-                  alt="item1"
-                  style={{
-                    objectFit: "contain",
-                    backgroundColor: "white",
-                    width: "100%",
-                    height: "100%",
-                  }}
-                  width={450}
-                  height={400}
-                /> */}
               </div>
             </Link>
           </div>
@@ -164,7 +148,7 @@ const Header = () => {
                 </div>
               )}
             </div>
-            <div>{ }</div>
+            <div>{}</div>
           </div>
         </div>
       </div>
@@ -177,23 +161,26 @@ const Header = () => {
               <BsList />
             </button>
             {showSideNavbar && (
-              <SideNavBar setShowSideNavbar={setShowSideNavbar} handleSideNavbar={handleSideNavbar}/>
+              <SideNavBar
+                setShowSideNavbar={setShowSideNavbar}
+                handleSideNavbar={handleSideNavbar}
+              />
             )}
           </div>
           <div className="h-[50px] w-40 sm:col-span-2">
-          <Link href="/">
-            <Image
-              src={logo}
-              alt="item1"
-              style={{
-                objectFit: "contain",
-                backgroundColor: "white",
-                width: "100%",
-                height: "100%",
-              }}
-              width={450}
-              height={400}
-            />
+            <Link href="/">
+              <Image
+                src={logo}
+                alt="item1"
+                style={{
+                  objectFit: "contain",
+                  backgroundColor: "white",
+                  width: "100%",
+                  height: "100%",
+                }}
+                width={450}
+                height={400}
+              />
             </Link>
           </div>
           <div

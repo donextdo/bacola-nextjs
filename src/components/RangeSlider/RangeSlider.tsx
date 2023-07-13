@@ -15,8 +15,10 @@ export const RangeSlider = ({ categoryId }: any) => {
     if (categoryId) {
       const fetchData = async () => {
         try {
-          const token = localStorage.getItem("token");
-
+          let token: any;
+          if (typeof localStorage !== "undefined") {
+            token = localStorage.getItem("token");
+          }
           const response = await axios(
             `${baseUrl}/productDetails?categoryId=${categoryId}`,
             {
@@ -37,8 +39,6 @@ export const RangeSlider = ({ categoryId }: any) => {
           let roundedPrice;
 
           roundedPrice = Math.ceil(maxPrice / 10) * 10;
-          // setMaxPriceValue(roundedPrice);
-          // setMaxValue(maxPriceValue);
         } catch (error: any) {
           if (
             error?.response?.status == 403 ||
