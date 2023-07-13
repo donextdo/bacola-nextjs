@@ -38,7 +38,7 @@ const AllcategoriesSideNavbar = ({setShowSideNavbar}:any) => {
   useEffect(() => {
     const fetchData = async () => {
       const response = await axios.get(`${baseUrl}/categories`);
-      console.log(response)
+    
       setviewCategory(response.data);
     };
     fetchData();

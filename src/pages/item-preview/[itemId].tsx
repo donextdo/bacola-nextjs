@@ -23,7 +23,7 @@ import { Product } from "@/features/product/product";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
-import { addItem, addItems, updateItemQuantity } from "@/features/cart/cartSlice";
+import { calSubTotal} from "@/features/cart/cartSlice";
 import { updateProductQuantity } from "@/features/product/productSlice";
 import Review from "@/components/ViewItem/Details/Review";
 import siteUrl from "../../../utils/siteUrl";
@@ -32,6 +32,8 @@ import { RecentlyViewProduct } from "@/components/RecentlyViewProduct/RecentlyVi
 import RelatedProduct from "@/components/RelatedProduct/RelatedProduct";
 import Breadcrumbs from "@/components/Breadcrumbs/Breadcrumbs";
 import { MdArrowBackIos, MdArrowForwardIos } from "react-icons/md";
+import Swal from "sweetalert2";
+
 // interface ItemData {
 //     description: string;
 //     quantity: number;
@@ -84,6 +86,7 @@ const ItemPages = () => {
     const [hideSideImage, setHideSideImage] = useState(false);
     const [categoryName, setcategoryname] = useState();
     let [newQuantity, setNewQuantity] = useState<number>(1)
+    const [count, setCount] = useState(1);
 
     let id: any;
     if (typeof localStorage !== "undefined") {
@@ -94,7 +97,8 @@ const ItemPages = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     let [imageArray1, setImageArray1] = useState<string[]>([]);
     let [imageArray2, setImageArray2] = useState<string[]>([]);
-    
+   
+  const [defaultImage, setDefaultImage] = useState("");
 
     const [currentSlide, setCurrentSlide] = useState(0);
 
@@ -115,29 +119,61 @@ const ItemPages = () => {
     }, [itemId]);
 
     async function fetchData() {
-        try {
-            const res = await axios.get(`${baseUrl}/products/getOne/${itemId}`);
-            console.log(res.data);
-            setData(res.data);
-            setTag(res.data.tags);
-            setImageArray2(res.data.imageArray)
-            if (res.data.back == "") {
-                setHideBackImage(true);
-            }
-            if (res.data.front == "") {
-                setHideFrontImage(true);
-            }
-            if (res.data.side == "") {
-                setHideSideImage(true);
-            }
-        } catch (err) {
-            console.log(err);
+      try {
+        const res = await axios.get(`${baseUrl}/products/getOne/${itemId}`);
+  
+        setData(res.data);
+        setTag(res.data.tags);
+        setImageArray2(res.data.imageArray);
+        if (res.data.back == "") {
+          setHideBackImage(false);
+          setDefaultImage(
+            "https://www.tiffincurry.ca/wp-content/uploads/2021/02/default-product.png"
+          );
         }
+        if (res.data.front == "") {
+          setHideFrontImage(false);
+          setDefaultImage(
+            "https://www.tiffincurry.ca/wp-content/uploads/2021/02/default-product.png"
+          );
+        }
+        if (res.data.side == "") {
+          setHideSideImage(false);
+          setDefaultImage(
+            "https://www.tiffincurry.ca/wp-content/uploads/2021/02/default-product.png"
+          );
+        }
+      } catch (err) {
+        return err;
+      }
     }
 
     // slide image
     useEffect(() => {
-        setImageArray1([data.back, data.front, data.side]);
+      const imageArray = [];
+  
+      if (data.back) {
+        imageArray.push(data.back);
+      }
+      // else {
+      //   imageArray.push(defaultImage);
+      // }
+  
+      if (data.front) {
+        imageArray.push(data.front);
+      }
+      // else {
+      //   imageArray.push(defaultImage);
+      // }
+  
+      if (data.side) {
+        imageArray.push(data.side);
+      }
+      // else {
+      //   imageArray.push(defaultImage);
+      // }
+  
+      setImageArray1(imageArray);
     }, [data.back, data.front, data.side]);
 
     // useEffect(() => {
@@ -149,7 +185,7 @@ const ItemPages = () => {
     console.log(combinedArray[0])
 
     const [selectedImage, setSelectedImage] = useState(combinedArray[0]);
-    
+
     console.log(selectedImage)
 
 
@@ -239,28 +275,50 @@ const ItemPages = () => {
     );
 
     const handleIncrement = (data: Product) => {
-        const setQuantity = (item?.count || 1) + 1;
-        setNewQuantity(setQuantity)
-        console.log(newQuantity)
+        setCount(count + 1);
+        dispatch(calSubTotal(12));
 
-        dispatch(
-            updateProductQuantity({ productId: data._id, count: setQuantity })
-        );
     };
 
     const handleDecrement = (data: Product) => {
-        const setQuantity = Math.max((item?.count || 0) - 1, 0);
-        setNewQuantity(setQuantity)
-        console.log(newQuantity)
+        if (count > 0) {
+            setCount(count - 1);
+        }
+        dispatch(calSubTotal(12));
 
-        dispatch(
-            updateProductQuantity({ productId: data._id, count: setQuantity })
-        );
     };
 
     const handleaddToCart = (data: any) => {
-        dispatch(addItems({ product: data, count: newQuantity }));
+        const cartItemsString = localStorage.getItem('cartItems');
+        const items = cartItemsString ? JSON.parse(cartItemsString) : [];
 
+        const itemIndex = items.findIndex((item: any) => item._id === data._id);
+
+        if (itemIndex === -1) {
+            const newItem = { ...data, count: count };
+            items.push(newItem);
+            localStorage.setItem('cartItems', JSON.stringify(items));
+            dispatch(calSubTotal(12));
+
+        } else {
+            items[itemIndex].count += count;
+            localStorage.setItem('cartItems', JSON.stringify(items));
+            dispatch(calSubTotal(12));
+
+        }
+
+        Swal.fire({
+            title:
+                '<span style="font-size: 18px">Item has been added to your card</span>',
+            width: 400,
+            timer: 1500,
+            // padding: '3',
+            color: "white",
+            background: "#00B853",
+            showConfirmButton: false,
+            heightAuto: true,
+            position: "bottom-end",
+        });
     };
 
     const stars = Array.from({ length: 5 }, (_, i) => (
@@ -511,35 +569,38 @@ const ItemPages = () => {
                                         <div className="flex items-center justify-center row min-h-[63px] max-w-[421.2px] md:min-h-[67px] md:max-w-[444.66px]">
                                             {combinedArray.slice(currentSlide, currentSlide + 3).map((photo, index) => (
                                                 <div
-                                                key={index}
+                                                    key={index}
                                                     className={`flex items-center justify-center min-w-[67px] min-h-[67px] lg:min-w-[67px] lg:min-h-[67px] md:min-w-[94.4px] md:min-h-[94.4px] border ${selectedImage === photo
                                                         ? "border-gray-500"
                                                         : "border-gray-200"
                                                         } mr-2 hover:cursor-pointer`}
-                                                        onClick={() => handleImageClick(currentSlide + index)}
+                                                    onClick={() => handleImageClick(currentSlide + index)}
 
                                                 >
-                                                    {!hideSideImage ? (
-                                                        <img
-                                                            width={67}
-                                                            height={67}
-                                                            src={photo}
-                                                            alt="Man looking at item at a store"
-                                                        />
-                                                    ) : (
-                                                        <img
-                                                            width={67}
-                                                            height={67}
-                                                            src={photo}
-                                                            alt="Man looking at item at a store"
-                                                        />
-                                                    )}
+                                                    {(!hideSideImage ||
+                              !hideBackImage ||
+                              !hideFrontImage) &&
+                            photo ? (
+                              <img
+                                width={67}
+                                height={67}
+                                src={photo}
+                                alt="Man looking at item at a store"
+                              />
+                            ) : (
+                              <img
+                                width={67}
+                                height={67}
+                                src={photo}
+                                alt="Default image"
+                              />
+                            )}
                                                 </div>
                                             ))}
 
                                         </div>
                                         <button className="arrow right" onClick={nextSlide}>
-                                        <MdArrowForwardIos />
+                                            <MdArrowForwardIos />
 
                                         </button>
                                     </div>
@@ -547,7 +608,7 @@ const ItemPages = () => {
                                 </div>
                             </div>
                             <div className="col-span-4 grid grid-cols-1 xl:grid-cols-2 gap-4 w-full ">
-                                <div className=" w-full">
+                                <div className="mb-2 w-full">
                                     <div className=" flex flex-row">
                                         <span className="text-gray-400 line-through mr-2 my-1 font-[1.125rem] flex items-center justify-center">
                                             Rs {data?.price.toFixed(2)}
@@ -584,7 +645,7 @@ const ItemPages = () => {
                                                 </button>
 
                                                 <div className=" flex items-center justify-center w-full text-center ">
-                                                    {item?.count || 1}
+                                                    {count}
                                                 </div>
 
                                                 {/* <div className=" flex items-center justify-center w-full text-center ">
@@ -629,7 +690,7 @@ const ItemPages = () => {
                                         </button> */}
                                         </div>
                                     </div>
-                                    <div className="max-h-[66px] w-full mt-6">
+                                    <div className="w-full mt-6">
                                         {data.type && (
                                             <div className="flex flex-row text-[.75rem] place-items-start mb-1">
                                                 <div className="mr-2">
@@ -668,7 +729,7 @@ const ItemPages = () => {
                                         )}
                                     </div>
                                     <hr className="max-w-[330px] mt-6"></hr>
-                                    <div className="mt-6 max-h-[72.8px] max-w-[308.33px]">
+                                    <div className="mt-6  max-w-[308.33px]">
                                         {myCategory.length > 0 && (
                                             <div className="flex flex-row">
                                                 <span className="text-gray-400 text-xs capitalize">
@@ -709,7 +770,7 @@ const ItemPages = () => {
                                             </div>
                                         )}
 
-                                        <div className="flex flex-row gap-1.5 max-w-[229px] mt-6">
+                                        <div className="flex flex-row gap-1.5 max-w-[229px] mt-6 ">
                                             <div className="">
                                                 <a
                                                     href={facebookShareUrl}
@@ -873,7 +934,7 @@ const ItemPages = () => {
                             </button>
 
                             <div className=" flex items-center justify-center w-full text-center ">
-                                {item?.count || 1}
+                                {count}
                             </div>
 
                             <button

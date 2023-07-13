@@ -8,6 +8,8 @@ import { ProductCard } from "@/features/product/ProductCard";
 import baseUrl from "../../../utils/baseUrl";
 import axios from "axios";
 import { useRouter } from "next/router";
+import { logOut } from "../../../utils/logout";
+import Swal from "sweetalert2";
 
 export const FilteredProduct = ({
   categoryId,
@@ -22,7 +24,7 @@ export const FilteredProduct = ({
   orderby,
   passgrid,
 }: any) => {
-  const [product, setProduct] = useState([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [matchWithProduct, setmatchWithProduct] = useState<Product[]>([]);
   const [isGrid, setIsGrid] = useState<String>();
 
@@ -32,7 +34,6 @@ export const FilteredProduct = ({
   ) as Product[];
   useEffect(() => {
     dispatch(fetchProducts());
-    console.log("data data", productsRidux);
   }, [dispatch]);
 
   const router = useRouter();
@@ -70,13 +71,70 @@ export const FilteredProduct = ({
         if (perpage) {
           url += `&perpage=${perpage}`;
         }
+        const token = localStorage.getItem("token");
 
-        const response = await axios.get(url);
+        const response = await axios.get(url, {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        });
         const products = response.data.products;
-        console.log("response.data: ", response.data.products);
-        setProduct(products);
-      } catch (error) {
-        console.error(error);
+
+        setProducts(products);
+      } catch (error: any) {
+        if (error?.response?.status == 403 || error?.response?.status == 401) {
+          Swal.fire({
+            width: 700,
+            color: "black",
+            background: "white",
+            html: `
+              <div style="text-align: left;">
+                <h2 style="font-size: 20px; font-weight: bold; margin-bottom: 10px;">Session Expired</h2>
+                <hr style="margin-bottom: 20px;" />
+                <p style="font-size: 14px;margin-bottom: 10px;">Your session has expired</p>
+                <hr style="margin-bottom: 20px;" />
+              </div>
+            `,
+            showConfirmButton: true,
+            confirmButtonText: "Ok",
+            confirmButtonColor: "bg-primary",
+            heightAuto: true,
+            customClass: {
+              confirmButton:
+                "bg-primary text-white rounded-full px-4 py-2 text-sm absolute right-4 bottom-4 ",
+            },
+          }).then((result) => {
+            if (result.value) {
+              Swal.fire({
+                width: 700,
+                color: "black",
+                background: "white",
+                html: `
+              <div style="text-align: left;">
+                <h2 style="font-size: 20px; font-weight: bold; margin-bottom: 10px;">Session Expired</h2>
+                <hr style="margin-bottom: 20px;" />
+                <p style="font-size: 14px;margin-bottom: 10px;">Your session has expired</p>
+                <hr style="margin-bottom: 20px;" />
+              </div>
+            `,
+                showConfirmButton: true,
+                confirmButtonText: "Ok",
+                confirmButtonColor: "blue",
+                heightAuto: true,
+                customClass: {
+                  confirmButton:
+                    "bg-primary text-white rounded-full px-4 py-2 text-sm absolute right-4 bottom-4 ",
+                },
+              }).then((result) => {
+                if (result.value) {
+                  logOut();
+                  router.push("/account");
+                }
+              });
+            }
+          });
+        }
+        console.error("error :", error.response.status);
       }
     };
     fetchData();
@@ -96,24 +154,22 @@ export const FilteredProduct = ({
   useEffect(() => {
     const getItem = localStorage.getItem("gridType");
     if (!getItem) {
-      console.log("empty : ");
       setIsGrid("layoutGrid");
     } else {
       setIsGrid(getItem);
     }
-
-    console.log("setIsGrid : ", getItem);
   }, [passgrid]);
 
   useEffect(() => {
     const matchedProducts = productsRidux.filter((pr: Product) =>
-      product.some((p: any) => p?._id === pr?._id)
+      products.some((p: any) => p?._id === pr?._id)
     );
     setmatchWithProduct(matchedProducts);
-  }, [product, productsRidux]);
+  }, [products, productsRidux]);
+
   return (
     <div>
-      {matchWithProduct.length != 0 ? (
+      {matchWithProduct?.length > 0 ? (
         <div className="mx-auto ">
           {/* <div className="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 "> */}
           <div
@@ -129,15 +185,13 @@ export const FilteredProduct = ({
                 : ""
             }`}
           >
-            {matchWithProduct.map((product: any, index) => {
-              return (
-                <ProductCard
-                  key={product._id}
-                  product={product}
-                  isGrid={passgrid}
-                />
-              );
-            })}
+            {matchWithProduct.map((product) => (
+              <ProductCard
+                key={product._id}
+                product={product}
+                isGrid={passgrid}
+              />
+            ))}
           </div>
         </div>
       ) : (

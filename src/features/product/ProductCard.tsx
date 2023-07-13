@@ -11,8 +11,7 @@ import { FC, useState } from "react";
 import Image from "next/image";
 import { RootState } from "../../redux/store";
 import { useDispatch, useSelector } from "react-redux";
-import { addItem, calSubTotal, updateItemQuantity } from "../cart/cartSlice";
-import { updateProductQuantity } from "./productSlice";
+import { calSubTotal, } from "../cart/cartSlice";
 import { Product } from "./product";
 import Link from "next/link";
 import ProductPopup from "./ProductPopup";
@@ -21,6 +20,7 @@ import baseUrl from "../../../utils/baseUrl";
 import { useRouter } from "next/router";
 import Swal from "sweetalert2";
 import { addRecentlyClickedProductId } from "./recentlyClickedSlice";
+import { logOut } from "../../../utils/logout";
 interface Props {
   product: Product;
   isGrid: string;
@@ -31,20 +31,35 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
   // const [productPopup, setProductPopup] = useState(false);
   const [wishlist, setWishlist] = useState([]);
   const dispatch = useDispatch();
-  const cartItems = useSelector((state: RootState) => state.cart.items);
+  // const cartItems = useSelector((state: RootState) => state.cart.cartItems);
   let id = localStorage.getItem("id");
   const [productPopup, setProductPopup] = useState(false);
   const [proId, setProId] = useState("");
   const [grid, setGrid] = useState<string>("");
   const router = useRouter();
+  const [count, setCount] = useState(0);
+  const totalAmountCal = useSelector((state: RootState) => state.cart.totalAmount);
+
 
   useEffect(() => {
     if (product.discount >= 0) {
       setIsdiscount(true);
     }
 
-    console.log(product);
+    
+    // console.log(product);
   }, []);
+
+  // count check
+  useEffect(()=>{
+    const cartItemsString = localStorage.getItem('cartItems');
+    const items = cartItemsString ? JSON.parse(cartItemsString) : [];
+    const itemone = items.find(
+      (item:any) => item._id === product._id
+    );
+    setCount(itemone?.count ?? 0)
+    // console.log(itemone)
+  },[count, totalAmountCal])
 
   useEffect(() => {
     const getItem: string | null = localStorage.getItem("gridType");
@@ -84,53 +99,74 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
       localStorage.setItem("catName", JSON.stringify(res.data[0].name));
     }
   };
-  const handleIncrement = (product: Product) => {
-    // setQuantity(quantity + 1);
-    const newQuantity = (product.count || 0) + 1;
-    dispatch(updateItemQuantity({ itemId: product._id, count: newQuantity }));
-    dispatch(
-      updateProductQuantity({ productId: product._id, count: newQuantity })
-    );
 
-    console.log("handleIncrement ", product.count);
-    dispatch(calSubTotal(totalAmount));
+
+  
+  const handleIncrement = (product: Product) => {
+    const cartItemsString = localStorage.getItem('cartItems');
+  const items = cartItemsString ? JSON.parse(cartItemsString) : [];
+
+  const itemIndex = items.findIndex((item:any) => item._id === product._id);
+  
+  console.log(product,items,itemIndex)
+    if (itemIndex != -1) {
+      console.log(items[itemIndex])
+      items[itemIndex].count += 1;
+      localStorage.setItem('cartItems', JSON.stringify(items));
+      setCount(items[itemIndex].count)
+      console.log("hi",items[itemIndex].count)
+    }
+
+  
+    dispatch(calSubTotal(12));
   };
 
   const handleDecrement = (product: Product) => {
-    // setQuantity(quantity - 1);
-    const newQuantity = Math.max((product.count || 0) - 1, 0);
-    dispatch(updateItemQuantity({ itemId: product._id, count: newQuantity }));
-    dispatch(
-      updateProductQuantity({ productId: product._id, count: newQuantity })
-    );
-    console.log("handleDecrement ", product.count);
-    if (product.count === 1) {
-      // dispatch(removeFromCart(id))
-      // setIsAddToCart(false)
-    }
-    dispatch(calSubTotal(totalAmount));
+    const cartItemsString = localStorage.getItem('cartItems');
+    const items = cartItemsString ? JSON.parse(cartItemsString) : [];
+  
+    const itemIndex = items.findIndex((item:any) => item._id === product._id);
+      if (itemIndex !=-1) {
+        if (items[itemIndex].count > 0) { // Check if count is greater than 0
+          items[itemIndex].count -= 1;
+          localStorage.setItem('cartItems', JSON.stringify(items));
+          setCount(items[itemIndex].count);
+        }
+
+      }
+    
+      dispatch(calSubTotal(12));
   };
 
   const handleaddToCart = (product: Product) => {
-  //   console.log(product)
-  //    // Retrieve the existing cart items from local storage
-  //    let cartItemss = JSON.parse(localStorage.getItem('cartItemss') || '[]');
-  // // Add the product to the cart items array
-  // cartItemss.push(product);
+  
+  const cartItemsString = localStorage.getItem('cartItems');
+  const items = cartItemsString ? JSON.parse(cartItemsString) : [];
 
-  // // Update the local storage with the updated array
-  // localStorage.setItem('cartItemss', JSON.stringify(cartItemss));
+  const itemIndex = items.findIndex((item:any) => item._id === product._id);
 
-  // cartItemss = JSON.parse(localStorage.getItem('cartItemss') || '[]');
+    if (itemIndex === -1) {
+      const newItem = { ...product, count: 1 };
+      items.push(newItem);
+      localStorage.setItem('cartItems', JSON.stringify(items));
+      setCount(newItem.count)
+      dispatch(calSubTotal(12));
+    } else {
+      items[itemIndex].count += 1;
+      localStorage.setItem('cartItems', JSON.stringify(items));
+      setCount(items[itemIndex].count)
+      dispatch(calSubTotal(12));
+    }
 
-    dispatch(addItem(product));
-    const newQuantity = (product.count || 0) + 1;
-    console.log("handleaddToCart ", product.count);
-    dispatch(
-      updateProductQuantity({ productId: product._id, count: newQuantity })
-    );
-    console.log(product._id);
-    dispatch(calSubTotal(totalAmount));
+
+    // dispatch(addItem(product));
+    // const newQuantity = (product.count || 0) + 1;
+    // console.log("handleaddToCart ", product.count);
+    // dispatch(
+    //   updateProductQuantity({ productId: product._id, count: newQuantity })
+    // );
+    // console.log(product._id);
+    // dispatch(calSubTotal(totalAmount));
     Swal.fire({
       title:
         '<span style="font-size: 18px">Item has been added to your card</span>',
@@ -160,107 +196,80 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
   discountprice = product.price * (product.discount / 100);
   let newprice = product.price - discountprice;
 
-  // const handleWishlist = async (product: any) => {
-  //   if (id) {
-  //     const whishListObj = {
-  //       whishList: [
-  //         {
-  //           productId: product._id,
-  //           front: product.front,
-  //           title: product.title,
-  //           price: product.price,
-  //           date: new Date().toLocaleDateString("en-US", {
-  //             month: "long",
-  //             day: "numeric",
-  //             year: "numeric",
-  //           }),
-  //           quantity: product.quantity,
-  //         },
-  //       ],
-  //     };
 
-  //     try {
-  //       const response = await axios.post(
-  //         `${baseUrl}/users/wishList/${id}`,
-  //         whishListObj
-  //       );
-  //       console.log(response.data); // do something with the response data
-  //     } catch (error) {
-  //       console.log(error); // handle the error
-  //     }
-  //   } else {
-  //     router.push("/account");
-  //   }
-
-  // };
   const handleWishlist = async (data: any) => {
-       
     if (id) {
-        const whishListObj = {
-            whishList: [
-                {
-                    productId: data._id,
-                    front: data.front,
-                    title: data.title,
-                    price: data.price,
-                    date: new Date().toLocaleDateString("en-US", {
-                        month: "long",
-                        day: "numeric",
-                        year: "numeric",
-                    }),
-                    quantity: data.quantity,
-                },
-            ],
+      const whishListObj = {
+        whishList: [
+          {
+            productId: data._id,
+            front: data.front,
+            title: data.title,
+            price: data.price,
+            date: new Date().toLocaleDateString("en-US", {
+              month: "long",
+              day: "numeric",
+              year: "numeric",
+            }),
+            quantity: data.quantity,
+          },
+        ],
+      };
+
+      try {
+        //authentication session handle
+        const token = localStorage.getItem("token"); // Retrieve the token from local storage or wherever it's stored
+
+        const config = {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
         };
 
-        try {
+        const response = await axios.post(
+          `${baseUrl}/users/wishList/${id}`,
+          whishListObj,
+          config
+        );
 
-        //authentication session handle
-            const token = localStorage.getItem("token"); // Retrieve the token from local storage or wherever it's stored
-            if (!token) {
-            alert("Session expired")
+      } catch (error: any) {
+        if (error?.response?.status == 403 || error?.response?.status == 401) {
+          Swal.fire({
+            width: 700,
+            color: "black",
+            background: "white",
+            html: `
+              <div style="text-align: left;">
+                <h2 style="font-size: 20px; font-weight: bold; margin-bottom: 10px;">Session Expired</h2>
+                <hr style="margin-bottom: 20px;" />
+                <p style="font-size: 14px;margin-bottom: 10px;">Your session has expired</p>
+                <hr style="margin-bottom: 20px;" />
+              </div>
+            `,
+            showConfirmButton: true,
+            confirmButtonText: "Ok",
+            confirmButtonColor: "bg-primary",
+            heightAuto: true,
+            customClass: {
+              confirmButton:
+                "bg-primary text-white rounded-full px-4 py-2 text-sm absolute right-4 bottom-4 ",
+            },
+          }).then((result) => {
+            if (result.value) {
+              logOut();
               router.push("/account");
-              return;
             }
-
-            const config = {
-              headers: {
-                Authorization: token,
-              },
-            };
-
-            const response = await axios.post(
-                `${baseUrl}/users/wishList/${id}`,
-                whishListObj,
-                config,
-                
-            );
-
-            
-            console.log(response.data); // do something with the response data
-        } catch (error) {
-            console.log(error); // handle the error 
-            
-            alert("Session expired")
-              router.push("/account");
-            
+          });
         }
-      } else {
-        router.push("/account");
       }
+    } else {
+      router.push("/account");
+    }
+  };
 
-}
-
-  let totalAmount = 0;
-  for (let i = 0; i < cartItems.length; i++) {
-    let item = cartItems[i];
-    let subtotal =
-      item.count * (item.price - item.price * (item.discount / 100));
-    totalAmount += subtotal;
-  }
   useEffect(() => {
-    dispatch(calSubTotal(totalAmount));
-  });
+    dispatch(calSubTotal(12));
+  },[]);
 
   const handlepopup = (product: any) => {
     setProductPopup(true);
@@ -373,7 +382,7 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
                 <div className="text-xs pt-2 flex flex-row items-center my-1 ">
                   {stars}
                   {/* <p className="text-md text-yellow-400 flex">{yellowstars}</p>
-  <p className="text-md text-gray-400 flex">{graystars}</p> */}
+      <p className="text-md text-gray-400 flex">{graystars}</p> */}
                 </div>
                 <div className=" flex flex-row items-center">
                   {isDiscount && (
@@ -387,7 +396,7 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
                 </div>
               </div>
               <div className="mx-1 border-black text-black py-2 px-4 mt-1 rounded-full md:visible group-hover:visible ">
-                {(product.count == undefined || product.count < 1) && (
+                {(count == undefined || count < 1) && (
                   <button
                     type="button"
                     className=" bg-blue-900 text-white min-h-[34px]  rounded-full w-40"
@@ -397,7 +406,7 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
                   </button>
                 )}
 
-                {product.count >= 1 && (
+                {count >= 1 && (
                   <div className="max-h-[34px] w-full flex grid-cols-3 h-10">
                     <button
                       type="button"
@@ -407,7 +416,7 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
                       -
                     </button>
                     <div className="max-h-[34px] flex items-center justify-center w-full text-center border-y">
-                      {product.count || 0}
+                      {count || 0}
                     </div>
                     <button
                       type="button"
@@ -528,7 +537,7 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
             </div>
             <div className="mx-1 border-black text-black py-2 px-4 mt-1 rounded-full  transition duration-150">
               <div className="md:invisible group-hover:visible md:group-hover:-translate-y-3 md:group-hover:ease-in">
-                {(product.count == undefined || product.count < 1) && (
+                {(count == undefined || count < 1) && (
                   <button
                     type="button"
                     className=" bg-primary text-white min-h-[34px]  rounded-full w-full "
@@ -539,7 +548,7 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
                 )}
               </div>
               <div>
-                {product.count >= 1 && (
+                {count >= 1 && (
                   <div className="max-h-[34px] w-full flex grid-cols-3 h-10">
                     <button
                       type="button"
@@ -549,7 +558,7 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
                       -
                     </button>
                     <div className="max-h-[34px] flex items-center justify-center w-full text-center border-y">
-                      {product.count || 0}
+                      {count || 0}
                     </div>
                     <button
                       type="button"

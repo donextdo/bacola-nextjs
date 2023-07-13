@@ -22,7 +22,6 @@ export const Old = () => {
   const products = useSelector(
     (state: RootState) => state.product.products
   ) as Product[];
-  console.log(products);
 
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     setIsLoading(true);
@@ -121,7 +120,7 @@ export const Old = () => {
                       // key={item.id}
                       className="cursor-pointer text-end text-red-600 text-sm font-semibold mr-2 font-ff-headings"
                     >
-                      Rs 
+                      Rs
                       {(
                         item.price -
                         item.price * (item.discount / 100)

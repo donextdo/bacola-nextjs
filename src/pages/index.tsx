@@ -42,7 +42,7 @@ export default function Home() {
           <HomeSlider />
         </div>
         <HomePage />
-        {/* <CartList /> */}
+        <CartList />
         <button className={`fixed bottom-4 right-4 rounded-full p-4 z-50 bg-white shadow-xl border ${showButton ? 'visible' : 'invisible'
           }`} onClick={scrollToTop}><SlArrowUp /></button>
 

@@ -58,6 +58,16 @@ export const SearchItem = () => {
     setIsHide(false);
   };
 
+  const saveCategoryName = async (product: any) => {
+    let findcategory: any;
+    if (product.category.length > 0) {
+      findcategory = product.category[0];
+      const res = await axios.get(`${baseUrl}/categories/get/${findcategory}`);
+
+      localStorage.setItem("catName", JSON.stringify(res.data[0].name));
+    }
+  };
+
   return (
     <div className="flex flex-col xl:w-[500px] w-full md:w-full lg:w-96 place-content-center relative">
       <div className="flex relative w-full">
@@ -96,7 +106,10 @@ export const SearchItem = () => {
 
                   <li
                     className="cursor-pointer text-start ml-2 flex-1 hover:underline text-sm font-medium"
-                    onClick={() => sendView(item?._id)}
+                    onClick={() => {
+                      sendView(item?._id);
+                      saveCategoryName(item);
+                    }}
                   >
                     {item.title}
                   </li>

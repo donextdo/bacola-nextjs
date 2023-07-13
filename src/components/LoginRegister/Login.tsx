@@ -4,6 +4,7 @@ import baseUrl from "../../../utils/baseUrl";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import Swal from "sweetalert2";
+import { setUserSession } from "../../../utils/token";
 
 type FormValues = {
   usernameoremail: string;
@@ -53,7 +54,6 @@ const Login: React.FC<Props> = () => {
     };
     try {
       const response = await axios.post(`${baseUrl}/users/login`, details);
-      console.log(response.data);
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("id", response.data._id);
       localStorage.setItem("email", response.data.email);
@@ -61,6 +61,7 @@ const Login: React.FC<Props> = () => {
       localStorage.setItem("order", JSON.stringify([]));
 
       if (response.status == 200) {
+        setUserSession(response.data.token, response.data);
         Swal.fire({
           title:
             '<span style="font-size: 18px">You have successfully logged in.</span>',
@@ -77,7 +78,6 @@ const Login: React.FC<Props> = () => {
         router.push("/account");
       }
     } catch (error: any) {
-      console.log(error);
       if (error.response) {
         const statusCode = error.response.status;
         switch (statusCode) {
@@ -107,13 +107,13 @@ const Login: React.FC<Props> = () => {
             );
             break;
           case 404:
-            setErrorMsg("Such user does not exist");
+            setErrorMsg(error.response.data.message);
             break;
           case 500:
-            setErrorMsg("Such user does not exist check your credentials");
+            setErrorMsg(error.response.data.message);
             break;
           default:
-            setErrorMsg("Something went wrong. Please try again later.");
+            setErrorMsg(error.response.data.message);
         }
       }
     }

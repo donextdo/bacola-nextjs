@@ -9,12 +9,15 @@ import axios from "axios";
 import baseUrl from "../../../utils/baseUrl";
 import { Product } from "./product";
 import { useDispatch, useSelector } from "react-redux";
-import { addItem, addItems, updateItemQuantity } from "../cart/cartSlice";
+import { calSubTotal } from "../cart/cartSlice";
 import { updateProductQuantity } from "./productSlice";
 
 import { RootState } from "@/redux/store";
 import Review from "@/components/ViewItem/Details/Review";
 import { useRouter } from "next/router";
+import Swal from "sweetalert2";
+import { logOut } from "../../../utils/logout";
+
 
 const ProductPopup = ({ setProductPopup, proId }: any) => {
     const [data, setData] = useState<Product>({
@@ -47,7 +50,7 @@ const ProductPopup = ({ setProductPopup, proId }: any) => {
         speacialtag: "",
         additionalInformation: '',
         isBestSeller: false,
-        isNewArrival:false,
+        isNewArrival: false,
         imageArray: ""
 
     })
@@ -61,9 +64,7 @@ const ProductPopup = ({ setProductPopup, proId }: any) => {
     const [myCategory, setMyCategory] = useState([]);
     const router = useRouter();
     let [newQuantity, setNewQuantity] = useState<number>(1)
-
-
-
+    const [count, setCount] = useState(1);
 
 
     const dispatch = useDispatch()
@@ -72,19 +73,16 @@ const ProductPopup = ({ setProductPopup, proId }: any) => {
 
     useEffect(() => {
         fetchData();
-        console.log(proId)
     }, []);
 
     async function fetchData() {
         try {
             const res = await axios.get(`${baseUrl}/products/getOne/${proId}`);
-            console.log(res)
             setData(res.data);
             setTag(res.data.tags)
 
         } catch (err) {
-            console.log(err);
-        }
+return err;        }
     }
 
     let findcategory: any
@@ -93,7 +91,6 @@ const ProductPopup = ({ setProductPopup, proId }: any) => {
     } else {
         findcategory = undefined;
     }
-    console.log(findcategory)
 
     useEffect(() => {
         if (findcategory) {
@@ -104,11 +101,9 @@ const ProductPopup = ({ setProductPopup, proId }: any) => {
     async function fetchData2() {
         try {
             const res = await axios.get(`${baseUrl}/categories/get/${findcategory}`);
-            console.log(res.data)
             setMyCategory(res.data);
         } catch (err) {
-            console.log(err);
-        }
+return err;        }
     }
 
     useEffect(() => {
@@ -119,68 +114,28 @@ const ProductPopup = ({ setProductPopup, proId }: any) => {
             const res = await axios.get(`${baseUrl}/reviews/getReview/${proId}`);
             setAllreview(res.data);
         } catch (err) {
-            console.log(err);
-        }
+return err ;        }
     }
 
     const item: Product | undefined = products.find((item) => item._id === proId);
 
     const handleIncrement = (data: Product) => {
-        const setQuantity = (item?.count || 1) + 1;
-      setNewQuantity(setQuantity)
-      console.log(newQuantity)
+        setCount(count + 1);
+        dispatch(calSubTotal(12));
 
-        dispatch(
-            updateProductQuantity({ productId: data._id, count: setQuantity })
-        );
     };
 
     const handleDecrement = (data: Product) => {
-        const setQuantity = Math.max((item?.count || 0) - 1, 0);
-      setNewQuantity(setQuantity)
-        console.log(newQuantity)
+        if (count > 0) {
+            setCount(count - 1);
+        }
+        dispatch(calSubTotal(12));
 
-        dispatch(
-            updateProductQuantity({ productId: data._id, count: setQuantity })
-        );
     };
 
-    // const handleWishlist = async (data: any) => {
-       
-    //     if (id) {
-    //         const whishListObj = {
-    //             whishList: [
-    //                 {
-    //                     productId: data._id,
-    //                     front: data.front,
-    //                     title: data.title,
-    //                     price: data.price,
-    //                     date: new Date().toLocaleDateString("en-US", {
-    //                         month: "long",
-    //                         day: "numeric",
-    //                         year: "numeric",
-    //                     }),
-    //                     quantity: data.quantity,
-    //                 },
-    //             ],
-    //         };
-    
-    //         try {
-    //             const response = await axios.post(
-    //                 `${baseUrl}/users/wishList/${id}`,
-    //                 whishListObj
-    //             );
-    //             console.log(response.data); // do something with the response data
-    //         } catch (error) {
-    //             console.log(error); // handle the error
-    //         }
-    //       } else {
-    //         router.push("/account");
-    //       }
-
-    // }
+   
     const handleWishlist = async (data: any) => {
-       
+
         if (id) {
             const whishListObj = {
                 whishList: [
@@ -198,22 +153,16 @@ const ProductPopup = ({ setProductPopup, proId }: any) => {
                     },
                 ],
             };
-    
+
             try {
 
-            //authentication session handle
+                //authentication session handle
                 const token = localStorage.getItem("token"); // Retrieve the token from local storage or wherever it's stored
-                if (!token) {
-                    localStorage.removeItem("token");
-                    localStorage.removeItem("id");
-                alert("Session expired")
-                  router.push("/account");
-                  return;
-                }
+               
 
                 const config = {
                   headers: {
-                    Authorization: token,
+                    authorization: `Bearer ${token}`,
                   },
                 };
 
@@ -221,27 +170,77 @@ const ProductPopup = ({ setProductPopup, proId }: any) => {
                     `${baseUrl}/users/wishList/${id}`,
                     whishListObj,
                     config,
-                    
+
                 );
 
                 
-                console.log(response.data); // do something with the response data
-            } catch (error) {
-                console.log(error); // handle the error 
-                localStorage.removeItem("token");
-                localStorage.removeItem("id");
-                alert("Session expired")
-                  router.push("/account");
-                
-            }
-          } else {
+            } catch (error: any) {
+                if (error?.response?.status == 403 || error?.response?.status == 401) {
+                  Swal.fire({
+                    width: 700,
+                    color: "black",
+                    background: "white",
+                    html: `
+                      <div style="text-align: left;">
+                        <h2 style="font-size: 20px; font-weight: bold; margin-bottom: 10px;">Session Expired</h2>
+                        <hr style="margin-bottom: 20px;" />
+                        <p style="font-size: 14px;margin-bottom: 10px;">Your session has expired</p>
+                        <hr style="margin-bottom: 20px;" />
+                      </div>
+                    `,
+                    showConfirmButton: true,
+                    confirmButtonText: "Ok",
+                    confirmButtonColor: "bg-primary",
+                    heightAuto: true,
+                    customClass: {
+                      confirmButton:
+                        "bg-primary text-white rounded-full px-4 py-2 text-sm absolute right-4 bottom-4 ",
+                    },
+                  }).then((result) => {
+                    if (result.value) {
+                      logOut();
+                      router.push("/account");
+                    }
+                  });
+                }
+              }
+        } else {
             router.push("/account");
-          }
+        }
 
     }
 
     const handleaddToCart = (data: any) => {
-        dispatch(addItems({ product: data, count: newQuantity }));
+        const cartItemsString = localStorage.getItem('cartItems');
+        const items = cartItemsString ? JSON.parse(cartItemsString) : [];
+
+        const itemIndex = items.findIndex((item: any) => item._id === data._id);
+
+        if (itemIndex === -1) {
+            const newItem = { ...data, count: count };
+            items.push(newItem);
+            localStorage.setItem('cartItems', JSON.stringify(items));
+            dispatch(calSubTotal(12));
+
+        } else {
+            items[itemIndex].count += count;
+            localStorage.setItem('cartItems', JSON.stringify(items));
+            dispatch(calSubTotal(12));
+
+        }
+
+        Swal.fire({
+            title:
+                '<span style="font-size: 18px">Item has been added to your card</span>',
+            width: 400,
+            timer: 1500,
+            // padding: '3',
+            color: "white",
+            background: "#00B853",
+            showConfirmButton: false,
+            heightAuto: true,
+            position: "bottom-end",
+        });
     };
 
     let discountprice;
@@ -281,10 +280,10 @@ const ProductPopup = ({ setProductPopup, proId }: any) => {
                             <div className="text-gray-400 mx-3">|</div>
                             <span className="text-gray-400 ">
                                 <div className="flex flex-row max-h-[18px] max-w-[130.49px] items-center justify-center">
-                                <p className="text-md text-yellow-400 flex">
-                                            {yellowstars}
-                                        </p>
-                                        <p className="text-md text-gray-400 flex">{graystars}</p>
+                                    <p className="text-md text-yellow-400 flex">
+                                        {yellowstars}
+                                    </p>
+                                    <p className="text-md text-gray-400 flex">{graystars}</p>
                                 </div>
                             </span>
                             <span className="ml-1">
@@ -308,17 +307,17 @@ const ProductPopup = ({ setProductPopup, proId }: any) => {
                                             {data?.discount != undefined ? data.discount : 0}%
                                         </div>
                                     )}
-                                   
-                                   {data?.speacialtag == "organic" && (
-                                            <div className=" font-semibold px-2 py-1 bg-emerald-100 text-green-600 rounded-full text-[10px] flex items-center justify-center uppercase tracking-tighter">
-                                                {data.speacialtag}
-                                            </div>
-                                        )}
-                                        {data?.speacialtag == "Recommended" && (
-                                            <div className=" font-semibold px-2 py-1 bg-gray-500 text-white rounded text-[10px] flex items-center justify-center uppercase tracking-tighter">
-                                                {data.speacialtag}
-                                            </div>
-                                        )}
+
+                                    {data?.speacialtag == "organic" && (
+                                        <div className=" font-semibold px-2 py-1 bg-emerald-100 text-green-600 rounded-full text-[10px] flex items-center justify-center uppercase tracking-tighter">
+                                            {data.speacialtag}
+                                        </div>
+                                    )}
+                                    {data?.speacialtag == "Recommended" && (
+                                        <div className=" font-semibold px-2 py-1 bg-gray-500 text-white rounded text-[10px] flex items-center justify-center uppercase tracking-tighter">
+                                            {data.speacialtag}
+                                        </div>
+                                    )}
                                 </div>
                                 <div className="hover:cursor-pointer flex items-center justify-center px-12 ">
                                     <img
@@ -404,7 +403,7 @@ const ProductPopup = ({ setProductPopup, proId }: any) => {
 
                                             <div className=" flex items-center justify-center w-full text-center ">
 
-                                                {item?.count || 1}
+                                                {count}
                                             </div>
 
                                             {/* <div className=" flex items-center justify-center w-full text-center ">
@@ -421,7 +420,7 @@ const ProductPopup = ({ setProductPopup, proId }: any) => {
                                         </div>
                                         <button
                                             type="button"
-                                            className=" bg-blue-900 text-white min-h-[34px] min-w-[140px] rounded-full  ml-4"
+                                            className=" bg-primary text-white min-h-[34px] min-w-[140px] rounded-full  ml-4"
                                             onClick={() => handleaddToCart(data)}
                                         >
                                             Add to cart
@@ -486,45 +485,45 @@ const ProductPopup = ({ setProductPopup, proId }: any) => {
                                 </div>
                                 <hr className="max-w-[330px] mt-6"></hr>
                                 <div className="mt-6 max-h-[72.8px] max-w-[308.33px]">
-                                {myCategory.length > 0 && (
-                                            <div className="flex flex-row">
-                                                <span className="text-gray-400 text-xs capitalize">
-                                                    Category:
-                                                    {myCategory.map((cat: any, index) => (
+                                    {myCategory.length > 0 && (
+                                        <div className="flex flex-row">
+                                            <span className="text-gray-400 text-xs capitalize">
+                                                Category:
+                                                {myCategory.map((cat: any, index) => (
+                                                    <a
+                                                        key={index}
+                                                        href=""
+                                                        rel="tag"
+                                                        className="ml-2 text-gray-600 text-xs capitalize"
+                                                    >
+                                                        {cat.name}
+                                                    </a>
+                                                ))}
+                                            </span>
+                                        </div>
+                                    )}
+
+                                    {tag.length > 0 && (
+                                        <div className="flex">
+                                            <span className="text-gray-400 text-xs capitalize">
+                                                Tags:
+                                            </span>
+                                            <div className="flex">
+                                                {tag.map((tag: any, index: number) => (
+                                                    <div key={index} className="flex">
+                                                        <div className="text-xs">{index > 0 && ","}</div>
                                                         <a
-                                                            key={index}
                                                             href=""
                                                             rel="tag"
-                                                            className="ml-2 text-gray-600 text-xs capitalize"
+                                                            className="ml-2 text-gray-600 text-xs capitalize flex"
                                                         >
-                                                            {cat.name}
+                                                            {tag.name}
                                                         </a>
-                                                    ))}
-                                                </span>
+                                                    </div>
+                                                ))}
                                             </div>
-                                        )}
-
-                                        {tag.length > 0 && (
-                                            <div className="flex">
-                                                <span className="text-gray-400 text-xs capitalize">
-                                                    Tags:
-                                                </span>
-                                                <div className="flex">
-                                                    {tag.map((tag: any, index: number) => (
-                                                        <div key={index} className="flex">
-                                                            <div className="text-xs">{index > 0 && ","}</div>
-                                                            <a
-                                                                href=""
-                                                                rel="tag"
-                                                                className="ml-2 text-gray-600 text-xs capitalize flex"
-                                                            >
-                                                                {tag.name}
-                                                            </a>
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            </div>
-                                        )}
+                                        </div>
+                                    )}
 
                                 </div>
                             </div>

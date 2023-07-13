@@ -17,14 +17,37 @@ import SideNavBar from "../SideNavBar/SideNavbar";
 const Header = () => {
   const [cart, setCart] = useState(false);
   const [showSideNavbar, setShowSideNavbar] = useState(false)
-  // const [totalCount, setTotalCount] = useState(0)
   const totalCount = useSelector((state: RootState) => state.cart.totalCount);
   const totalAmount = useSelector((state: RootState) => state.cart.totalAmount);
   const router = useRouter();
+  const [totalPrice, setTotalPrice] = useState(0)
+  const [totalQuantity, setTotalQuantity] = useState(0)
+
+  
 
   useEffect(() => {
-    localStorage.setItem('totalCount', totalCount.toString());
-  }, [totalCount]);
+    const cartItemsString = localStorage.getItem('cartItems');
+    const cartItemsArray = cartItemsString ? JSON.parse(cartItemsString) : [];
+    if (cartItemsArray.length > 0){
+      const sum = cartItemsArray.reduce((accumulator:any, currentValue:any) => {
+        const updatedUnitPrice = currentValue.price - (currentValue.price * (currentValue.discount / 100));
+        return accumulator + (currentValue.count * updatedUnitPrice);
+      }, 0);
+      
+      const sumQuantity = cartItemsArray.reduce((accumulator: any, currentValue: any) => accumulator + currentValue.count, 0);
+      setTotalPrice(sum)
+      setTotalQuantity(sumQuantity)
+      
+    } else {
+      setTotalPrice(0)
+      setTotalQuantity(0)
+    }
+    
+    console.log("head total",totalAmount)
+    
+
+  },[totalAmount]);
+
   
   const { publicRuntimeConfig } = getConfig();
 
@@ -32,7 +55,6 @@ const Header = () => {
 
   const Logo = () => {
     if (logoUrl !== "") {
-      console.log("logo url");
       return (
         <Image
           src={logoUrl}
@@ -48,7 +70,6 @@ const Header = () => {
         />
       );
     } else {
-      console.log("logo url");
       return (
         <Image
           src={logo}
@@ -82,6 +103,8 @@ const Header = () => {
     setShowSideNavbar(!showSideNavbar);
   };
 
+  console.log("head amount",totalPrice)
+  console.log("head count",totalQuantity)
 
   return (
     <>
@@ -121,7 +144,7 @@ const Header = () => {
                 </button>
               </Link>
             </div>
-            <div className="">Rs {totalAmount ? totalAmount.toFixed(2) : 0}</div>
+            <div className="">Rs {totalPrice.toFixed(2)}</div>
             <div
               className="relative"
               onMouseEnter={hnadleEnter}
@@ -135,9 +158,9 @@ const Header = () => {
               </button>
 
               {cart && <CartPopup setCart={setCart} />}
-              {totalCount > 0 && (
+              {totalQuantity > 0 && (
                 <div className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full h-5 w-5 flex items-center justify-center">
-                  {totalCount}
+                  {totalQuantity}
                 </div>
               )}
             </div>
@@ -185,9 +208,9 @@ const Header = () => {
               <SlHandbag className="text-2xl text-[#ea2b0f]" />
             </button>
             {cart && <CartPopup setCart={setCart} />}
-            {totalCount > 0 && (
+            {totalQuantity > 0 && (
               <div className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full h-5 w-5 flex items-center justify-center">
-                {totalCount}
+                {totalQuantity}
               </div>
             )}
           </div>

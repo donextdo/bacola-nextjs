@@ -7,6 +7,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 import { Product } from "@/features/product/product";
 import { fetchProducts } from "@/features/product/productSlice";
+import { logOut } from "../../../utils/logout";
+import Swal from "sweetalert2";
 
 export const ProductPagination = ({
   brand,
@@ -28,7 +30,6 @@ export const ProductPagination = ({
   ) as Product[];
   useEffect(() => {
     dispatch(fetchProducts());
-    console.log("data data", productsRidux);
   }, [dispatch]);
   const router = useRouter();
 
@@ -36,7 +37,7 @@ export const ProductPagination = ({
     if (!perpage) {
       const fetchData = async () => {
         try {
-          let url = `${baseUrl}/products?page=${page}&sort=${orderby}`;
+          let url = `${baseUrl}/products?sort=${orderby}&page=${page}`;
 
           if (brand) {
             url += `&brands=${brand}`;
@@ -50,17 +51,51 @@ export const ProductPagination = ({
           if (onSale) {
             url += `&on_sale=${onSale}`;
           }
+          const token = localStorage.getItem("token");
 
-          const response = await axios.get(url);
+          const response = await axios.get(url, {
+            headers: {
+              authorization: `Bearer ${token}`,
+            },
+          });
           const products = response.data.products;
 
           if (products.length === 0) {
-            console.log("No products found.");
           }
 
           setProduct(products);
-        } catch (error) {
-          console.error(error);
+        } catch (error: any) {
+          if (
+            error?.response?.status == 403 ||
+            error?.response?.status == 401
+          ) {
+            Swal.fire({
+              width: 700,
+              color: "black",
+              background: "white",
+              html: `
+                <div style="text-align: left;">
+                  <h2 style="font-size: 20px; font-weight: bold; margin-bottom: 10px;">Session Expired</h2>
+                  <hr style="margin-bottom: 20px;" />
+                  <p style="font-size: 14px;margin-bottom: 10px;">Your session has expired</p>
+                  <hr style="margin-bottom: 20px;" />
+                </div>
+              `,
+              showConfirmButton: true,
+              confirmButtonText: "Ok",
+              confirmButtonColor: "blue",
+              heightAuto: true,
+              customClass: {
+                confirmButton:
+                  "bg-primary text-white rounded-full px-4 py-2 text-sm absolute right-4 bottom-4 ",
+              },
+            }).then((result) => {
+              if (result.value) {
+                logOut();
+                router.push("/account");
+              }
+            });
+          }
         }
       };
 
@@ -68,7 +103,7 @@ export const ProductPagination = ({
     } else if (perpage || orderby) {
       const fetchData = async () => {
         try {
-          let url = `${baseUrl}/products?page=${page}&perpage=${perpage}&sort=${orderby}`;
+          let url = `${baseUrl}/products?sort=${orderby}&page=${page}&perpage=${perpage}`;
 
           if (brand) {
             url += `&brands=${brand}`;
@@ -82,17 +117,50 @@ export const ProductPagination = ({
           if (onSale) {
             url += `&on_sale=${onSale}`;
           }
-
-          const response = await axios.get(url);
+          const token = localStorage.getItem("token");
+          const response = await axios.get(url, {
+            headers: {
+              authorization: `Bearer ${token}`,
+            },
+          });
           const products = response.data.products;
 
           if (products.length === 0) {
-            console.log("No products found.");
           }
 
           setProduct(products);
-        } catch (error) {
-          console.error(error);
+        } catch (error: any) {
+          if (
+            error?.response?.status == 403 ||
+            error?.response?.status == 401
+          ) {
+            Swal.fire({
+              width: 700,
+              color: "black",
+              background: "white",
+              html: `
+                <div style="text-align: left;">
+                  <h2 style="font-size: 20px; font-weight: bold; margin-bottom: 10px;">Session Expired</h2>
+                  <hr style="margin-bottom: 20px;" />
+                  <p style="font-size: 14px;margin-bottom: 10px;">Your session has expired</p>
+                  <hr style="margin-bottom: 20px;" />
+                </div>
+              `,
+              showConfirmButton: true,
+              confirmButtonText: "Ok",
+              confirmButtonColor: "blue",
+              heightAuto: true,
+              customClass: {
+                confirmButton:
+                  "bg-primary text-white rounded-full px-4 py-2 text-sm absolute right-4 bottom-4 ",
+              },
+            }).then((result) => {
+              if (result.value) {
+                logOut();
+                router.push("/account");
+              }
+            });
+          }
         }
       };
 
@@ -103,20 +171,18 @@ export const ProductPagination = ({
   useEffect(() => {
     const getItem = localStorage.getItem("gridType");
     if (!getItem) {
-      console.log("empty : ");
       setIsGrid("layoutGrid");
     } else {
       setIsGrid(getItem);
     }
-
-    console.log("setIsGrid : ", getItem);
   }, [passgrid]);
   useEffect(() => {
     const matchedProducts = productsRidux.filter((pr: Product) =>
-      product.some((p: any) => p?._id === pr?._id)
+      product.map((p: any) => p?._id).includes(pr?._id)
     );
     setmatchWithProduct(matchedProducts);
   }, [product, productsRidux]);
+
   return (
     <div>
       {matchWithProduct.length != 0 ? (

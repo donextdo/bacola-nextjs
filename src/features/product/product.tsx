@@ -17,17 +17,17 @@ export interface Product {
   description: string;
   productQuantity: number;
   skuNumber: string;
-  count:number;
-  newprice:number;
+  count: number;
+  newprice: number;
   type: string;
   review: number;
-  mfgDate:string;
-  life:string;
-  category:string;
-  tags:string;
-  speacialtag:string;
-  additionalInformation: string
-  isNewArrival: boolean
-  isBestSeller : boolean
-  imageArray: string
+  mfgDate: string;
+  life: string;
+  category: string;
+  tags: string;
+  speacialtag: string;
+  additionalInformation: string;
+  isNewArrival: boolean;
+  isBestSeller: boolean;
+  imageArray: string;
 }

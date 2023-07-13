@@ -1,4 +1,4 @@
-import { addItem } from "@/features/cart/cartSlice";
+import { calSubTotal } from "@/features/cart/cartSlice";
 import { updateProductQuantity } from "@/features/product/productSlice";
 import axios from "axios";
 import Image from "next/image";
@@ -7,27 +7,33 @@ import { IoClose } from "react-icons/io5";
 import { useDispatch } from "react-redux";
 import baseUrl from "../../utils/baseUrl";
 import { Product } from "@/features/product/product";
+import { useRouter } from "next/router";
+import Swal from "sweetalert2";
+import { logOut } from "../../utils/logout";
 
 interface WIshlist {
     selected: boolean;
     address: string;
     date: string;
     price: number;
-    title:string;
+    title: string;
     productId: string;
-    front:string;
+    front: string;
     checked: boolean;
     quantity: number;
-    count:number;
+    count: number;
 
     // any other properties
-  }
+}
 const Wishlist = () => {
     const [data, setData] = useState<Array<WIshlist>>([]);
-   
+    const dispatch = useDispatch()
+    const token = localStorage.getItem("token");
+  const router = useRouter();
+
     let id: any;
     if (typeof localStorage !== 'undefined') {
-      id = localStorage.getItem("id");
+        id = localStorage.getItem("id");
     }
 
     useEffect(() => {
@@ -35,15 +41,45 @@ const Wishlist = () => {
     }, []);
 
     async function fetchData() {
-        try {
-            const res = await axios.get(`${baseUrl}/users/${id}`);
-            console.log(res.data.whishList)
-            setData(res.data.whishList)        
-        } catch (err) {
-            console.log(err);
+      try {
+        const res = await axios.get(`${baseUrl}/users/${id}`, {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        });
+        setData(res.data.whishList);
+      } catch (error: any) {
+        if (error?.response?.status == 403 || error?.response?.status == 401) {
+          Swal.fire({
+            width: 700,
+            color: "black",
+            background: "white",
+            html: `
+              <div style="text-align: left;">
+                <h2 style="font-size: 20px; font-weight: bold; margin-bottom: 10px;">Session Expired</h2>
+                <hr style="margin-bottom: 20px;" />
+                <p style="font-size: 14px;margin-bottom: 10px;">Your session has expired</p>
+                <hr style="margin-bottom: 20px;" />
+              </div>
+            `,
+            showConfirmButton: true,
+            confirmButtonText: "Ok",
+            confirmButtonColor: "bg-primary",
+            heightAuto: true,
+            customClass: {
+              confirmButton:
+                "bg-primary text-white rounded-full px-4 py-2 text-sm absolute right-4 bottom-4 ",
+            },
+          }).then((result) => {
+            if (result.value) {
+              logOut();
+              router.push("/account");
+            }
+          });
         }
+      }
     }
-    
+
     const [checkAll, setCheckAll] = useState(false);
 
     const handleCheckAll = () => {
@@ -55,7 +91,7 @@ const Wishlist = () => {
         setCheckAll(!checkAll);
     };
 
-    const handleCheck = (id:any) => {
+    const handleCheck = (id: any) => {
         const newData = [...data];
         newData.forEach(item => {
             if (item.productId === id) {
@@ -66,26 +102,79 @@ const Wishlist = () => {
     };
 
     const handleDelete = async (_id: any) => {
-        
+
+        const cartItemsString = localStorage.getItem('cartItems');
+        const items = cartItemsString ? JSON.parse(cartItemsString) : [];
+
         try {
-            const res = await axios.delete(`${baseUrl}/users/${id}/wishList/${_id}`);
+          const res = await axios.delete(`${baseUrl}/users/${id}/wishList/${_id}`, {
+            headers: {
+              authorization: `Bearer ${token}`,
+            },
+          })
             console.log(res.data)
             const newItems = data.filter((item) => item.productId !== _id);
-        setData(newItems)
-        } catch (err) {
-            console.log(err);
+            setData(newItems)
+        } catch (error:any) {
+          if (error?.response?.status == 403 || error?.response?.status == 401) {
+            Swal.fire({
+              width: 700,
+              color: "black",
+              background: "white",
+              html: `
+                <div style="text-align: left;">
+                  <h2 style="font-size: 20px; font-weight: bold; margin-bottom: 10px;">Session Expired</h2>
+                  <hr style="margin-bottom: 20px;" />
+                  <p style="font-size: 14px;margin-bottom: 10px;">Your session has expired</p>
+                  <hr style="margin-bottom: 20px;" />
+                </div>
+              `,
+              showConfirmButton: true,
+              confirmButtonText: "Ok",
+              confirmButtonColor: "bg-primary",
+              heightAuto: true,
+              customClass: {
+                confirmButton:
+                  "bg-primary text-white rounded-full px-4 py-2 text-sm absolute right-4 bottom-4 ",
+              },
+            }).then((result) => {
+              if (result.value) {
+                logOut();
+                router.push("/account");
+              }
+            });
+          }
         }
     };
-    const dispatch = useDispatch();
+
+
 
     const handleCart = async (item: any) => {
         console.log(item)
+        const cartItemsString = localStorage.getItem('cartItems');
+        const items = cartItemsString ? JSON.parse(cartItemsString) : [];
+
+
         try {
             const res = await axios.get(`${baseUrl}/products/getOne/${item.productId}`);
             console.log(res.data)
             const itemProduct = res.data
-            dispatch(addItem(itemProduct))
-                  
+            const itemIndex = items.findIndex((itemOne: any) => itemOne._id === itemProduct._id);
+            if (itemIndex === -1) {
+                const newItem = { ...itemProduct, count: 1 };
+                items.push(newItem);
+                localStorage.setItem('cartItems', JSON.stringify(items));
+                dispatch(calSubTotal(12));
+
+
+            } else {
+                items[itemIndex].count += 1;
+                localStorage.setItem('cartItems', JSON.stringify(items));
+                dispatch(calSubTotal(12));
+
+            }
+
+
         } catch (err) {
             console.log(err);
         }
@@ -93,32 +182,63 @@ const Wishlist = () => {
     }
 
     const handleAddSelectedToCart = () => {
+        const cartItemsString = localStorage.getItem('cartItems');
+        const items = cartItemsString ? JSON.parse(cartItemsString) : [];
+
         const selectedItems = data.filter(item => item.checked);
-        selectedItems.forEach(async (item:any) => {
+        selectedItems.forEach(async (item: any) => {
             try {
                 const res = await axios.get(`${baseUrl}/products/getOne/${item.productId}`);
                 console.log(res.data)
                 const itemProduct = res.data
-                dispatch(addItem(itemProduct))
-                      
+                const itemIndex = items.findIndex((itemOne: any) => itemOne._id === itemProduct._id);
+                if (itemIndex === -1) {
+                    const newItem = { ...itemProduct, count: 1 };
+                    items.push(newItem);
+                    localStorage.setItem('cartItems', JSON.stringify(items));
+                    dispatch(calSubTotal(12));
+
+                } else {
+                    items[itemIndex].count += 1;
+                    localStorage.setItem('cartItems', JSON.stringify(items));
+                    dispatch(calSubTotal(12));
+
+                }
+
             } catch (err) {
                 console.log(err);
             }
-            
+
         });
     }
 
-    
+
 
     const handleAddCart = () => {
+        const cartItemsString = localStorage.getItem('cartItems');
+        const items = cartItemsString ? JSON.parse(cartItemsString) : [];
+
         const selectedItems = data.filter(item => item.checked);
-        selectedItems.forEach(async (item:any) => {
+        selectedItems.forEach(async (item: any) => {
             try {
                 const res = await axios.get(`${baseUrl}/products/getOne/${item.productId}`);
                 console.log(res.data)
                 const itemProduct = res.data
-                dispatch(addItem(itemProduct))
-                      
+                const itemIndex = items.findIndex((itemOne: any) => itemOne._id === itemProduct._id);
+                if (itemIndex === -1) {
+                    const newItem = { ...itemProduct, count: 1 };
+                    items.push(newItem);
+                    localStorage.setItem('cartItems', JSON.stringify(items));
+                    dispatch(calSubTotal(12));
+
+
+                } else {
+                    items[itemIndex].count += 1;
+                    localStorage.setItem('cartItems', JSON.stringify(items));
+                    dispatch(calSubTotal(12));
+
+                }
+
             } catch (err) {
                 console.log(err);
             }
@@ -176,7 +296,7 @@ const Wishlist = () => {
                             <td className="border px-4 py-2">{item.title}</td>
                             <td className="border px-4 py-2">{item.price}</td>
                             <td className="border px-4 py-2">{item.date}</td>
-                            <td className="border px-4 py-2">{item.quantity>0 ? "In Stock": "Out of Stock"}</td>
+                            <td className="border px-4 py-2">{item.quantity > 0 ? "In Stock" : "Out of Stock"}</td>
                             <td className="border px-4 py-2">
                                 <button
                                     className=" bg-blue-900 text-white text-xs rounded-md px-5 py-3 " onClick={() => handleCart(item)}

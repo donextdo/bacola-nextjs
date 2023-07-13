@@ -36,10 +36,10 @@ const NewArrivalProducts = ({ passgrid }: any) => {
     async function fetchData() {
         try {
             const res = await axios.get(`${baseUrl}/products/getAllNewArrivalProducts`);
-            console.log(res.data)
+            
             setNewArrivalProducts(res.data)      
         } catch (err) {
-            console.log(err);
+            return err;
         }
     }
     const bestProducts = products.filter(product => product.isNewArrival === true);
