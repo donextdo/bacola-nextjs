@@ -88,7 +88,7 @@ const Checkout = () => {
     setOpenModal(false);
   };
 
-  const cardContainerRef = useRef<HTMLDivElement>(null);
+  const cardContainerRef = useRef<HTMLButtonElement | null>(null);
 
   const handleCheckout = async () => {
     const payload = {
