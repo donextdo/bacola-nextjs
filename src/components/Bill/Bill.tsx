@@ -4,7 +4,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 
 
-const Bill = ({setModal, setModal1}:any) => {
+const Bill = ({ setModal, setModal1 }: any) => {
 
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
@@ -63,7 +63,7 @@ const Bill = ({setModal, setModal1}:any) => {
 
     // const handleSave = async () => {
     //     const data = {
-            
+
     //         "billingAddress": {
     //             billingFirstName: firstName,
     //             billingLastName: lastName,
@@ -86,7 +86,7 @@ const Bill = ({setModal, setModal1}:any) => {
     //     }
     // };
 
-    const handleEmailChange = (e:any) => {
+    const handleEmailChange = (e: any) => {
         const newEmail = e.target.value;
         setEmail(newEmail);
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(newEmail)) {
@@ -95,8 +95,8 @@ const Bill = ({setModal, setModal1}:any) => {
             setEmailError('');
         }
     };
-    
-    const handleFirstNameChange = (e:any) => {
+
+    const handleFirstNameChange = (e: any) => {
         const newFirstName = e.target.value;
         setFirstName(newFirstName);
         if (newFirstName === '') {
@@ -105,8 +105,8 @@ const Bill = ({setModal, setModal1}:any) => {
             setFirstNameError('');
         }
     };
-    
-    const handleLastNameChange = (e:any) => {
+
+    const handleLastNameChange = (e: any) => {
         const newLastName = e.target.value;
         setLastName(newLastName);
         if (newLastName === '') {
@@ -115,8 +115,8 @@ const Bill = ({setModal, setModal1}:any) => {
             setLastNameError('');
         }
     };
-    
-    const handleCompanyNameChange = (e:any) => {
+
+    const handleCompanyNameChange = (e: any) => {
         const newCompanyName = e.target.value;
         setCompanyName(newCompanyName);
         if (newCompanyName === '') {
@@ -125,8 +125,8 @@ const Bill = ({setModal, setModal1}:any) => {
             setCompanyNameError('');
         }
     };
-    
-    const handleCountryChange = (e:any) => {
+
+    const handleCountryChange = (e: any) => {
         const newCountry = e.target.value;
         setCountry(newCountry);
         if (newCountry === '') {
@@ -135,8 +135,8 @@ const Bill = ({setModal, setModal1}:any) => {
             setCountryError('');
         }
     };
-    
-    const handleStreetAddressChange = (e:any) => {
+
+    const handleStreetAddressChange = (e: any) => {
         const newStreetAddress = e.target.value;
         setStreetAddress(newStreetAddress);
         if (newStreetAddress === '') {
@@ -145,14 +145,14 @@ const Bill = ({setModal, setModal1}:any) => {
             setStreetAddressError('');
         }
     };
-    
-    const handleApartmentChange = (e:any) => {
+
+    const handleApartmentChange = (e: any) => {
         const newApartment = e.target.value;
         setApartment(newApartment);
         // No validation logic for apartment, assuming it can be empty
     };
-    
-    const handleTownCityChange = (e:any) => {
+
+    const handleTownCityChange = (e: any) => {
         const newTownCity = e.target.value;
         setTownCity(newTownCity);
         if (newTownCity === '') {
@@ -161,8 +161,8 @@ const Bill = ({setModal, setModal1}:any) => {
             setTownCityError('');
         }
     };
-    
-    const handleStateChange = (e:any) => {
+
+    const handleStateChange = (e: any) => {
         const newState = e.target.value;
         setState(newState);
         if (newState === '') {
@@ -171,8 +171,8 @@ const Bill = ({setModal, setModal1}:any) => {
             setStateError('');
         }
     };
-    
-    const handleZipCodeChange = (e:any) => {
+
+    const handleZipCodeChange = (e: any) => {
         const newZipCode = e.target.value;
         setZipCode(newZipCode);
         if (!/^[0-9]{5}(?:-[0-9]{4})?$/.test(newZipCode)) {
@@ -181,8 +181,8 @@ const Bill = ({setModal, setModal1}:any) => {
             setZipCodeError('');
         }
     };
-    
-    const handlePhoneChange = (e:any) => {
+
+    const handlePhoneChange = (e: any) => {
         const newPhone = e.target.value;
         setPhone(newPhone);
         if (!/^\+?[0-9]{7,}$/i.test(newPhone)) {
@@ -191,17 +191,17 @@ const Bill = ({setModal, setModal1}:any) => {
             setPhoneError('');
         }
     };
-    
+
     // form handle submit for example
-    const handleSubmit = async (e:any) => {
+    const handleSubmit = async (e: any) => {
         e.preventDefault();
         // perform form submission or validation here
         if (emailError || phoneError || zipCodeError) {
             setFormError('Please fix the errors and try again');
-          } else {
+        } else {
             // perform form submission
             const data = {
-            
+
                 "billingAddress": {
                     billingFirstName: firstName,
                     billingLastName: lastName,
@@ -215,27 +215,27 @@ const Bill = ({setModal, setModal1}:any) => {
                     billingPhone: phone,
                     billingEmail: email,
                 }
-              };
+            };
             try {
                 const response = await axios.patch(`${baseUrl}/users/${id}`, data);
                 console.log(response.data); // do something with the response data
-                if (response.status==200){
+                if (response.status == 200) {
                     Swal.fire({
-                      title: 'Success',
-                      text: 'Your billing address has been updated successfully',
-                      icon: 'success',
-                      confirmButtonText: 'Done',
-                      confirmButtonColor: '#8DC14F',
-                      
+                        title: 'Success',
+                        text: 'Your billing address has been updated successfully',
+                        icon: 'success',
+                        confirmButtonText: 'Done',
+                        confirmButtonColor: '#8DC14F',
+
                     })
                     setModal1(false)
                     setModal(false)
-                  }
+                }
             } catch (error) {
                 console.log(error); // handle the error
-                
+
             }
-          }
+        }
     };
 
     return (
@@ -244,72 +244,72 @@ const Bill = ({setModal, setModal1}:any) => {
             <hr className="mb-4" />
             <form onSubmit={handleSubmit}>
 
-            <label className="text-sm">First Name *</label>
-            <input
-                type="text"
-                className="w-full px-4 h-10 bg-gray-100 rounded-md mt-2 mb-4"
-                value={firstName}
-                onChange={handleFirstNameChange}
-                required/>
-                    {firstNameError && <div className='text-red-500'>{firstNameError}</div>}
+                <label className="text-sm">First Name *</label>
+                <input
+                    type="text"
+                    className="w-full px-4 h-10 bg-gray-100 rounded-md mt-2 mb-4"
+                    value={firstName}
+                    onChange={handleFirstNameChange}
+                    required />
+                {firstNameError && <div className='text-red-500'>{firstNameError}</div>}
 
-            <label className="text-sm">Last Name *</label>
-            <input
-                type="text"
-                className="w-full px-4 h-10 bg-gray-100 rounded-md mt-2 mb-4"
-                value={lastName}
-                onChange={handleLastNameChange}
-                required/>
-                    {lastNameError && <div className='text-red-500'>{lastNameError}</div>}
-    
+                <label className="text-sm">Last Name *</label>
+                <input
+                    type="text"
+                    className="w-full px-4 h-10 bg-gray-100 rounded-md mt-2 mb-4"
+                    value={lastName}
+                    onChange={handleLastNameChange}
+                    required />
+                {lastNameError && <div className='text-red-500'>{lastNameError}</div>}
 
-            <label className="text-sm">Company Name </label>
-            <input
-                type="text"
-                className="w-full px-4 h-10 bg-gray-100 rounded-md mt-2 mb-4"
-                value={companyName}
-                onChange={handleCompanyNameChange}
+
+                <label className="text-sm">Company Name </label>
+                <input
+                    type="text"
+                    className="w-full px-4 h-10 bg-gray-100 rounded-md mt-2 mb-4"
+                    value={companyName}
+                    onChange={handleCompanyNameChange}
                 />
-    {/* {companyNameError && <div className='text-red-500'>{companyNameError}</div>} */}
+                {/* {companyNameError && <div className='text-red-500'>{companyNameError}</div>} */}
 
-            <label className="text-sm">Country / Region *</label>
-            <input
-                type="text"
-                className="w-full px-4 h-10 bg-gray-100 rounded-md mt-2 mb-4"
-                value={country}
-                onChange={handleCountryChange}
-                required/>
+                <label className="text-sm">Country / Region *</label>
+                <input
+                    type="text"
+                    className="w-full px-4 h-10 bg-gray-100 rounded-md mt-2 mb-4"
+                    value={country}
+                    onChange={handleCountryChange}
+                    required />
                 {countryError && <div className='text-red-500'>{countryError}</div>}
 
-            <label className="text-sm">Street address *</label>
-            <input type="text" className="w-full px-4 h-10 bg-gray-100 rounded-md mt-2 mb-2 " placeholder="House number and street name" value={streetAddress} onChange={handleStreetAddressChange} required/>
-            {streetAddressError && <div className='text-red-500'>{streetAddressError}</div>}
-            <input type="text" className="w-full px-4 h-10 bg-gray-100 rounded-md mt-2 mb-4 " placeholder="Apartment, suite, unite, etc. (optional)" value={apartment} onChange={(e) => setApartment(e.target.value)} />
+                <label className="text-sm">Street address *</label>
+                <input type="text" className="w-full px-4 h-10 bg-gray-100 rounded-md mt-2 mb-2 " placeholder="House number and street name" value={streetAddress} onChange={handleStreetAddressChange} required />
+                {streetAddressError && <div className='text-red-500'>{streetAddressError}</div>}
+                <input type="text" className="w-full px-4 h-10 bg-gray-100 rounded-md mt-2 mb-4 " placeholder="Apartment, suite, unite, etc. (optional)" value={apartment} onChange={(e) => setApartment(e.target.value)} />
 
-            <label className="text-sm">Town / City *</label>
-            <input type="text" className="w-full px-4 h-10 bg-gray-100 rounded-md mt-2 mb-4" value={townCity} onChange={handleTownCityChange} required/>
-            {townCityError && <div className='text-red-500'>{townCityError}</div>}
+                <label className="text-sm">Town / City *</label>
+                <input type="text" className="w-full px-4 h-10 bg-gray-100 rounded-md mt-2 mb-4" value={townCity} onChange={handleTownCityChange} required />
+                {townCityError && <div className='text-red-500'>{townCityError}</div>}
 
-            <label className="text-sm">State *</label>
-            <input type="text" className="w-full px-4 h-10 bg-gray-100 rounded-md mt-2 mb-4" value={state} onChange={handleStateChange} required/>
-            {stateError && <div className='text-red-500'>{stateError}</div>}
+                <label className="text-sm">State *</label>
+                <input type="text" className="w-full px-4 h-10 bg-gray-100 rounded-md mt-2 mb-4" value={state} onChange={handleStateChange} required />
+                {stateError && <div className='text-red-500'>{stateError}</div>}
 
-            <label className="text-sm">Zip Code *</label>
-            <input type="text" className="w-full px-4 h-10 bg-gray-100 rounded-md mt-2 mb-4" value={zipCode} onChange={handleZipCodeChange} required/>
-            {zipCodeError && <div className='text-red-500'>{zipCodeError}</div>}
+                <label className="text-sm">Zip Code *</label>
+                <input type="text" className="w-full px-4 h-10 bg-gray-100 rounded-md mt-2 mb-4" value={zipCode} onChange={handleZipCodeChange} required />
+                {zipCodeError && <div className='text-red-500'>{zipCodeError}</div>}
 
-            <label className="text-sm">Phone *</label>
-            <input type="text" className="w-full px-4 h-10 bg-gray-100 rounded-md mt-2 mb-4" value={phone} onChange={handlePhoneChange} required/>
-            {phoneError && <div className='text-red-500'>{phoneError}</div>}
+                <label className="text-sm">Phone *</label>
+                <input type="text" className="w-full px-4 h-10 bg-gray-100 rounded-md mt-2 mb-4" value={phone} onChange={handlePhoneChange} required />
+                {phoneError && <div className='text-red-500'>{phoneError}</div>}
 
-            <label className="text-sm">Email address *</label>
-            <input type="text" className="w-full px-4 h-10 bg-gray-100 rounded-md mt-2 mb-4" value={email} onChange={handleEmailChange} required/>
-            {emailError && <div className='text-red-500'>{emailError}</div>}
+                <label className="text-sm">Email address *</label>
+                <input type="text" className="w-full px-4 h-10 bg-gray-100 rounded-md mt-2 mb-4" value={email} onChange={handleEmailChange} required />
+                {emailError && <div className='text-red-500'>{emailError}</div>}
 
-            <button type="submit" className="bg-primary text-white py-2.5 px-4 mb-4 rounded-md text-sm" 
-            // onClick={handleSave}
-            >Save Changes</button>
-             {formError && <div className='text-red-500'>{formError}</div>}
+                <button type="submit" className="bg-primary text-white py-2.5 px-4 mb-4 rounded-md text-sm"
+                // onClick={handleSave}
+                >Save Changes</button>
+                {formError && <div className='text-red-500'>{formError}</div>}
             </form>
 
         </div>
