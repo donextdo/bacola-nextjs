@@ -33,6 +33,7 @@ import RelatedProduct from "@/components/RelatedProduct/RelatedProduct";
 import Breadcrumbs from "@/components/Breadcrumbs/Breadcrumbs";
 import { MdArrowBackIos, MdArrowForwardIos } from "react-icons/md";
 import Swal from "sweetalert2";
+import { logOut } from "../../../utils/logout";
 
 const ItemPages = () => {
   const [data, setData] = useState<Product>({
@@ -323,15 +324,10 @@ const ItemPages = () => {
         if (typeof localStorage !== "undefined") {
           token = localStorage.getItem("token");
         }
-        if (!token) {
-          alert("Session expired");
-          router.push("/account");
-          return;
-        }
 
         const config = {
           headers: {
-            Authorization: token,
+            authorization: `Bearer ${token}`,
           },
         };
 
@@ -340,9 +336,35 @@ const ItemPages = () => {
           whishListObj,
           config
         );
-      } catch (error) {
-        alert("Session expired");
-        router.push("/account");
+      } catch (error: any) {
+        if (error?.response?.status == 403 || error?.response?.status == 401) {
+          Swal.fire({
+            width: 700,
+            color: "black",
+            background: "white",
+            html: `
+                <div style="text-align: left;">
+                  <h2 style="font-size: 20px; font-weight: bold; margin-bottom: 10px;">Session Expired</h2>
+                  <hr style="margin-bottom: 20px;" />
+                  <p style="font-size: 14px;margin-bottom: 10px;">Your session has expired</p>
+                  <hr style="margin-bottom: 20px;" />
+                </div>
+              `,
+            showConfirmButton: true,
+            confirmButtonText: "Ok",
+            confirmButtonColor: "bg-primary",
+            heightAuto: true,
+            customClass: {
+              confirmButton:
+                "bg-primary text-white rounded-full px-4 py-2 text-sm absolute right-4 bottom-4 ",
+            },
+          }).then((result) => {
+            if (result.value) {
+              logOut();
+              router.push("/account");
+            }
+          });
+        }
       }
     } else {
       router.push("/account");

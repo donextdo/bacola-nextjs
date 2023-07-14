@@ -25,7 +25,6 @@ export const FilteredProduct = ({
   passgrid,
 }: any) => {
   const [products, setProducts] = useState<Product[]>([]);
-  const [matchWithProduct, setmatchWithProduct] = useState<Product[]>([]);
   const [isGrid, setIsGrid] = useState<String>();
 
   const dispatch = useDispatch<AppDispatch>();
@@ -76,67 +75,12 @@ export const FilteredProduct = ({
           token = localStorage.getItem("token");
         }
 
-        const response = await axios.get(url, {
-          headers: {
-            authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await axios.get(url);
         const products = response.data.products;
 
         setProducts(products);
       } catch (error: any) {
-        if (error?.response?.status == 403 || error?.response?.status == 401) {
-          Swal.fire({
-            width: 700,
-            color: "black",
-            background: "white",
-            html: `
-              <div style="text-align: left;">
-                <h2 style="font-size: 20px; font-weight: bold; margin-bottom: 10px;">Session Expired</h2>
-                <hr style="margin-bottom: 20px;" />
-                <p style="font-size: 14px;margin-bottom: 10px;">Your session has expired</p>
-                <hr style="margin-bottom: 20px;" />
-              </div>
-            `,
-            showConfirmButton: true,
-            confirmButtonText: "Ok",
-            confirmButtonColor: "bg-primary",
-            heightAuto: true,
-            customClass: {
-              confirmButton:
-                "bg-primary text-white rounded-full px-4 py-2 text-sm absolute right-4 bottom-4 ",
-            },
-          }).then((result) => {
-            if (result.value) {
-              Swal.fire({
-                width: 700,
-                color: "black",
-                background: "white",
-                html: `
-              <div style="text-align: left;">
-                <h2 style="font-size: 20px; font-weight: bold; margin-bottom: 10px;">Session Expired</h2>
-                <hr style="margin-bottom: 20px;" />
-                <p style="font-size: 14px;margin-bottom: 10px;">Your session has expired</p>
-                <hr style="margin-bottom: 20px;" />
-              </div>
-            `,
-                showConfirmButton: true,
-                confirmButtonText: "Ok",
-                confirmButtonColor: "blue",
-                heightAuto: true,
-                customClass: {
-                  confirmButton:
-                    "bg-primary text-white rounded-full px-4 py-2 text-sm absolute right-4 bottom-4 ",
-                },
-              }).then((result) => {
-                if (result.value) {
-                  logOut();
-                  router.push("/account");
-                }
-              });
-            }
-          });
-        }
+        console.log({ error });
       }
     };
     fetchData();
@@ -162,18 +106,10 @@ export const FilteredProduct = ({
     }
   }, [passgrid]);
 
-  useEffect(() => {
-    const matchedProducts = productsRidux.filter((pr: Product) =>
-      products.some((p: any) => p?._id === pr?._id)
-    );
-    setmatchWithProduct(matchedProducts);
-  }, [products, productsRidux]);
-
   return (
     <div>
-      {matchWithProduct?.length > 0 ? (
+      {products?.length > 0 ? (
         <div className="mx-auto ">
-          {/* <div className="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 "> */}
           <div
             className={`mx-auto ${
               isGrid === "list"
@@ -187,7 +123,7 @@ export const FilteredProduct = ({
                 : ""
             }`}
           >
-            {matchWithProduct.map((product) => (
+            {products.map((product) => (
               <ProductCard
                 key={product._id}
                 product={product}
