@@ -34,7 +34,7 @@ export const HomePagination = ({
       <div className="flex flex-row mb-9">
         <div className="lg:w-1/4 hidden lg:block">
           <div className="grid md:grid-cols-1 grid-cols-1 ">
-            <RangeSlider />
+            <RangeSlider category={categoryId} />
             <Status />
             <Brands category={categoryId} />
           </div>

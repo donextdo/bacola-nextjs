@@ -24,13 +24,6 @@ export const ProductPagination = ({
   const [product, setProduct] = useState<Product[]>([]);
   const [isGrid, setIsGrid] = useState<String>();
   const dispatch = useDispatch<AppDispatch>();
-  const productsRidux = useSelector(
-    (state: RootState) => state.product.products
-  ) as Product[];
-  useEffect(() => {
-    dispatch(fetchProducts());
-  }, [dispatch]);
-  const router = useRouter();
 
   useEffect(() => {
     if (!perpage) {
@@ -61,12 +54,9 @@ export const ProductPagination = ({
           });
           const products = response.data.products;
 
-          if (products.length === 0) {
-          }
-
           setProduct(products);
         } catch (error: any) {
-          return error;
+          console.log({ error });
         }
       };
 
@@ -104,7 +94,7 @@ export const ProductPagination = ({
 
           setProduct(products);
         } catch (error: any) {
-          return error;
+          console.log({ error });
         }
       };
 
