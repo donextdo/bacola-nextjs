@@ -1,12 +1,15 @@
 import { Product } from "@/features/product/product";
 import { fetchProducts } from "@/features/product/productSlice";
 import { AppDispatch, RootState } from "@/redux/store";
+import Link from "next/link";
 import React, { useState, useEffect, FC } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ProductCard } from "@/features/product/ProductCard";
 import baseUrl from "../../../utils/baseUrl";
 import axios from "axios";
 import { useRouter } from "next/router";
+import { logOut } from "../../../utils/logout";
+import Swal from "sweetalert2";
 
 export const FilteredProduct = ({
   categoryId,
@@ -23,6 +26,16 @@ export const FilteredProduct = ({
 }: any) => {
   const [products, setProducts] = useState<Product[]>([]);
   const [isGrid, setIsGrid] = useState<String>();
+
+  const dispatch = useDispatch<AppDispatch>();
+  const productsRidux = useSelector(
+    (state: RootState) => state.product.products
+  ) as Product[];
+  useEffect(() => {
+    dispatch(fetchProducts());
+  }, [dispatch]);
+
+  const router = useRouter();
 
   useEffect(() => {
     const fetchData = async () => {

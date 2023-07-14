@@ -6,9 +6,6 @@ import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import { Product } from "@/features/product/product";
 import { RootState } from "@/redux/store";
-import { uniqBy } from "lodash";
-import { logOut } from "../../../utils/logout";
-import Swal from "sweetalert2";
 
 const Brands = ({ categoryId }: any) => {
   const [brand, setBrand] = useState([]);
@@ -17,27 +14,16 @@ const Brands = ({ categoryId }: any) => {
   const [brandPage, setBrandPage] = useState<string[]>([]);
   const router = useRouter();
 
-  const [showAllBrands, setShowAllBrands] = useState(false);
-  const displayedBrands = showAllBrands ? brand : brand.slice(0, 10);
-  const uniqueBrands = uniqBy(displayedBrands, "brand");
-  const shouldShowSeeLess = showAllBrands && brand.length > 10;
-
   useEffect(() => {
     setCheckedBrands([]);
 
     const fetchData = async () => {
       try {
-        let token: any;
-        if (typeof localStorage !== "undefined") {
-          token = localStorage.getItem("token");
-        }
-        if (categoryId) {
-          const response = await axios.get(`${baseUrl}/products/${categoryId}`);
-          setBrand(response.data);
-          setIsEmpty(response.data.length === 0);
-        }
-      } catch (error: any) {
-        console.log({ error });
+        const response = await axios.get(`${baseUrl}/products/${categoryId}`);
+        setBrand(response.data);
+        setIsEmpty(response.data.length === 0);
+      } catch (error) {
+        console.log(error);
       }
     };
     fetchData();
@@ -69,47 +55,12 @@ const Brands = ({ categoryId }: any) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let token: any;
-        if (typeof localStorage !== "undefined") {
-          token = localStorage.getItem("token");
-        }
-
-        const response = await axios.get(`${baseUrl}/productDetails/brand`, {
-          headers: {
-            authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await axios.get(`${baseUrl}/productDetails/brand`);
+        console.log(response.data);
         setBrandPage(response.data);
         setIsEmpty(response.data.length === 0);
-      } catch (error: any) {
-        if (error?.response?.status == 403 || error?.response?.status == 401) {
-          Swal.fire({
-            width: 700,
-            color: "black",
-            background: "white",
-            html: `
-              <div style="text-align: left;">
-                <h2 style="font-size: 20px; font-weight: bold; margin-bottom: 10px;">Session Expired</h2>
-                <hr style="margin-bottom: 20px;" />
-                <p style="font-size: 14px;margin-bottom: 10px;">Your session has expired</p>
-                <hr style="margin-bottom: 20px;" />
-              </div>
-            `,
-            showConfirmButton: true,
-            confirmButtonText: "Ok",
-            confirmButtonColor: "bg-primary",
-            heightAuto: true,
-            customClass: {
-              confirmButton:
-                "bg-primary text-white rounded-full px-4 py-2 text-sm absolute right-4 bottom-4 ",
-            },
-          }).then((result) => {
-            if (result.value) {
-              logOut();
-              router.push("/account");
-            }
-          });
-        }
+      } catch (error) {
+        console.log(error);
       }
     };
     fetchData();
@@ -123,7 +74,7 @@ const Brands = ({ categoryId }: any) => {
               <h4 className="max-h-[18px]  uppercase tracking-[0] font-[600] text-[.9375rem] mb-[1.25rem] font-ff-headings">
                 brands
               </h4>
-              {uniqueBrands.map((category: any, index) => {
+              {brand.map((category: any, index) => {
                 const isChecked = checkedBrands[category._id];
                 return (
                   <div
@@ -150,25 +101,6 @@ const Brands = ({ categoryId }: any) => {
                   </div>
                 );
               })}
-              {brand.length > 10 && (
-                <div>
-                  {shouldShowSeeLess ? (
-                    <div
-                      className="text-[.8125rem] font-medium text-blue-900 hover:underline hover:cursor-pointer"
-                      onClick={() => setShowAllBrands(false)}
-                    >
-                      See Less
-                    </div>
-                  ) : (
-                    <div
-                      className="text-[.8125rem] font-medium text-blue-900 hover:underline hover:cursor-pointer"
-                      onClick={() => setShowAllBrands(true)}
-                    >
-                      See All
-                    </div>
-                  )}
-                </div>
-              )}
             </div>
           )
         : !isEmpty && (
