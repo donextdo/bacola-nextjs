@@ -31,9 +31,7 @@ export const RecentlyViewProduct = ({ passgrid }: any) => {
       const productPromises = recentlyAddedProducts.map(
         async (productId: any) => {
           try {
-            const response = await axios.get(
-              `${baseUrl}/products/getOne/${productId}`
-            );
+            const response = await axios.get(`${baseUrl}/products/getOne/${productId}`);
             return response.data; // Assuming the API response contains the product data
           } catch (error) {
             return null;

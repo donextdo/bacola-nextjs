@@ -16,6 +16,7 @@ const HomePage = () => {
         <div>
           <BestSeller />
           <BestSellerProducts />
+          {/* <ProductList /> */}
         </div>
         <TakeCare />
         <div>
