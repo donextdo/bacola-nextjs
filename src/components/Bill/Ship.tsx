@@ -17,7 +17,6 @@ const Ship = ({ setModal, setModal1 }: any) => {
   const [zipCode, setZipCode] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
-  let id = localStorage.getItem("id");
 
   const [emailError, setEmailError] = useState("");
   const [firstNameError, setFirstNameError] = useState("");
@@ -31,11 +30,14 @@ const Ship = ({ setModal, setModal1 }: any) => {
   const [zipCodeError, setZipCodeError] = useState("");
   const [phoneError, setPhoneError] = useState("");
   const [formError, setFormError] = useState("");
+  const router = useRouter();
   let token: any;
+  let id: any;
+
   if (typeof localStorage !== "undefined") {
     token = localStorage.getItem("token");
+    id = localStorage.getItem("id");
   }
-  const router = useRouter();
 
   useEffect(() => {
     fetchData();
