@@ -3,19 +3,17 @@ import axios from "axios";
 import baseUrl from "../../../utils/baseUrl";
 import { useRouter } from "next/router";
 import { uniqBy } from "lodash";
-import { logOut } from "../../../utils/logout";
-import Swal from "sweetalert2";
 
 const Brands = ({ categoryId }: any) => {
   const [brand, setBrand] = useState([]);
   const [isEmpty, setIsEmpty] = useState(false);
   const [checkedBrands, setCheckedBrands] = useState<any>({});
   const [brandPage, setBrandPage] = useState<string[]>([]);
-  const router = useRouter();
   const [showAllBrands, setShowAllBrands] = useState(false);
   const displayedBrands = showAllBrands ? brand : brand.slice(0, 10);
   const uniqueBrands = uniqBy(displayedBrands, "brand");
   const shouldShowSeeLess = showAllBrands && brand.length > 10;
+  const router = useRouter();
 
   useEffect(() => {
     setCheckedBrands([]);
