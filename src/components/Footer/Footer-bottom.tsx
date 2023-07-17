@@ -1,17 +1,9 @@
 //import icons
 import { FiPhoneCall } from "react-icons/fi";
 import { GrFacebookOption } from "react-icons/gr";
-import { AiOutlineTwitter } from "react-icons/ai";
-import { AiOutlineInstagram } from "react-icons/ai";
 import { SiAmericanexpress } from "react-icons/si";
-import { FaCcStripe } from "react-icons/fa";
-import { FaCcPaypal } from "react-icons/fa";
-import { FaGooglePay } from "react-icons/fa";
-import { SiApplepay } from "react-icons/si";
 import { RiMastercardFill } from "react-icons/ri";
 import { SiVisa } from "react-icons/si";
-
-import Image from "next/image";
 import Link from "next/link";
 
 export default function BottomFooter() {
