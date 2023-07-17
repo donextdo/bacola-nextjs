@@ -65,7 +65,8 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
     }
   }, [isGrid]);
 
-  const handleProductClick = (product: any) => {
+  const handleProductClick = (product: Product) => {
+    router.push(`/item-preview/${product._id}`);
     let recentlyAddedProductsString = localStorage.getItem(
       "recentlyAddedProducts"
     );
@@ -78,18 +79,20 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
     if (products.length > 4) {
       products = products.slice(-4);
     }
-
-    // Save the updated list back to local storage
     localStorage.setItem("recentlyAddedProducts", JSON.stringify(products));
   };
-  const [cateName, setCatName] = useState();
-  let findcategory: any;
-  const saveCategoryName = async (product: any) => {
+
+  const saveCategoryName = async (product: Product) => {
+    let findcategory: any;
     if (product.category.length > 0) {
       findcategory = product.category[0];
-      const res = await axios.get(`${baseUrl}/categories/get/${findcategory}`);
+      try {
+        const res = await axios.get(
+          `${baseUrl}/categories/get/${findcategory}`
+        );
 
-      localStorage.setItem("catName", JSON.stringify(res.data[0].name));
+        localStorage.setItem("catName", JSON.stringify(res.data[0].name));
+      } catch (error: any) {}
     }
   };
 
@@ -326,16 +329,14 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
                   saveCategoryName(product);
                 }}
               >
-                <Link href={`/item-preview/${product._id}`}>
-                  <img
-                    width={172.95}
-                    height={154.95}
-                    //src={product.front as string}
-                    src={product.front}
-                    alt={product.title}
-                    //alt="Man looking at item at a store"
-                  />
-                </Link>
+                <img
+                  width={172.95}
+                  height={154.95}
+                  //src={product.front as string}
+                  src={product.front}
+                  alt={product.title}
+                  //alt="Man looking at item at a store"
+                />
               </div>
             </div>{" "}
             <div className="w-2/3 ">
@@ -347,9 +348,7 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
                     saveCategoryName(product);
                   }}
                 >
-                  <Link href={`/item-preview/${product._id}`}>
-                    {product.title}
-                  </Link>
+                  {product.title}
                 </div>
                 <div className="my-1 font-[.6875rem] text-xs pt-2 text-green-600 uppercase font-semibold tracking-[.005em]">
                   {product.quantity > 0 ? "In Stock" : "Out of Stock"}
@@ -462,16 +461,14 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
                 saveCategoryName(product);
               }}
             >
-              <Link href={`/item-preview/${product._id}`}>
-                <img
-                  width={172.95}
-                  height={154.95}
-                  //src={product.front as string}
-                  src={product.front}
-                  alt={product.title}
-                  //alt="Man looking at item at a store"
-                />
-              </Link>
+              <img
+                width={172.95}
+                height={154.95}
+                //src={product.front as string}
+                src={product.front}
+                alt={product.title}
+                //alt="Man looking at item at a store"
+              />
             </div>
             <div className="mx-5 mb-1 max-h-[155.29px] max-w-[212.95] ">
               <div
@@ -481,9 +478,7 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
                   saveCategoryName(product);
                 }}
               >
-                <Link href={`/item-preview/${product._id}`}>
-                  {product.title}
-                </Link>
+                {product.title}
               </div>
               {product?.quantity > 0 ? (
                 <div className="my-1 font-[.6875rem] text-xs pt-2 text-green-600 uppercase font-semibold tracking-[.005em]">

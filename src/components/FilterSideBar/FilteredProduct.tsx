@@ -9,7 +9,7 @@ import baseUrl from "../../../utils/baseUrl";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { logOut } from "../../../utils/logout";
-import Swal from "sweetalert2";
+
 
 export const FilteredProduct = ({
   categoryId,

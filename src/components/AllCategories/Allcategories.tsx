@@ -1,19 +1,9 @@
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
-import { CiApple } from "react-icons/ci";
 import { IoIosArrowForward } from "react-icons/io";
-import { GiChickenOven, GiThreeLeaves } from "react-icons/gi";
-import {
-  MdKeyboardArrowDown,
-  MdOutlineBakeryDining,
-  MdOutlineFastfood,
-  MdOutlineStorage,
-} from "react-icons/md";
+import { MdKeyboardArrowDown, MdOutlineStorage } from "react-icons/md";
 import axios from "axios";
-import { BsCupHot, BsEgg } from "react-icons/bs";
-import { IoFastFoodSharp } from "react-icons/io5";
 import baseUrl from "../../../utils/baseUrl";
-import { FilterSideBar } from "../FilterSideBar/FilterSideBar";
 import { useRouter } from "next/router";
 
 interface Category {
@@ -27,9 +17,7 @@ const Allcategories = () => {
   const [homeOpen, setHomeOpen] = useState(false);
   const [viewCategory, setviewCategory] = useState<Array<Category>>([]);
   const [activeCategory, setActiveCategory] = useState(null);
-  const [isClicked, setIsClicked] = useState(true);
   const [activeSubCategory, setActiveSubCategory] = useState(null);
-
   const [isHover, setIsHover] = useState(false);
   const router = useRouter();
   const toggleHome = () => {
@@ -58,7 +46,6 @@ const Allcategories = () => {
 
   const getProductByCategory = async (categoryId: any) => {
     sessionStorage.clear();
-    // localStorage.clear();
     setHomeOpen(false);
     router.push({
       pathname: "/filterProduct",
@@ -74,6 +61,7 @@ const Allcategories = () => {
       handleCategoryLeave();
     }
   }, [router.pathname]);
+
   return (
     <>
       <div className="">
@@ -143,7 +131,11 @@ const Allcategories = () => {
                               {" "}
                               <a
                                 href="#"
-                                className="block px-2 py-2 pt-5 text-gray-500 hover:text-[#2bbef9]  "
+                                className={`block px-2 py-2 pt-5 text-gray-500 hover:text-[#2bbef9] ${
+                                  activeSubCategory === category._id && isHover
+                                    ? "text-[#2bbef9]"
+                                    : "text-gray-500"
+                                } `}
                                 key={subcategory.id}
                                 onMouseEnter={() =>
                                   handleSubCategoryHover(subcategory?._id)

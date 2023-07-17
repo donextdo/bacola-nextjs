@@ -103,7 +103,7 @@ return err;        }
             const res = await axios.get(`${baseUrl}/categories/get/${findcategory}`);
             setMyCategory(res.data);
         } catch (err) {
-return err;        }
+       }
     }
 
     useEffect(() => {
