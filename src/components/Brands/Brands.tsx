@@ -1,11 +1,7 @@
 import { useEffect, useState } from "react";
-import CheckBoxRow from "../CheckBox/CheckBox";
 import axios from "axios";
 import baseUrl from "../../../utils/baseUrl";
 import { useRouter } from "next/router";
-import { useSelector } from "react-redux";
-import { Product } from "@/features/product/product";
-import { RootState } from "@/redux/store";
 import { uniqBy } from "lodash";
 import { logOut } from "../../../utils/logout";
 import Swal from "sweetalert2";
@@ -16,7 +12,6 @@ const Brands = ({ categoryId }: any) => {
   const [checkedBrands, setCheckedBrands] = useState<any>({});
   const [brandPage, setBrandPage] = useState<string[]>([]);
   const router = useRouter();
-
   const [showAllBrands, setShowAllBrands] = useState(false);
   const displayedBrands = showAllBrands ? brand : brand.slice(0, 10);
   const uniqueBrands = uniqBy(displayedBrands, "brand");
@@ -27,10 +22,6 @@ const Brands = ({ categoryId }: any) => {
 
     const fetchData = async () => {
       try {
-        let token: any;
-        if (typeof localStorage !== "undefined") {
-          token = localStorage.getItem("token");
-        }
         if (categoryId) {
           const response = await axios.get(`${baseUrl}/products/${categoryId}`);
           setBrand(response.data);
@@ -69,48 +60,10 @@ const Brands = ({ categoryId }: any) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let token: any;
-        if (typeof localStorage !== "undefined") {
-          token = localStorage.getItem("token");
-        }
-
-        const response = await axios.get(`${baseUrl}/productDetails/brand`, {
-          headers: {
-            authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await axios.get(`${baseUrl}/productDetails/brand`);
         setBrandPage(response.data);
         setIsEmpty(response.data.length === 0);
-      } catch (error: any) {
-        if (error?.response?.status == 403 || error?.response?.status == 401) {
-          Swal.fire({
-            width: 700,
-            color: "black",
-            background: "white",
-            html: `
-              <div style="text-align: left;">
-                <h2 style="font-size: 20px; font-weight: bold; margin-bottom: 10px;">Session Expired</h2>
-                <hr style="margin-bottom: 20px;" />
-                <p style="font-size: 14px;margin-bottom: 10px;">Your session has expired</p>
-                <hr style="margin-bottom: 20px;" />
-              </div>
-            `,
-            showConfirmButton: true,
-            confirmButtonText: "Ok",
-            confirmButtonColor: "bg-primary",
-            heightAuto: true,
-            customClass: {
-              confirmButton:
-                "bg-primary text-white rounded-full px-4 py-2 text-sm absolute right-4 bottom-4 ",
-            },
-          }).then((result) => {
-            if (result.value) {
-              logOut();
-              router.push("/account");
-            }
-          });
-        }
-      }
+      } catch (error: any) {}
     };
     fetchData();
   }, []);
