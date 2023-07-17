@@ -17,28 +17,27 @@ const Bill = ({ setModal, setModal1 }: any) => {
   const [zipCode, setZipCode] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
-  let id = localStorage.getItem("id");
-
   const [emailError, setEmailError] = useState("");
   const [firstNameError, setFirstNameError] = useState("");
   const [lastNameError, setLastNameError] = useState("");
   const [companyNameError, setCompanyNameError] = useState("");
   const [countryError, setCountryError] = useState("");
   const [streetAddressError, setStreetAddressError] = useState("");
-  const [apartmentError, setApartmentError] = useState("");
   const [townCityError, setTownCityError] = useState("");
   const [stateError, setStateError] = useState("");
   const [zipCodeError, setZipCodeError] = useState("");
   const [phoneError, setPhoneError] = useState("");
   const [formError, setFormError] = useState("");
+  const router = useRouter();
+  let token: any;
+  let id: any;
 
   useEffect(() => {
     fetchData();
   }, []);
 
-  const router = useRouter();
-  let token: any;
   if (typeof localStorage !== "undefined") {
+    id = localStorage.getItem("id");
     token = localStorage.getItem("token");
   }
 
