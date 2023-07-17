@@ -17,249 +17,369 @@ import Link from "next/link";
 
 interface CartBottomItem {
   _id: any;
-  id: number;
+  id: any;
   name: string;
   quantity: string;
 }
-
-const images: string[] = [
-  "https://k4j3j2s7.rocketcdn.me/bacola/wp-content/uploads/2021/05/biscuitssnacks-1.jpg",
-  "https://k4j3j2s7.rocketcdn.me/bacola/wp-content/uploads/2021/05/fruitvegetables-1.jpg",
-  "https://k4j3j2s7.rocketcdn.me/bacola/wp-content/uploads/2021/05/breadbakery-1.jpg",
-  "https://k4j3j2s7.rocketcdn.me/bacola/wp-content/uploads/2021/04/category-image2.png",
-  "https://k4j3j2s7.rocketcdn.me/bacola/wp-content/uploads/2021/05/dairy-1.jpg",
-  "https://k4j3j2s7.rocketcdn.me/bacola/wp-content/uploads/2021/05/household-1.jpg",
-  "https://k4j3j2s7.rocketcdn.me/bacola/wp-content/uploads/2021/04/category-image4.png",
-  "https://k4j3j2s7.rocketcdn.me/bacola/wp-content/uploads/2021/05/meat-1.jpg",
-];
 
 const MyList: React.FC<{
   CartBottomItems: CartBottomItem[];
   productCounts: any;
 }> = ({ CartBottomItems, productCounts }) => {
+  const router = useRouter();
+
+  const handleMeat = async (categoryId: string) => {
+    const category = CartBottomItems.find((item) => item.name === categoryId);
+
+    if (category) {
+      router.push({
+        pathname: "/filterProduct",
+        query: { categoryId: category._id },
+      });
+    }
+  };
   return (
     <div className="container mx-auto  grid grid-rows-5 md:grid-rows-4  lg:grid-rows-2 md:grid-flow-col w-full p-2 border lg:border-transparent my-4">
       <div className="col-span-2 md:row-span-4 lg:row-span-2 flex flex-col justify-center items-center lg:border">
-        <div className="h-[150px] w-[150px]">
-          <Link href="/filterProduct?categoryId=6450a82507245756e38fe70a#">
-            <Image
-              src={bevarage}
-              alt="bevarage"
-              style={{
-                objectFit: "contain",
-                backgroundColor: "white",
-                width: "100%",
-                height: "100%",
-              }}
-              width={450}
-              height={400}
-            />
-          </Link>
+        <div
+          className="h-[150px] w-[150px] cursor-pointer"
+          onClick={() => handleMeat("Beverages")}
+          data-category="Beverages"
+        >
+          <Image
+            src={bevarage}
+            alt="bevarage"
+            style={{
+              objectFit: "contain",
+              backgroundColor: "white",
+              width: "100%",
+              height: "100%",
+            }}
+            width={450}
+            height={400}
+          />
         </div>
-        <Link href="/filterProduct?categoryId=6450a82507245756e38fe70a#">
-          <h2 className="text-sm">Beverages</h2>{" "}
-        </Link>
-
-        <h2 className="text-xs text-[#202435]">11 Items</h2>
+        <h2
+          className="text-sm cursor-pointer"
+          onClick={() => handleMeat("Beverages")}
+        >
+          Beverages
+        </h2>{" "}
+        <h2 className="text-xs text-[#202435]">
+          {
+            productCounts[
+              CartBottomItems.find((item) => item.name === "Beverages")?._id
+            ]
+          }{" "}
+          item
+        </h2>
       </div>
       <div className="flex flex-col lg:flex-row items-center lg:border p-5">
-        <div className="h-[70px] w-auto mr-3">
-          <Link href="/filterProduct?categoryId=6450a82507245756e38fe70a#">
-            <Image
-              src={meat}
-              alt="bevarage"
-              style={{
-                objectFit: "contain",
-                backgroundColor: "white",
-                width: "100%",
-                height: "100%",
-              }}
-              width={450}
-              height={400}
-            />
-          </Link>
+        <div
+          className="h-[70px] w-auto mr-3 cursor-pointer"
+          onClick={() => handleMeat("Meats & Seafood")}
+          data-category="Meats & Seafood"
+        >
+          <Image
+            src={meat}
+            alt="bevarage"
+            style={{
+              objectFit: "contain",
+              backgroundColor: "white",
+              width: "100%",
+              height: "100%",
+            }}
+            width={450}
+            height={400}
+          />
         </div>
         <div>
-          <Link href="/filterProduct?categoryId=6450a82507245756e38fe70a#">
-            <h2 className="text-sm">Meats & Seafood</h2>{" "}
-          </Link>
-
-          <h2 className="text-xs text-[#202435]">11 Items</h2>
-        </div>
-      </div>
-      <div className="flex flex-col lg:flex-row items-center lg:border p-5">
-        <div className="h-[70px] w-auto mr-3">
-          <Link href="/filterProduct?categoryId=6450a82507245756e38fe70a#">
-            <Image
-              src={household}
-              alt="bevarage"
-              style={{
-                objectFit: "contain",
-                backgroundColor: "white",
-                width: "100%",
-                height: "100%",
-              }}
-              width={450}
-              height={400}
-            />
-          </Link>
-        </div>
-        <div>
-          <Link href="/filterProduct?categoryId=6450a82507245756e38fe70a#">
-            <h2 className="text-sm">Household Needs</h2>{" "}
-          </Link>
-
-          <h2 className="text-xs text-[#202435]">11 Items</h2>
-        </div>
-      </div>
-      <div className="flex flex-col lg:flex-row items-center lg:border p-5">
-        <div className="h-[70px] w-auto mr-3">
-          <Link href="/filterProduct?categoryId=6450a82507245756e38fe70a#">
-            <Image
-              src={grocery}
-              alt="bevarage"
-              style={{
-                objectFit: "contain",
-                backgroundColor: "white",
-                width: "100%",
-                height: "100%",
-              }}
-              width={450}
-              height={400}
-            />
-          </Link>
-        </div>
-        <div>
-          <Link href="/filterProduct?categoryId=6450a82507245756e38fe70a#">
-            <h2 className="text-sm">Grocery & Staples</h2>{" "}
-          </Link>
-
-          <h2 className="text-xs text-[#202435]">11 Items</h2>
+          <h2
+            className="text-sm cursor-pointer"
+            onClick={() => handleMeat("Meats & Seafood")}
+          >
+            Meats & Seafood
+          </h2>{" "}
+          <h2 className="text-xs text-[#202435]">
+            {" "}
+            {
+              productCounts[
+                CartBottomItems.find((item) => item.name === "Meats & Seafood")
+                  ?._id
+              ]
+            }{" "}
+            item
+          </h2>
         </div>
       </div>
       <div className="flex flex-col lg:flex-row items-center lg:border p-5">
-        <div className="h-[70px] w-auto mr-3">
-          <Link href="/filterProduct?categoryId=6450a80707245756e38fe708">
-            <Image
-              src={fruitvegetables}
-              alt="bevarage"
-              style={{
-                objectFit: "contain",
-                backgroundColor: "white",
-                width: "100%",
-                height: "100%",
-              }}
-              width={450}
-              height={400}
-            />
-          </Link>
+        <div
+          className="h-[70px] w-auto mr-3 cursor-pointer"
+          onClick={() => handleMeat("Household Needs")}
+          data-category="Household Needs"
+        >
+          <Image
+            src={household}
+            alt="bevarage"
+            style={{
+              objectFit: "contain",
+              backgroundColor: "white",
+              width: "100%",
+              height: "100%",
+            }}
+            width={450}
+            height={400}
+          />
         </div>
         <div>
-          <Link href="/filterProduct?categoryId=6450a80707245756e38fe708">
-            <h2 className="text-sm">Fruits & Vegetables</h2>{" "}
-          </Link>
-
-          <h2 className="text-xs text-[#202435]">11 Items</h2>
+          <h2
+            className="text-sm cursor-pointer"
+            onClick={() => handleMeat("Household Needs")}
+          >
+            Household Needs
+          </h2>{" "}
+          <h2 className="text-xs text-[#202435]">
+            {" "}
+            {
+              productCounts[
+                CartBottomItems.find((item) => item.name === "Household Needs")
+                  ?._id
+              ]
+            }{" "}
+            item
+          </h2>
         </div>
       </div>
       <div className="flex flex-col lg:flex-row items-center lg:border p-5">
-        <div className="h-[70px] w-auto mr-3">
-          <Link href="/filterProduct?categoryId=6450a83907245756e38fe70c#">
-            <Image
-              src={frozenfoods}
-              alt="bevarage"
-              style={{
-                objectFit: "contain",
-                backgroundColor: "white",
-                width: "100%",
-                height: "100%",
-              }}
-              width={450}
-              height={400}
-            />
-          </Link>
+        <div
+          className="h-[70px] w-auto mr-3 cursor-pointer"
+          onClick={() => handleMeat("Grocery & Staples")}
+          data-category="Grocery & Staples"
+        >
+          <Image
+            src={grocery}
+            alt="bevarage"
+            style={{
+              objectFit: "contain",
+              backgroundColor: "white",
+              width: "100%",
+              height: "100%",
+            }}
+            width={450}
+            height={400}
+          />
         </div>
         <div>
-          <Link href="/filterProduct?categoryId=6450a83907245756e38fe70c#">
-            <h2 className="text-sm">Frozen Foods</h2>{" "}
-          </Link>
-
-          <h2 className="text-xs text-[#202435]">11 Items</h2>
+          <h2
+            className="text-sm cursor-pointer"
+            onClick={() => handleMeat("Grocery & Staples")}
+          >
+            Grocery & Staples
+          </h2>{" "}
+          <h2 className="text-xs text-[#202435]">
+            {" "}
+            {
+              productCounts[
+                CartBottomItems.find(
+                  (item) => item.name === "Grocery & Staples"
+                )?._id
+              ]
+            }{" "}
+            item
+          </h2>
         </div>
       </div>
       <div className="flex flex-col lg:flex-row items-center lg:border p-5">
-        <div className="h-[70px] w-auto mr-3">
-          <Link href="/filterProduct?categoryId=6450a83907245756e38fe70c#">
-            <Image
-              src={dairy}
-              alt="bevarage"
-              style={{
-                objectFit: "contain",
-                backgroundColor: "white",
-                width: "100%",
-                height: "100%",
-              }}
-              width={450}
-              height={400}
-            />
-          </Link>
+        <div
+          className="h-[70px] w-auto mr-3 cursor-pointer"
+          onClick={() => handleMeat("Fruits & Vegetables")}
+          data-category="Fruits & Vegetables"
+        >
+          <Image
+            src={fruitvegetables}
+            alt="bevarage"
+            style={{
+              objectFit: "contain",
+              backgroundColor: "white",
+              width: "100%",
+              height: "100%",
+            }}
+            width={450}
+            height={400}
+          />
         </div>
         <div>
-          <Link href="/filterProduct?categoryId=6450a83907245756e38fe70c#">
-            <h2 className="text-sm">Breakfast & Dairy</h2>{" "}
-          </Link>
-
-          <h2 className="text-xs text-[#202435]">11 Items</h2>
+          <h2
+            className="text-sm cursor-pointer"
+            onClick={() => handleMeat("Fruits & Vegetables")}
+          >
+            Fruits & Vegetables
+          </h2>{" "}
+          <h2 className="text-xs text-[#202435]">
+            {" "}
+            {
+              productCounts[
+                CartBottomItems.find(
+                  (item) => item.name === "Fruits & Vegetables"
+                )?._id
+              ]
+            }{" "}
+            item
+          </h2>
         </div>
       </div>
       <div className="flex flex-col lg:flex-row items-center lg:border p-5">
-        <div className="h-[70px] w-auto mr-3">
-          <Link href="/filterProduct?categoryId=6450a85507245756e38fe70e#">
-            <Image
-              src={buscuits}
-              alt="bevarage"
-              style={{
-                objectFit: "contain",
-                backgroundColor: "white",
-                width: "100%",
-                height: "100%",
-              }}
-              width={450}
-              height={400}
-            />
-          </Link>
+        <div
+          className="h-[70px] w-auto mr-3 cursor-pointer"
+          onClick={() => handleMeat("Frozen Foods")}
+          data-category="Frozen Foods"
+        >
+          <Image
+            src={frozenfoods}
+            alt="bevarage"
+            style={{
+              objectFit: "contain",
+              backgroundColor: "white",
+              width: "100%",
+              height: "100%",
+            }}
+            width={450}
+            height={400}
+          />
         </div>
         <div>
-          <Link href="/filterProduct?categoryId=6450a85507245756e38fe70e#">
-            <h2 className="text-sm">Biscuits & Snacks</h2>{" "}
-          </Link>
-
-          <h2 className="text-xs text-[#202435]">11 Items</h2>
+          <h2
+            className="text-sm cursor-pointer"
+            onClick={() => handleMeat("Frozen Foods")}
+          >
+            Frozen Foods
+          </h2>{" "}
+          <h2 className="text-xs text-[#202435]">
+            {" "}
+            {
+              productCounts[
+                CartBottomItems.find((item) => item.name === "Frozen Foods")
+                  ?._id
+              ]
+            }{" "}
+            item
+          </h2>
         </div>
       </div>
       <div className="flex flex-col lg:flex-row items-center lg:border p-5">
-        <div className="h-[70px] w-auto mr-3">
-          <Link href="/filterProduct?categoryId=6450a85507245756e38fe70e#">
-            <Image
-              src={breads}
-              alt="bevarage"
-              style={{
-                objectFit: "contain",
-                backgroundColor: "white",
-                width: "100%",
-                height: "100%",
-              }}
-              width={450}
-              height={400}
-            />
-          </Link>
+        <div
+          className="h-[70px] w-auto mr-3 cursor-pointer"
+          onClick={() => handleMeat("Breakfast & Dairy")}
+          data-category="Breakfast & Dairy"
+        >
+          <Image
+            src={dairy}
+            alt="bevarage"
+            style={{
+              objectFit: "contain",
+              backgroundColor: "white",
+              width: "100%",
+              height: "100%",
+            }}
+            width={450}
+            height={400}
+          />
         </div>
         <div>
-          <Link href="/filterProduct?categoryId=6450a85507245756e38fe70e#">
-            <h2 className="text-sm">Breads & Bakery</h2>{" "}
-          </Link>
-
-          <h2 className="text-xs text-[#202435]">11 Items</h2>
+          <h2
+            className="text-sm cursor-pointer"
+            onClick={() => handleMeat("Breakfast & Dairy")}
+          >
+            Breakfast & Dairy
+          </h2>{" "}
+          <h2 className="text-xs text-[#202435]">
+            {" "}
+            {
+              productCounts[
+                CartBottomItems.find(
+                  (item) => item.name === "Breakfast & Dairy"
+                )?._id
+              ]
+            }{" "}
+            item
+          </h2>
+        </div>
+      </div>
+      <div className="flex flex-col lg:flex-row items-center lg:border p-5">
+        <div
+          className="h-[70px] w-auto mr-3 cursor-pointer"
+          onClick={() => handleMeat("Biscuits & Snacks")}
+          data-category="Biscuits & Snacks"
+        >
+          <Image
+            src={buscuits}
+            alt="bevarage"
+            style={{
+              objectFit: "contain",
+              backgroundColor: "white",
+              width: "100%",
+              height: "100%",
+            }}
+            width={450}
+            height={400}
+          />
+        </div>
+        <div>
+          <h2
+            className="text-sm cursor-pointer"
+            onClick={() => handleMeat("Biscuits & Snacks")}
+          >
+            Biscuits & Snacks
+          </h2>{" "}
+          <h2 className="text-xs text-[#202435]">
+            {" "}
+            {
+              productCounts[
+                CartBottomItems.find(
+                  (item) => item.name === "Biscuits & Snacks"
+                )?._id
+              ]
+            }{" "}
+            item
+          </h2>
+        </div>
+      </div>
+      <div className="flex flex-col lg:flex-row items-center lg:border p-5">
+        <div
+          className="h-[70px] w-auto mr-3 cursor-pointer"
+          onClick={() => handleMeat("Breads & Bakery")}
+          data-category="Breads & Bakery"
+        >
+          <Image
+            src={breads}
+            alt="bevarage"
+            style={{
+              objectFit: "contain",
+              backgroundColor: "white",
+              width: "100%",
+              height: "100%",
+            }}
+            width={450}
+            height={400}
+          />
+        </div>
+        <div>
+          <h2
+            className="text-sm cursor-pointer"
+            onClick={() => handleMeat("Breads & Bakery")}
+          >
+            Breads & Bakery
+          </h2>{" "}
+          <h2 className="text-xs text-[#202435]">
+            {" "}
+            {
+              productCounts[
+                CartBottomItems.find((item) => item.name === "Breads & Bakery")
+                  ?._id
+              ]
+            }{" "}
+            item
+          </h2>
         </div>
       </div>
     </div>
