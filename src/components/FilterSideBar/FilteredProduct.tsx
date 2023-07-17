@@ -10,7 +10,6 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { logOut } from "../../../utils/logout";
 
-
 export const FilteredProduct = ({
   categoryId,
   brand,
@@ -26,16 +25,6 @@ export const FilteredProduct = ({
 }: any) => {
   const [products, setProducts] = useState<Product[]>([]);
   const [isGrid, setIsGrid] = useState<String>();
-
-  const dispatch = useDispatch<AppDispatch>();
-  const productsRidux = useSelector(
-    (state: RootState) => state.product.products
-  ) as Product[];
-  useEffect(() => {
-    dispatch(fetchProducts());
-  }, [dispatch]);
-
-  const router = useRouter();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -70,18 +59,12 @@ export const FilteredProduct = ({
         if (perpage) {
           url += `&perpage=${perpage}`;
         }
-        let token: any;
-        if (typeof localStorage !== "undefined") {
-          token = localStorage.getItem("token");
-        }
 
         const response = await axios.get(url);
         const products = response.data.products;
 
         setProducts(products);
-      } catch (error: any) {
-        console.log({ error });
-      }
+      } catch (error: any) {}
     };
     fetchData();
   }, [

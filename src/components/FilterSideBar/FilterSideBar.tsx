@@ -6,9 +6,7 @@ import { ImageProductFilter } from "./Image";
 import { FilteredProduct } from "../FilterSideBar/FilteredProduct";
 import bacolaBannergif from "../../../assets/home/sidebar-banner.gif";
 import Image from "next/image";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
-import { PageNumber } from "../Pagination/PageNumber";
+import { useState } from "react";
 import { ProductCount } from "../Pagination/ProductCount";
 import { RecentlyViewProduct } from "../RecentlyViewProduct/RecentlyViewProduct";
 
@@ -25,7 +23,6 @@ export const FilterSideBar = ({
   orderby,
 }: any) => {
   const [passgrid, setPassgrid] = useState();
-
 
   const handleGridChange = (grid: any) => {
     setPassgrid(grid);
