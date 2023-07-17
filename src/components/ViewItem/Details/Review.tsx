@@ -89,8 +89,10 @@ const Review = ({ itemId }: any) => {
       if (rating > 0 && review) {
         try {
           //authentication session handle
-          const token = localStorage.getItem("token"); // Retrieve the token from local storage or wherever it's stored
-
+          let token: any;
+          if (typeof localStorage !== "undefined") {
+            token = localStorage.getItem("token");
+          }
           const config = {
             headers: {
               authorization: `Bearer ${token}`,

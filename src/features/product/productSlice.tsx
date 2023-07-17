@@ -15,15 +15,6 @@ const initialState: ProductsState = {
   status: "idle",
   error: null,
 };
-// const PRODUCTS_URL = `${baseUrl}/products/getAll/`;
-
-// export const fetchProducts = createAsyncThunk(
-//   "product/fetchProducts",
-//   async () => {
-//     const response = await axios.get(PRODUCTS_URL);
-//     return response.data;
-//   }
-// );
 
 const PRODUCTS_URL = `${baseUrl}/products/getAll`;
 
@@ -34,7 +25,6 @@ export const fetchProducts = createAsyncThunk(
     return response.data;
   }
 );
-
 
 export const productSlice = createSlice({
   name: "product",
@@ -68,7 +58,6 @@ export const productSlice = createSlice({
         state.status = "failed";
         state.error = action.error.message ?? "Unknown error";
       });
-
   },
 });
 

@@ -5,32 +5,30 @@ import { CiMail } from "react-icons/ci";
 import baseUrl from "../../../utils/baseUrl";
 
 const NewsLettertwo = () => {
-  const [email, setEmail] = useState('');
-  
+  const [email, setEmail] = useState("");
 
-  const handlesubscribe = async (e:any) => {
+  const handlesubscribe = async (e: any) => {
     e.preventDefault();
 
     try {
-      const response = await axios.post(`${baseUrl}/subscribe/insert`, { email });
-  
+      const response = await axios.post(`${baseUrl}/subscribe/insert`, {
+        email,
+      });
+
       if (response.status === 200) {
         // Handle successful subscription
-        setEmail('');
-        alert('Subscription successful');
+        setEmail("");
+        alert("Subscription successful");
       } else {
         // Handle subscription error
         const { message } = response.data;
         alert(`Subscription failed: ${message}`);
       }
     } catch (error) {
-      console.error(error);
-      alert('Subscription successful');
+      alert("Subscription successful");
       // Handle fetch error
     }
-
-
-  }
+  };
 
   return (
     <div className=" bg-[#233a95] w-full">
@@ -86,6 +84,6 @@ const NewsLettertwo = () => {
       </div>
     </div>
   );
-}
+};
 
 export default NewsLettertwo;

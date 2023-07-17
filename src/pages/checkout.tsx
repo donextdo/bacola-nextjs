@@ -79,14 +79,13 @@ const Checkout = () => {
   const [transactionId, settransactionId] = useState();
   const [orderObject, setOrderObject]: any = useState();
 
+  const [cartItems, setCartItems] = useState<Product[]>([]);
 
-  const [cartItems, setCartItems] = useState<Product[]>([])
-
-    useEffect(() => {
-      const cartItemsString = localStorage.getItem('cartItems');
-      const cartItemsArray = cartItemsString ? JSON.parse(cartItemsString) : [];
-      setCartItems(cartItemsArray)
-    },[]);
+  useEffect(() => {
+    const cartItemsString = localStorage.getItem("cartItems");
+    const cartItemsArray = cartItemsString ? JSON.parse(cartItemsString) : [];
+    setCartItems(cartItemsArray);
+  }, []);
   //payment
   const gotohome = () => {
     router.push({
@@ -190,7 +189,6 @@ const Checkout = () => {
   const parsedObject =
     typeof shippingObj === "string" ? JSON.parse(shippingObj) : undefined;
 
-  
   const orderList = useSelector((state: RootState) => state.order.orders);
   const dispatch = useDispatch<AppDispatch>();
   let id: any;
@@ -198,10 +196,6 @@ const Checkout = () => {
     id = localStorage.getItem("id");
   }
 
-  //     let discountprice;
-  //     discountprice = item.price * (item.discount/100)
-  //   let newprice=item.price-discountprice
-  //   item.price - (item.price * (item.discount/100))
   const handleEmailChange = (e: any) => {
     const newEmail = e.target.value;
     setEmail(newEmail);
@@ -319,8 +313,10 @@ const Checkout = () => {
   useEffect(() => {
     fetchData();
   }, []);
-  const token = localStorage.getItem("token");
-
+  let token: any;
+  if (typeof localStorage !== "undefined") {
+    token = localStorage.getItem("token");
+  }
   async function fetchData() {
     try {
       const res = await axios.get(`${baseUrl}/users/${id}`, {
@@ -486,8 +482,10 @@ const Checkout = () => {
 
     try {
       //authentication session handle
-      const token = localStorage.getItem("token"); // Retrieve the token from local storage or wherever it's stored
-
+      let token: any;
+      if (typeof localStorage !== "undefined") {
+        token = localStorage.getItem("token");
+      }
       const config = {
         headers: {
           authorization: `Bearer ${token}`,
@@ -502,7 +500,6 @@ const Checkout = () => {
       //     config
       //   );
 
-      //console.log(response.data); // do something with the response data
       //   if (response.status == 201) {
       //     const orderData = {
       //       orderId: response.data.orderId,
@@ -551,8 +548,10 @@ const Checkout = () => {
 
     try {
       //authentication session handle
-      const token = localStorage.getItem("token"); // Retrieve the token from local storage or wherever it's stored
-
+      let token: any;
+      if (typeof localStorage !== "undefined") {
+        token = localStorage.getItem("token");
+      }
       const config = {
         headers: {
           authorization: `Bearer ${token}`,
@@ -636,14 +635,6 @@ const Checkout = () => {
 
   return (
     <div className="container mx-auto xl:px-40 px-5  ">
-      {/* <div className="border border-[#e4e5ee] rounded-md space-y-4 py-4 px-4 mt-2">
-                <p className="text-[13px]">
-                    Add <span className="text-[#ed174a] font-semibold">$15.93</span> to
-                    cart and get free shipping!
-                </p>
-                <hr className="h-2 rounded-md bg-[#ed174a]" />
-            </div> */}
-
       <section className=" my-5 flex justify-between">
         <div className="border border-[#e4e5ee] px-7 py-3.5 rounded-md lg:px-10 ">
           <p className="border-b border-[#e4e5ee] py-3 font-semibold">
@@ -687,7 +678,6 @@ const Checkout = () => {
               value={companyName}
               onChange={handleCompanyNameChange}
             />
-            {/* {companyNameError && <div className='text-red-500'>{companyNameError}</div>} */}
 
             <div className="flex flex-col mt-4 mb-4">
               <label className="text-[13px] ">Country / Region *</label>
@@ -782,12 +772,6 @@ const Checkout = () => {
                 {emailError && <div className="text-red-500">{emailError}</div>}
               </div>
             </div>
-
-            {/* <div className="flex gap-1 border-b border-[#e4e5ee] py-3">
-                            <input type="checkbox" name="address" id="address" />
-                            <p className="text-[13px] font-semibold">SHIP TO A DIFFERENT ADDRESS?</p>
-                        </div> */}
-
             <p className="text-[13px] mt-6">Order notes (optional)</p>
 
             <textarea
@@ -834,17 +818,7 @@ const Checkout = () => {
                     Rs {totalAmount.toFixed(2)}
                   </td>
                 </tr>
-                {/* <tr>
-                                    <td rowSpan={2} className="text-[13px] font-semibold border-b border-[#e4e5ee] text-[#71778e] py-2"></td>
-                                    <td className="text-right text-[13px] py-3">
-                                        Free shipping <span className="inline-flex text-[#d51243] text-sm gap-2">
-                                        Rs5.00
-                                        <input type="radio" name="vendor" value="Vendor 1"
-                                     onChange={handleCheckboxChange} 
-                                    />
-                                    </span>
-                                    </td>
-                                </tr> */}
+
                 <tr>
                   <td className="border-b border-[#e4e5ee] py-8"></td>
                   <td className="relative text-[13px] text-right border-b border-[#e4e5ee] flex items-center py-8">
@@ -899,26 +873,6 @@ const Checkout = () => {
                 paying for goods or services in physical currency at the store.
               </p>
             )}
-
-            {/* <div className="flex gap-6 mt-3.5">
-                            <input type="radio" name="bank" value="check"
-                                onChange={handleCheckboxChange}
-                            />
-                            <p className="text-sm text-[#233a95] font-semibold">Check payments</p>
-                        </div>
-                        {
-                            selectedRadio === "check" && <p className="text-xs text-[#71778e] mt-3">Please send a check to Store Name, Store Street, Store Town, Store State / County, Store Postcode.</p>
-                        } */}
-
-            {/* <div className="flex gap-6 mt-3.5">
-                            <input type="radio" name="bank" value="cash"
-                                onChange={handleCheckboxChange}
-                            />
-                            <p className="text-sm text-[#233a95] font-semibold">Cash on delivery</p>
-                        </div>
-                        {
-                            selectedRadio === "cash" && <p className="text-xs text-[#71778e] mt-3">Pay with cash upon delivery.</p>
-                        } */}
 
             <p className="text-[13px] mt-8">
               Your personal data will be used to process your order, support
@@ -1022,15 +976,7 @@ const Checkout = () => {
                   Rs {totalAmount.toFixed(2)}
                 </td>
               </tr>
-              {/* <tr>
-                                <td rowSpan={2} className="text-[13px] font-semibold border-b border-[#e4e5ee] text-[#71778e]"></td>
-                                <td className="text-right text-[13px] py-3">
-                                    Flat rate: <span className="inline-flex text-[#d51243] text-sm gap-2">Rs 5.00<input type="radio" name="vendor" value="Vendor 1"
-                             
-                                />
-                                </span>
-                                </td>
-                            </tr> */}
+
               <tr>
                 <td className="border-b border-[#e4e5ee] py-6"></td>
                 <td className="relative text-[13px]  text-right border-b border-[#e4e5ee] py-6">
@@ -1085,26 +1031,6 @@ const Checkout = () => {
               Paying for goods or services in physical currency at the store.
             </p>
           )}
-
-          {/* <div className="flex gap-6 mt-3.5">
-                        <input type="radio" name="bank" value="check"
-                            onChange={handleCheckboxChange}
-                        />
-                        <p className="text-sm text-[#233a95] font-semibold">Check payments</p>
-                    </div>
-                    {
-                        selectedRadio === "check" && <p className="text-xs text-[#71778e] mt-3">Please send a check to Store Name, Store Street, Store Town, Store State / County, Store Postcode.</p>
-                    }
-
-                    <div className="flex gap-6 mt-3.5">
-                        <input type="radio" name="bank" value="cash"
-                            onChange={handleCheckboxChange}
-                        />
-                        <p className="text-sm text-[#233a95] font-semibold">Cash on delivery</p>
-                    </div>
-                    {
-                        selectedRadio === "cash" && <p className="text-xs text-[#71778e] mt-3">Pay with cash upon delivery.</p>
-                    } */}
 
           <p className="text-[13px] mt-8">
             Your personal data will be used to process your order, support your
@@ -1178,11 +1104,6 @@ const Checkout = () => {
               id="card_container"
               className="w-full lg:w-[600px] mx-auto bg-gray-100 shadow-md rounded-md "
             >
-              {/* <div
-              id="card_container"
-              className="w-full lg:w-[600px] mx-auto bg-gray-100 shadow-md rounded-md overflow-hidden"
-              style={{ maxHeight: "700px", overflowY: "auto" }}
-            > */}
               <div className="bg-gray-300 text-white p-2 flex justify-between h-11 ">
                 <div className="font-bold text-lg text-black pl-4">
                   Payment Details
@@ -1340,105 +1261,6 @@ const Checkout = () => {
                   </div>
                 </div>
               )}
-              {/* <div className="p-6">
-                <div className="mb-4">
-                  <label
-                    className="block text-gray-700 font-bold mb-2"
-                    htmlFor="card_number"
-                  >
-                    Card Number
-                  </label>
-                  <input
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    id="card_number"
-                    type="text"
-                    value={cardNo}
-                    onChange={(e) => {
-                      const input = e.target.value;
-                      const formattedValue = input
-                        .replace(/\s/g, "") // Remove any existing spaces
-                        .replace(/[^0-9]/g, "") // Remove non-digit characters
-                        .substring(0, 16) // Limit the input to a maximum of 16 characters
-                        .replace(/(.{4})/g, "$1 "); // Add a space after every 4 characters
-
-                      setCardNo(formattedValue);
-                    }}
-                    placeholder="xxxx xxxx xxxx xxxx"
-                  />
-                </div>
-                <div className="mb-4 flex justify-between">
-                  <div>
-                    <label
-                      className="block text-gray-700 font-bold mb-2"
-                      htmlFor="expiration_date"
-                    >
-                      Expiration Date
-                    </label>
-                    <input
-                      className="shadow appearance-none border rounded w-150 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                      id="expiration_date"
-                      type="text"
-                      placeholder="MM/YY"
-                      value={expDate}
-                      onChange={(e) => {
-                        let input = e.target.value;
-
-                        // Remove any non-digit characters
-                        input = input.replace(/[^0-9]/g, "");
-
-                        // Format the input with a slash after the two-digit month
-                        if (input.length > 2) {
-                          input = input.slice(0, 2) + "/" + input.slice(2);
-                        }
-
-                        setExpDate(input);
-                      }}
-                    />
-                  </div>
-                  <div>
-                    <label
-                      className="block text-gray-700 font-bold mb-2"
-                      htmlFor="cvv"
-                    >
-                      CVV
-                    </label>
-                    <input
-                      className="shadow appearance-none border rounded w-150 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                      id="cvv"
-                      type="text"
-                      value={csv}
-                      onChange={(e) => {
-                        setCsv(e.target.value);
-                      }}
-                      placeholder="XXX"
-                    />
-                  </div>
-                </div>
-                <div className="mb-4">
-                  <label
-                    className="block text-gray-700 font-bold mb-2"
-                    htmlFor="name_on_card"
-                  >
-                    Name on Card
-                  </label>
-                  <input
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    id="name_on_card"
-                    type="text"
-                    value={cardHolderName}
-                    onChange={(e) => {
-                      setCardHolderName(e.target.value);
-                    }}
-                    placeholder="John Doe"
-                  />
-                </div>
-                <button
-                  className="bg-[#ed174a] text-white py-2 px-4 rounded font-bold hover:bg-blue-700 focus:outline-none focus:shadow-outline"
-                  onClick={handlePayment}
-                >
-                  Save Card
-                </button>
-              </div> */}
             </div>
           </div>
         </div>

@@ -21,9 +21,8 @@ export const ProductPagination = ({
   orderby,
   passgrid,
 }: any) => {
-  const [product, setProduct] = useState([]);
+  const [product, setProduct] = useState<Product[]>([]);
   const [isGrid, setIsGrid] = useState<String>();
-  const [matchWithProduct, setmatchWithProduct] = useState<Product[]>([]);
   const dispatch = useDispatch<AppDispatch>();
   const productsRidux = useSelector(
     (state: RootState) => state.product.products
@@ -51,8 +50,10 @@ export const ProductPagination = ({
           if (onSale) {
             url += `&on_sale=${onSale}`;
           }
-          const token = localStorage.getItem("token");
-
+          let token: any;
+          if (typeof localStorage !== "undefined") {
+            token = localStorage.getItem("token");
+          }
           const response = await axios.get(url, {
             headers: {
               authorization: `Bearer ${token}`,
@@ -65,37 +66,7 @@ export const ProductPagination = ({
 
           setProduct(products);
         } catch (error: any) {
-          if (
-            error?.response?.status == 403 ||
-            error?.response?.status == 401
-          ) {
-            Swal.fire({
-              width: 700,
-              color: "black",
-              background: "white",
-              html: `
-                <div style="text-align: left;">
-                  <h2 style="font-size: 20px; font-weight: bold; margin-bottom: 10px;">Session Expired</h2>
-                  <hr style="margin-bottom: 20px;" />
-                  <p style="font-size: 14px;margin-bottom: 10px;">Your session has expired</p>
-                  <hr style="margin-bottom: 20px;" />
-                </div>
-              `,
-              showConfirmButton: true,
-              confirmButtonText: "Ok",
-              confirmButtonColor: "blue",
-              heightAuto: true,
-              customClass: {
-                confirmButton:
-                  "bg-primary text-white rounded-full px-4 py-2 text-sm absolute right-4 bottom-4 ",
-              },
-            }).then((result) => {
-              if (result.value) {
-                logOut();
-                router.push("/account");
-              }
-            });
-          }
+          return error;
         }
       };
 
@@ -117,7 +88,10 @@ export const ProductPagination = ({
           if (onSale) {
             url += `&on_sale=${onSale}`;
           }
-          const token = localStorage.getItem("token");
+          let token: any;
+          if (typeof localStorage !== "undefined") {
+            token = localStorage.getItem("token");
+          }
           const response = await axios.get(url, {
             headers: {
               authorization: `Bearer ${token}`,
@@ -130,37 +104,7 @@ export const ProductPagination = ({
 
           setProduct(products);
         } catch (error: any) {
-          if (
-            error?.response?.status == 403 ||
-            error?.response?.status == 401
-          ) {
-            Swal.fire({
-              width: 700,
-              color: "black",
-              background: "white",
-              html: `
-                <div style="text-align: left;">
-                  <h2 style="font-size: 20px; font-weight: bold; margin-bottom: 10px;">Session Expired</h2>
-                  <hr style="margin-bottom: 20px;" />
-                  <p style="font-size: 14px;margin-bottom: 10px;">Your session has expired</p>
-                  <hr style="margin-bottom: 20px;" />
-                </div>
-              `,
-              showConfirmButton: true,
-              confirmButtonText: "Ok",
-              confirmButtonColor: "blue",
-              heightAuto: true,
-              customClass: {
-                confirmButton:
-                  "bg-primary text-white rounded-full px-4 py-2 text-sm absolute right-4 bottom-4 ",
-              },
-            }).then((result) => {
-              if (result.value) {
-                logOut();
-                router.push("/account");
-              }
-            });
-          }
+          return error;
         }
       };
 
@@ -176,18 +120,11 @@ export const ProductPagination = ({
       setIsGrid(getItem);
     }
   }, [passgrid]);
-  useEffect(() => {
-    const matchedProducts = productsRidux.filter((pr: Product) =>
-      product.map((p: any) => p?._id).includes(pr?._id)
-    );
-    setmatchWithProduct(matchedProducts);
-  }, [product, productsRidux]);
 
   return (
     <div>
-      {matchWithProduct.length != 0 ? (
+      {product.length != 0 ? (
         <div className="mx-auto ">
-          {/* <div className="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 "> */}
           <div
             className={`mx-auto ${
               isGrid === "list"
@@ -201,7 +138,7 @@ export const ProductPagination = ({
                 : ""
             }`}
           >
-            {matchWithProduct.map((product: any, index) => {
+            {product.map((product: any, index) => {
               return (
                 <ProductCard
                   key={product.id}

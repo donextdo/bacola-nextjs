@@ -62,69 +62,6 @@ const PageNavBar = () => {
   return (
     <div className="lg:flex lg:flex-row ">
       <ul className="lg:space-x-1 lg:flex gap gap-0">
-        {/* <li className="font-semibold rounded-full bg-[#F0FAFF] ">
-          <button onMouseEnter={toggleShop} className="lg:py-2 lg:px-4">
-            <div>
-              <Link
-                href="#"
-                className="text-[#2bbef9] flex text-[15px]  font-ff-headings"
-              >
-                HOME
-                <MdKeyboardArrowDown className="ml-2 text-xl" />
-              </Link>
-            </div>
-          </button>
-
-          {homeOpen && (
-            <div className="text-[13px] absolute w-40 py-2 mt-2 shadow-md font-medium bg-white rounded-lg ">
-              <Link
-                href="#"
-                className="block px-4 py-2 text-gray-800 hover:text-[#2bbef9] "
-              >
-                Home 1
-              </Link>
-              <Link
-                href="#"
-                className="block px-4 py-2 text-gray-800 hover:text-[#2bbef9] "
-              >
-                Home 2
-              </Link>
-              <Link
-                href="#"
-                className="block px-4 py-2 text-gray-800 hover:text-[#2bbef9] "
-              >
-                Home 3
-              </Link>
-              <Link
-                href="#"
-                className="block px-4 py-2 text-gray-800 hover:text-[#2bbef9] "
-              >
-                Home 4
-              </Link>
-              <Link
-                href="#"
-                className="block px-4 py-2 text-gray-800 hover:text-[#2bbef9]"
-              >
-                Home 5
-              </Link>
-            </div>
-          )}
-        </li> */}
-
-        {/* Shop */}
-        {/* <li className="font-semibold hoverable hover:rounded-full  hover:bg-[#F0FAFF] ">
-          <button onMouseEnter={toggleShop} className="lg:py-2 lg:px-4">
-            <div>
-              <Link
-                href="#"
-                className="hover:text-[#2bbef9] flex text-gray-700 text-[15px]  font-ff-headings"
-              >
-                SHOP
-                <MdKeyboardArrowDown className="ml-2 text-xl" />
-              </Link>
-            </div>
-          </button>
-        </li> */}
         {/* Meats & SeaFood */}
         <li className="font-semibold font-ff-headings hoverable hover:rounded-full  hover:bg-[#F0FAFF] ">
           <button
@@ -176,14 +113,6 @@ const PageNavBar = () => {
             </Link>
           </button>
         </li>
-        {/* Blog */}
-        {/* <li className="font-semibold font-ff-headings">
-          <button className="lg:py-2 lg:px-4 lg:ml-4  hover:rounded-full  hover:bg-[#F0FAFF]">
-            <Link href="#" className="text-gray-700 hover:text-[#2bbef9]">
-              BLOG
-            </Link>
-          </button>
-        </li> */}
 
         {/* Contact */}
         <li className="font-semibold font-ff-headings">

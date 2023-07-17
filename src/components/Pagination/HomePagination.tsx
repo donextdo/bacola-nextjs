@@ -26,6 +26,9 @@ export const HomePagination = ({
   const handleGridChange = (grid: any) => {
     setPassgrid(grid);
   };
+
+  const categoryId = null;
+
   return (
     <>
       <div className="flex flex-row mb-9">
@@ -33,7 +36,7 @@ export const HomePagination = ({
           <div className="grid md:grid-cols-1 grid-cols-1 ">
             <RangeSlider />
             <Status />
-            <Brands />
+            <Brands category={categoryId} />
           </div>
           <div className="lg:mt-12">
             <Image

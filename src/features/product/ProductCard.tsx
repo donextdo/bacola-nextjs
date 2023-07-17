@@ -11,7 +11,7 @@ import { FC, useState } from "react";
 import Image from "next/image";
 import { RootState } from "../../redux/store";
 import { useDispatch, useSelector } from "react-redux";
-import { calSubTotal, } from "../cart/cartSlice";
+import { calSubTotal } from "../cart/cartSlice";
 import { Product } from "./product";
 import Link from "next/link";
 import ProductPopup from "./ProductPopup";
@@ -38,28 +38,23 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
   const [grid, setGrid] = useState<string>("");
   const router = useRouter();
   const [count, setCount] = useState(0);
-  const totalAmountCal = useSelector((state: RootState) => state.cart.totalAmount);
-
+  const totalAmountCal = useSelector(
+    (state: RootState) => state.cart.totalAmount
+  );
 
   useEffect(() => {
     if (product.discount >= 0) {
       setIsdiscount(true);
     }
-
-    
-    // console.log(product);
   }, []);
 
   // count check
-  useEffect(()=>{
-    const cartItemsString = localStorage.getItem('cartItems');
+  useEffect(() => {
+    const cartItemsString = localStorage.getItem("cartItems");
     const items = cartItemsString ? JSON.parse(cartItemsString) : [];
-    const itemone = items.find(
-      (item:any) => item._id === product._id
-    );
-    setCount(itemone?.count ?? 0)
-    // console.log(itemone)
-  },[count, totalAmountCal])
+    const itemone = items.find((item: any) => item._id === product._id);
+    setCount(itemone?.count ?? 0);
+  }, [count, totalAmountCal]);
 
   useEffect(() => {
     const getItem: string | null = localStorage.getItem("gridType");
@@ -70,7 +65,8 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
     }
   }, [isGrid]);
 
-  const handleProductClick = (product: any) => {
+  const handleProductClick = (product: Product) => {
+    router.push(`/item-preview/${product._id}`);
     let recentlyAddedProductsString = localStorage.getItem(
       "recentlyAddedProducts"
     );
@@ -83,103 +79,85 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
     if (products.length > 4) {
       products = products.slice(-4);
     }
-
-    // Save the updated list back to local storage
     localStorage.setItem("recentlyAddedProducts", JSON.stringify(products));
-    console.log("data - productId: ", products);
   };
-  const [cateName, setCatName] = useState();
-  let findcategory: any;
-  const saveCategoryName = async (product: any) => {
+
+  const saveCategoryName = async (product: Product) => {
+    let findcategory: any;
     if (product.category.length > 0) {
       findcategory = product.category[0];
-      const res = await axios.get(`${baseUrl}/categories/get/${findcategory}`);
+      try {
+        const res = await axios.get(
+          `${baseUrl}/categories/get/${findcategory}`
+        );
 
-      console.log("ggggggg: ", res.data[0].name);
-      localStorage.setItem("catName", JSON.stringify(res.data[0].name));
+        localStorage.setItem("catName", JSON.stringify(res.data[0].name));
+      } catch (error: any) {}
     }
   };
 
-
-  
   const handleIncrement = (product: Product) => {
-    const cartItemsString = localStorage.getItem('cartItems');
-  const items = cartItemsString ? JSON.parse(cartItemsString) : [];
+    const cartItemsString = localStorage.getItem("cartItems");
+    const items = cartItemsString ? JSON.parse(cartItemsString) : [];
 
-  const itemIndex = items.findIndex((item:any) => item._id === product._id);
-  
-  console.log(product,items,itemIndex)
+    const itemIndex = items.findIndex((item: any) => item._id === product._id);
+
     if (itemIndex != -1) {
-      console.log(items[itemIndex])
       items[itemIndex].count += 1;
-      localStorage.setItem('cartItems', JSON.stringify(items));
-      setCount(items[itemIndex].count)
-      console.log("hi",items[itemIndex].count)
+      localStorage.setItem("cartItems", JSON.stringify(items));
+      setCount(items[itemIndex].count);
     }
 
-  
     dispatch(calSubTotal(12));
   };
 
   const handleDecrement = (product: Product) => {
-    const cartItemsString = localStorage.getItem('cartItems');
+    const cartItemsString = localStorage.getItem("cartItems");
     const items = cartItemsString ? JSON.parse(cartItemsString) : [];
-  
-    const itemIndex = items.findIndex((item:any) => item._id === product._id);
-      if (itemIndex !=-1) {
-        if (items[itemIndex].count > 0) { // Check if count is greater than 0
-          items[itemIndex].count -= 1;
-          localStorage.setItem('cartItems', JSON.stringify(items));
-          setCount(items[itemIndex].count);
-        }
 
+    const itemIndex = items.findIndex((item: any) => item._id === product._id);
+    if (itemIndex != -1) {
+      if (items[itemIndex].count > 0) {
+        // Check if count is greater than 0
+        items[itemIndex].count -= 1;
+        localStorage.setItem("cartItems", JSON.stringify(items));
+        setCount(items[itemIndex].count);
       }
-    
-      dispatch(calSubTotal(12));
+    }
+
+    dispatch(calSubTotal(12));
   };
 
   const handleaddToCart = (product: Product) => {
-  
-  const cartItemsString = localStorage.getItem('cartItems');
-  const items = cartItemsString ? JSON.parse(cartItemsString) : [];
+    const cartItemsString = localStorage.getItem("cartItems");
+    const items = cartItemsString ? JSON.parse(cartItemsString) : [];
 
-  const itemIndex = items.findIndex((item:any) => item._id === product._id);
+    const itemIndex = items.findIndex((item: any) => item._id === product._id);
 
     if (itemIndex === -1) {
       const newItem = { ...product, count: 1 };
       items.push(newItem);
-      localStorage.setItem('cartItems', JSON.stringify(items));
-      setCount(newItem.count)
+      localStorage.setItem("cartItems", JSON.stringify(items));
+      setCount(newItem.count);
       dispatch(calSubTotal(12));
     } else {
       items[itemIndex].count += 1;
-      localStorage.setItem('cartItems', JSON.stringify(items));
-      setCount(items[itemIndex].count)
+      localStorage.setItem("cartItems", JSON.stringify(items));
+      setCount(items[itemIndex].count);
       dispatch(calSubTotal(12));
     }
 
-
-    // dispatch(addItem(product));
-    // const newQuantity = (product.count || 0) + 1;
-    // console.log("handleaddToCart ", product.count);
-    // dispatch(
-    //   updateProductQuantity({ productId: product._id, count: newQuantity })
-    // );
-    // console.log(product._id);
-    // dispatch(calSubTotal(totalAmount));
     Swal.fire({
       title:
         '<span style="font-size: 18px">Item has been added to your card</span>',
       width: 400,
       timer: 1500,
-      // padding: '3',
       color: "white",
       background: "#00B853",
       showConfirmButton: false,
       heightAuto: true,
       position: "bottom-end",
     });
- 
   };
 
   const stars = Array.from({ length: 5 }, (_, i) => (
@@ -195,7 +173,6 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
   let discountprice;
   discountprice = product.price * (product.discount / 100);
   let newprice = product.price - discountprice;
-
 
   const handleWishlist = async (data: any) => {
     if (id) {
@@ -218,8 +195,10 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
 
       try {
         //authentication session handle
-        const token = localStorage.getItem("token"); // Retrieve the token from local storage or wherever it's stored
-
+        let token: any;
+        if (typeof localStorage !== "undefined") {
+          token = localStorage.getItem("token");
+        }
         const config = {
           headers: {
             authorization: `Bearer ${token}`,
@@ -231,7 +210,6 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
           whishListObj,
           config
         );
-
       } catch (error: any) {
         if (error?.response?.status == 403 || error?.response?.status == 401) {
           Swal.fire({
@@ -269,7 +247,7 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
 
   useEffect(() => {
     dispatch(calSubTotal(12));
-  },[]);
+  }, []);
 
   const handlepopup = (product: any) => {
     setProductPopup(true);
@@ -351,16 +329,14 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
                   saveCategoryName(product);
                 }}
               >
-                <Link href={`/item-preview/${product._id}`}>
-                  <img
-                    width={172.95}
-                    height={154.95}
-                    //src={product.front as string}
-                    src={product.front}
-                    alt={product.title}
-                    //alt="Man looking at item at a store"
-                  />
-                </Link>
+                <img
+                  width={172.95}
+                  height={154.95}
+                  //src={product.front as string}
+                  src={product.front}
+                  alt={product.title}
+                  //alt="Man looking at item at a store"
+                />
               </div>
             </div>{" "}
             <div className="w-2/3 ">
@@ -372,9 +348,7 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
                     saveCategoryName(product);
                   }}
                 >
-                  <Link href={`/item-preview/${product._id}`}>
-                    {product.title}
-                  </Link>
+                  {product.title}
                 </div>
                 <div className="my-1 font-[.6875rem] text-xs pt-2 text-green-600 uppercase font-semibold tracking-[.005em]">
                   {product.quantity > 0 ? "In Stock" : "Out of Stock"}
@@ -487,16 +461,14 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
                 saveCategoryName(product);
               }}
             >
-              <Link href={`/item-preview/${product._id}`}>
-                <img
-                  width={172.95}
-                  height={154.95}
-                  //src={product.front as string}
-                  src={product.front}
-                  alt={product.title}
-                  //alt="Man looking at item at a store"
-                />
-              </Link>
+              <img
+                width={172.95}
+                height={154.95}
+                //src={product.front as string}
+                src={product.front}
+                alt={product.title}
+                //alt="Man looking at item at a store"
+              />
             </div>
             <div className="mx-5 mb-1 max-h-[155.29px] max-w-[212.95] ">
               <div
@@ -506,9 +478,7 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
                   saveCategoryName(product);
                 }}
               >
-                <Link href={`/item-preview/${product._id}`}>
-                  {product.title}
-                </Link>
+                {product.title}
               </div>
               {product?.quantity > 0 ? (
                 <div className="my-1 font-[.6875rem] text-xs pt-2 text-green-600 uppercase font-semibold tracking-[.005em]">

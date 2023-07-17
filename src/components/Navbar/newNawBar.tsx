@@ -15,7 +15,10 @@ const NavbarNew = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const token = localStorage.getItem("token");
+        let token: any;
+        if (typeof localStorage !== "undefined") {
+          token = localStorage.getItem("token");
+        }
 
         const response = await axios.get(`${baseUrl}/products`, {
           headers: {

@@ -11,8 +11,6 @@ import { useRouter } from "next/router";
 export const RedDiv = () => {
   return (
     <div>
-      {/* <div className="lg:w-1/4"></div> */}
-
       <div className="flex flex-col rounded-md items-center justify-between mt-9 bg-red-100 p-6 mb-9 cursor-pointer">
         <div className="flex flex-col lg:flex-row items-center justify-center">
           <div className="text-[15px] text-red-600 flex flex-row items-center mb-2 lg:mb-0 lg:mr-4">
@@ -75,9 +73,7 @@ export const AdditionalDiv = () => {
 export const BestSeller = () => {
   const router = useRouter();
   const goToProduct = () => {
-    // router.push("./filterProduct");
     router.push("./shop");
-    // localStorage.clear();
   };
   return (
     <div className="flex flex-row items-center justify-between mb-9 ">
@@ -105,9 +101,7 @@ export const BestSeller = () => {
 export const NewProduct = () => {
   const router = useRouter();
   const goToProduct = () => {
-    // router.push("./filterProduct");
     router.push("./shop");
-    // localStorage.clear();
   };
   return (
     <div className="flex flex-row items-center justify-between mb-9 ">

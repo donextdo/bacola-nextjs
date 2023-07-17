@@ -16,7 +16,6 @@ const Layout: React.FC<Props> = ({ children }) => {
       <Message />
       <TopHeader />
       <Header />
-      {/* <Navbar /> */}
       <NavbarNew />
       {children}
       <NewsLettertwo />

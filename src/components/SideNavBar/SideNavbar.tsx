@@ -5,7 +5,6 @@ import { GiChickenOven } from "react-icons/gi";
 import { MdKeyboardArrowDown, MdOutlineBakeryDining } from "react-icons/md";
 import logo from "../../../assets/logo/buntalk.png";
 
-
 import Image from "next/image";
 import Allcategories from "../AllCategories/Allcategories";
 import AllcategoriesSideNavbar from "../AllCategories/AllCategoriesSideNavbar";
@@ -46,18 +45,23 @@ const SideNavBar = ({ setShowSideNavbar, handleSideNavbar }: any) => {
                 height={400}
               />
             </div>
-            <div><button className=" border bg-[#c2c2d3] rounded-full p-1" onClick={handleClose}><IoCloseSharp className="text-md font-semibold text-white" /></button></div>
+            <div>
+              <button
+                className=" border bg-[#c2c2d3] rounded-full p-1"
+                onClick={handleClose}
+              >
+                <IoCloseSharp className="text-md font-semibold text-white" />
+              </button>
+            </div>
           </div>
           {/* Location */}
           <div className="mx-6 mt-4">
             <SideLocation />
           </div>
 
-          <div>
-            {/* <Allcategories /> */}
-          </div>
+          <div>{/* <Allcategories /> */}</div>
           <div className="mx-4 mt-4">
-            <AllcategoriesSideNavbar setShowSideNavbar={setShowSideNavbar}/>
+            <AllcategoriesSideNavbar setShowSideNavbar={setShowSideNavbar} />
           </div>
           <nav>
             <div>
@@ -69,69 +73,31 @@ const SideNavBar = ({ setShowSideNavbar, handleSideNavbar }: any) => {
               <hr className="my-[10px] md:my-[20px]" />
               <div className="">
                 <div className="flex justify-between px-6" onClick={toggleHome}>
-                  <Link href="/" onClick={handleSideNavbar}> <div className="font-ff-headings text-gray-800 text-[15px] font-semibold ">
-                    HOME
-                  </div>
+                  <Link href="/" onClick={handleSideNavbar}>
+                    {" "}
+                    <div className="font-ff-headings text-gray-800 text-[15px] font-semibold ">
+                      HOME
+                    </div>
                   </Link>
                   <div>
                     <MdKeyboardArrowDown className="text-xl text-[#d3d4d7]" />
                   </div>
                 </div>
-                {/* {homeOpen && (
-                    <div className="text-[13px] absolute w-24 py-2 ml-60 mt-2 shadow-md font-medium ">
-                      <Link href="#" className="block px-4 py-2 text-gray-800 ">
-                        Home 1
-                      </Link>
-                      <Link href="#" className="block px-4 py-2 text-gray-800 ">
-                        Home 2
-                      </Link>
-                      <Link href="#" className="block px-4 py-2 text-gray-800 ">
-                        Home 3
-                      </Link>
-                      <Link href="#" className="block px-4 py-2 text-gray-800 ">
-                        Home 4
-                      </Link>
-                      <Link href="#" className="block px-4 py-2 text-gray-800 ">
-                        Home 5
-                      </Link>
-                    </div>
-                  )} */}
               </div>
               <hr className="my-[10px] md:my-[20px]" />
 
               {/* Shop */}
               <div className="">
-
                 <div className="flex justify-between px-6" onClick={toggleShop}>
-                <Link href="/shop" onClick={handleSideNavbar}><div className="font-ff-headings text-gray-800 text-[15px] font-semibold ">
-                    SHOP
-                  </div>
+                  <Link href="/shop" onClick={handleSideNavbar}>
+                    <div className="font-ff-headings text-gray-800 text-[15px] font-semibold ">
+                      SHOP
+                    </div>
                   </Link>
                   <div>
                     <MdKeyboardArrowDown className="text-xl text-[#d3d4d7]" />
                   </div>
                 </div>
-
-                {/* Shop DropDown */}
-                {/* {shopOpen && (
-                    <div className="text-[13px] absolute w-24 py-2 ml-60 mt-2 shadow-md font-medium ">
-                      <Link href="#" className="block px-4 py-2 text-gray-800 ">
-                        Shop 1
-                      </Link>
-                      <Link href="#" className="block px-4 py-2 text-gray-800 ">
-                        Shop 2
-                      </Link>
-                      <Link href="#" className="block px-4 py-2 text-gray-800 ">
-                        Shop 3
-                      </Link>
-                      <Link href="#" className="block px-4 py-2 text-gray-800 ">
-                        Shop 4
-                      </Link>
-                      <Link href="#" className="block px-4 py-2 text-gray-800 ">
-                        Shop 5
-                      </Link>
-                    </div>
-                  )} */}
               </div>
               <hr className="my-[10px] md:my-[20px]" />
 
@@ -139,7 +105,11 @@ const SideNavBar = ({ setShowSideNavbar, handleSideNavbar }: any) => {
               <div className="px-5 font-semibold font-ff-headings ">
                 <button>
                   <div>
-                    <Link href="/filterProduct?categoryId=6450a82507245756e38fe70a" onClick={handleSideNavbar} className="text-black  flex text-[15px]">
+                    <Link
+                      href="/filterProduct?categoryId=6450a82507245756e38fe70a"
+                      onClick={handleSideNavbar}
+                      className="text-black  flex text-[15px]"
+                    >
                       <GiChickenOven className="mr-5 text-xl text-[#d3d4d7]" />
                       MEATS & SEAFOOD
                     </Link>
@@ -152,7 +122,11 @@ const SideNavBar = ({ setShowSideNavbar, handleSideNavbar }: any) => {
               <div className="px-5 font-semibold font-ff-headings ">
                 <button>
                   <div>
-                    <Link href="/shop" className="text-black flex text-[15px]" onClick={handleSideNavbar}>
+                    <Link
+                      href="/shop"
+                      className="text-black flex text-[15px]"
+                      onClick={handleSideNavbar}
+                    >
                       <MdOutlineBakeryDining className="mr-5 text-xl text-[#d3d4d7]" />
                       BAKERY
                     </Link>
@@ -166,7 +140,11 @@ const SideNavBar = ({ setShowSideNavbar, handleSideNavbar }: any) => {
               <div className="px-5 font-semibold font-ff-headings ">
                 <button>
                   <div>
-                    <Link href="/shop" className="text-black flex text-[15px]" onClick={handleSideNavbar}>
+                    <Link
+                      href="/shop"
+                      className="text-black flex text-[15px]"
+                      onClick={handleSideNavbar}
+                    >
                       <FaMugHot className="mr-5 text-xl text-[#d3d4d7]" />
                       BEVERAGES
                     </Link>
@@ -175,17 +153,11 @@ const SideNavBar = ({ setShowSideNavbar, handleSideNavbar }: any) => {
               </div>
               <hr className="my-[10px] md:my-[20px]" />
 
-              {/* Blog */}
-              {/* <div className="px-5 font-semibold font-ff-headings ">
-                <button>
-                  <Link href="#" className="text-black ">
-                    BLOG
-                  </Link>
-                </button>
-              </div>
-              <hr className="my-[10px] md:my-[20px]" /> */}
               {/* Contact */}
-              <div className="px-5 font-semibold font-ff-headings " onClick={handleSideNavbar}>
+              <div
+                className="px-5 font-semibold font-ff-headings "
+                onClick={handleSideNavbar}
+              >
                 <button>
                   <Link href="/contact" className="text-black ">
                     CONTACT
@@ -197,9 +169,9 @@ const SideNavBar = ({ setShowSideNavbar, handleSideNavbar }: any) => {
           </nav>
 
           <div className="mx-6 mt-6 text-[#d9d9e3] text-sm">
-          Copyright 2022 © BunTalk WordPress Theme. All rights reserved. Powered by BuntalkTheme.
+            Copyright 2022 © BunTalk WordPress Theme. All rights reserved.
+            Powered by BuntalkTheme.
           </div>
-
         </div>
       </div>
     </>

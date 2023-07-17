@@ -38,17 +38,9 @@ export default function HomeSlider() {
             }}
             modules={[Pagination]}
             className=" mySwiper"
-          // style={{ height: "550px" }}
           >
             <SwiperSlide>
               <div className="relative">
-                {/* <Image
-                  src="/images/slider-image-1.jpg"
-                  alt="Slider- Image"
-                  className="w-full h-1/3 md:h-[260px] lg:h-[500px]"
-                  width={500}
-                  height={200}
-                /> */}
                 <div className="h-[300px] lg:h-[500px] w-full">
                   <Image
                     src="/images/slider-image-1.jpg"
@@ -97,13 +89,6 @@ export default function HomeSlider() {
               </div>
             </SwiperSlide>
             <SwiperSlide className="">
-              {/* <Image
-                src="/images/slider-image-2.jpg"
-                alt="Slider- Image"
-                className="w-full h-1/3 md:h-[260px] lg:h-[500px]"
-                width={500}
-                height={200}
-              /> */}
               <div className="h-[300px] lg:h-[500px] w-full">
                 <Image
                   src="/images/slider-image-2.jpg"
@@ -151,13 +136,6 @@ export default function HomeSlider() {
               </div>
             </SwiperSlide>
             <SwiperSlide className="">
-              {/* <Image
-                src="/images/slider-3.jpg"
-                alt="Slider- Image"
-                className="w-full h-1/3 md:h-[260px] lg:h-[500px]"
-                width={500}
-                height={200}
-              /> */}
               <div className="h-[300px] lg:h-[500px] w-full">
                 <Image
                   src="/images/slider-3.jpg"

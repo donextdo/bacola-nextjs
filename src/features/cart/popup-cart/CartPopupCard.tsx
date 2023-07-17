@@ -20,7 +20,6 @@ const CartPopupCard = ({ item, setCartItems }: any) => {
         const filteredCartItems = items.filter((item: any) => item._id !== _id);
 
         if (filteredCartItems.length == 0) {
-      console.log("remove item")
 
             localStorage.removeItem("cartItems");
 

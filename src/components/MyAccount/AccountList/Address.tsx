@@ -59,7 +59,10 @@ const Address = () => {
   const [modal, setModal] = useState(false);
   const [modal1, setModal1] = useState(false);
   let id = localStorage.getItem("id");
-  const token = localStorage.getItem("token");
+  let token: any;
+  if (typeof localStorage !== "undefined") {
+    token = localStorage.getItem("token");
+  }
   const router = useRouter();
   const [address, setAddress] = useState<Address>({
     orderId: "",
@@ -246,10 +249,6 @@ const Address = () => {
           )}
         </div>
       </div>
-
-      {/* {
-                modal ? <Bill /> : <Ship />
-            } */}
 
       {modal && <Bill setModal1={setModal1} setModal={setModal} />}
 

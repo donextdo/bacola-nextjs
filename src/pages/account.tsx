@@ -6,7 +6,10 @@ const Account = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    let token: any;
+    if (typeof localStorage !== "undefined") {
+      token = localStorage.getItem("token");
+    }
     if (token) {
       setIsLoggedIn(true);
     }

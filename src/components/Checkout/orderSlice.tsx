@@ -2,10 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { OrderItem } from "./orderItem";
 import axios from "axios";
 import baseUrl from "../../../utils/baseUrl";
-import orderList from "./data.json";
 import { OrderObj } from "./ordertest";
-import { logOut } from "../../../utils/logout";
-import { useRouter } from "next/router";
 
 interface OrderState {
   orders: OrderItem[];
@@ -42,7 +39,6 @@ export const getOrdersByUserIdAsync = createAsyncThunk(
       return res.data;
     } catch (error: any) {
       return error;
-     
     }
   }
 );
