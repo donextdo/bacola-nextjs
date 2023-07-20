@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 
 import baseUrl from "../../../utils/baseUrl";
 import axios from "axios";
+import Swal from "sweetalert2";
 // import socketIOClient from "socket.io-client";
 
 interface Item {
@@ -24,20 +25,6 @@ export const SearchItem = () => {
   const router = useRouter();
 
   useEffect(() => {
-    const search = async () => {
-      if (query.trim() === "") {
-        setResults([]);
-        return;
-      }
-
-      const response = await axios.post(`${baseUrl}/products/searchBySocket`, {
-        query,
-      });
-      const Products = response.data;
-
-      setResults(Products);
-    };
-
     const timeoutId = setTimeout(() => {
       search();
     }, 500);
@@ -46,6 +33,40 @@ export const SearchItem = () => {
       clearTimeout(timeoutId);
     };
   }, [query]);
+
+  const search = async () => {
+    if (query.trim() === "") {
+      setResults([]);
+      return;
+    }
+    try {
+      const response = await axios.post(`${baseUrl}/products/searchBySocket`, {
+        query,
+      });
+      const Products = response.data;
+      setResults(Products);
+    } catch (error: any) {
+      Swal.fire({
+        width: 500,
+        color: "black",
+        background: "white",
+        imageUrl:
+          "https://cdni.iconscout.com/illustration/premium/thumb/something-went-wrong-2511607-2133695.png",
+        imageWidth: 150,
+        imageHeight: 150,
+        imageAlt: "Custom image",
+        html: `
+          <div style="text-align: center;">
+            <p style="font-size: 14px;">${error.response.data.message}</p>
+          </div>
+        `,
+        showCloseButton: true,
+        showCancelButton: false,
+        showConfirmButton: false,
+        heightAuto: true,
+      });
+    }
+  };
 
   const handleInputChange = (e: any) => {
     setQuery(e.target.value);
@@ -62,9 +83,33 @@ export const SearchItem = () => {
     let findcategory: any;
     if (product.category.length > 0) {
       findcategory = product.category[0];
-      const res = await axios.get(`${baseUrl}/categories/get/${findcategory}`);
+      try {
+        const res = await axios.get(
+          `${baseUrl}/categories/get/${findcategory}`
+        );
 
-      localStorage.setItem("catName", JSON.stringify(res.data[0].name));
+        localStorage.setItem("catName", JSON.stringify(res.data[0].name));
+      } catch (error: any) {
+        Swal.fire({
+          width: 500,
+          color: "black",
+          background: "white",
+          imageUrl:
+            "https://cdni.iconscout.com/illustration/premium/thumb/something-went-wrong-2511607-2133695.png",
+          imageWidth: 150,
+          imageHeight: 150,
+          imageAlt: "Custom image",
+          html: `
+            <div style="text-align: center;">
+              <p style="font-size: 14px;">${error.message}</p>
+            </div>
+          `,
+          showCloseButton: true,
+          showCancelButton: false,
+          showConfirmButton: false,
+          heightAuto: true,
+        });
+      }
     }
   };
 

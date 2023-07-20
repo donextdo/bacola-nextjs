@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import OneItem from "./OneItem";
 import baseUrl from "../../../utils/baseUrl";
 import axios from "axios";
 import { useRouter } from "next/router";
@@ -13,7 +12,7 @@ import fruitvegetables from "./../../../assets/categary/fruitvegetables.jpg";
 import grocery from "./../../../assets/categary/grocery.png";
 import household from "./../../../assets/categary/household.jpg";
 import meat from "./../../../assets/categary/meat.jpg";
-import Link from "next/link";
+import Swal from "sweetalert2";
 
 interface CartBottomItem {
   _id: any;
@@ -390,22 +389,67 @@ const CartList: React.FC = () => {
   const [CartBottomItems, setCartBottomItems] = useState([]);
   const [productCounts, setProductCounts] = useState({});
   useEffect(() => {
-    const fetchData = async () => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    try {
       const response = await axios.get(`${baseUrl}/categories`);
 
       setCartBottomItems(response.data);
       const productCountsData: any = {};
       for (const category of response.data) {
-        const categoryResponse = await axios.get(
-          `${baseUrl}/products/${category._id}`
-        );
-        const productCount = categoryResponse.data.length;
-        productCountsData[category._id] = productCount;
+        try {
+          const categoryResponse = await axios.get(
+            `${baseUrl}/products/${category._id}`
+          );
+          const productCount = categoryResponse.data.length;
+          productCountsData[category._id] = productCount;
+        } catch (error: any) {
+          Swal.fire({
+            width: 500,
+            color: "black",
+            background: "white",
+            imageUrl:
+              "https://cdni.iconscout.com/illustration/premium/thumb/something-went-wrong-2511607-2133695.png",
+            imageWidth: 150,
+            imageHeight: 150,
+            imageAlt: "Custom image",
+            html: `
+              <div style="text-align: center;">
+                <p style="font-size: 14px;">${error.response.data.message}</p>
+              </div>
+            `,
+            showCloseButton: true,
+            showCancelButton: false,
+            showConfirmButton: false,
+            heightAuto: true,
+          });
+        }
       }
       setProductCounts(productCountsData);
-    };
-    fetchData();
-  }, []);
+    } catch (error: any) {
+      Swal.fire({
+        width: 500,
+        color: "black",
+        background: "white",
+        imageUrl:
+          "https://cdni.iconscout.com/illustration/premium/thumb/something-went-wrong-2511607-2133695.png",
+        imageWidth: 150,
+        imageHeight: 150,
+        imageAlt: "Custom image",
+        html: `
+          <div style="text-align: center;">
+            <p style="font-size: 14px;">${error.response.data.message}</p>
+          </div>
+        `,
+        showCloseButton: true,
+        showCancelButton: false,
+        showConfirmButton: false,
+        heightAuto: true,
+      });
+    }
+  };
   return (
     <div className="flex flex-col md:flex-row">
       {/* <OneItem /> */}

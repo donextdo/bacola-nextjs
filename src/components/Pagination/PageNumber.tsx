@@ -25,17 +25,8 @@ export const PageNumber = ({ perpage }: any) => {
     if (!perpage) {
       const fetchData = async () => {
         try {
-          let token: any;
-          if (typeof localStorage !== "undefined") {
-            token = localStorage.getItem("token");
-          }
           const response = await axios.get(
-            `${baseUrl}/products?page=${currentPage}`,
-            {
-              headers: {
-                authorization: `Bearer ${token}`,
-              },
-            }
+            `${baseUrl}/products?page=${currentPage}`
           );
 
           const products = response.data.products;
@@ -50,54 +41,33 @@ export const PageNumber = ({ perpage }: any) => {
           );
           setNum(products.length);
         } catch (error: any) {
-          if (
-            error?.response?.status == 403 ||
-            error?.response?.status == 401
-          ) {
-            Swal.fire({
-              width: 700,
-              color: "black",
-              background: "white",
-              html: `
-                <div style="text-align: left;">
-                  <h2 style="font-size: 20px; font-weight: bold; margin-bottom: 10px;">Session Expired</h2>
-                  <hr style="margin-bottom: 20px;" />
-                  <p style="font-size: 14px;margin-bottom: 10px;">Your session has expired</p>
-                  <hr style="margin-bottom: 20px;" />
-                </div>
-              `,
-              showConfirmButton: true,
-              confirmButtonText: "Ok",
-              confirmButtonColor: "blue",
-              heightAuto: true,
-              customClass: {
-                confirmButton:
-                  "bg-primary text-white rounded-full px-4 py-2 text-sm absolute right-4 bottom-4 ",
-              },
-            }).then((result) => {
-              if (result.value) {
-                logOut();
-                router.push("/account");
-              }
-            });
-          }
+          Swal.fire({
+            width: 500,
+            color: "black",
+            background: "white",
+            imageUrl:
+              "https://cdni.iconscout.com/illustration/premium/thumb/something-went-wrong-2511607-2133695.png",
+            imageWidth: 150,
+            imageHeight: 150,
+            imageAlt: "Custom image",
+            html: `
+          <div style="text-align: center;">
+            <p style="font-size: 14px;">${error.response.data.message}</p>
+          </div>
+        `,
+            showCloseButton: true,
+            showCancelButton: false,
+            showConfirmButton: false,
+            heightAuto: true,
+          });
         }
       };
       fetchData();
     } else if (perpage || currentPage) {
       const fetchData = async () => {
         try {
-          let token: any;
-          if (typeof localStorage !== "undefined") {
-            token = localStorage.getItem("token");
-          }
           const response = await axios.get(
-            `${baseUrl}/products?page=${currentPage}&perpage=${perpage}`,
-            {
-              headers: {
-                authorization: `Bearer ${token}`,
-              },
-            }
+            `${baseUrl}/products?page=${currentPage}&perpage=${perpage}`
           );
 
           const products = response.data.products;
@@ -113,37 +83,25 @@ export const PageNumber = ({ perpage }: any) => {
           );
           setNum(products.length);
         } catch (error: any) {
-          if (
-            error?.response?.status == 403 ||
-            error?.response?.status == 401
-          ) {
-            Swal.fire({
-              width: 700,
-              color: "black",
-              background: "white",
-              html: `
-                <div style="text-align: left;">
-                  <h2 style="font-size: 20px; font-weight: bold; margin-bottom: 10px;">Session Expired</h2>
-                  <hr style="margin-bottom: 20px;" />
-                  <p style="font-size: 14px;margin-bottom: 10px;">Your session has expired</p>
-                  <hr style="margin-bottom: 20px;" />
-                </div>
-              `,
-              showConfirmButton: true,
-              confirmButtonText: "Ok",
-              confirmButtonColor: "blue",
-              heightAuto: true,
-              customClass: {
-                confirmButton:
-                  "bg-primary text-white rounded-full px-4 py-2 text-sm absolute right-4 bottom-4 ",
-              },
-            }).then((result) => {
-              if (result.value) {
-                logOut();
-                router.push("/account");
-              }
-            });
-          }
+          Swal.fire({
+            width: 500,
+            color: "black",
+            background: "white",
+            imageUrl:
+              "https://cdni.iconscout.com/illustration/premium/thumb/something-went-wrong-2511607-2133695.png",
+            imageWidth: 150,
+            imageHeight: 150,
+            imageAlt: "Custom image",
+            html: `
+          <div style="text-align: center;">
+            <p style="font-size: 14px;">${error.response.data.message}</p>
+          </div>
+        `,
+            showCloseButton: true,
+            showCancelButton: false,
+            showConfirmButton: false,
+            heightAuto: true,
+          });
         }
       };
       fetchData();

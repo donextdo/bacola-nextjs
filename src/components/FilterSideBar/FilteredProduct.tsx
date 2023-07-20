@@ -9,6 +9,7 @@ import baseUrl from "../../../utils/baseUrl";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { logOut } from "../../../utils/logout";
+import Swal from "sweetalert2";
 
 export const FilteredProduct = ({
   categoryId,
@@ -28,43 +29,62 @@ export const FilteredProduct = ({
 
   useEffect(() => {
     const fetchData = async () => {
+      let url = `${baseUrl}/productDetails?`;
+
+      if (categoryId) {
+        url += `categoryId=${categoryId}`;
+      }
+      if (subcategory) {
+        url += `&subCategories=${subcategory}`;
+      }
+      if (brand) {
+        url += `&brands=${brand}`;
+      }
+      if (minValue && maxValue) {
+        url += `&min_price=${minValue}&max_price=${maxValue}`;
+      }
+      if (inStock) {
+        url += `&stock_status=true`;
+      }
+      if (onSale) {
+        url += `&on_sale=true`;
+      }
+      if (orderby) {
+        url += `&sort=${orderby}`;
+      }
+
+      if (page) {
+        url += `&page=${page}`;
+      }
+      if (perpage) {
+        url += `&perpage=${perpage}`;
+      }
       try {
-        let url = `${baseUrl}/productDetails?`;
-
-        if (categoryId) {
-          url += `categoryId=${categoryId}`;
-        }
-        if (subcategory) {
-          url += `&subCategories=${subcategory}`;
-        }
-        if (brand) {
-          url += `&brands=${brand}`;
-        }
-        if (minValue && maxValue) {
-          url += `&min_price=${minValue}&max_price=${maxValue}`;
-        }
-        if (inStock) {
-          url += `&stock_status=true`;
-        }
-        if (onSale) {
-          url += `&on_sale=true`;
-        }
-        if (orderby) {
-          url += `&sort=${orderby}`;
-        }
-
-        if (page) {
-          url += `&page=${page}`;
-        }
-        if (perpage) {
-          url += `&perpage=${perpage}`;
-        }
-
         const response = await axios.get(url);
         const products = response.data.products;
 
         setProducts(products);
-      } catch (error: any) {}
+      } catch (error: any) {
+        Swal.fire({
+          width: 500,
+          color: "black",
+          background: "white",
+          imageUrl:
+            "https://cdni.iconscout.com/illustration/premium/thumb/something-went-wrong-2511607-2133695.png",
+          imageWidth: 150,
+          imageHeight: 150,
+          imageAlt: "Custom image",
+          html: `
+            <div style="text-align: center;">
+              <p style="font-size: 14px;">${error.response.data.message}</p>
+            </div>
+          `,
+          showCloseButton: true,
+          showCancelButton: false,
+          showConfirmButton: false,
+          heightAuto: true,
+        });
+      }
     };
     fetchData();
   }, [

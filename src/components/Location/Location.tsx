@@ -3,6 +3,7 @@ import { MdKeyboardArrowDown } from "react-icons/md";
 import { FiSearch } from "react-icons/fi";
 import axios from "axios";
 import baseUrl from "../../../utils/baseUrl";
+import Swal from "sweetalert2";
 
 interface LocationType {
   dollar_min: any;
@@ -25,16 +26,39 @@ export const Location = () => {
   );
 
   useEffect(() => {
-    const fetchData = async () => {
+    fetchData();
+    setLocationName(locationName);
+  }, [locationName]);
+
+  const fetchData = async () => {
+    try {
       const response = await axios.get(`${baseUrl}/locations/getAll`);
 
       const locations = response.data;
 
       setLocation(locations);
-    };
-    fetchData();
-    setLocationName(locationName);
-  }, [locationName]);
+    } catch (error: any) {
+      Swal.fire({
+        width: 500,
+        color: "black",
+        background: "white",
+        imageUrl:
+          "https://cdni.iconscout.com/illustration/premium/thumb/something-went-wrong-2511607-2133695.png",
+        imageWidth: 150,
+        imageHeight: 150,
+        imageAlt: "Custom image",
+        html: `
+          <div style="text-align: center;">
+            <p style="font-size: 14px;">${error.response.data.message}</p>
+          </div>
+        `,
+        showCloseButton: true,
+        showCancelButton: false,
+        showConfirmButton: false,
+        heightAuto: true,
+      });
+    }
+  };
 
   const handleModal = () => {
     setShowModal(true);

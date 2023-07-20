@@ -3,6 +3,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { CiMail } from "react-icons/ci";
 import baseUrl from "../../../utils/baseUrl";
+import Swal from "sweetalert2";
 
 const NewsLettertwo = () => {
   const [email, setEmail] = useState("");
@@ -24,9 +25,28 @@ const NewsLettertwo = () => {
         const { message } = response.data;
         alert(`Subscription failed: ${message}`);
       }
-    } catch (error) {
-      alert("Subscription successful");
+    } catch (error: any) {
+      // alert("Subscription successful");
       // Handle fetch error
+      Swal.fire({
+        width: 500,
+        color: "black",
+        background: "white",
+        imageUrl:
+          "https://cdni.iconscout.com/illustration/premium/thumb/something-went-wrong-2511607-2133695.png",
+        imageWidth: 150,
+        imageHeight: 150,
+        imageAlt: "Custom image",
+        html: `
+          <div style="text-align: center;">
+            <p style="font-size: 14px;">${error.response.data.message}</p>
+          </div>
+        `,
+        showCloseButton: true,
+        showCancelButton: false,
+        showConfirmButton: false,
+        heightAuto: true,
+      });
     }
   };
 

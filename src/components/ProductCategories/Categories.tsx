@@ -3,6 +3,7 @@ import CheckBoxRow from "../CheckBox/CheckBox";
 import axios from "axios";
 import baseUrl from "../../../utils/baseUrl";
 import { useRouter } from "next/router";
+import Swal from "sweetalert2";
 
 const Categories = ({ categoryId, onSuCatChange }: any) => {
   const [subCategory, setSubCategory] = useState([]);
@@ -18,8 +19,26 @@ const Categories = ({ categoryId, onSuCatChange }: any) => {
         const response = await axios.get(`${baseUrl}/categories/${categoryId}`);
         setSubCategory(response.data);
         setIsEmpty(response.data.length === 0);
-      } catch (error) {
-        return error;
+      } catch (error: any) {
+        Swal.fire({
+          width: 500,
+          color: "black",
+          background: "white",
+          imageUrl:
+            "https://cdni.iconscout.com/illustration/premium/thumb/something-went-wrong-2511607-2133695.png",
+          imageWidth: 150,
+          imageHeight: 150,
+          imageAlt: "Custom image",
+          html: `
+            <div style="text-align: center;">
+              <p style="font-size: 14px;">${error.response.data.message}</p>
+            </div>
+          `,
+          showCloseButton: true,
+          showCancelButton: false,
+          showConfirmButton: false,
+          heightAuto: true,
+        });
       }
     };
     fetchData();
