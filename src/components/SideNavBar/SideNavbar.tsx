@@ -106,7 +106,7 @@ const SideNavBar = ({ setShowSideNavbar, handleSideNavbar }: any) => {
                 <button>
                   <div>
                     <Link
-                      href="/filterProduct?categoryId=6450a82507245756e38fe70a"
+                      href="/shop"
                       onClick={handleSideNavbar}
                       className="text-black  flex text-[15px]"
                     >
