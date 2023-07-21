@@ -1,8 +1,23 @@
 import { useEffect } from "react";
 import { useRouter } from "next/router";
+import baseUrl from "../../utils/baseUrl";
+import Swal from "sweetalert2";
 
 const SuccessPage: React.FC = () => {
   const router = useRouter();
+  const { token } = router.query;
+
+  useEffect(() => {
+    fetchData();
+  }, [router]);
+  const fetchData = async () => {
+    try {
+      const response = await fetch(`${baseUrl}/users/verify/${token}`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+    } catch (error: any) {}
+  };
 
   useEffect(() => {
     const redirectTimer = setTimeout(() => {
