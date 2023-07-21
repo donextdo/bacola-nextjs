@@ -13,70 +13,49 @@ export const RangeSlider = ({ categoryId }: any) => {
 
   useEffect(() => {
     if (categoryId) {
-      const fetchData = async () => {
-        try {
-          let token: any;
-          if (typeof localStorage !== "undefined") {
-            token = localStorage.getItem("token");
-          }
-          const response = await axios(
-            `${baseUrl}/productDetails?categoryId=${categoryId}`,
-            {
-              headers: {
-                authorization: `Bearer ${token}`,
-              },
-            }
-          );
-          const products = response.data.products;
-
-          // Extracting all the product prices
-          const prices = products.map((product: any) => product.price);
-
-          // Finding the maximum price
-          const maxPrice = Math.max(...prices);
-
-          // Rounding the maximum price
-          let roundedPrice;
-
-          roundedPrice = Math.ceil(maxPrice / 10) * 10;
-        } catch (error: any) {
-          if (
-            error?.response?.status == 403 ||
-            error?.response?.status == 401
-          ) {
-            Swal.fire({
-              width: 700,
-              color: "black",
-              background: "white",
-              html: `
-                <div style="text-align: left;">
-                  <h2 style="font-size: 20px; font-weight: bold; margin-bottom: 10px;">Session Expired</h2>
-                  <hr style="margin-bottom: 20px;" />
-                  <p style="font-size: 14px;margin-bottom: 10px;">Your session has expired</p>
-                  <hr style="margin-bottom: 20px;" />
-                </div>
-              `,
-              showConfirmButton: true,
-              confirmButtonText: "Ok",
-              confirmButtonColor: "blue",
-              heightAuto: true,
-              customClass: {
-                confirmButton:
-                  "bg-primary text-white rounded-full px-4 py-2 text-sm absolute right-4 bottom-4 ",
-              },
-            }).then((result) => {
-              if (result.value) {
-                logOut();
-                router.push("/account");
-              }
-            });
-          }
-        }
-      };
-
       fetchData();
     }
-  }, []);
+  }, [categoryId]);
+
+  const fetchData = async () => {
+    try {
+      const response = await axios(
+        `${baseUrl}/productDetails?categoryId=${categoryId}`
+      );
+      const products = response.data.products;
+
+      // Extracting all the product prices
+      const prices = products.map((product: any) => product.price);
+
+      // Finding the maximum price
+      const maxPrice = Math.max(...prices);
+
+      // Rounding the maximum price
+      let roundedPrice;
+
+      roundedPrice = Math.ceil(maxPrice / 10) * 10;
+    } catch (error: any) {
+      Swal.fire({
+        width: 500,
+        color: "black",
+        background: "white",
+        imageUrl:
+          "https://cdni.iconscout.com/illustration/premium/thumb/something-went-wrong-2511607-2133695.png",
+        imageWidth: 150,
+        imageHeight: 150,
+        imageAlt: "Custom image",
+        html: `
+          <div style="text-align: center;">
+            <p style="font-size: 14px;">${error.response.data.message}</p>
+          </div>
+        `,
+        showCloseButton: true,
+        showCancelButton: false,
+        showConfirmButton: false,
+        heightAuto: true,
+      });
+    }
+  };
 
   const router = useRouter();
 
@@ -90,6 +69,7 @@ export const RangeSlider = ({ categoryId }: any) => {
       setMaxValue(maxPrice);
     }
   }, [router.query]);
+
   const handleMin = (e: ChangeEvent<HTMLInputElement>) => {
     e.persist();
     e.preventDefault();

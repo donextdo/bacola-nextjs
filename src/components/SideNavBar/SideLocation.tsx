@@ -3,6 +3,7 @@ import { MdKeyboardArrowDown } from "react-icons/md";
 import { FiSearch } from "react-icons/fi";
 import axios from "axios";
 import baseUrl from "../../../utils/baseUrl";
+import Swal from "sweetalert2";
 
 interface LocationType {
   dollar_min: any;
@@ -12,69 +13,92 @@ interface LocationType {
   min: string;
 }
 const SideLocation = () => {
-    const [showModal, setShowModal] = useState<boolean>(false);
+  const [showModal, setShowModal] = useState<boolean>(false);
 
-    const [location, setLocation] = useState<LocationType[]>([]);
-  
-    const [locationName, setLocationName] = useState<string>("Select a Location");
-  
-    const [searchQuery, setSearchQuery] = useState<string>("");
-    const filteredLocation = location.filter((item) =>
-      item.locationName.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-  
-    useEffect(() => {
-      const fetchData = async () => {
-        const response = await axios.get(`${baseUrl}/locations/getAll`);
-  
-        const locations = response.data;
-  
-        setLocation(locations);
-      };
-      fetchData();
-      setLocationName(locationName);
-    }, [locationName]);
-  
-    const handleModal = () => {
-      setShowModal(true);
-    };
-  
-    const handleSelectLocation = (location: any) => {
-      localStorage.clear();
-      setLocationName(location.locationName);
-      setShowModal(false);
-      localStorage.setItem("selectedLocation", location.locationName);
-    };
-    const getInitialLocation = () => {
-      const selectedLocation = localStorage.getItem("selectedLocation");
-      if (selectedLocation) {
-        setLocationName(selectedLocation);
-      }
-    };
-  
-    const handleClearLocation = () => {
-      localStorage.clear();
-      const name = "Select a Location";
-      setLocationName(name);
-      setShowModal(false);
-      localStorage.setItem("selectedLocation", name);
-    };
-  
-    const getClearLocation = () => {
-      const selectedLocationString = localStorage.getItem("selectedLocation");
-      if (selectedLocationString) {
-        setLocationName(selectedLocationString);
-      } else {
-        setLocationName("Select a Location");
-      }
-    };
-  
-    useEffect(() => {
-      getInitialLocation();
-      getClearLocation();
-    }, []);
-    return ( 
-        <div className=" z-40">
+  const [location, setLocation] = useState<LocationType[]>([]);
+
+  const [locationName, setLocationName] = useState<string>("Select a Location");
+
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const filteredLocation = location.filter((item) =>
+    item.locationName.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  useEffect(() => {
+    fetchData();
+    setLocationName(locationName);
+  }, [locationName]);
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(`${baseUrl}/locations/getAll`);
+
+      const locations = response.data;
+
+      setLocation(locations);
+    } catch (error: any) {
+      Swal.fire({
+        width: 500,
+        color: "black",
+        background: "white",
+        imageUrl:
+          "https://cdni.iconscout.com/illustration/premium/thumb/something-went-wrong-2511607-2133695.png",
+        imageWidth: 150,
+        imageHeight: 150,
+        imageAlt: "Custom image",
+        html: `
+          <div style="text-align: center;">
+            <p style="font-size: 14px;">${error.response.data.message}</p>
+          </div>
+        `,
+        showCloseButton: true,
+        showCancelButton: false,
+        showConfirmButton: false,
+        heightAuto: true,
+      });
+    }
+  };
+
+  const handleModal = () => {
+    setShowModal(true);
+  };
+
+  const handleSelectLocation = (location: any) => {
+    localStorage.clear();
+    setLocationName(location.locationName);
+    setShowModal(false);
+    localStorage.setItem("selectedLocation", location.locationName);
+  };
+  const getInitialLocation = () => {
+    const selectedLocation = localStorage.getItem("selectedLocation");
+    if (selectedLocation) {
+      setLocationName(selectedLocation);
+    }
+  };
+
+  const handleClearLocation = () => {
+    localStorage.clear();
+    const name = "Select a Location";
+    setLocationName(name);
+    setShowModal(false);
+    localStorage.setItem("selectedLocation", name);
+  };
+
+  const getClearLocation = () => {
+    const selectedLocationString = localStorage.getItem("selectedLocation");
+    if (selectedLocationString) {
+      setLocationName(selectedLocationString);
+    } else {
+      setLocationName("Select a Location");
+    }
+  };
+
+  useEffect(() => {
+    getInitialLocation();
+    getClearLocation();
+  }, []);
+  return (
+    <div className=" z-40">
       <div
         className="border border-gray-200 rounded-md relative flex flex-row justify-start items-center h-[60px] w-full py-6 px-4 shadow-sm cursor-pointer"
         onClick={handleModal}
@@ -190,7 +214,7 @@ const SideLocation = () => {
         </div>
       )}
     </div>
-     );
-}
- 
+  );
+};
+
 export default SideLocation;

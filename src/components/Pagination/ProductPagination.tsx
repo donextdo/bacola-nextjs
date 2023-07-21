@@ -35,30 +35,28 @@ export const ProductPagination = ({
   useEffect(() => {
     if (!perpage) {
       const fetchData = async () => {
-        try {
-          let url = `${baseUrl}/products?sort=${orderby}&page=${page}`;
+        let url = `${baseUrl}/products?sort=${orderby}&page=${page}`;
 
-          if (brand) {
-            url += `&brands=${brand}`;
-          }
-          if (minValue && maxValue) {
-            url += `&min_price=${minValue}&max_price=${maxValue}`;
-          }
-          if (inStock) {
-            url += `&stock_status=${inStock}`;
-          }
-          if (onSale) {
-            url += `&on_sale=${onSale}`;
-          }
-          let token: any;
-          if (typeof localStorage !== "undefined") {
-            token = localStorage.getItem("token");
-          }
-          const response = await axios.get(url, {
-            headers: {
-              authorization: `Bearer ${token}`,
-            },
-          });
+        if (brand) {
+          url += `&brands=${brand}`;
+        }
+        if (minValue && maxValue) {
+          url += `&min_price=${minValue}&max_price=${maxValue}`;
+        }
+        if (inStock) {
+          url += `&stock_status=${inStock}`;
+        }
+        if (onSale) {
+          url += `&on_sale=${onSale}`;
+        }
+        let token: any;
+        if (typeof localStorage !== "undefined") {
+          token = localStorage.getItem("token");
+        }
+
+        try {
+          const response = await axios.get(url);
+
           const products = response.data.products;
 
           if (products.length === 0) {
@@ -66,37 +64,51 @@ export const ProductPagination = ({
 
           setProduct(products);
         } catch (error: any) {
-          return error;
+          Swal.fire({
+            width: 500,
+            color: "black",
+            background: "white",
+            imageUrl:
+              "https://cdni.iconscout.com/illustration/premium/thumb/something-went-wrong-2511607-2133695.png",
+            imageWidth: 150,
+            imageHeight: 150,
+            imageAlt: "Custom image",
+            html: `
+          <div style="text-align: center;">
+            <p style="font-size: 14px;">${error.response.data.message}</p>
+          </div>
+        `,
+            showCloseButton: true,
+            showCancelButton: false,
+            showConfirmButton: false,
+            heightAuto: true,
+          });
         }
       };
 
       fetchData();
     } else if (perpage || orderby) {
       const fetchData = async () => {
-        try {
-          let url = `${baseUrl}/products?sort=${orderby}&page=${page}&perpage=${perpage}`;
+        let url = `${baseUrl}/products?sort=${orderby}&page=${page}&perpage=${perpage}`;
 
-          if (brand) {
-            url += `&brands=${brand}`;
-          }
-          if (minValue && maxValue) {
-            url += `&min_price=${minValue}&max_price=${maxValue}`;
-          }
-          if (inStock) {
-            url += `&stock_status=${inStock}`;
-          }
-          if (onSale) {
-            url += `&on_sale=${onSale}`;
-          }
-          let token: any;
-          if (typeof localStorage !== "undefined") {
-            token = localStorage.getItem("token");
-          }
-          const response = await axios.get(url, {
-            headers: {
-              authorization: `Bearer ${token}`,
-            },
-          });
+        if (brand) {
+          url += `&brands=${brand}`;
+        }
+        if (minValue && maxValue) {
+          url += `&min_price=${minValue}&max_price=${maxValue}`;
+        }
+        if (inStock) {
+          url += `&stock_status=${inStock}`;
+        }
+        if (onSale) {
+          url += `&on_sale=${onSale}`;
+        }
+        let token: any;
+        if (typeof localStorage !== "undefined") {
+          token = localStorage.getItem("token");
+        }
+        try {
+          const response = await axios.get(url);
           const products = response.data.products;
 
           if (products.length === 0) {
@@ -104,7 +116,25 @@ export const ProductPagination = ({
 
           setProduct(products);
         } catch (error: any) {
-          return error;
+          Swal.fire({
+            width: 500,
+            color: "black",
+            background: "white",
+            imageUrl:
+              "https://cdni.iconscout.com/illustration/premium/thumb/something-went-wrong-2511607-2133695.png",
+            imageWidth: 150,
+            imageHeight: 150,
+            imageAlt: "Custom image",
+            html: `
+          <div style="text-align: center;">
+            <p style="font-size: 14px;">${error.response.data.message}</p>
+          </div>
+        `,
+            showCloseButton: true,
+            showCancelButton: false,
+            showConfirmButton: false,
+            heightAuto: true,
+          });
         }
       };
 

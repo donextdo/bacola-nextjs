@@ -3,6 +3,7 @@ import { Product } from "./product";
 import productList from "../product/data.json";
 import baseUrl from "../../../utils/baseUrl";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 interface ProductsState {
   products: Product[];
@@ -21,8 +22,30 @@ const PRODUCTS_URL = `${baseUrl}/products/getAll`;
 export const fetchProducts = createAsyncThunk(
   "product/fetchProducts",
   async () => {
-    const response = await axios.get(PRODUCTS_URL);
-    return response.data;
+    try {
+      const response = await axios.get(PRODUCTS_URL);
+      return response.data;
+    } catch (error: any) {
+      Swal.fire({
+        width: 500,
+        color: "black",
+        background: "white",
+        imageUrl:
+          "https://cdni.iconscout.com/illustration/premium/thumb/something-went-wrong-2511607-2133695.png",
+        imageWidth: 150,
+        imageHeight: 150,
+        imageAlt: "Custom image",
+        html: `
+          <div style="text-align: center;">
+            <p style="font-size: 14px;">${error.response.data.message}</p>
+          </div>
+        `,
+        showCloseButton: true,
+        showCancelButton: false,
+        showConfirmButton: false,
+        heightAuto: true,
+      });
+    }
   }
 );
 

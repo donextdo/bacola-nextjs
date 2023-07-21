@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import baseUrl from "../../../utils/baseUrl";
 import { User } from "./user";
+import Swal from "sweetalert2";
 
 interface UserState {
   user: User | null;
@@ -20,16 +21,60 @@ const USER_URL = `${baseUrl}/users`;
 export const createUserAsync = createAsyncThunk(
   "user/createUserAsync",
   async (userData: User) => {
-    const response = await axios.post(USER_URL, userData);
-    return response.data;
+    try {
+      const response = await axios.post(USER_URL, userData);
+      return response.data;
+    } catch (error: any) {
+      Swal.fire({
+        width: 500,
+        color: "black",
+        background: "white",
+        imageUrl:
+          "https://cdni.iconscout.com/illustration/premium/thumb/something-went-wrong-2511607-2133695.png",
+        imageWidth: 150,
+        imageHeight: 150,
+        imageAlt: "Custom image",
+        html: `
+          <div style="text-align: center;">
+            <p style="font-size: 14px;">${error.response.data.message}</p>
+          </div>
+        `,
+        showCloseButton: true,
+        showCancelButton: false,
+        showConfirmButton: false,
+        heightAuto: true,
+      });
+    }
   }
 );
 
 export const getUserAsync = createAsyncThunk(
   "user/getUserAsync",
   async (userId: string) => {
-    const response = await axios.get(`${USER_URL}/${userId}`);
-    return response.data;
+    try {
+      const response = await axios.get(`${USER_URL}/${userId}`);
+      return response.data;
+    } catch (error: any) {
+      Swal.fire({
+        width: 500,
+        color: "black",
+        background: "white",
+        imageUrl:
+          "https://cdni.iconscout.com/illustration/premium/thumb/something-went-wrong-2511607-2133695.png",
+        imageWidth: 150,
+        imageHeight: 150,
+        imageAlt: "Custom image",
+        html: `
+          <div style="text-align: center;">
+            <p style="font-size: 14px;">${error.response.data.message}</p>
+          </div>
+        `,
+        showCloseButton: true,
+        showCancelButton: false,
+        showConfirmButton: false,
+        heightAuto: true,
+      });
+    }
   }
 );
 

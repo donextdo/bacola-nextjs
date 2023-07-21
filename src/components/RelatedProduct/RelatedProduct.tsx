@@ -41,6 +41,7 @@ const RelatedProduct = ({ passgrid, findcategory }: any) => {
     const displayedProducts = matchedProducts.slice(0, 4);
     setmatchWithProduct(displayedProducts);
   }, [relatedProduct, productsRidux]);
+
   return (
     <div className="container mx-auto">
       <div className="text-[20px] font-semibold font-ff-headings">
