@@ -308,8 +308,8 @@ const ProductPopup = ({ setProductPopup, proId }: any) => {
     graystars.push(<FaStar />);
   }
   return (
-    <div className="fixed inset-0 z-50 grid place-items-center bg-slate-900 bg-opacity-50">
-      <div className="py-6 px-4 mx-2 flex gap-6 flex-col relative bg-white shadow-md rounded-md w-full lg:w-[1024px]">
+    <div className="fixed inset-x-4 z-50 grid place-items-center bg-slate-900 bg-opacity-50 top-4">
+      <div className="pt-2 mx-2 flex gap-2 flex-col relative bg-white shadow-md rounded-md w-full lg:w-[1024px] max-h-screen overflow-y-auto ">
         <div className="flex justify-end px-2">
           <button
             onClick={handleclose}
@@ -318,7 +318,7 @@ const ProductPopup = ({ setProductPopup, proId }: any) => {
             <IoClose className="text-white" />
           </button>
         </div>
-        <div className=" bg-white  rounded-md px-6 mt-4 ">
+        <div className=" bg-white rounded-md pb-5 px-[20px]">
           <div className="w-full mb-[1.875rem]">
             <h1 className=" capitalize text-[1.5rem] font-semibold">
               {data.title}
