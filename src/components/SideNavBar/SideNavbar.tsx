@@ -79,9 +79,9 @@ const SideNavBar = ({ setShowSideNavbar, handleSideNavbar }: any) => {
                       HOME
                     </div>
                   </Link>
-                  <div>
+                  {/* <div>
                     <MdKeyboardArrowDown className="text-xl text-[#d3d4d7]" />
-                  </div>
+                  </div> */}
                 </div>
               </div>
               <hr className="my-[10px] md:my-[20px]" />
@@ -94,9 +94,9 @@ const SideNavBar = ({ setShowSideNavbar, handleSideNavbar }: any) => {
                       SHOP
                     </div>
                   </Link>
-                  <div>
+                  {/* <div>
                     <MdKeyboardArrowDown className="text-xl text-[#d3d4d7]" />
-                  </div>
+                  </div> */}
                 </div>
               </div>
               <hr className="my-[10px] md:my-[20px]" />

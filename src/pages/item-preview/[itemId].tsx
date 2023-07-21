@@ -132,27 +132,7 @@ const ItemPages = () => {
           "https://www.tiffincurry.ca/wp-content/uploads/2021/02/default-product.png"
         );
       }
-    } catch (error: any) {
-      Swal.fire({
-        width: 500,
-        color: "black",
-        background: "white",
-        imageUrl:
-          "https://cdni.iconscout.com/illustration/premium/thumb/something-went-wrong-2511607-2133695.png",
-        imageWidth: 150,
-        imageHeight: 150,
-        imageAlt: "Custom image",
-        html: `
-          <div style="text-align: center;">
-            <p style="font-size: 14px;">${error.response.data.message}</p>
-          </div>
-        `,
-        showCloseButton: true,
-        showCancelButton: false,
-        showConfirmButton: false,
-        heightAuto: true,
-      });
-    }
+    } catch (error: any) {}
   }
 
   // slide image
@@ -211,6 +191,7 @@ const ItemPages = () => {
       const res = await axios.get(`${baseUrl}/categories/get/${findcategory}`);
       setMyCategory(res.data);
     } catch (error: any) {
+      console.log({ error });
       Swal.fire({
         width: 500,
         color: "black",
@@ -378,7 +359,31 @@ const ItemPages = () => {
         if (typeof localStorage !== "undefined") {
           token = localStorage.getItem("token");
         }
-
+        if (!token) {
+          Swal.fire({
+            width: 700,
+            color: "black",
+            background: "white",
+            html: `
+                <div style="text-align: left;">
+                  <h2 style="font-size: 20px; font-weight: bold; margin-bottom: 10px;">Session Expired</h2>
+                  <hr style="margin-bottom: 20px;" />
+                  <p style="font-size: 14px;margin-bottom: 10px;">You Need to Sign In</p>
+                  <hr style="margin-bottom: 20px;" />
+                </div>
+              `,
+            showCloseButton: true,
+            showCancelButton: false,
+            showConfirmButton: true,
+            confirmButtonText: "Ok",
+            confirmButtonColor: "bg-primary",
+            heightAuto: true,
+            customClass: {
+              confirmButton:
+                "text-white rounded-full px-4 py-2 text-sm absolute right-4 bottom-4 ",
+            },
+          });
+        }
         const config = {
           headers: {
             authorization: `Bearer ${token}`,
@@ -391,32 +396,25 @@ const ItemPages = () => {
           config
         );
       } catch (error: any) {
-        if (error?.response?.status == 403 || error?.response?.status == 401) {
+        if (error?.response?.status == 500) {
           Swal.fire({
-            width: 700,
+            width: 500,
             color: "black",
             background: "white",
+            imageUrl:
+              "https://cdni.iconscout.com/illustration/premium/thumb/something-went-wrong-2511607-2133695.png",
+            imageWidth: 150,
+            imageHeight: 150,
+            imageAlt: "Custom image",
             html: `
-                <div style="text-align: left;">
-                  <h2 style="font-size: 20px; font-weight: bold; margin-bottom: 10px;">Session Expired</h2>
-                  <hr style="margin-bottom: 20px;" />
-                  <p style="font-size: 14px;margin-bottom: 10px;">Your session has expired</p>
-                  <hr style="margin-bottom: 20px;" />
-                </div>
-              `,
-            showConfirmButton: true,
-            confirmButtonText: "Ok",
-            confirmButtonColor: "bg-primary",
+              <div style="text-align: center;">
+                <p style="font-size: 14px;">${error.response.data.message}</p>
+              </div>
+            `,
+            showCloseButton: true,
+            showCancelButton: false,
+            showConfirmButton: false,
             heightAuto: true,
-            customClass: {
-              confirmButton:
-                "bg-primary text-white rounded-full px-4 py-2 text-sm absolute right-4 bottom-4 ",
-            },
-          }).then((result) => {
-            if (result.value) {
-              logOut();
-              router.push("/account");
-            }
           });
         }
       }
@@ -515,6 +513,15 @@ const ItemPages = () => {
   const titleToDisplay = expanded
     ? data.title
     : data.title.substring(0, MAX_TITLE_LENGTH) + "...";
+
+  const redirectFilterPage = (name: any) => {
+    console.log({ name });
+    router.push({
+      pathname: "/filterProduct",
+      query: { categoryId: name?._id },
+    });
+  };
+
   return (
     <>
       <div className="bg-[#f7f8fd] ">
@@ -524,35 +531,39 @@ const ItemPages = () => {
           </div>
           {/* working one */}
           <div className=" bg-white drop-shadow rounded-md px-6 pt-10 mt-2 ">
-            <div className="w-full mb-[1.875rem]">
+            <div className="w-full mb-[1.875rem] ">
               <h1
                 className=" capitalize text-[1.5rem] font-semibold "
                 onClick={() => setExpanded(!expanded)}
               >
                 {data.title.length > 20 ? titleToDisplay : data.title}
               </h1>
-              <div className="flex flex-row bg-white text-[0.75rem] ">
-                <span className="text-gray-400 ">Brands: </span>
-                <span className="ml-1"> {data.brand}</span>
+              <div className=" bg-white text-[0.75rem] flex flex-col sm:flex-row gap-1">
+                <div className="flex flex-row items-center gap-2">
+                  <span className="text-gray-400 ">Brands: </span>
+                  <span className=""> {data.brand}</span>
 
-                <div className="text-gray-400 mx-3">|</div>
-                <span className="text-gray-400 ">
-                  <div className="flex flex-row max-h-[18px] max-w-[130.49px] items-center justify-center">
-                    <p className="text-md text-yellow-400 flex">
-                      {yellowstars}
-                    </p>
-                    <p className="text-md text-gray-400 flex">{graystars}</p>
-                  </div>
-                </span>
-                <span className="ml-1">
-                  <div className="uppercase  text-gray-400 font-semibold ml-2 text-[11px] flex items-center justify-center">
-                    {allreview.length} REVIEW
-                  </div>
-                </span>
-
-                <div className="text-gray-400 mx-3">|</div>
-                <span className="text-gray-400 ">SKU: </span>
-                <span className="ml-1">{data.skuNumber}</span>
+                  <div className="text-gray-400  sm:block hidden">|</div>
+                  <span className="text-gray-400 ">
+                    <div className="flex flex-row max-h-[18px] max-w-[130.49px] items-center justify-center">
+                      <p className="text-md text-yellow-400 flex">
+                        {yellowstars}
+                      </p>
+                      <p className="text-md text-gray-400 flex ">{graystars}</p>
+                    </div>
+                  </span>
+                  <span className="">
+                    <div className="uppercase  text-gray-400 font-semibold text-[11px] flex items-center justify-center">
+                      {allreview.length} REVIEW
+                    </div>
+                  </span>
+                </div>
+                <div className="flex flex-row items-center gap-2">
+                  {" "}
+                  <div className="text-gray-400  sm:block hidden">|</div>
+                  <span className="text-gray-400 ">SKU: </span>
+                  <span className="">{data.skuNumber}</span>
+                </div>
               </div>
             </div>
 
@@ -593,9 +604,12 @@ const ItemPages = () => {
                     />
                   </div>
                   <div className="flex gap-2 justify-center">
-                    <button className="arrow left" onClick={prevSlide}>
-                      <MdArrowBackIos />
-                    </button>
+                    {combinedArray.length > 3 && (
+                      <button className="arrow left" onClick={prevSlide}>
+                        <MdArrowBackIos />
+                      </button>
+                    )}
+
                     <div className="flex items-center justify-center row min-h-[63px] max-w-[421.2px] md:min-h-[67px] md:max-w-[444.66px]">
                       {combinedArray
                         .slice(currentSlide, currentSlide + 3)
@@ -632,9 +646,11 @@ const ItemPages = () => {
                           </div>
                         ))}
                     </div>
-                    <button className="arrow right" onClick={nextSlide}>
-                      <MdArrowForwardIos />
-                    </button>
+                    {combinedArray.length > 3 && (
+                      <button className="arrow right" onClick={nextSlide}>
+                        <MdArrowForwardIos />
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>
@@ -765,9 +781,9 @@ const ItemPages = () => {
                           {myCategory.map((cat: any, index) => (
                             <a
                               key={index}
-                              href=""
                               rel="tag"
-                              className="ml-2 text-gray-600 text-xs capitalize"
+                              onClick={() => redirectFilterPage(cat)}
+                              className="ml-2 text-gray-600 text-xs capitalize cursor-pointer"
                             >
                               {cat.name}
                             </a>
