@@ -90,25 +90,27 @@ export const SearchItem = () => {
 
         localStorage.setItem("catName", JSON.stringify(res.data[0].name));
       } catch (error: any) {
-        Swal.fire({
-          width: 500,
-          color: "black",
-          background: "white",
-          imageUrl:
-            "https://cdni.iconscout.com/illustration/premium/thumb/something-went-wrong-2511607-2133695.png",
-          imageWidth: 150,
-          imageHeight: 150,
-          imageAlt: "Custom image",
-          html: `
-            <div style="text-align: center;">
-              <p style="font-size: 14px;">${error.message}</p>
-            </div>
-          `,
-          showCloseButton: true,
-          showCancelButton: false,
-          showConfirmButton: false,
-          heightAuto: true,
-        });
+        if (error?.response?.status == 500) {
+          Swal.fire({
+            width: 500,
+            color: "black",
+            background: "white",
+            imageUrl:
+              "https://cdni.iconscout.com/illustration/premium/thumb/something-went-wrong-2511607-2133695.png",
+            imageWidth: 150,
+            imageHeight: 150,
+            imageAlt: "Custom image",
+            html: `
+              <div style="text-align: center;">
+                <p style="font-size: 14px;">${error.message}</p>
+              </div>
+            `,
+            showCloseButton: true,
+            showCancelButton: false,
+            showConfirmButton: false,
+            heightAuto: true,
+          });
+        }
       }
     }
   };
