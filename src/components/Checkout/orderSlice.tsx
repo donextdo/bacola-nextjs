@@ -18,16 +18,21 @@ const initialState: OrderState = {
 
 const PRODUCTS_URL = `${baseUrl}/orders/get`;
 const PRODUCTS_URL_SET = `${baseUrl}/orders/place`;
-
+let token: any;
+if (typeof localStorage !== "undefined") {
+  token = localStorage.getItem("token");
+}
 export const insertOrderAsync = createAsyncThunk(
   "order/insertOrderAsync",
   async (orderObj: OrderObj) => {
     try {
-      const response = await axios.post(PRODUCTS_URL_SET, orderObj);
+      const response = await axios.post(PRODUCTS_URL_SET, orderObj, {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
       return response.data;
-    } catch (error: any) {
-      return error;
-    }
+    } catch (error: any) {}
   }
 );
 
@@ -35,11 +40,13 @@ export const getOrdersByUserIdAsync = createAsyncThunk(
   "order/getOrdersByUserIdAsync",
   async (id: string) => {
     try {
-      const res = await axios.get(`${PRODUCTS_URL}/${id}`);
+      const res = await axios.get(`${PRODUCTS_URL}/${id}`, {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
       return res.data;
-    } catch (error: any) {
-      return error;
-    }
+    } catch (error: any) {}
   }
 );
 

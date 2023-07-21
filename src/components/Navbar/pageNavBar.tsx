@@ -7,6 +7,7 @@ import { MdKeyboardArrowDown } from "react-icons/md";
 import { useRouter } from "next/router";
 import axios from "axios";
 import baseUrl from "../../../utils/baseUrl";
+import Swal from "sweetalert2";
 const PageNavBar = () => {
   const [homeOpen, setHomeOpen] = useState(false);
   const router = useRouter();
@@ -19,46 +20,41 @@ const PageNavBar = () => {
   const toggleShop = () => {
     setShopOpen(shopOpen);
   };
+
   const handleMeat = async (categoryId: any) => {
-    if (categoryId == "Meats & Seafood") {
+    try {
       const response = await axios.get(
         `${baseUrl}/categories/catname/${categoryId}`
       );
+      const categoryIdResponse = response.data[0]._id;
+
       router.push({
         pathname: "/filterProduct",
-        query: { categoryId: response.data[0]._id },
+        query: { categoryId: categoryIdResponse },
       });
-    } else if (categoryId == "Breads & Bakery") {
-      const response = await axios.get(
-        `${baseUrl}/categories/catname/${categoryId}`
-      );
-      router.push({
-        pathname: "/filterProduct",
-        query: { categoryId: response.data[0]._id },
-      });
-    } else if (categoryId == "Beverages") {
-      const response = await axios.get(
-        `${baseUrl}/categories/catname/${categoryId}`
-      );
-      router.push({
-        pathname: "/filterProduct",
-        query: { categoryId: response.data[0]._id },
+    } catch (error: any) {
+      Swal.fire({
+        width: 500,
+        color: "black",
+        background: "white",
+        imageUrl:
+          "https://cdni.iconscout.com/illustration/premium/thumb/something-went-wrong-2511607-2133695.png",
+        imageWidth: 150,
+        imageHeight: 150,
+        imageAlt: "Custom image",
+        html: `
+          <div style="text-align: center;">
+            <p style="font-size: 14px;">${error.response.data.message}</p>
+          </div>
+        `,
+        showCloseButton: true,
+        showCancelButton: false,
+        showConfirmButton: false,
+        heightAuto: true,
       });
     }
   };
-  // const handleBakery = async (categoryId: any) => {
-  //   router.push({
-  //     pathname: "/filterProduct",
-  //     query: { categoryId: categoryId },
-  //   });
-  // };
-  // const handleBeverage = async (categoryId: any) => {
-  //   router.push({
-  //     pathname: "/filterProduct",
-  //     query: { categoryId: categoryId },
-  //   });
-  // };
-  //644007834ddc2982ee097a72
+
   return (
     <div className="lg:flex lg:flex-row ">
       <ul className="lg:space-x-1 lg:flex gap gap-0">

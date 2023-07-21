@@ -3,6 +3,7 @@ import axios from "axios";
 import baseUrl from "../../../utils/baseUrl";
 import { useRouter } from "next/router";
 import { uniqBy } from "lodash";
+import Swal from "sweetalert2";
 
 const Brands = ({ categoryId }: any) => {
   const [brand, setBrand] = useState([]);
@@ -17,19 +18,7 @@ const Brands = ({ categoryId }: any) => {
 
   useEffect(() => {
     setCheckedBrands([]);
-
-    const fetchData = async () => {
-      try {
-        if (categoryId) {
-          const response = await axios.get(`${baseUrl}/products/${categoryId}`);
-          setBrand(response.data);
-          setIsEmpty(response.data.length === 0);
-        }
-      } catch (error: any) {
-        console.log({ error });
-      }
-    };
-    fetchData();
+    fetchDataOne();
     const queryBrands = router.query.brands;
     if (typeof queryBrands === "string") {
       const selectedBrands = queryBrands.split(",");
@@ -40,6 +29,36 @@ const Brands = ({ categoryId }: any) => {
       setCheckedBrands(newCheckedBrands);
     }
   }, [categoryId]);
+
+  const fetchDataOne = async () => {
+    try {
+      if (categoryId) {
+        const response = await axios.get(`${baseUrl}/products/${categoryId}`);
+        setBrand(response.data);
+        setIsEmpty(response.data.length === 0);
+      }
+    } catch (error: any) {
+      Swal.fire({
+        width: 500,
+        color: "black",
+        background: "white",
+        imageUrl:
+          "https://cdni.iconscout.com/illustration/premium/thumb/something-went-wrong-2511607-2133695.png",
+        imageWidth: 150,
+        imageHeight: 150,
+        imageAlt: "Custom image",
+        html: `
+          <div style="text-align: center;">
+            <p style="font-size: 14px;">${error.response.data.message}</p>
+          </div>
+        `,
+        showCloseButton: true,
+        showCancelButton: false,
+        showConfirmButton: false,
+        heightAuto: true,
+      });
+    }
+  };
 
   const handleBrandClick = (brandId: any) => {
     const newCheckedBrands = { ...checkedBrands };
@@ -56,15 +75,36 @@ const Brands = ({ categoryId }: any) => {
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(`${baseUrl}/productDetails/brand`);
-        setBrandPage(response.data);
-        setIsEmpty(response.data.length === 0);
-      } catch (error: any) {}
-    };
     fetchData();
   }, []);
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(`${baseUrl}/productDetails/brand`);
+      setBrandPage(response.data);
+      setIsEmpty(response.data.length === 0);
+    } catch (error: any) {
+      Swal.fire({
+        width: 500,
+        color: "black",
+        background: "white",
+        imageUrl:
+          "https://cdni.iconscout.com/illustration/premium/thumb/something-went-wrong-2511607-2133695.png",
+        imageWidth: 150,
+        imageHeight: 150,
+        imageAlt: "Custom image",
+        html: `
+          <div style="text-align: center;">
+            <p style="font-size: 14px;">${error.response.data.message}</p>
+          </div>
+        `,
+        showCloseButton: true,
+        showCancelButton: false,
+        showConfirmButton: false,
+        heightAuto: true,
+      });
+    }
+  };
 
   return (
     <div>

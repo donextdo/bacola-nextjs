@@ -133,7 +133,7 @@ const Orders = () => {
     try {
       let token: any;
       if (typeof localStorage !== "undefined") {
-         token = localStorage.getItem("token");
+        token = localStorage.getItem("token");
       }
 
       const res = await axios.get(`${baseUrl}/orders/${orderId}`, {
