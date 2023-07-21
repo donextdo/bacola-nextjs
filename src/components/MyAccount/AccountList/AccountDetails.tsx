@@ -38,36 +38,7 @@ const AccountDetails = () => {
       setLastName(data.lastName);
       setDisplayName(data.displayName);
       setEmail(data.email);
-    } catch (error: any) {
-      if (error?.response?.status == 403 || error?.response?.status == 401) {
-        Swal.fire({
-          width: 700,
-          color: "black",
-          background: "white",
-          html: `
-            <div style="text-align: left;">
-              <h2 style="font-size: 20px; font-weight: bold; margin-bottom: 10px;">Session Expired</h2>
-              <hr style="margin-bottom: 20px;" />
-              <p style="font-size: 14px;margin-bottom: 10px;">Your session has expired</p>
-              <hr style="margin-bottom: 20px;" />
-            </div>
-          `,
-          showConfirmButton: true,
-          confirmButtonText: "Ok",
-          confirmButtonColor: "bg-primary",
-          heightAuto: true,
-          customClass: {
-            confirmButton:
-              "bg-primary text-white rounded-full px-4 py-2 text-sm absolute right-4 bottom-4 ",
-          },
-        }).then((result) => {
-          if (result.value) {
-            logOut();
-            router.push("/account");
-          }
-        });
-      }
-    }
+    } catch (error: any) {}
   }
 
   const handleSaveChanges = async () => {
@@ -92,36 +63,7 @@ const AccountDetails = () => {
           confirmButtonColor: "#8DC14F",
         });
       }
-    } catch (error: any) {
-      if (error?.response?.status == 403 || error?.response?.status == 401) {
-        Swal.fire({
-          width: 700,
-          color: "black",
-          background: "white",
-          html: `
-            <div style="text-align: left;">
-              <h2 style="font-size: 20px; font-weight: bold; margin-bottom: 10px;">Session Expired</h2>
-              <hr style="margin-bottom: 20px;" />
-              <p style="font-size: 14px;margin-bottom: 10px;">Your session has expired</p>
-              <hr style="margin-bottom: 20px;" />
-            </div>
-          `,
-          showConfirmButton: true,
-          confirmButtonText: "Ok",
-          confirmButtonColor: "bg-primary",
-          heightAuto: true,
-          customClass: {
-            confirmButton:
-              "bg-primary text-white rounded-full px-4 py-2 text-sm absolute right-4 bottom-4 ",
-          },
-        }).then((result) => {
-          if (result.value) {
-            logOut();
-            router.push("/account");
-          }
-        });
-      }
-    }
+    } catch (error: any) {}
   };
 
   return (

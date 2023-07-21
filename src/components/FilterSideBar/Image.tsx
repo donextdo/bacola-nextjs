@@ -21,9 +21,9 @@ export const ImageProductFilter = () => {
             <div className="lg:flex lg:flex-row flex flex-row mb-4">
               <h1 className="text-black font-bold lg:text-3xl text-3xl">
                 Delivered to&nbsp;
-              </h1>
-              <h1 className="text-green-600 font-bold lg:text-3xl text-3xl">
-                your Home
+                <span className="text-green-600 font-bold lg:text-3xl text-3xl">
+                  your Home
+                </span>
               </h1>
             </div>
             <h1 className="text-gray-400 lg:text-sm text-sm">

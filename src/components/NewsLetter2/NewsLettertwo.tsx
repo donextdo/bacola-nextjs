@@ -7,10 +7,11 @@ import Swal from "sweetalert2";
 
 const NewsLettertwo = () => {
   const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handlesubscribe = async (e: any) => {
     e.preventDefault();
-
+    setLoading(true);
     try {
       const response = await axios.post(`${baseUrl}/subscribe/insert`, {
         email,
@@ -18,35 +19,52 @@ const NewsLettertwo = () => {
 
       if (response.status === 200) {
         // Handle successful subscription
+        setLoading(false);
+
         setEmail("");
-        alert("Subscription successful");
+        Swal.fire({
+          title: "Success",
+          text: "Your billing address has been updated successfully",
+          icon: "success",
+          confirmButtonText: "Done",
+          confirmButtonColor: "#8DC14F",
+        });
       } else {
         // Handle subscription error
         const { message } = response.data;
-        alert(`Subscription failed: ${message}`);
+        Swal.fire({
+          title: "error",
+          text: `Subscription failed: ${message} `,
+          icon: "success",
+          confirmButtonText: "Done",
+          confirmButtonColor: "#8DC14F",
+        });
       }
     } catch (error: any) {
       // alert("Subscription successful");
       // Handle fetch error
-      Swal.fire({
-        width: 500,
-        color: "black",
-        background: "white",
-        imageUrl:
-          "https://cdni.iconscout.com/illustration/premium/thumb/something-went-wrong-2511607-2133695.png",
-        imageWidth: 150,
-        imageHeight: 150,
-        imageAlt: "Custom image",
-        html: `
+      if (error?.response?.status == 500) {
+        console.log({ error });
+        Swal.fire({
+          width: 500,
+          color: "black",
+          background: "white",
+          imageUrl:
+            "https://cdni.iconscout.com/illustration/premium/thumb/something-went-wrong-2511607-2133695.png",
+          imageWidth: 150,
+          imageHeight: 150,
+          imageAlt: "Custom image",
+          html: `
           <div style="text-align: center;">
-            <p style="font-size: 14px;">${error.response.data.message}</p>
+            <p style="font-size: 14px;">${error.message}</p>
           </div>
         `,
-        showCloseButton: true,
-        showCancelButton: false,
-        showConfirmButton: false,
-        heightAuto: true,
-      });
+          showCloseButton: true,
+          showCancelButton: false,
+          showConfirmButton: false,
+          heightAuto: true,
+        });
+      }
     }
   };
 
@@ -86,7 +104,7 @@ const NewsLettertwo = () => {
                   type="submit"
                   className="absolute top-1/2 transform -translate-y-1/2 right-2 bg-[#233a95] py-2 px-4 text-white rounded-md lg:py-[15px]"
                 >
-                  Subscribe
+                  {loading ? <>Loading...</> : <>Subscribe</>}
                 </button>
               </div>
             </form>

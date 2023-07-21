@@ -51,36 +51,7 @@ const Wishlist = () => {
         },
       });
       setData(res.data.whishList);
-    } catch (error: any) {
-      if (error?.response?.status == 403 || error?.response?.status == 401) {
-        Swal.fire({
-          width: 700,
-          color: "black",
-          background: "white",
-          html: `
-              <div style="text-align: left;">
-                <h2 style="font-size: 20px; font-weight: bold; margin-bottom: 10px;">Session Expired</h2>
-                <hr style="margin-bottom: 20px;" />
-                <p style="font-size: 14px;margin-bottom: 10px;">Your session has expired</p>
-                <hr style="margin-bottom: 20px;" />
-              </div>
-            `,
-          showConfirmButton: true,
-          confirmButtonText: "Ok",
-          confirmButtonColor: "bg-primary",
-          heightAuto: true,
-          customClass: {
-            confirmButton:
-              "bg-primary text-white rounded-full px-4 py-2 text-sm absolute right-4 bottom-4 ",
-          },
-        }).then((result) => {
-          if (result.value) {
-            logOut();
-            router.push("/account");
-          }
-        });
-      }
-    }
+    } catch (error: any) {}
   }
 
   const [checkAll, setCheckAll] = useState(false);
@@ -109,6 +80,31 @@ const Wishlist = () => {
     const items = cartItemsString ? JSON.parse(cartItemsString) : [];
 
     try {
+      if (!token) {
+        Swal.fire({
+          width: 700,
+          color: "black",
+          background: "white",
+          html: `
+              <div style="text-align: left;">
+                <h2 style="font-size: 20px; font-weight: bold; margin-bottom: 10px;">Session Expired</h2>
+                <hr style="margin-bottom: 20px;" />
+                <p style="font-size: 14px;margin-bottom: 10px;">You Need to Sign In</p>
+                <hr style="margin-bottom: 20px;" />
+              </div>
+            `,
+          showCloseButton: true,
+          showCancelButton: false,
+          showConfirmButton: true,
+          confirmButtonText: "Ok",
+          confirmButtonColor: "bg-primary",
+          heightAuto: true,
+          customClass: {
+            confirmButton:
+              "text-white rounded-full px-4 py-2 text-sm absolute right-4 bottom-4 ",
+          },
+        });
+      }
       const res = await axios.delete(`${baseUrl}/users/${id}/wishList/${_id}`, {
         headers: {
           authorization: `Bearer ${token}`,
@@ -117,32 +113,25 @@ const Wishlist = () => {
       const newItems = data.filter((item) => item.productId !== _id);
       setData(newItems);
     } catch (error: any) {
-      if (error?.response?.status == 403 || error?.response?.status == 401) {
+      if (error?.response?.status == 500) {
         Swal.fire({
-          width: 700,
+          width: 500,
           color: "black",
           background: "white",
+          imageUrl:
+            "https://cdni.iconscout.com/illustration/premium/thumb/something-went-wrong-2511607-2133695.png",
+          imageWidth: 150,
+          imageHeight: 150,
+          imageAlt: "Custom image",
           html: `
-                <div style="text-align: left;">
-                  <h2 style="font-size: 20px; font-weight: bold; margin-bottom: 10px;">Session Expired</h2>
-                  <hr style="margin-bottom: 20px;" />
-                  <p style="font-size: 14px;margin-bottom: 10px;">Your session has expired</p>
-                  <hr style="margin-bottom: 20px;" />
-                </div>
-              `,
-          showConfirmButton: true,
-          confirmButtonText: "Ok",
-          confirmButtonColor: "bg-primary",
+            <div style="text-align: center;">
+              <p style="font-size: 14px;">${error.response.data.message}</p>
+            </div>
+          `,
+          showCloseButton: true,
+          showCancelButton: false,
+          showConfirmButton: false,
           heightAuto: true,
-          customClass: {
-            confirmButton:
-              "bg-primary text-white rounded-full px-4 py-2 text-sm absolute right-4 bottom-4 ",
-          },
-        }).then((result) => {
-          if (result.value) {
-            logOut();
-            router.push("/account");
-          }
         });
       }
     }
