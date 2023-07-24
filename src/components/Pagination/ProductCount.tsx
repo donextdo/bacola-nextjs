@@ -7,7 +7,7 @@ import { BiSortAlt2 } from "react-icons/bi";
 import { FiFilter } from "react-icons/fi";
 import SidebarFilter from "./SidebarFilter";
 
-export const ProductCount = ({ passgrid }: any) => {
+export const ProductCount = () => {
   const [count, setCount] = useState(12);
   const [showMenu, setShowMenu] = useState(false);
   const [sortBy, setSortBy] = useState("Sort by popularity");
@@ -97,7 +97,6 @@ export const ProductCount = ({ passgrid }: any) => {
   const handleGrid = (gridType: any) => {
     setIsClick(gridType);
     localStorage.setItem("gridType", gridType);
-    passgrid(gridType);
   };
 
   useEffect(() => {

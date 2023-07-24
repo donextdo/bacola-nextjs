@@ -23,10 +23,9 @@ import { addRecentlyClickedProductId } from "./recentlyClickedSlice";
 import { logOut } from "../../../utils/logout";
 interface Props {
   product: Product;
-  isGrid: string;
 }
 
-export const ProductCard: FC<Props> = ({ product, isGrid }) => {
+export const ProductCard: FC<Props> = ({ product }) => {
   const [isDiscount, setIsdiscount] = useState(false);
   // const [productPopup, setProductPopup] = useState(false);
   const [wishlist, setWishlist] = useState([]);
@@ -38,6 +37,7 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
   const [grid, setGrid] = useState<string>("");
   const router = useRouter();
   const [count, setCount] = useState(0);
+  const [isGrid, setIsGrid] = useState();
   const totalAmountCal = useSelector(
     (state: RootState) => state.cart.totalAmount
   );
@@ -63,7 +63,7 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
     } else {
       setGrid(getItem || "");
     }
-  }, [isGrid]);
+  }, []);
 
   const handleProductClick = (product: Product) => {
     router.push(`/item-preview/${product._id}`);
@@ -92,9 +92,7 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
         );
 
         localStorage.setItem("catName", JSON.stringify(res.data[0].name));
-      } catch (error: any) {
-       
-      }
+      } catch (error: any) {}
     }
   };
 
@@ -376,8 +374,6 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
                 </div>
                 <div className="text-xs pt-2 flex flex-row items-center my-1 ">
                   {stars}
-                  {/* <p className="text-md text-yellow-400 flex">{yellowstars}</p>
-      <p className="text-md text-gray-400 flex">{graystars}</p> */}
                 </div>
                 <div className=" flex flex-row items-center">
                   {isDiscount && (

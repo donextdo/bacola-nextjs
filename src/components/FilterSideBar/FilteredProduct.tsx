@@ -127,11 +127,7 @@ export const FilteredProduct = ({
             }`}
           >
             {products.map((product) => (
-              <ProductCard
-                key={product._id}
-                product={product}
-                isGrid={passgrid}
-              />
+              <ProductCard key={product._id} product={product} />
             ))}
           </div>
         </div>

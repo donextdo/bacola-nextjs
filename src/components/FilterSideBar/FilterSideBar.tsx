@@ -51,7 +51,7 @@ export const FilterSideBar = ({
             <ImageProductFilter />
           </div>
           <div>
-            <ProductCount passgrid={handleGridChange} />
+            <ProductCount />
           </div>
           <div className="lg:mt-12 md:mt-12 mt-12 cursor-pointer">
             <FilteredProduct
@@ -72,7 +72,7 @@ export const FilterSideBar = ({
         </div>
       </div>
       <div className="container mx-auto xl:px-40 px-5 pt-20 mb-8">
-        <RecentlyViewProduct passgrid={passgrid} />
+        <RecentlyViewProduct />
       </div>
     </>
   );

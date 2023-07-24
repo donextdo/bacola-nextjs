@@ -51,7 +51,7 @@ export const HomePagination = ({
             <ImageProductFilter />
           </div>
           <div>
-            <ProductCount passgrid={handleGridChange} />
+            <ProductCount />
           </div>
           <div className="mt-10">
             <ProductPagination
@@ -60,7 +60,6 @@ export const HomePagination = ({
               maxValue={maxValue}
               inStock={inStock}
               onSale={onSale}
-              passgrid={passgrid}
               perpage={perpage}
               page={page}
               orderby={orderby}
@@ -74,7 +73,7 @@ export const HomePagination = ({
         </div>
       </div>
       <div className="pb-20 pt-20">
-        <RecentlyViewProduct passgrid={passgrid} />
+        <RecentlyViewProduct />
       </div>
     </>
   );
