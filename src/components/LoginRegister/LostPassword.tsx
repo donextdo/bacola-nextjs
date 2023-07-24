@@ -7,26 +7,33 @@ import { useRouter } from "next/router";
 export const LostPassword = () => {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
-  const router = useRouter();
+  const [loading, setLoading] = useState(false); // Add a loading state
 
   const handleUser = async (e: any) => {
     e.preventDefault();
+    setLoading(true); // Set loading to true when the button is clicked
+    if (email != "") {
+      try {
+        const response = await fetch(`${baseUrl}/users/forgot-password`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email }),
+        });
 
-    try {
-      const response = await fetch(`${baseUrl}/users/forgot-password`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
-      });
-
-      const data = await response.json();
-      if (response.ok) {
-        setMessage("Please verify the email");
-      } else {
-        setMessage(data.message);
+        const data = await response.json();
+        if (response.ok) {
+          setMessage("Please verify the email");
+        } else {
+          setMessage(data.message);
+        }
+      } catch (error) {
+        setMessage("An error occurred. Please try again later.");
+      } finally {
+        setLoading(false); // Set loading to false once the response is received
       }
-    } catch (error) {
-      setMessage("An error occurred. Please try again later.");
+    } else {
+      setLoading(false);
+      setMessage("Please Enter the email");
     }
   };
 
@@ -61,13 +68,15 @@ export const LostPassword = () => {
       <div className="mt-5  mb-2">
         <button
           type="submit"
-          className=" rounded-md block bg-[#233a95] text-center text-sm font-semibold text-white w-[150px] h-[40px]"
+          className="rounded-md block bg-[#233a95] text-center text-sm font-semibold text-white w-[150px] h-[40px] mb-10"
           onClick={handleUser}
+          disabled={loading} // Disable the button when loading is true
         >
-          Reset password
+          {loading ? "Loading..." : "Reset password"}{" "}
+          {/* Show loading text while loading */}
         </button>
       </div>
-      <p>{message}</p>
+      <p className=" mb-10">{message}</p>
     </div>
   );
 };

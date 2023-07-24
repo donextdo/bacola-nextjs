@@ -8,7 +8,7 @@ import { Product } from "@/features/product/product";
 import { fetchProducts } from "@/features/product/productSlice";
 import Swal from "sweetalert2";
 
-export const RecentlyViewProduct = () => {
+export const RecentlyViewProduct = ({ passgrid }: any) => {
   const [product, setProduct] = useState<any[]>([]);
   const [matchWithProduct, setmatchWithProduct] = useState<Product[]>([]);
   const dispatch = useDispatch<AppDispatch>();
@@ -105,7 +105,13 @@ export const RecentlyViewProduct = () => {
           <div className=" mt-5">
             <div className="grid 2xl:grid-cols-4 lg:grid-cols-4 md:grid-cols-3 grid-cols-2">
               {matchWithProduct.map((product: any, index) => {
-                return <ProductCard key={product._id} product={product} />;
+                return (
+                  <ProductCard
+                    key={product._id}
+                    product={product}
+                    isGrid={passgrid}
+                  />
+                );
               })}
             </div>
           </div>

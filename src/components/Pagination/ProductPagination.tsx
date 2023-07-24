@@ -24,7 +24,6 @@ export const ProductPagination = ({
   const [product, setProduct] = useState<Product[]>([]);
   const [isGrid, setIsGrid] = useState<String>();
   const dispatch = useDispatch<AppDispatch>();
-
   const productsRidux = useSelector(
     (state: RootState) => state.product.products
   ) as Product[];
@@ -150,7 +149,7 @@ export const ProductPagination = ({
     } else {
       setIsGrid(getItem);
     }
-  }, [localStorage.getItem("gridType")]);
+  }, [passgrid]);
 
   return (
     <div>
@@ -158,8 +157,8 @@ export const ProductPagination = ({
         <div className="mx-auto ">
           <div
             className={`mx-auto ${
-              isGrid === "fillGrid"
-                ? "grid lg:grid-cols-2 md:grid-cols-2 grid-cols-2"
+              isGrid === "list"
+                ? "grid lg:grid-cols-1 md:grid-cols-1 grid-cols-1"
                 : isGrid === "fillGrid"
                 ? "grid lg:grid-cols-2 md:grid-cols-2 grid-cols-2"
                 : isGrid === "grid3X3Gap"
@@ -174,7 +173,7 @@ export const ProductPagination = ({
                 <ProductCard
                   key={product.id}
                   product={product}
-                  // isGrid={passgrid}
+                  isGrid={passgrid}
                 />
               );
             })}

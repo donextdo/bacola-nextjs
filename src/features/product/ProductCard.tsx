@@ -23,9 +23,10 @@ import { addRecentlyClickedProductId } from "./recentlyClickedSlice";
 import { logOut } from "../../../utils/logout";
 interface Props {
   product: Product;
+  isGrid: string;
 }
 
-export const ProductCard: FC<Props> = ({ product }) => {
+export const ProductCard: FC<Props> = ({ product, isGrid }) => {
   const [isDiscount, setIsdiscount] = useState(false);
   // const [productPopup, setProductPopup] = useState(false);
   const [wishlist, setWishlist] = useState([]);
@@ -37,7 +38,6 @@ export const ProductCard: FC<Props> = ({ product }) => {
   const [grid, setGrid] = useState<string>("");
   const router = useRouter();
   const [count, setCount] = useState(0);
-  const [isGrid, setIsGrid] = useState();
   const totalAmountCal = useSelector(
     (state: RootState) => state.cart.totalAmount
   );
@@ -57,13 +57,17 @@ export const ProductCard: FC<Props> = ({ product }) => {
   }, [count, totalAmountCal]);
 
   useEffect(() => {
-    const getItem: string | null = localStorage.getItem("gridType");
-    if (getItem == "list") {
-      setGrid("list");
+    if (isGrid == "layoutGrid") {
+      setGrid("layoutGrid");
     } else {
-      setGrid(getItem || "");
+      const getItem: string | null = localStorage.getItem("gridType");
+      if (getItem == "list") {
+        setGrid("list");
+      } else {
+        setGrid(getItem || "");
+      }
     }
-  }, []);
+  }, [isGrid]);
 
   const handleProductClick = (product: Product) => {
     router.push(`/item-preview/${product._id}`);
@@ -307,6 +311,7 @@ export const ProductCard: FC<Props> = ({ product }) => {
                 >
                   <div
                     className={`bg-white flex items-center justify-center rounded-full h-8 w-8 hover:cursor-pointer drop-shadow-lg md:invisible group-hover:visible md:group-hover:-translate-x-3 md:group-hover:ease-in transition duration-150 hover:bg-blue-900 group/icon1`}
+                    onClick={() => handleWishlist(product)}
                   >
                     {product.isFavourite ? (
                       <FaHeart className="h-3 w-3 fill-blue-900 group-hover/icon1:fill-white" />
@@ -374,6 +379,8 @@ export const ProductCard: FC<Props> = ({ product }) => {
                 </div>
                 <div className="text-xs pt-2 flex flex-row items-center my-1 ">
                   {stars}
+                  {/* <p className="text-md text-yellow-400 flex">{yellowstars}</p>
+      <p className="text-md text-gray-400 flex">{graystars}</p> */}
                 </div>
                 <div className=" flex flex-row items-center">
                   {isDiscount && (

@@ -35,6 +35,10 @@ const MyList: React.FC<{
         pathname: "/filterProduct",
         query: { categoryId: category._id },
       });
+    } else {
+      router.push({
+        pathname: "/shop",
+      });
     }
   };
   return (
