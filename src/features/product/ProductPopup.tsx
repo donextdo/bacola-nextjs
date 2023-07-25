@@ -325,7 +325,7 @@ const ProductPopup = ({ setProductPopup, proId }: any) => {
     graystars.push(<FaStar />);
   }
   return (
-    <div className="fixed inset-x-4 z-50 grid place-items-center bg-slate-900 bg-opacity-50 top-4">
+    <div className="fixed inset-0 z-50 grid place-items-center bg-slate-900 bg-opacity-50 ">
       <div className="pt-2 mx-2 flex gap-2 flex-col relative bg-white shadow-md rounded-md w-full lg:w-[1024px] max-h-screen overflow-y-auto ">
         <div className="flex justify-end px-2">
           <button
