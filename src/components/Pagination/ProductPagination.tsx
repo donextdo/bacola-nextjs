@@ -2,12 +2,7 @@ import React, { useState, useEffect, FC } from "react";
 import { ProductCard } from "@/features/product/ProductCard";
 import baseUrl from "../../../utils/baseUrl";
 import axios from "axios";
-import { useRouter } from "next/router";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "@/redux/store";
 import { Product } from "@/features/product/product";
-import { fetchProducts } from "@/features/product/productSlice";
-import { logOut } from "../../../utils/logout";
 import Swal from "sweetalert2";
 
 export const ProductPagination = ({
@@ -24,19 +19,11 @@ export const ProductPagination = ({
   const [product, setProduct] = useState<Product[]>([]);
   const [isGrid, setIsGrid] = useState<String>();
   const [favoriteProductIds, setFavoriteProductIds] = useState<string[]>([]);
-  const dispatch = useDispatch<AppDispatch>();
+
   let id: any;
   if (typeof localStorage !== "undefined") {
     id = localStorage.getItem("id");
   }
-  const productsRidux = useSelector(
-    (state: RootState) => state.product.products
-  ) as Product[];
-  useEffect(() => {
-    dispatch(fetchProducts());
-  }, [dispatch]);
-  const router = useRouter();
-
   useEffect(() => {
     if (!perpage) {
       const fetchData = async () => {
@@ -53,10 +40,6 @@ export const ProductPagination = ({
         }
         if (onSale) {
           url += `&on_sale=${onSale}`;
-        }
-        let token: any;
-        if (typeof localStorage !== "undefined") {
-          token = localStorage.getItem("token");
         }
 
         try {
@@ -108,16 +91,10 @@ export const ProductPagination = ({
         if (onSale) {
           url += `&on_sale=${onSale}`;
         }
-        let token: any;
-        if (typeof localStorage !== "undefined") {
-          token = localStorage.getItem("token");
-        }
+
         try {
           const response = await axios.get(url);
           const products = response.data.products;
-
-          if (products.length === 0) {
-          }
 
           setProduct(products);
         } catch (error: any) {
@@ -187,16 +164,14 @@ export const ProductPagination = ({
                 : ""
             }`}
           >
-            {product.map((product: any, index) => {
-              return (
-                <ProductCard
-                  key={product.id}
-                  product={product}
-                  isFavourite={favoriteProductIds.includes(product._id)}
-                  isGrid={passgrid}
-                />
-              );
-            })}
+            {product.map((product) => (
+              <ProductCard
+                key={product._id}
+                product={product}
+                isFavourite={favoriteProductIds.includes(product._id)}
+                isGrid={passgrid}
+              />
+            ))}
           </div>
         </div>
       ) : (

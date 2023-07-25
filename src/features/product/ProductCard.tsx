@@ -66,8 +66,6 @@ export const ProductCard: FC<Props> = ({ product, isGrid, isFavourite }) => {
 
   const fetchFavouriteProducts = async () => {
     setFavoriteStatus(isFavourite);
-    console.log({ favoriteStatus });
-    console.log({ isFavourite });
   };
 
   useEffect(() => {
@@ -104,16 +102,28 @@ export const ProductCard: FC<Props> = ({ product, isGrid, isFavourite }) => {
   };
 
   const saveCategoryName = async (product: any) => {
+    console.log({ product });
     let findcategory: any;
     if (product.category.length > 0) {
       findcategory = product.category[0]._id;
-      try {
-        const res = await axios.get(
-          `${baseUrl}/categories/get/${findcategory}`
-        );
+      if (!findcategory) {
+        findcategory = product.category[0];
+        try {
+          const res = await axios.get(
+            `${baseUrl}/categories/get/${findcategory}`
+          );
 
-        localStorage.setItem("catName", JSON.stringify(res.data[0].name));
-      } catch (error: any) {}
+          localStorage.setItem("catName", JSON.stringify(res.data[0].name));
+        } catch (error: any) {}
+      } else if (findcategory) {
+        try {
+          const res = await axios.get(
+            `${baseUrl}/categories/get/${findcategory}`
+          );
+
+          localStorage.setItem("catName", JSON.stringify(res.data[0].name));
+        } catch (error: any) {}
+      }
     }
   };
 

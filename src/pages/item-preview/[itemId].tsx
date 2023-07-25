@@ -38,6 +38,7 @@ import {
   WishListPopup,
   WishListWrongPopup,
 } from "@/features/product/WishListPopup";
+import Loader from "@/components/Loader/Loader";
 
 const ItemPages = () => {
   const [data, setData] = useState<Product>({
@@ -88,6 +89,7 @@ const ItemPages = () => {
   const [modalWrongWishList, setModalWrongWishList] = useState(false);
   const [prodId, setProId] = useState();
   const [isFavourite, setIsFavourite] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   let id: any;
   if (typeof localStorage !== "undefined") {
@@ -117,15 +119,16 @@ const ItemPages = () => {
   }, [itemId]);
 
   async function fetchDataIsFavourite() {
+    setLoading(true);
+    console.log("A");
     const userId = id;
     const productId = itemId;
-
     try {
       const response = await axios.post(`${baseUrl}/users/checkIsFavourite`, {
         userId,
         productId,
       });
-
+      // setLoading(false);
       setIsFavourite(response.data.isFavourite);
     } catch (error) {
       setIsFavourite(null);
@@ -133,6 +136,9 @@ const ItemPages = () => {
   }
 
   async function fetchData() {
+    setLoading(true);
+    console.log("B");
+
     try {
       const res = await axios.get(`${baseUrl}/products/getOne/${itemId}`);
 
@@ -157,11 +163,15 @@ const ItemPages = () => {
           "https://www.tiffincurry.ca/wp-content/uploads/2021/02/default-product.png"
         );
       }
+      // setLoading(false);
     } catch (error: any) {}
   }
 
   // slide image
   useEffect(() => {
+    setLoading(true);
+    console.log("C");
+
     const imageArray = [];
 
     if (data.back) {
@@ -177,6 +187,7 @@ const ItemPages = () => {
     }
 
     setImageArray1(imageArray);
+    // setLoading(false);
   }, [data.back, data.front, data.side]);
 
   const combinedArray = [...imageArray1, ...imageArray2];
@@ -212,11 +223,14 @@ const ItemPages = () => {
   }, [findcategory]);
 
   async function fetchData2() {
+    setLoading(true);
+    console.log("D");
+
     try {
       const res = await axios.get(`${baseUrl}/categories/get/${findcategory}`);
       setMyCategory(res.data);
+      setLoading(false);
     } catch (error: any) {
-      console.log({ error });
       Swal.fire({
         width: 500,
         color: "black",
@@ -244,9 +258,13 @@ const ItemPages = () => {
     fetchData3();
   }, []);
   async function fetchData3() {
+    setLoading(true);
+    console.log("E");
+
     try {
       const res = await axios.get(`${baseUrl}/reviews/getReview/${itemId}`);
       setAllreview(res.data);
+      // setLoading(false);
     } catch (error: any) {
       Swal.fire({
         width: 500,
@@ -547,7 +565,6 @@ const ItemPages = () => {
     : data.title.substring(0, MAX_TITLE_LENGTH) + "...";
 
   const redirectFilterPage = (name: any) => {
-    console.log({ name });
     router.push({
       pathname: "/filterProduct",
       query: { categoryId: name?._id },
@@ -556,518 +573,528 @@ const ItemPages = () => {
 
   return (
     <>
-      <div className="bg-[#f7f8fd] ">
-        <div className="container mx-auto xl:px-40 px-5 m-8 py-6 ">
-          <div className=" pb-3">
-            <Breadcrumbs crumbs={breadcrumbs}></Breadcrumbs>
-          </div>
-          {/* working one */}
-          <div className=" bg-white drop-shadow rounded-md px-6 pt-10 mt-2 ">
-            <div className="w-full mb-[1.875rem] ">
-              <h1
-                className=" capitalize text-[1.5rem] font-semibold "
-                onClick={() => setExpanded(!expanded)}
-              >
-                {data.title.length > 20 ? titleToDisplay : data.title}
-              </h1>
-              <div className=" bg-white text-[0.75rem] flex flex-col sm:flex-row gap-1">
-                <div className="flex flex-row items-center gap-2">
-                  <span className="text-gray-400 ">Brands: </span>
-                  <span className=""> {data.brand}</span>
-
-                  <div className="text-gray-400  sm:block hidden">|</div>
-                  <span className="text-gray-400 ">
-                    <div className="flex flex-row max-h-[18px] max-w-[130.49px] items-center justify-center">
-                      <p className="text-md text-yellow-400 flex">
-                        {yellowstars}
-                      </p>
-                      <p className="text-md text-gray-400 flex ">{graystars}</p>
-                    </div>
-                  </span>
-                  <span className="">
-                    <div className="uppercase  text-gray-400 font-semibold text-[11px] flex items-center justify-center">
-                      {allreview.length} REVIEW
-                    </div>
-                  </span>
-                </div>
-                <div className="flex flex-row items-center gap-2">
-                  {" "}
-                  <div className="text-gray-400  sm:block hidden">|</div>
-                  <span className="text-gray-400 ">SKU: </span>
-                  <span className="">{data.skuNumber}</span>
-                </div>
+      <>
+        <div className="bg-[#f7f8fd] ">
+          {loading ? (
+            <Loader />
+          ) : (
+            <div className="container mx-auto xl:px-40 px-5 m-8 py-6 ">
+              <div className=" pb-3">
+                <Breadcrumbs crumbs={breadcrumbs}></Breadcrumbs>
               </div>
-            </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-7 w-full min-h-[600px]">
-              <div className="col-span-3">
-                <div className="relative  max-h-[579.2px] max-w-[466.66px] ">
-                  <div className="absolute max-w-[88.41px] max-h-[49px] flex flex-col items-start gap-1 p-2">
-                    {data?.discount && (
-                      <div className=" font-semibold max-w-[45.39px] max-h-[24px] px-4 py-1 bg-sky-400 text-white rounded text-[10px] flex items-center justify-center">
-                        {data?.discount != undefined ? data.discount : 0}%
-                      </div>
-                    )}
-                    {data?.isRecommended && (
-                      <div className=" font-semibold px-2 py-1 bg-gray-500 text-white rounded text-[10px] flex items-center justify-center uppercase tracking-tighter">
-                        Recommended
-                      </div>
-                    )}
-                    {data?.speacialtag == "organic" && (
-                      <div className=" font-semibold px-2 py-1 bg-emerald-100 text-green-600 rounded-full text-[10px] flex items-center justify-center uppercase tracking-tighter">
-                        {data.speacialtag}
-                      </div>
-                    )}
-                    {data?.speacialtag == "Recommended" && (
-                      <div className=" font-semibold px-2 py-1 bg-gray-500 text-white rounded text-[10px] flex items-center justify-center uppercase tracking-tighter">
-                        {data.speacialtag}
-                      </div>
-                    )}
-                  </div>
-                  <div
-                    className="hover:cursor-pointer flex items-center justify-center px-12 "
-                    onClick={openModal}
+              {/* working one */}
+              <div className=" bg-white drop-shadow rounded-md px-6 pt-10 mt-2 ">
+                <div className="w-full mb-[1.875rem] ">
+                  <h1
+                    className=" capitalize text-[1.5rem] font-semibold "
+                    onClick={() => setExpanded(!expanded)}
                   >
-                    <img
-                      width={390}
-                      height={436}
-                      src={selectedImage || combinedArray[0]}
-                      alt="mainImage"
-                    />
-                  </div>
-                  <div className="flex gap-2 justify-center">
-                    {combinedArray.length > 3 && (
-                      <button className="arrow left" onClick={prevSlide}>
-                        <MdArrowBackIos />
-                      </button>
-                    )}
+                    {data.title.length > 20 ? titleToDisplay : data.title}
+                  </h1>
+                  <div className=" bg-white text-[0.75rem] flex flex-col sm:flex-row gap-1">
+                    <div className="flex flex-row items-center gap-2">
+                      <span className="text-gray-400 ">Brands: </span>
+                      <span className=""> {data.brand}</span>
 
-                    <div className="flex items-center justify-center row min-h-[63px] max-w-[421.2px] md:min-h-[67px] md:max-w-[444.66px]">
-                      {combinedArray
-                        .slice(currentSlide, currentSlide + 3)
-                        .map((photo, index) => (
-                          <div
-                            key={index}
-                            className={`flex items-center justify-center min-w-[67px] min-h-[67px] lg:min-w-[67px] lg:min-h-[67px] md:min-w-[94.4px] md:min-h-[94.4px] border ${
-                              selectedImage === photo
-                                ? "border-gray-500"
-                                : "border-gray-200"
-                            } mr-2 hover:cursor-pointer`}
-                            onClick={() =>
-                              handleImageClick(currentSlide + index)
-                            }
-                          >
-                            {(!hideSideImage ||
-                              !hideBackImage ||
-                              !hideFrontImage) &&
-                            photo ? (
-                              <img
-                                width={67}
-                                height={67}
-                                src={photo}
-                                alt="Man looking at item at a store"
-                              />
-                            ) : (
-                              <img
-                                width={67}
-                                height={67}
-                                src={photo}
-                                alt="Default image"
-                              />
-                            )}
-                          </div>
-                        ))}
+                      <div className="text-gray-400  sm:block hidden">|</div>
+                      <span className="text-gray-400 ">
+                        <div className="flex flex-row max-h-[18px] max-w-[130.49px] items-center justify-center">
+                          <p className="text-md text-yellow-400 flex">
+                            {yellowstars}
+                          </p>
+                          <p className="text-md text-gray-400 flex ">
+                            {graystars}
+                          </p>
+                        </div>
+                      </span>
+                      <span className="">
+                        <div className="uppercase  text-gray-400 font-semibold text-[11px] flex items-center justify-center">
+                          {allreview.length} REVIEW
+                        </div>
+                      </span>
                     </div>
-                    {combinedArray.length > 3 && (
-                      <button className="arrow right" onClick={nextSlide}>
-                        <MdArrowForwardIos />
-                      </button>
-                    )}
+                    <div className="flex flex-row items-center gap-2">
+                      {" "}
+                      <div className="text-gray-400  sm:block hidden">|</div>
+                      <span className="text-gray-400 ">SKU: </span>
+                      <span className="">{data.skuNumber}</span>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="col-span-4 grid grid-cols-1 xl:grid-cols-2 gap-4 w-full ">
-                <div className="mb-2 w-full">
-                  <div className=" flex flex-row">
-                    <span className="text-gray-400 line-through mr-2 my-1 font-[1.125rem] flex items-center justify-center">
-                      Rs {data?.price.toFixed(2)}
-                    </span>
 
-                    <span className="my-1 text-red-700 text-[1.625rem] font-semibold">
-                      Rs {newprice.toFixed(2)}
-                    </span>
-                  </div>
-                  {data?.quantity > 0 ? (
-                    <div className="font-medium py-2 px-2 mt-2 max-h-[26px] max-w-[68.35px] bg-emerald-100 text-green-600 rounded-full text-[.75rem] flex items-center justify-center uppercase tracking-tighter">
-                      In Stock
-                    </div>
-                  ) : (
-                    <div className="font-medium py-2 px-2 mt-2 max-h-[26px] w-[100px] bg-red-100 text-red-600 rounded-full text-[.75rem] flex items-center justify-center uppercase tracking-tighter">
-                      Out of Stock
-                    </div>
-                  )}
+                <div className="grid grid-cols-1 lg:grid-cols-7 w-full min-h-[600px]">
+                  <div className="col-span-3">
+                    <div className="relative  max-h-[579.2px] max-w-[466.66px] ">
+                      <div className="absolute max-w-[88.41px] max-h-[49px] flex flex-col items-start gap-1 p-2">
+                        {data?.discount && (
+                          <div className=" font-semibold max-w-[45.39px] max-h-[24px] px-4 py-1 bg-sky-400 text-white rounded text-[10px] flex items-center justify-center">
+                            {data?.discount != undefined ? data.discount : 0}%
+                          </div>
+                        )}
+                        {data?.isRecommended && (
+                          <div className=" font-semibold px-2 py-1 bg-gray-500 text-white rounded text-[10px] flex items-center justify-center uppercase tracking-tighter">
+                            Recommended
+                          </div>
+                        )}
+                        {data?.speacialtag == "organic" && (
+                          <div className=" font-semibold px-2 py-1 bg-emerald-100 text-green-600 rounded-full text-[10px] flex items-center justify-center uppercase tracking-tighter">
+                            {data.speacialtag}
+                          </div>
+                        )}
+                        {data?.speacialtag == "Recommended" && (
+                          <div className=" font-semibold px-2 py-1 bg-gray-500 text-white rounded text-[10px] flex items-center justify-center uppercase tracking-tighter">
+                            {data.speacialtag}
+                          </div>
+                        )}
+                      </div>
+                      <div
+                        className="hover:cursor-pointer flex items-center justify-center px-12 "
+                        onClick={openModal}
+                      >
+                        <img
+                          width={390}
+                          height={436}
+                          src={selectedImage || combinedArray[0]}
+                          alt="mainImage"
+                        />
+                      </div>
+                      <div className="flex gap-2 justify-center">
+                        {combinedArray.length > 3 && (
+                          <button className="arrow left" onClick={prevSlide}>
+                            <MdArrowBackIos />
+                          </button>
+                        )}
 
-                  <div className="mt-6 text-[.8125rem]">
-                    <p className=" ">{data.description}</p>
-                  </div>
-                  {/* <div className="fixed bottom-0 left-0 right-0 md:relative md:flex md:flex-row md:items-center md:justify-between md:max-w-[130px] md:mx-auto md:mt-10 md:mb-4 md:px-4">
-                                    <div className="w-full flex items-center justify-between min-h-[44px] md:min-h-auto md:flex-1 md:grid md:grid-cols-3"> */}
-                  <div className="hidden lg:block">
-                    <div className=" w-full lg:min-h-[44px] md:relative md:flex md:flex-row md:w-auto lg:max-w-[130px] md:min-h-[44px] md:max-w-[130px] mt-10 flex flex-row">
-                      <div className=" w-full flex grid-cols-3 min-h-[44px] min-w-[130px]">
-                        <button
-                          type="button"
-                          className="hover:bg-yellow-400 px-4 border-gray-500 bg-gray-300 text-[25px]  rounded-full font-medium"
-                          onClick={() => handleDecrement(data)}
-                        >
-                          -
-                        </button>
-
-                        <div className=" flex items-center justify-center w-full text-center ">
-                          {count}
+                        <div className="flex items-center justify-center row min-h-[63px] max-w-[421.2px] md:min-h-[67px] md:max-w-[444.66px]">
+                          {combinedArray
+                            .slice(currentSlide, currentSlide + 3)
+                            .map((photo, index) => (
+                              <div
+                                key={index}
+                                className={`flex items-center justify-center min-w-[67px] min-h-[67px] lg:min-w-[67px] lg:min-h-[67px] md:min-w-[94.4px] md:min-h-[94.4px] border ${
+                                  selectedImage === photo
+                                    ? "border-gray-500"
+                                    : "border-gray-200"
+                                } mr-2 hover:cursor-pointer`}
+                                onClick={() =>
+                                  handleImageClick(currentSlide + index)
+                                }
+                              >
+                                {(!hideSideImage ||
+                                  !hideBackImage ||
+                                  !hideFrontImage) &&
+                                photo ? (
+                                  <img
+                                    width={67}
+                                    height={67}
+                                    src={photo}
+                                    alt="Man looking at item at a store"
+                                  />
+                                ) : (
+                                  <img
+                                    width={67}
+                                    height={67}
+                                    src={photo}
+                                    alt="Default image"
+                                  />
+                                )}
+                              </div>
+                            ))}
                         </div>
+                        {combinedArray.length > 3 && (
+                          <button className="arrow right" onClick={nextSlide}>
+                            <MdArrowForwardIos />
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-span-4 grid grid-cols-1 xl:grid-cols-2 gap-4 w-full ">
+                    <div className="mb-2 w-full">
+                      <div className=" flex flex-row">
+                        <span className="text-gray-400 line-through mr-2 my-1 font-[1.125rem] flex items-center justify-center">
+                          Rs {data?.price.toFixed(2)}
+                        </span>
 
-                        {/* <div className=" flex items-center justify-center w-full text-center ">
+                        <span className="my-1 text-red-700 text-[1.625rem] font-semibold">
+                          Rs {newprice.toFixed(2)}
+                        </span>
+                      </div>
+                      {data?.quantity > 0 ? (
+                        <div className="font-medium py-2 px-2 mt-2 max-h-[26px] max-w-[68.35px] bg-emerald-100 text-green-600 rounded-full text-[.75rem] flex items-center justify-center uppercase tracking-tighter">
+                          In Stock
+                        </div>
+                      ) : (
+                        <div className="font-medium py-2 px-2 mt-2 max-h-[26px] w-[100px] bg-red-100 text-red-600 rounded-full text-[.75rem] flex items-center justify-center uppercase tracking-tighter">
+                          Out of Stock
+                        </div>
+                      )}
+
+                      <div className="mt-6 text-[.8125rem]">
+                        <p className=" ">{data.description}</p>
+                      </div>
+                      {/* <div className="fixed bottom-0 left-0 right-0 md:relative md:flex md:flex-row md:items-center md:justify-between md:max-w-[130px] md:mx-auto md:mt-10 md:mb-4 md:px-4">
+                                    <div className="w-full flex items-center justify-between min-h-[44px] md:min-h-auto md:flex-1 md:grid md:grid-cols-3"> */}
+                      <div className="hidden lg:block">
+                        <div className=" w-full lg:min-h-[44px] md:relative md:flex md:flex-row md:w-auto lg:max-w-[130px] md:min-h-[44px] md:max-w-[130px] mt-10 flex flex-row">
+                          <div className=" w-full flex grid-cols-3 min-h-[44px] min-w-[130px]">
+                            <button
+                              type="button"
+                              className="hover:bg-yellow-400 px-4 border-gray-500 bg-gray-300 text-[25px]  rounded-full font-medium"
+                              onClick={() => handleDecrement(data)}
+                            >
+                              -
+                            </button>
+
+                            <div className=" flex items-center justify-center w-full text-center ">
+                              {count}
+                            </div>
+
+                            {/* <div className=" flex items-center justify-center w-full text-center ">
                                                     {data.count}
                                                 </div> */}
 
-                        <button
-                          type="button"
-                          className="px-4 hover:bg-yellow-400 border-gray-500 bg-gray-300  text-[20px]   rounded-full  font-medium"
-                          onClick={() => handleIncrement(data)}
-                        >
-                          +
-                        </button>
+                            <button
+                              type="button"
+                              className="px-4 hover:bg-yellow-400 border-gray-500 bg-gray-300  text-[20px]   rounded-full  font-medium"
+                              onClick={() => handleIncrement(data)}
+                            >
+                              +
+                            </button>
+                          </div>
+                          <button
+                            type="button"
+                            className=" bg-blue-900 text-white min-h-[34px] min-w-[140px] rounded-full text-[13px]  ml-4"
+                            onClick={() => handleaddToCart(data)}
+                          >
+                            Add to cart
+                          </button>
+                        </div>
                       </div>
-                      <button
-                        type="button"
-                        className=" bg-blue-900 text-white min-h-[34px] min-w-[140px] rounded-full text-[13px]  ml-4"
-                        onClick={() => handleaddToCart(data)}
-                      >
-                        Add to cart
-                      </button>
-                    </div>
-                  </div>
-                  <div className="flex flex-row mt-10  ">
-                    <div className="max-h-[33px] max-w-[135px] bg-white border border-gray-600 rounded-[2.0625rem] hover:cursor-pointer">
-                      <button
-                        className="flex flex-row px-3 py-2"
-                        onClick={() => handleWishlist(data)}
-                      >
-                        <FaHeart className="h-[15px] w-[15px] text-gray-500"></FaHeart>
-                        {!isFavourite && (
-                          <span className="text-[10.5px] ml-2 tracking-[-0.05em] text-gray-500 font-semibold uppercase">
-                            ADD TO WISHLIST
-                          </span>
-                        )}
-                      </button>
-                    </div>
-                    <div className="ml-4 flex flex-row items-center justify-center">
-                      {/* <button type="button" className="flex flex-row ">
+                      <div className="flex flex-row mt-10  ">
+                        <div className="max-h-[33px] max-w-[135px] bg-white border border-gray-600 rounded-[2.0625rem] hover:cursor-pointer">
+                          <button
+                            className="flex flex-row px-3 py-2"
+                            onClick={() => handleWishlist(data)}
+                          >
+                            <FaHeart className="h-[15px] w-[15px] text-gray-500"></FaHeart>
+                            {!isFavourite && (
+                              <span className="text-[10.5px] ml-2 tracking-[-0.05em] text-gray-500 font-semibold uppercase">
+                                ADD TO WISHLIST
+                              </span>
+                            )}
+                          </button>
+                        </div>
+                        <div className="ml-4 flex flex-row items-center justify-center">
+                          {/* <button type="button" className="flex flex-row ">
                                             <TbArrowsDownUp className="h-[15px] w-[15px] text-gray-500"></TbArrowsDownUp>
                                             <span className="text-[11px] ml-2 tracking-[-0.05em] text-gray-500 font-semibold uppercase">
                                                 compare
                                             </span>
                                         </button> */}
-                    </div>
-                  </div>
-                  <div className="w-full mt-6">
-                    {data.type && (
-                      <div className="flex flex-row text-[.75rem] place-items-start mb-1">
-                        <div className="mr-2">
-                          <BsCheckLg className="h-[15px] w-[15px] text-green-600 stroke-[1px]"></BsCheckLg>
-                        </div>
-                        <div className="">
-                          Type: <span className="">{data.type}</span>
                         </div>
                       </div>
-                    )}
-                    {data.mfgDate && (
-                      <div className="flex flex-row text-[.75rem] place-items-start mb-1">
-                        <div className="mr-2 ">
-                          <BsCheckLg className="h-[15px] w-[15px] text-green-600 stroke-[1px]"></BsCheckLg>
-                        </div>
-
-                        <div className="">
-                          MFG: <span>{data.mfgDate}</span>
-                        </div>
-                      </div>
-                    )}
-
-                    {data.life && (
-                      <div className="flex flex-row text-[.75rem] place-items-start mb-1">
-                        <div className="mr-2">
-                          <BsCheckLg className="h-[15px] w-[15px] text-green-600 stroke-[1px]"></BsCheckLg>
-                        </div>
-
-                        <div className="">
-                          LIFE: <span className="">{data.life}</span>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                  <hr className="max-w-[330px] mt-6"></hr>
-                  <div className="mt-6  max-w-[308.33px]">
-                    {myCategory.length > 0 && (
-                      <div className="flex flex-row">
-                        <span className="text-gray-400 text-xs capitalize">
-                          Category:
-                          {myCategory.map((cat: any, index) => (
-                            <a
-                              key={index}
-                              rel="tag"
-                              onClick={() => redirectFilterPage(cat)}
-                              className="ml-2 text-gray-600 text-xs capitalize cursor-pointer"
-                            >
-                              {cat.name}
-                            </a>
-                          ))}
-                        </span>
-                      </div>
-                    )}
-
-                    {tag.length > 0 && (
-                      <div className="flex">
-                        <span className="text-gray-400 text-xs capitalize">
-                          Tags:
-                        </span>
-                        <div className="flex">
-                          {tag.map((tag: any, index: number) => (
-                            <div key={index} className="flex">
-                              <div className="text-xs">{index > 0 && ","}</div>
-                              <a
-                                href=""
-                                rel="tag"
-                                className="ml-2 text-gray-600 text-xs capitalize flex"
-                              >
-                                {tag.name}
-                              </a>
+                      <div className="w-full mt-6">
+                        {data.type && (
+                          <div className="flex flex-row text-[.75rem] place-items-start mb-1">
+                            <div className="mr-2">
+                              <BsCheckLg className="h-[15px] w-[15px] text-green-600 stroke-[1px]"></BsCheckLg>
                             </div>
-                          ))}
+                            <div className="">
+                              Type: <span className="">{data.type}</span>
+                            </div>
+                          </div>
+                        )}
+                        {data.mfgDate && (
+                          <div className="flex flex-row text-[.75rem] place-items-start mb-1">
+                            <div className="mr-2 ">
+                              <BsCheckLg className="h-[15px] w-[15px] text-green-600 stroke-[1px]"></BsCheckLg>
+                            </div>
+
+                            <div className="">
+                              MFG: <span>{data.mfgDate}</span>
+                            </div>
+                          </div>
+                        )}
+
+                        {data.life && (
+                          <div className="flex flex-row text-[.75rem] place-items-start mb-1">
+                            <div className="mr-2">
+                              <BsCheckLg className="h-[15px] w-[15px] text-green-600 stroke-[1px]"></BsCheckLg>
+                            </div>
+
+                            <div className="">
+                              LIFE: <span className="">{data.life}</span>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                      <hr className="max-w-[330px] mt-6"></hr>
+                      <div className="mt-6  max-w-[308.33px]">
+                        {myCategory.length > 0 && (
+                          <div className="flex flex-row">
+                            <span className="text-gray-400 text-xs capitalize">
+                              Category:
+                              {myCategory.map((cat: any, index) => (
+                                <a
+                                  key={index}
+                                  rel="tag"
+                                  onClick={() => redirectFilterPage(cat)}
+                                  className="ml-2 text-gray-600 text-xs capitalize cursor-pointer"
+                                >
+                                  {cat.name}
+                                </a>
+                              ))}
+                            </span>
+                          </div>
+                        )}
+
+                        {tag.length > 0 && (
+                          <div className="flex">
+                            <span className="text-gray-400 text-xs capitalize">
+                              Tags:
+                            </span>
+                            <div className="flex">
+                              {tag.map((tag: any, index: number) => (
+                                <div key={index} className="flex">
+                                  <div className="text-xs">
+                                    {index > 0 && ","}
+                                  </div>
+                                  <a
+                                    href=""
+                                    rel="tag"
+                                    className="ml-2 text-gray-600 text-xs capitalize flex"
+                                  >
+                                    {tag.name}
+                                  </a>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+
+                        <div className="flex flex-row gap-1.5 max-w-[229px] mt-6 ">
+                          <div className="">
+                            <a
+                              href={facebookShareUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              onClick={facebookShareClick}
+                            >
+                              <div className="h-[34px] w-[34px] rounded-full bg-blue-700 flex items-center justify-center">
+                                <FaFacebookF className="text-white"></FaFacebookF>
+                              </div>
+                            </a>
+                          </div>
+                          <div className="">
+                            <a
+                              href={twitterShareUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              onClick={twitterShareClick}
+                            >
+                              <div className="h-[34px] w-[34px] rounded-full bg-cyan-500 flex items-center justify-center">
+                                <FaTwitter className="text-white"></FaTwitter>
+                              </div>
+                            </a>
+                          </div>
+                          <div className="">
+                            <a
+                              href={pinterestShareUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              onClick={pinterestShareClick}
+                            >
+                              <div className="h-[34px] w-[34px] rounded-full bg-red-600 flex items-center justify-center">
+                                <FaPinterest className="text-white"></FaPinterest>
+                              </div>
+                            </a>
+                          </div>
+                          <div className="">
+                            <a
+                              href={linkedinShareUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              onClick={linkedinShareClick}
+                            >
+                              <div className="h-[34px] w-[34px] rounded-full bg-cyan-700 flex items-center justify-center">
+                                <FaLinkedin className="text-white"></FaLinkedin>
+                              </div>
+                            </a>
+                          </div>
+                          <div className="">
+                            <a
+                              href={redditShareUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              onClick={redditShareClick}
+                            >
+                              <div className="h-[34px] w-[34px] rounded-full bg-orange-600 flex items-center justify-center">
+                                <FaReddit className="text-white"></FaReddit>
+                              </div>
+                            </a>
+                          </div>
+                          <div className="">
+                            <a
+                              href={whatsappShareUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              onClick={whatsappShareClick}
+                            >
+                              <div className="h-[34px] w-[34px] rounded-full bg-green-500 flex items-center justify-center">
+                                <FaWhatsapp className="text-white"></FaWhatsapp>
+                              </div>
+                            </a>
+                          </div>
                         </div>
                       </div>
-                    )}
-
-                    <div className="flex flex-row gap-1.5 max-w-[229px] mt-6 ">
-                      <div className="">
-                        <a
-                          href={facebookShareUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          onClick={facebookShareClick}
-                        >
-                          <div className="h-[34px] w-[34px] rounded-full bg-blue-700 flex items-center justify-center">
-                            <FaFacebookF className="text-white"></FaFacebookF>
-                          </div>
-                        </a>
-                      </div>
-                      <div className="">
-                        <a
-                          href={twitterShareUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          onClick={twitterShareClick}
-                        >
-                          <div className="h-[34px] w-[34px] rounded-full bg-cyan-500 flex items-center justify-center">
-                            <FaTwitter className="text-white"></FaTwitter>
-                          </div>
-                        </a>
-                      </div>
-                      <div className="">
-                        <a
-                          href={pinterestShareUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          onClick={pinterestShareClick}
-                        >
-                          <div className="h-[34px] w-[34px] rounded-full bg-red-600 flex items-center justify-center">
-                            <FaPinterest className="text-white"></FaPinterest>
-                          </div>
-                        </a>
-                      </div>
-                      <div className="">
-                        <a
-                          href={linkedinShareUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          onClick={linkedinShareClick}
-                        >
-                          <div className="h-[34px] w-[34px] rounded-full bg-cyan-700 flex items-center justify-center">
-                            <FaLinkedin className="text-white"></FaLinkedin>
-                          </div>
-                        </a>
-                      </div>
-                      <div className="">
-                        <a
-                          href={redditShareUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          onClick={redditShareClick}
-                        >
-                          <div className="h-[34px] w-[34px] rounded-full bg-orange-600 flex items-center justify-center">
-                            <FaReddit className="text-white"></FaReddit>
-                          </div>
-                        </a>
-                      </div>
-                      <div className="">
-                        <a
-                          href={whatsappShareUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          onClick={whatsappShareClick}
-                        >
-                          <div className="h-[34px] w-[34px] rounded-full bg-green-500 flex items-center justify-center">
-                            <FaWhatsapp className="text-white"></FaWhatsapp>
-                          </div>
-                        </a>
-                      </div>
                     </div>
-                  </div>
-                </div>
-                <div className="pb-4 mt-10 xl:mt-0">
-                  {/* <div className="flex flex-row items-center justify-center max-h-[38px] w-full rounded  bg-red-100  text-[.8125rem] p-6 text-red-800">
+                    <div className="pb-4 mt-10 xl:mt-0">
+                      {/* <div className="flex flex-row items-center justify-center max-h-[38px] w-full rounded  bg-red-100  text-[.8125rem] p-6 text-red-800">
                                         Covid-19 Info: We keep delivering.
                                     </div> */}
-                  <div className=" bg-gray-100  p-6 py-10 space-y-8 mt-4">
-                    <div className="flex flex-row place-items-center">
-                      <div className="mr-4">
-                        <FaShippingFast className="min-w-[30px] min-h-[20px]"></FaShippingFast>
-                      </div>
-                      <div className="text-xs">
-                        Free Shipping apply to all orders over Rs 100
-                      </div>
-                    </div>
-                    <div className="flex flex-row place-items-center ">
-                      <div className="mr-4">
-                        <GiMedicinePills className="min-w-[30px] min-h-[20px]"></GiMedicinePills>
-                      </div>
-                      <div className="text-xs">
-                        Guranteed 100% Organic from natural farmas
-                      </div>
-                    </div>
-                    {/* <div className="flex flex-row place-items-center ">
+                      <div className=" bg-gray-100  p-6 py-10 space-y-8 mt-4">
+                        <div className="flex flex-row place-items-center">
+                          <div className="mr-4">
+                            <FaShippingFast className="min-w-[30px] min-h-[20px]"></FaShippingFast>
+                          </div>
+                          <div className="text-xs">
+                            Free Shipping apply to all orders over Rs 100
+                          </div>
+                        </div>
+                        <div className="flex flex-row place-items-center ">
+                          <div className="mr-4">
+                            <GiMedicinePills className="min-w-[30px] min-h-[20px]"></GiMedicinePills>
+                          </div>
+                          <div className="text-xs">
+                            Guranteed 100% Organic from natural farmas
+                          </div>
+                        </div>
+                        {/* <div className="flex flex-row place-items-center ">
                                             <div className="mr-4">
                                                 <HiOutlineCurrencyDollar className="min-w-[30px] min-h-[20px] "></HiOutlineCurrencyDollar>
                                             </div>
                                             <div>1 Day Returns if you change your mind</div>
                                         </div> */}
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
 
-          <div className="bg-white drop-shadow rounded-md mt-10 pb-5">
-            <div className=" flex flex-col sm:flex-row gap-4 sm:gap-8  justify-start text-left text-gray-400 py-5 px-6">
-              <button
-                className={`   ${
-                  isColor === 1 ? "text-black" : "text-[#c2c2d3]"
-                }`}
-                onClick={() => handleChange(1)}
-              >
-                DESCRIPTION
-              </button>
-              {data.additionalInformation?.length > 0 && (
-                <button
-                  className={`  ${
-                    isColor === 2 ? "text-black" : "text-[#c2c2d3]"
-                  }`}
-                  onClick={() => handleChange(2)}
-                >
-                  ADDITIONAL INFORMATION
-                </button>
-              )}
-              <button
-                className={`   ${
-                  isColor === 3 ? "text-black" : "text-[#c2c2d3]"
-                }`}
-                onClick={() => handleChange(3)}
-              >
-                REVIEWS({approvedReviews.length})
-              </button>
-            </div>
-            <hr />
-            <div className="mt-4 px-6">
-              {isColor === 1 ? (
-                <Description data={data} />
-              ) : isColor === 2 ? (
-                <AdditionalInformation data={data} />
-              ) : (
-                <Review itemId={itemId} />
-              )}
-            </div>
-          </div>
-        </div>
-
-        <div className="container mx-auto xl:px-40 px-5">
-          <RelatedProduct findcategory={findcategory} />
-        </div>
-        <div className="pb-20 pt-20 container mx-auto xl:px-40 px-5">
-          <RecentlyViewProduct />
-        </div>
-
-        {/* mobile view */}
-        <div className="lg:hidden">
-          <div className="fixed bottom-0 w-full h-20 bg-white flex items-center justify-between z-50">
-            <div className="grid grid-cols-3 gap-2 min-h-[44px] min-w-[130px] pl-4">
-              <button
-                type="button"
-                className="hover:bg-yellow-400 px-4 border-gray-500 bg-gray-300 text-[25px]  rounded-full font-medium"
-                onClick={() => handleDecrement(data)}
-              >
-                -
-              </button>
-
-              <div className=" flex items-center justify-center w-full text-center ">
-                {count}
+              <div className="bg-white drop-shadow rounded-md mt-10 pb-5">
+                <div className=" flex flex-col sm:flex-row gap-4 sm:gap-8  justify-start text-left text-gray-400 py-5 px-6">
+                  <button
+                    className={`   ${
+                      isColor === 1 ? "text-black" : "text-[#c2c2d3]"
+                    }`}
+                    onClick={() => handleChange(1)}
+                  >
+                    DESCRIPTION
+                  </button>
+                  {data.additionalInformation?.length > 0 && (
+                    <button
+                      className={`  ${
+                        isColor === 2 ? "text-black" : "text-[#c2c2d3]"
+                      }`}
+                      onClick={() => handleChange(2)}
+                    >
+                      ADDITIONAL INFORMATION
+                    </button>
+                  )}
+                  <button
+                    className={`   ${
+                      isColor === 3 ? "text-black" : "text-[#c2c2d3]"
+                    }`}
+                    onClick={() => handleChange(3)}
+                  >
+                    REVIEWS({approvedReviews.length})
+                  </button>
+                </div>
+                <hr />
+                <div className="mt-4 px-6">
+                  {isColor === 1 ? (
+                    <Description data={data} />
+                  ) : isColor === 2 ? (
+                    <AdditionalInformation data={data} />
+                  ) : (
+                    <Review itemId={itemId} />
+                  )}
+                </div>
               </div>
-
-              <button
-                type="button"
-                className="px-4 hover:bg-yellow-400 border-gray-500 bg-gray-300  text-[20px]   rounded-full  font-medium"
-                onClick={() => handleIncrement(data)}
-              >
-                +
-              </button>
             </div>
-            <div className="pr-4">
-              <button
-                type="button"
-                className=" bg-blue-900 text-white px-6 md:px-12 py-3 rounded-full text-[13px]"
-                onClick={() => handleaddToCart(data)}
-              >
-                Add to cart
-              </button>
+          )}
+
+          <div className="container mx-auto xl:px-40 px-5">
+            <RelatedProduct findcategory={findcategory} />
+          </div>
+          <div className="pb-20 pt-20 container mx-auto xl:px-40 px-5">
+            <RecentlyViewProduct />
+          </div>
+
+          {/* mobile view */}
+          <div className="lg:hidden">
+            <div className="fixed bottom-0 w-full h-20 bg-white flex items-center justify-between z-50">
+              <div className="grid grid-cols-3 gap-2 min-h-[44px] min-w-[130px] pl-4">
+                <button
+                  type="button"
+                  className="hover:bg-yellow-400 px-4 border-gray-500 bg-gray-300 text-[25px]  rounded-full font-medium"
+                  onClick={() => handleDecrement(data)}
+                >
+                  -
+                </button>
+
+                <div className=" flex items-center justify-center w-full text-center ">
+                  {count}
+                </div>
+
+                <button
+                  type="button"
+                  className="px-4 hover:bg-yellow-400 border-gray-500 bg-gray-300  text-[20px]   rounded-full  font-medium"
+                  onClick={() => handleIncrement(data)}
+                >
+                  +
+                </button>
+              </div>
+              <div className="pr-4">
+                <button
+                  type="button"
+                  className=" bg-blue-900 text-white px-6 md:px-12 py-3 rounded-full text-[13px]"
+                  onClick={() => handleaddToCart(data)}
+                >
+                  Add to cart
+                </button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      {/* Modal or Lightbox */}
-      {isModalOpen && (
-        <div className="fixed top-0 left-0 w-screen h-screen bg-black  flex items-center justify-center z-50">
-          <button
-            className="absolute top-2 right-8 text-white text-4xl"
-            onClick={closeModal}
-          >
-            &times;
-          </button>
-          <div className="relative">
-            {/* Close Icon */}
+        {/* Modal or Lightbox */}
+        {isModalOpen && (
+          <div className="fixed top-0 left-0 w-screen h-screen bg-black  flex items-center justify-center z-50">
+            <button
+              className="absolute top-2 right-8 text-white text-4xl"
+              onClick={closeModal}
+            >
+              &times;
+            </button>
+            <div className="relative">
+              {/* Close Icon */}
 
-            {/* Full screen image */}
-            <div className="flex items-center justify-center">
-              <img
-                src={selectedImage}
-                alt="mainImage"
-                width={700} // Adjust the width value as per your requirements
-                height={700} // Adjust the height value as per your requirements
-                className="max-w-full max-h-full"
-              />
+              {/* Full screen image */}
+              <div className="flex items-center justify-center">
+                <img
+                  src={selectedImage}
+                  alt="mainImage"
+                  width={700} // Adjust the width value as per your requirements
+                  height={700} // Adjust the height value as per your requirements
+                  className="max-w-full max-h-full"
+                />
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
+      </>
       {modalWishList && (
         <WishListPopup setWishListPopup={setModalWishList} proId={prodId} />
       )}
