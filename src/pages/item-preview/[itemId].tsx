@@ -34,6 +34,10 @@ import Breadcrumbs from "@/components/Breadcrumbs/Breadcrumbs";
 import { MdArrowBackIos, MdArrowForwardIos } from "react-icons/md";
 import Swal from "sweetalert2";
 import { logOut } from "../../../utils/logout";
+import {
+  WishListPopup,
+  WishListWrongPopup,
+} from "@/features/product/WishListPopup";
 
 const ItemPages = () => {
   const [data, setData] = useState<Product>({
@@ -80,6 +84,10 @@ const ItemPages = () => {
   const [categoryName, setcategoryname] = useState();
   let [newQuantity, setNewQuantity] = useState<number>(1);
   const [count, setCount] = useState(1);
+  const [modalWishList, setModalWishList] = useState(false);
+  const [modalWrongWishList, setModalWrongWishList] = useState(false);
+  const [prodId, setProId] = useState();
+  const [isFavourite, setIsFavourite] = useState(null);
 
   let id: any;
   if (typeof localStorage !== "undefined") {
@@ -105,7 +113,24 @@ const ItemPages = () => {
 
   useEffect(() => {
     fetchData();
+    fetchDataIsFavourite();
   }, [itemId]);
+
+  async function fetchDataIsFavourite() {
+    const userId = id;
+    const productId = itemId;
+
+    try {
+      const response = await axios.post(`${baseUrl}/users/checkIsFavourite`, {
+        userId,
+        productId,
+      });
+
+      setIsFavourite(response.data.isFavourite);
+    } catch (error) {
+      setIsFavourite(null);
+    }
+  }
 
   async function fetchData() {
     try {
@@ -395,6 +420,10 @@ const ItemPages = () => {
           whishListObj,
           config
         );
+        if (response.status == 200) {
+          setModalWishList(true);
+          setProId(data);
+        }
       } catch (error: any) {
         if (error?.response?.status == 500) {
           Swal.fire({
@@ -416,6 +445,9 @@ const ItemPages = () => {
             showConfirmButton: false,
             heightAuto: true,
           });
+        } else if (error?.response?.status == 400) {
+          setModalWrongWishList(true);
+          setProId(data);
         }
       }
     } else {
@@ -723,9 +755,11 @@ const ItemPages = () => {
                         onClick={() => handleWishlist(data)}
                       >
                         <FaHeart className="h-[15px] w-[15px] text-gray-500"></FaHeart>
-                        <span className="text-[10.5px] ml-2 tracking-[-0.05em] text-gray-500 font-semibold uppercase">
-                          ADD TO WISHLIST
-                        </span>
+                        {!isFavourite && (
+                          <span className="text-[10.5px] ml-2 tracking-[-0.05em] text-gray-500 font-semibold uppercase">
+                            ADD TO WISHLIST
+                          </span>
+                        )}
                       </button>
                     </div>
                     <div className="ml-4 flex flex-row items-center justify-center">
@@ -1033,6 +1067,15 @@ const ItemPages = () => {
             </div>
           </div>
         </div>
+      )}
+      {modalWishList && (
+        <WishListPopup setWishListPopup={setModalWishList} proId={prodId} />
+      )}
+      {modalWrongWishList && (
+        <WishListWrongPopup
+          setModalWrongWishList={setModalWrongWishList}
+          proId={prodId}
+        />
       )}
     </>
   );

@@ -8,19 +8,16 @@ import { FaStar, FaHeart } from "react-icons/fa";
 import { SlSizeFullscreen } from "react-icons/sl";
 import { FiHeart } from "react-icons/fi";
 import { FC, useState } from "react";
-import Image from "next/image";
 import { RootState } from "../../redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import { calSubTotal } from "../cart/cartSlice";
 import { Product } from "./product";
-import Link from "next/link";
 import ProductPopup from "./ProductPopup";
 import axios from "axios";
 import baseUrl from "../../../utils/baseUrl";
 import { useRouter } from "next/router";
 import Swal from "sweetalert2";
-import { addRecentlyClickedProductId } from "./recentlyClickedSlice";
-import { logOut } from "../../../utils/logout";
+import { WishListPopup, WishListWrongPopup } from "./WishListPopup";
 interface Props {
   product: Product;
   isGrid: string;
@@ -32,16 +29,22 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
   const [wishlist, setWishlist] = useState([]);
   const dispatch = useDispatch();
   // const cartItems = useSelector((state: RootState) => state.cart.cartItems);
-  let id = localStorage.getItem("id");
   const [productPopup, setProductPopup] = useState(false);
   const [proId, setProId] = useState("");
   const [grid, setGrid] = useState<string>("");
   const router = useRouter();
   const [count, setCount] = useState(0);
+  const [modalWishList, setModalWishList] = useState(false);
+  const [modalWrongWishList, setModalWrongWishList] = useState(false);
+  const [isFavourite, setIsFavourite] = useState(null);
+
   const totalAmountCal = useSelector(
     (state: RootState) => state.cart.totalAmount
   );
-
+  let id: any;
+  if (typeof localStorage !== "undefined") {
+    id = localStorage.getItem("id");
+  }
   useEffect(() => {
     if (product.discount >= 0) {
       setIsdiscount(true);
@@ -56,7 +59,30 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
     setCount(itemone?.count ?? 0);
   }, [count, totalAmountCal]);
 
+  // useEffect(() => {
+  //   fetchDataIsFavourite();
+  // }, []);
+
+  // async function fetchDataIsFavourite() {
+  //   const userId = id;
+  //   const productId = product._id;
+
+  //   try {
+  //     const response = await axios.post(`${baseUrl}/users/checkIsFavourite`, {
+  //       userId,
+  //       productId,
+  //     });
+  //     console.log({ response });
+  //     setIsFavourite(response.data.isFavourite);
+  //   } catch (error) {
+  //     setIsFavourite(null);
+  //   }
+  // }
+
   useEffect(() => {
+    handleGrid();
+  }, [isGrid]);
+  const handleGrid = () => {
     if (isGrid == "layoutGrid") {
       setGrid("layoutGrid");
     } else {
@@ -67,7 +93,7 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
         setGrid(getItem || "");
       }
     }
-  }, [isGrid]);
+  };
 
   const handleProductClick = (product: Product) => {
     router.push(`/item-preview/${product._id}`);
@@ -86,10 +112,10 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
     localStorage.setItem("recentlyAddedProducts", JSON.stringify(products));
   };
 
-  const saveCategoryName = async (product: Product) => {
+  const saveCategoryName = async (product: any) => {
     let findcategory: any;
     if (product.category.length > 0) {
-      findcategory = product.category[0];
+      findcategory = product.category[0]._id;
       try {
         const res = await axios.get(
           `${baseUrl}/categories/get/${findcategory}`
@@ -240,6 +266,11 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
           whishListObj,
           config
         );
+
+        if (response.status == 200) {
+          setModalWishList(true);
+          setProId(data);
+        }
       } catch (error: any) {
         if (error?.response?.status == 500) {
           Swal.fire({
@@ -261,6 +292,9 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
             showConfirmButton: false,
             heightAuto: true,
           });
+        } else if (error?.response?.status == 400) {
+          setModalWrongWishList(true);
+          setProId(data);
         }
       }
     } else {
@@ -571,6 +605,15 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
 
       {productPopup && (
         <ProductPopup setProductPopup={setProductPopup} proId={proId} />
+      )}
+      {modalWishList && (
+        <WishListPopup setWishListPopup={setModalWishList} proId={proId} />
+      )}
+      {modalWrongWishList && (
+        <WishListWrongPopup
+          setModalWrongWishList={setModalWrongWishList}
+          proId={proId}
+        />
       )}
     </>
   );
