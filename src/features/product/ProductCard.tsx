@@ -8,19 +8,16 @@ import { FaStar, FaHeart } from "react-icons/fa";
 import { SlSizeFullscreen } from "react-icons/sl";
 import { FiHeart } from "react-icons/fi";
 import { FC, useState } from "react";
-import Image from "next/image";
 import { RootState } from "../../redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import { calSubTotal } from "../cart/cartSlice";
 import { Product } from "./product";
-import Link from "next/link";
 import ProductPopup from "./ProductPopup";
 import axios from "axios";
 import baseUrl from "../../../utils/baseUrl";
 import { useRouter } from "next/router";
 import Swal from "sweetalert2";
-import { addRecentlyClickedProductId } from "./recentlyClickedSlice";
-import { logOut } from "../../../utils/logout";
+import { WishListPopup, WishListWrongPopup } from "./WishListPopup";
 interface Props {
   product: Product;
   isGrid: string;
@@ -32,16 +29,22 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
   const [wishlist, setWishlist] = useState([]);
   const dispatch = useDispatch();
   // const cartItems = useSelector((state: RootState) => state.cart.cartItems);
-  let id = localStorage.getItem("id");
   const [productPopup, setProductPopup] = useState(false);
   const [proId, setProId] = useState("");
   const [grid, setGrid] = useState<string>("");
   const router = useRouter();
   const [count, setCount] = useState(0);
+  const [modalWishList, setModalWishList] = useState(false);
+  const [modalWrongWishList, setModalWrongWishList] = useState(false);
+  const [isFavourite, setIsFavourite] = useState(null);
+
   const totalAmountCal = useSelector(
     (state: RootState) => state.cart.totalAmount
   );
-
+  let id: any;
+  if (typeof localStorage !== "undefined") {
+    id = localStorage.getItem("id");
+  }
   useEffect(() => {
     if (product.discount >= 0) {
       setIsdiscount(true);
@@ -56,14 +59,41 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
     setCount(itemone?.count ?? 0);
   }, [count, totalAmountCal]);
 
+  // useEffect(() => {
+  //   fetchDataIsFavourite();
+  // }, []);
+
+  // async function fetchDataIsFavourite() {
+  //   const userId = id;
+  //   const productId = product._id;
+
+  //   try {
+  //     const response = await axios.post(`${baseUrl}/users/checkIsFavourite`, {
+  //       userId,
+  //       productId,
+  //     });
+  //     console.log({ response });
+  //     setIsFavourite(response.data.isFavourite);
+  //   } catch (error) {
+  //     setIsFavourite(null);
+  //   }
+  // }
+
   useEffect(() => {
-    const getItem: string | null = localStorage.getItem("gridType");
-    if (getItem == "list") {
-      setGrid("list");
-    } else {
-      setGrid(getItem || "");
-    }
+    handleGrid();
   }, [isGrid]);
+  const handleGrid = () => {
+    if (isGrid == "layoutGrid") {
+      setGrid("layoutGrid");
+    } else {
+      const getItem: string | null = localStorage.getItem("gridType");
+      if (getItem == "list") {
+        setGrid("list");
+      } else {
+        setGrid(getItem || "");
+      }
+    }
+  };
 
   const handleProductClick = (product: Product) => {
     router.push(`/item-preview/${product._id}`);
@@ -82,19 +112,17 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
     localStorage.setItem("recentlyAddedProducts", JSON.stringify(products));
   };
 
-  const saveCategoryName = async (product: Product) => {
+  const saveCategoryName = async (product: any) => {
     let findcategory: any;
     if (product.category.length > 0) {
-      findcategory = product.category[0];
+      findcategory = product.category[0]._id;
       try {
         const res = await axios.get(
           `${baseUrl}/categories/get/${findcategory}`
         );
 
         localStorage.setItem("catName", JSON.stringify(res.data[0].name));
-      } catch (error: any) {
-       
-      }
+      } catch (error: any) {}
     }
   };
 
@@ -238,6 +266,11 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
           whishListObj,
           config
         );
+
+        if (response.status == 200) {
+          setModalWishList(true);
+          setProId(data);
+        }
       } catch (error: any) {
         if (error?.response?.status == 500) {
           Swal.fire({
@@ -259,6 +292,9 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
             showConfirmButton: false,
             heightAuto: true,
           });
+        } else if (error?.response?.status == 400) {
+          setModalWrongWishList(true);
+          setProId(data);
         }
       }
     } else {
@@ -309,6 +345,7 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
                 >
                   <div
                     className={`bg-white flex items-center justify-center rounded-full h-8 w-8 hover:cursor-pointer drop-shadow-lg md:invisible group-hover:visible md:group-hover:-translate-x-3 md:group-hover:ease-in transition duration-150 hover:bg-blue-900 group/icon1`}
+                    onClick={() => handleWishlist(product)}
                   >
                     {product.isFavourite ? (
                       <FaHeart className="h-3 w-3 fill-blue-900 group-hover/icon1:fill-white" />
@@ -568,6 +605,15 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
 
       {productPopup && (
         <ProductPopup setProductPopup={setProductPopup} proId={proId} />
+      )}
+      {modalWishList && (
+        <WishListPopup setWishListPopup={setModalWishList} proId={proId} />
+      )}
+      {modalWrongWishList && (
+        <WishListWrongPopup
+          setModalWrongWishList={setModalWrongWishList}
+          proId={proId}
+        />
       )}
     </>
   );

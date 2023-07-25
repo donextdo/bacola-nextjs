@@ -80,6 +80,7 @@ export const SearchItem = () => {
   };
 
   const saveCategoryName = async (product: any) => {
+    console.log("product search : ", product);
     let findcategory: any;
     if (product.category.length > 0) {
       findcategory = product.category[0];

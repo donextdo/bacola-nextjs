@@ -74,7 +74,7 @@ export const HomePagination = ({
         </div>
       </div>
       <div className="pb-20 pt-20">
-        <RecentlyViewProduct passgrid={passgrid} />
+        <RecentlyViewProduct passgrid={"layoutGrid"} />
       </div>
     </>
   );

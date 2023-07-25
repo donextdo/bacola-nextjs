@@ -77,6 +77,13 @@ const AllcategoriesSideNavbar = ({ setShowSideNavbar }: any) => {
   const handlesubcatgory = (id: any) => {
     setActiveCategory(id);
   };
+
+  const redirectShop = () => {
+    router.push({
+      pathname: "/shop",
+    });
+  };
+
   return (
     <>
       <div className="">
@@ -164,15 +171,21 @@ const AllcategoriesSideNavbar = ({ setShowSideNavbar }: any) => {
           </ul>
           <hr className="my-2" />
 
-          {/* <div className="py-2 px-2">
-              <p className="hover:text-[#2bbef9] ">Value Of the Day</p>
-            </div>
-            <div className="py-2 px-2">
-              <p className="hover:text-[#2bbef9]">Top 100 Offers</p>
-            </div>
-            <div className="py-2 px-2">
-              <p className="hover:text-[#2bbef9]">New Arrivals</p>
-            </div> */}
+          <div className="py-2 px-2">
+            <p className="hover:text-[#2bbef9] " onChange={redirectShop}>
+              Value Of the Day
+            </p>
+          </div>
+          <div className="py-2 px-2">
+            <p className="hover:text-[#2bbef9]" onChange={redirectShop}>
+              Top 100 Offers
+            </p>
+          </div>
+          <div className="py-2 px-2">
+            <p className="hover:text-[#2bbef9]" onChange={redirectShop}>
+              New Arrivals
+            </p>
+          </div>
         </div>
       )}
     </>

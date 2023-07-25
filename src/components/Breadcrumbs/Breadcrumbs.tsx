@@ -8,7 +8,7 @@ const Breadcrumbs = ({ crumbs }: any) => {
         <React.Fragment key={index}>
           {crumb.url ? (
             <Link href={crumb.url}>
-              <p className="hover:text-gray-700">{crumb.title}</p>
+              <p className="hover:underline text-gray-700">{crumb.title}</p>
             </Link>
           ) : (
             <p>{crumb.title}</p>

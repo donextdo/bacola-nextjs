@@ -72,7 +72,7 @@ export const FilterSideBar = ({
         </div>
       </div>
       <div className="container mx-auto xl:px-40 px-5 pt-20 mb-8">
-        <RecentlyViewProduct passgrid={passgrid} />
+        <RecentlyViewProduct passgrid={"layoutGrid"} />
       </div>
     </>
   );
