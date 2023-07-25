@@ -1,14 +1,8 @@
 import { Product } from "@/features/product/product";
-import { fetchProducts } from "@/features/product/productSlice";
-import { AppDispatch, RootState } from "@/redux/store";
-import Link from "next/link";
 import React, { useState, useEffect, FC } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { ProductCard } from "@/features/product/ProductCard";
 import baseUrl from "../../../utils/baseUrl";
 import axios from "axios";
-import { useRouter } from "next/router";
-import { logOut } from "../../../utils/logout";
 import Swal from "sweetalert2";
 
 export const FilteredProduct = ({
@@ -26,7 +20,12 @@ export const FilteredProduct = ({
 }: any) => {
   const [products, setProducts] = useState<Product[]>([]);
   const [isGrid, setIsGrid] = useState<String>();
+  const [favoriteProductIds, setFavoriteProductIds] = useState<string[]>([]);
 
+  let id: any;
+  if (typeof localStorage !== "undefined") {
+    id = localStorage.getItem("id");
+  }
   useEffect(() => {
     const fetchData = async () => {
       let url = `${baseUrl}/productDetails?`;
@@ -65,25 +64,27 @@ export const FilteredProduct = ({
 
         setProducts(products);
       } catch (error: any) {
-        Swal.fire({
-          width: 500,
-          color: "black",
-          background: "white",
-          imageUrl:
-            "https://cdni.iconscout.com/illustration/premium/thumb/something-went-wrong-2511607-2133695.png",
-          imageWidth: 150,
-          imageHeight: 150,
-          imageAlt: "Custom image",
-          html: `
-            <div style="text-align: center;">
-              <p style="font-size: 14px;">${error.response.data.message}</p>
-            </div>
-          `,
-          showCloseButton: true,
-          showCancelButton: false,
-          showConfirmButton: false,
-          heightAuto: true,
-        });
+        if (error?.response?.status == 500) {
+          Swal.fire({
+            width: 500,
+            color: "black",
+            background: "white",
+            imageUrl:
+              "https://cdni.iconscout.com/illustration/premium/thumb/something-went-wrong-2511607-2133695.png",
+            imageWidth: 150,
+            imageHeight: 150,
+            imageAlt: "Custom image",
+            html: `
+              <div style="text-align: center;">
+                <p style="font-size: 14px;">${error.response.data.message}</p>
+              </div>
+            `,
+            showCloseButton: true,
+            showCancelButton: false,
+            showConfirmButton: false,
+            heightAuto: true,
+          });
+        }
       }
     };
     fetchData();
@@ -109,6 +110,20 @@ export const FilteredProduct = ({
     }
   }, [passgrid]);
 
+  useEffect(() => {
+    fetchFavouriteProducts();
+  }, []);
+
+  const fetchFavouriteProducts = async () => {
+    try {
+      const response = await axios.get(`${baseUrl}/users/getProduct/${id}`);
+      if (response) {
+        const favouriteProductIds = response.data.productIds;
+        setFavoriteProductIds(favouriteProductIds);
+      }
+    } catch (error: any) {}
+  };
+
   return (
     <div>
       {products?.length > 0 ? (
@@ -130,6 +145,7 @@ export const FilteredProduct = ({
               <ProductCard
                 key={product._id}
                 product={product}
+                isFavourite={favoriteProductIds.includes(product._id)}
                 isGrid={passgrid}
               />
             ))}

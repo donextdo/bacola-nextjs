@@ -9,9 +9,15 @@ import { fetchProducts } from "@/features/product/productSlice";
 import Swal from "sweetalert2";
 
 export const RecentlyViewProduct = ({ passgrid }: any) => {
-  const [product, setProduct] = useState<any[]>([]);
+  const [product, setProduct] = useState<Product[]>([]);
   const [matchWithProduct, setmatchWithProduct] = useState<Product[]>([]);
   const dispatch = useDispatch<AppDispatch>();
+  const [favoriteProductIds, setFavoriteProductIds] = useState<string[]>([]);
+
+  let id: any;
+  if (typeof localStorage !== "undefined") {
+    id = localStorage.getItem("id");
+  }
   const productsRidux = useSelector(
     (state: RootState) => state.product.products
   ) as Product[];
@@ -90,25 +96,34 @@ export const RecentlyViewProduct = ({ passgrid }: any) => {
   };
 
   useEffect(() => {
-    const matchedProducts = productsRidux.filter((pr: Product) =>
-      product.some((p: any) => p?._id === pr?._id)
-    );
-    setmatchWithProduct(matchedProducts);
-  }, [product, productsRidux]);
+    fetchFavouriteProducts();
+  }, []);
+
+  const fetchFavouriteProducts = async () => {
+    try {
+      const response = await axios.get(`${baseUrl}/users/getProduct/${id}`);
+      if (response) {
+        const favouriteProductIds = response.data.productIds;
+        setFavoriteProductIds(favouriteProductIds);
+      }
+    } catch (error: any) {}
+  };
+
   return (
     <div className="container mx-auto">
-      {matchWithProduct.length > 0 && (
+      {product.length > 0 && (
         <>
           <div className="text-[20px] font-semibold font-ff-headings">
             RECENTLY VIEWED PRODUCTS
           </div>
           <div className=" mt-5">
             <div className="grid 2xl:grid-cols-4 lg:grid-cols-4 md:grid-cols-3 grid-cols-2">
-              {matchWithProduct.map((product: any, index) => {
+              {product.map((product: any, index) => {
                 return (
                   <ProductCard
                     key={product._id}
                     product={product}
+                    isFavourite={favoriteProductIds.includes(product._id)}
                     isGrid={passgrid}
                   />
                 );

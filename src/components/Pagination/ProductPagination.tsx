@@ -23,7 +23,12 @@ export const ProductPagination = ({
 }: any) => {
   const [product, setProduct] = useState<Product[]>([]);
   const [isGrid, setIsGrid] = useState<String>();
+  const [favoriteProductIds, setFavoriteProductIds] = useState<string[]>([]);
   const dispatch = useDispatch<AppDispatch>();
+  let id: any;
+  if (typeof localStorage !== "undefined") {
+    id = localStorage.getItem("id");
+  }
   const productsRidux = useSelector(
     (state: RootState) => state.product.products
   ) as Product[];
@@ -151,6 +156,20 @@ export const ProductPagination = ({
     }
   }, [passgrid]);
 
+  useEffect(() => {
+    fetchFavouriteProducts();
+  }, []);
+
+  const fetchFavouriteProducts = async () => {
+    try {
+      const response = await axios.get(`${baseUrl}/users/getProduct/${id}`);
+      if (response) {
+        const favouriteProductIds = response.data.productIds;
+        setFavoriteProductIds(favouriteProductIds);
+      }
+    } catch (error: any) {}
+  };
+
   return (
     <div>
       {product.length != 0 ? (
@@ -173,6 +192,7 @@ export const ProductPagination = ({
                 <ProductCard
                   key={product.id}
                   product={product}
+                  isFavourite={favoriteProductIds.includes(product._id)}
                   isGrid={passgrid}
                 />
               );

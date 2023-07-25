@@ -21,9 +21,10 @@ import { WishListPopup, WishListWrongPopup } from "./WishListPopup";
 interface Props {
   product: Product;
   isGrid: string;
+  isFavourite: boolean;
 }
 
-export const ProductCard: FC<Props> = ({ product, isGrid }) => {
+export const ProductCard: FC<Props> = ({ product, isGrid, isFavourite }) => {
   const [isDiscount, setIsdiscount] = useState(false);
   // const [productPopup, setProductPopup] = useState(false);
   const [wishlist, setWishlist] = useState([]);
@@ -36,7 +37,7 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
   const [count, setCount] = useState(0);
   const [modalWishList, setModalWishList] = useState(false);
   const [modalWrongWishList, setModalWrongWishList] = useState(false);
-  const [isFavourite, setIsFavourite] = useState(null);
+  const [favoriteStatus, setFavoriteStatus] = useState(false);
 
   const totalAmountCal = useSelector(
     (state: RootState) => state.cart.totalAmount
@@ -59,25 +60,15 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
     setCount(itemone?.count ?? 0);
   }, [count, totalAmountCal]);
 
-  // useEffect(() => {
-  //   fetchDataIsFavourite();
-  // }, []);
+  useEffect(() => {
+    fetchFavouriteProducts();
+  }, []);
 
-  // async function fetchDataIsFavourite() {
-  //   const userId = id;
-  //   const productId = product._id;
-
-  //   try {
-  //     const response = await axios.post(`${baseUrl}/users/checkIsFavourite`, {
-  //       userId,
-  //       productId,
-  //     });
-  //     console.log({ response });
-  //     setIsFavourite(response.data.isFavourite);
-  //   } catch (error) {
-  //     setIsFavourite(null);
-  //   }
-  // }
+  const fetchFavouriteProducts = async () => {
+    setFavoriteStatus(isFavourite);
+    console.log({ favoriteStatus });
+    console.log({ isFavourite });
+  };
 
   useEffect(() => {
     handleGrid();
@@ -347,7 +338,7 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
                     className={`bg-white flex items-center justify-center rounded-full h-8 w-8 hover:cursor-pointer drop-shadow-lg md:invisible group-hover:visible md:group-hover:-translate-x-3 md:group-hover:ease-in transition duration-150 hover:bg-blue-900 group/icon1`}
                     onClick={() => handleWishlist(product)}
                   >
-                    {product.isFavourite ? (
+                    {favoriteStatus ? (
                       <FaHeart className="h-3 w-3 fill-blue-900 group-hover/icon1:fill-white" />
                     ) : (
                       <FiHeart className="h-3 w-3 text-blue-900 group-hover/icon1:text-white" />
@@ -504,7 +495,7 @@ export const ProductCard: FC<Props> = ({ product, isGrid }) => {
                 className={`absolute max-w-[24px] max-h-[24px] top-9 right-2 bg-white flex items-center justify-center rounded-full h-8 w-8 hover:cursor-pointer drop-shadow-lg md:invisible group-hover:visible md:group-hover:-translate-x-3 md:group-hover:ease-in transition duration-150 hover:bg-blue-900 group/icon1`}
                 onClick={() => handleWishlist(product)}
               >
-                {product.isFavourite ? (
+                {favoriteStatus ? (
                   <FaHeart className="h-3 w-3 fill-blue-900 group-hover/icon1:fill-white" />
                 ) : (
                   <FiHeart className="h-3 w-3 text-blue-900 group-hover/icon1:text-white" />

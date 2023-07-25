@@ -3,21 +3,15 @@ import baseUrl from "../../../utils/baseUrl";
 import { useEffect, useState } from "react";
 import { ProductCard } from "@/features/product/ProductCard";
 import { Product } from "@/features/product/product";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "@/redux/store";
-import { fetchProducts } from "@/features/product/productSlice";
 
 const RelatedProduct = ({ passgrid, findcategory }: any) => {
   const [relatedProduct, setRelatedProduct] = useState<Product[]>([]);
-  const [matchWithProduct, setmatchWithProduct] = useState<Product[]>([]);
-  const dispatch = useDispatch<AppDispatch>();
-  const productsRidux = useSelector(
-    (state: RootState) => state.product.products
-  ) as Product[];
-  useEffect(() => {
-    dispatch(fetchProducts());
-  }, [dispatch]);
+  const [favoriteProductIds, setFavoriteProductIds] = useState<string[]>([]);
 
+  let id: any;
+  if (typeof localStorage !== "undefined") {
+    id = localStorage.getItem("id");
+  }
   useEffect(() => {
     fetchData();
   }, []);
@@ -35,12 +29,18 @@ const RelatedProduct = ({ passgrid, findcategory }: any) => {
   }
 
   useEffect(() => {
-    const matchedProducts = productsRidux.filter((pr: Product) =>
-      relatedProduct.some((p: any) => p?._id === pr?._id)
-    );
-    const displayedProducts = matchedProducts.slice(0, 4);
-    setmatchWithProduct(displayedProducts);
-  }, [relatedProduct, productsRidux]);
+    fetchFavouriteProducts();
+  }, []);
+
+  const fetchFavouriteProducts = async () => {
+    try {
+      const response = await axios.get(`${baseUrl}/users/getProduct/${id}`);
+      if (response) {
+        const favouriteProductIds = response.data.productIds;
+        setFavoriteProductIds(favouriteProductIds);
+      }
+    } catch (error: any) {}
+  };
 
   return (
     <div className="container mx-auto">
@@ -48,12 +48,13 @@ const RelatedProduct = ({ passgrid, findcategory }: any) => {
         RELATED PRODUCTS
       </div>
       <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 mt-5">
-        {matchWithProduct.map((product) => {
+        {relatedProduct.map((product) => {
           return (
             <ProductCard
               key={product._id}
               product={product}
               isGrid={passgrid}
+              isFavourite={favoriteProductIds.includes(product._id)}
             />
           );
         })}
