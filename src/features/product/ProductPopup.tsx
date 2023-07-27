@@ -16,6 +16,7 @@ import { useRouter } from "next/router";
 import Swal from "sweetalert2";
 import { logOut } from "../../../utils/logout";
 import { WishListPopup, WishListWrongPopup } from "./WishListPopup";
+import Loader from "@/components/Loader/Loader";
 
 const ProductPopup = ({ setProductPopup, proId }: any) => {
   const [data, setData] = useState<Product>({
@@ -65,6 +66,7 @@ const ProductPopup = ({ setProductPopup, proId }: any) => {
   const [modalWishList, setModalWishList] = useState(false);
   const [modalWrongWishList, setModalWrongWishList] = useState(false);
   const [isFavourite, setIsFavourite] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const [prodId, setProId] = useState();
   const dispatch = useDispatch();
@@ -78,9 +80,10 @@ const ProductPopup = ({ setProductPopup, proId }: any) => {
   }, [proId]);
 
   async function fetchDataIsFavourite() {
+    setLoading(true);
+
     const userId = id;
     const productId = proId;
-
     try {
       const response = await axios.post(`${baseUrl}/users/checkIsFavourite`, {
         userId,
@@ -94,8 +97,12 @@ const ProductPopup = ({ setProductPopup, proId }: any) => {
   }
 
   async function fetchData() {
+    setLoading(true);
+
     try {
       const res = await axios.get(`${baseUrl}/products/getOne/${proId}`);
+      setLoading(false);
+
       setData(res.data);
       setTag(res.data.tags);
     } catch (error: any) {
@@ -137,6 +144,7 @@ const ProductPopup = ({ setProductPopup, proId }: any) => {
   async function fetchData2() {
     try {
       const res = await axios.get(`${baseUrl}/categories/get/${findcategory}`);
+
       setMyCategory(res.data);
     } catch (error: any) {
       Swal.fire({
@@ -165,6 +173,8 @@ const ProductPopup = ({ setProductPopup, proId }: any) => {
     fetchData3();
   }, []);
   async function fetchData3() {
+    setLoading(true);
+
     try {
       const res = await axios.get(`${baseUrl}/reviews/getReview/${proId}`);
       setAllreview(res.data);
@@ -392,224 +402,233 @@ const ProductPopup = ({ setProductPopup, proId }: any) => {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 w-full min-h-[600px]">
-            <div>
-              <div className="relative  max-h-[579.2px] max-w-[466.66px] ">
-                <div className="absolute max-w-[88.41px] max-h-[49px] flex flex-col items-start gap-1 p-2">
-                  {data?.discount && (
-                    <div className=" font-semibold max-w-[45.39px] max-h-[24px] px-4 py-1 bg-sky-400 text-white rounded text-[10px] flex items-center justify-center">
-                      {data?.discount != undefined ? data.discount : 0}%
-                    </div>
-                  )}
-
-                  {data?.speacialtag == "organic" && (
-                    <div className=" font-semibold px-2 py-1 bg-emerald-100 text-green-600 rounded-full text-[10px] flex items-center justify-center uppercase tracking-tighter">
-                      {data.speacialtag}
-                    </div>
-                  )}
-                  {data?.speacialtag == "Recommended" && (
-                    <div className=" font-semibold px-2 py-1 bg-gray-500 text-white rounded text-[10px] flex items-center justify-center uppercase tracking-tighter">
-                      {data.speacialtag}
-                    </div>
-                  )}
-                </div>
-                <div className="hover:cursor-pointer flex items-center justify-center px-12 ">
-                  <img
-                    width={390}
-                    height={436}
-                    src={mainImage || data?.front}
-                    alt="mainImage"
-                  />
-                </div>
-
-                <div className="flex items-center justify-center row min-h-[63px] max-w-[421.2px] md:min-h-[67px] md:max-w-[444.66px]">
-                  <div
-                    className="flex items-center justify-center min-w-[67px] min-h-[67px] lg:min-w-[67px] lg:min-h-[67px] md:min-w-[94.4px] md:min-h-[94.4px]  border border-gray-400 mr-2 hover:cursor-pointer"
-                    onClick={() => handleClick(data?.side)}
-                  >
-                    <img
-                      width={67}
-                      height={67}
-                      src={data?.side}
-                      alt="Man looking at item at a store"
-                    />
-                  </div>
-                  <div
-                    className="flex items-center justify-center min-w-[67px] min-h-[67px] lg:min-w-[67px] lg:min-h-[67px] md:min-w-[94.4px] md:min-h-[94.4px]   border border-gray-400 mr-2 hover:cursor-pointer"
-                    onClick={() => handleClick(data?.front)}
-                  >
-                    <img
-                      width={67}
-                      height={67}
-                      src={data?.front}
-                      alt="Man looking at item at a store"
-                    />
-                  </div>
-                  <div
-                    className="flex items-center justify-center min-w-[67px] min-h-[67px] lg:min-w-[67px] lg:min-h-[67px] md:min-w-[94.4px] md:min-h-[94.4px]   border border-gray-400 hover:cursor-pointer"
-                    onClick={() => handleClick(data?.back)}
-                  >
-                    <img
-                      width={67}
-                      height={67}
-                      src={data?.back}
-                      alt="Man looking at item at a store"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className=" w-full ">
-              <div className=" w-full">
-                <div className=" flex flex-row">
-                  <span className="text-gray-400 line-through mr-2 my-1 font-[1.125rem] flex items-center justify-center">
-                    {data?.price.toFixed(2)}
-                  </span>
-
-                  <span className="my-1 text-red-700 text-[1.625rem] font-semibold">
-                    Rs {newprice.toFixed(2)}
-                  </span>
-                </div>
-                {data?.quantity > 0 ? (
-                  <div className="font-medium py-2 px-2 mt-2 max-h-[26px] max-w-[68.35px] bg-emerald-100 text-green-600 rounded-full text-[.75rem] flex items-center justify-center uppercase tracking-tighter">
-                    In Stock
-                  </div>
-                ) : (
-                  <div className="font-medium py-2 px-2 mt-2 max-h-[26px] w-[100px] bg-red-100 text-red-600 rounded-full text-[.75rem] flex items-center justify-center uppercase tracking-tighter">
-                    Out of Stock
-                  </div>
-                )}
-
-                <div className="mt-6 text-[.8125rem]">
-                  <p className=" ">{data.description}</p>
-                </div>
-                {/* <div className="fixed bottom-0 left-0 right-0 md:relative md:flex md:flex-row md:items-center md:justify-between md:max-w-[130px] md:mx-auto md:mt-10 md:mb-4 md:px-4">
-                                <div className="w-full flex items-center justify-between min-h-[44px] md:min-h-auto md:flex-1 md:grid md:grid-cols-3"> */}
-                <div className="hidden lg:block">
-                  <div className=" w-full lg:min-h-[44px] md:relative md:flex md:flex-row md:w-auto lg:max-w-[130px] md:min-h-[44px] md:max-w-[130px] mt-10 flex flex-row">
-                    <div className=" w-full flex grid-cols-3 min-h-[44px] min-w-[130px]">
-                      <button
-                        type="button"
-                        className="hover:bg-yellow-400 px-4 border-gray-500 bg-gray-300 text-[25px]  rounded-full font-medium"
-                        onClick={() => handleDecrement(data)}
-                      >
-                        -
-                      </button>
-
-                      <div className=" flex items-center justify-center w-full text-center ">
-                        {count}
-                      </div>
-                      <button
-                        type="button"
-                        className="px-4 hover:bg-yellow-400 border-gray-500 bg-gray-300  text-[20px]   rounded-full  font-medium"
-                        onClick={() => handleIncrement(data)}
-                      >
-                        +
-                      </button>
-                    </div>
-                    <button
-                      type="button"
-                      className=" bg-primary text-white min-h-[34px] min-w-[140px] rounded-full  ml-4"
-                      onClick={() => handleaddToCart(data)}
-                    >
-                      Add to cart
-                    </button>
-                  </div>
-                </div>
-                <div className="flex flex-row mt-10  ">
-                  <div className="max-h-[33px] max-w-[135px] bg-white border border-gray-600 rounded-[2.0625rem] hover:cursor-pointer">
-                    <button
-                      className="flex flex-row px-3 py-2"
-                      onClick={() => handleWishlist(data)}
-                    >
-                      <FaHeart className="h-[15px] w-[15px] text-gray-500"></FaHeart>
-                      {!isFavourite && (
-                        <span className="text-[10.5px] ml-2 tracking-[-0.05em] text-gray-500 font-semibold uppercase">
-                          ADD TO WISHLIST
-                        </span>
+          <div className="grid grid-cols-1 lg:grid-cols-2 w-full min-h-[600px] ">
+            {loading ? (
+              <Loader />
+            ) : (
+              <>
+                <div>
+                  <div className="relative  max-h-[579.2px] max-w-[466.66px] ">
+                    <div className="absolute max-w-[88.41px] max-h-[49px] flex flex-col items-start gap-1 p-2">
+                      {data?.discount && (
+                        <div className=" font-semibold max-w-[45.39px] max-h-[24px] px-4 py-1 bg-sky-400 text-white rounded text-[10px] flex items-center justify-center">
+                          {data?.discount != undefined ? data.discount : 0}%
+                        </div>
                       )}
-                    </button>
+
+                      {data?.speacialtag == "organic" && (
+                        <div className=" font-semibold px-2 py-1 bg-emerald-100 text-green-600 rounded-full text-[10px] flex items-center justify-center uppercase tracking-tighter">
+                          {data.speacialtag}
+                        </div>
+                      )}
+                      {data?.speacialtag == "Recommended" && (
+                        <div className=" font-semibold px-2 py-1 bg-gray-500 text-white rounded text-[10px] flex items-center justify-center uppercase tracking-tighter">
+                          {data.speacialtag}
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="hover:cursor-pointer flex items-center justify-center px-12 ">
+                      <img
+                        width={390}
+                        height={436}
+                        src={mainImage || data?.front}
+                        alt="mainImage"
+                      />
+                    </div>
+
+                    <div className="flex items-center justify-center row min-h-[63px] max-w-[421.2px] md:min-h-[67px] md:max-w-[444.66px]">
+                      <div
+                        className="flex items-center justify-center min-w-[67px] min-h-[67px] lg:min-w-[67px] lg:min-h-[67px] md:min-w-[94.4px] md:min-h-[94.4px]  border border-gray-400 mr-2 hover:cursor-pointer"
+                        onClick={() => handleClick(data?.side)}
+                      >
+                        <img
+                          width={67}
+                          height={67}
+                          src={data?.side}
+                          alt="Man looking at item at a store"
+                        />
+                      </div>
+                      <div
+                        className="flex items-center justify-center min-w-[67px] min-h-[67px] lg:min-w-[67px] lg:min-h-[67px] md:min-w-[94.4px] md:min-h-[94.4px]   border border-gray-400 mr-2 hover:cursor-pointer"
+                        onClick={() => handleClick(data?.front)}
+                      >
+                        <img
+                          width={67}
+                          height={67}
+                          src={data?.front}
+                          alt="Man looking at item at a store"
+                        />
+                      </div>
+                      <div
+                        className="flex items-center justify-center min-w-[67px] min-h-[67px] lg:min-w-[67px] lg:min-h-[67px] md:min-w-[94.4px] md:min-h-[94.4px]   border border-gray-400 hover:cursor-pointer"
+                        onClick={() => handleClick(data?.back)}
+                      >
+                        <img
+                          width={67}
+                          height={67}
+                          src={data?.back}
+                          alt="Man looking at item at a store"
+                        />
+                      </div>
+                    </div>
                   </div>
-                  <div className="ml-4 flex flex-row items-center justify-center"></div>
                 </div>
-                <div className="max-h-[66px]  mt-6">
-                  {data.type && (
-                    <div className="flex flex-row text-[.75rem] place-items-start mb-1">
-                      <div className="mr-2">
-                        <BsCheckLg className="h-[15px] w-[15px] text-green-600 stroke-[1px]"></BsCheckLg>
-                      </div>
-                      <div className="">
-                        Type: <span className="">{data.type}</span>
-                      </div>
-                    </div>
-                  )}
-                  {data.mfgDate && (
-                    <div className="flex flex-row text-[.75rem] place-items-start mb-1">
-                      <div className="mr-2 ">
-                        <BsCheckLg className="h-[15px] w-[15px] text-green-600 stroke-[1px]"></BsCheckLg>
-                      </div>
+                <div className=" w-full ">
+                  <div className=" w-full">
+                    <div className=" flex flex-row">
+                      <span className="text-gray-400 line-through mr-2 my-1 font-[1.125rem] flex items-center justify-center">
+                        {data?.price.toFixed(2)}
+                      </span>
 
-                      <div className="">
-                        MFG: <span>{data.mfgDate}</span>
-                      </div>
+                      <span className="my-1 text-red-700 text-[1.625rem] font-semibold">
+                        Rs {newprice.toFixed(2)}
+                      </span>
                     </div>
-                  )}
-                  {data.life && (
-                    <div className="flex flex-row text-[.75rem] place-items-start mb-1">
-                      <div className="mr-2">
-                        <BsCheckLg className="h-[15px] w-[15px] text-green-600 stroke-[1px]"></BsCheckLg>
+                    {data?.quantity > 0 ? (
+                      <div className="font-medium py-2 px-2 mt-2 max-h-[26px] max-w-[68.35px] bg-emerald-100 text-green-600 rounded-full text-[.75rem] flex items-center justify-center uppercase tracking-tighter">
+                        In Stock
                       </div>
+                    ) : (
+                      <div className="font-medium py-2 px-2 mt-2 max-h-[26px] w-[100px] bg-red-100 text-red-600 rounded-full text-[.75rem] flex items-center justify-center uppercase tracking-tighter">
+                        Out of Stock
+                      </div>
+                    )}
 
-                      <div className="">
-                        LIFE: <span className="">{data.life}</span>
-                      </div>
+                    <div className="mt-6 text-[.8125rem]">
+                      <p className=" ">{data.description}</p>
                     </div>
-                  )}
-                </div>
-                <hr className="max-w-[330px] mt-6"></hr>
-                <div className="mt-6 max-h-[72.8px] max-w-[308.33px]">
-                  {myCategory.length > 0 && (
-                    <div className="flex flex-row">
-                      <span className="text-gray-400 text-xs capitalize">
-                        Category:
-                        {myCategory.map((cat: any, index) => (
-                          <a
-                            key={index}
-                            href=""
-                            rel="tag"
-                            className="ml-2 text-gray-600 text-xs capitalize"
+                    {/* <div className="fixed bottom-0 left-0 right-0 md:relative md:flex md:flex-row md:items-center md:justify-between md:max-w-[130px] md:mx-auto md:mt-10 md:mb-4 md:px-4">
+                                <div className="w-full flex items-center justify-between min-h-[44px] md:min-h-auto md:flex-1 md:grid md:grid-cols-3"> */}
+                    <div className="hidden lg:block">
+                      <div className=" w-full lg:min-h-[44px] md:relative md:flex md:flex-row md:w-auto lg:max-w-[130px] md:min-h-[44px] md:max-w-[130px] mt-10 flex flex-row">
+                        <div className=" w-full flex grid-cols-3 min-h-[44px] min-w-[130px]">
+                          <button
+                            type="button"
+                            className="hover:bg-yellow-400 px-4 border-gray-500 bg-gray-300 text-[25px]  rounded-full font-medium"
+                            onClick={() => handleDecrement(data)}
                           >
-                            {cat.name}
-                          </a>
-                        ))}
-                      </span>
-                    </div>
-                  )}
+                            -
+                          </button>
 
-                  {tag.length > 0 && (
-                    <div className="flex">
-                      <span className="text-gray-400 text-xs capitalize">
-                        Tags:
-                      </span>
-                      <div className="flex">
-                        {tag.map((tag: any, index: number) => (
-                          <div key={index} className="flex">
-                            <div className="text-xs">{index > 0 && ","}</div>
-                            <a
-                              href=""
-                              rel="tag"
-                              className="ml-2 text-gray-600 text-xs capitalize flex"
-                            >
-                              {tag.name}
-                            </a>
+                          <div className=" flex items-center justify-center w-full text-center ">
+                            {count}
                           </div>
-                        ))}
+                          <button
+                            type="button"
+                            className="px-4 hover:bg-yellow-400 border-gray-500 bg-gray-300  text-[20px]   rounded-full  font-medium"
+                            onClick={() => handleIncrement(data)}
+                          >
+                            +
+                          </button>
+                        </div>
+                        <button
+                          type="button"
+                          className=" bg-primary text-white min-h-[34px] min-w-[140px] rounded-full  ml-4"
+                          onClick={() => handleaddToCart(data)}
+                        >
+                          Add to cart
+                        </button>
                       </div>
                     </div>
-                  )}
+                    <div className="flex flex-row mt-10  ">
+                      <div className="max-h-[33px] max-w-[135px] bg-white border border-gray-600 rounded-[2.0625rem] hover:cursor-pointer">
+                        <button
+                          className="flex flex-row px-3 py-2"
+                          onClick={() => handleWishlist(data)}
+                        >
+                          <FaHeart className="h-[15px] w-[15px] text-gray-500"></FaHeart>
+                          {!isFavourite && (
+                            <span className="text-[10.5px] ml-2 tracking-[-0.05em] text-gray-500 font-semibold uppercase">
+                              ADD TO WISHLIST
+                            </span>
+                          )}
+                        </button>
+                      </div>
+                      <div className="ml-4 flex flex-row items-center justify-center"></div>
+                    </div>
+                    <div className="max-h-[66px]  mt-6">
+                      {data.type && (
+                        <div className="flex flex-row text-[.75rem] place-items-start mb-1">
+                          <div className="mr-2">
+                            <BsCheckLg className="h-[15px] w-[15px] text-green-600 stroke-[1px]"></BsCheckLg>
+                          </div>
+                          <div className="">
+                            Type: <span className="">{data.type}</span>
+                          </div>
+                        </div>
+                      )}
+                      {data.mfgDate && (
+                        <div className="flex flex-row text-[.75rem] place-items-start mb-1">
+                          <div className="mr-2 ">
+                            <BsCheckLg className="h-[15px] w-[15px] text-green-600 stroke-[1px]"></BsCheckLg>
+                          </div>
+
+                          <div className="">
+                            MFG: <span>{data.mfgDate}</span>
+                          </div>
+                        </div>
+                      )}
+                      {data.life && (
+                        <div className="flex flex-row text-[.75rem] place-items-start mb-1">
+                          <div className="mr-2">
+                            <BsCheckLg className="h-[15px] w-[15px] text-green-600 stroke-[1px]"></BsCheckLg>
+                          </div>
+
+                          <div className="">
+                            LIFE: <span className="">{data.life}</span>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                    <hr className="max-w-[330px] mt-6"></hr>
+                    <div className="mt-6 max-h-[72.8px] max-w-[308.33px]">
+                      {myCategory.length > 0 && (
+                        <div className="flex flex-row">
+                          <span className="text-gray-400 text-xs capitalize">
+                            Category:
+                            {myCategory.map((cat: any, index) => (
+                              <a
+                                key={index}
+                                href=""
+                                rel="tag"
+                                className="ml-2 text-gray-600 text-xs capitalize"
+                              >
+                                {cat.name}
+                              </a>
+                            ))}
+                          </span>
+                        </div>
+                      )}
+
+                      {tag.length > 0 && (
+                        <div className="flex">
+                          <span className="text-gray-400 text-xs capitalize">
+                            Tags:
+                          </span>
+                          <div className="flex">
+                            {tag.map((tag: any, index: number) => (
+                              <div key={index} className="flex">
+                                <div className="text-xs">
+                                  {index > 0 && ","}
+                                </div>
+                                <a
+                                  href=""
+                                  rel="tag"
+                                  className="ml-2 text-gray-600 text-xs capitalize flex"
+                                >
+                                  {tag.name}
+                                </a>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
+              </>
+            )}
           </div>
         </div>
       </div>

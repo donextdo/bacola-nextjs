@@ -38,6 +38,7 @@ export const ProductCard: FC<Props> = ({ product, isGrid, isFavourite }) => {
   const [modalWishList, setModalWishList] = useState(false);
   const [modalWrongWishList, setModalWrongWishList] = useState(false);
   const [favoriteStatus, setFavoriteStatus] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const totalAmountCal = useSelector(
     (state: RootState) => state.cart.totalAmount
