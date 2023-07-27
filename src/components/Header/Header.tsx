@@ -13,6 +13,8 @@ import getConfig from "next/config";
 import { Location } from "../Location/Location";
 import { useRouter } from "next/router";
 import SideNavBar from "../SideNavBar/SideNavbar";
+import { FiHeart, FiSearch } from "react-icons/fi";
+import { HiOutlineBuildingStorefront } from "react-icons/hi2";
 
 const Header = () => {
   const [cart, setCart] = useState(false);
@@ -148,7 +150,7 @@ const Header = () => {
                 </div>
               )}
             </div>
-            <div>{}</div>
+            <div>{ }</div>
           </div>
         </div>
       </div>
@@ -201,6 +203,46 @@ const Header = () => {
               </div>
             )}
           </div>
+        </div>
+      </div>
+      <div className="md:hidden  fixed bottom-0  w-full bg-white z-50">
+        <div className="flex justify-between items-center h-14 px-2">
+
+          <div className="flex flex-col items-center space-y-1">
+            <button className="text-3xl" onClick={()=>{router.push("/shop")}}>
+              <HiOutlineBuildingStorefront className="text-[#a7a7b5] w-[20px] h-[20px]" />
+            </button>
+            <h1 className="text-[#a7a7b5] text-[10px]">Search</h1>
+          </div>
+
+          <div className="flex flex-col items-center space-y-1">
+            <button className="text-3xl" onClick={handleSideNavbar}>
+              <FiSearch className="text-[#a7a7b5] w-[20px] h-[20px]" />
+            </button>
+            <h1 className="text-[#a7a7b5] text-[10px]">Search</h1>
+          </div>
+
+          <div className="flex flex-col items-center space-y-1">
+            <button className="text-3xl" onClick={() => { router.push("/wishlist")}}>
+              <FiHeart className="text-[#a7a7b5] w-[20px] h-[20px]" />
+            </button>
+            <h1 className="text-[#a7a7b5] text-[10px]">Wishllist</h1>
+          </div>
+
+          <div className="flex flex-col items-center space-y-1">
+            <button className="text-3xl" onClick={() => { router.push("/account")}}>
+              <AiOutlineUser className="fill-[#a7a7b5] w-[20px] h-[20px]" />
+            </button>
+            <h1 className="text-[#a7a7b5] text-[10px]">Account</h1>
+          </div>
+
+          <div className="flex flex-col items-center space-y-1">
+            <button className="text-3xl" onClick={handleSideNavbar}>
+              <BsList className="fill-[#a7a7b5] w-[20px] h-[20px]" />
+            </button>
+            <h1 className="text-[#a7a7b5] text-[10px]">Categories</h1>
+          </div>
+
         </div>
       </div>
     </>
