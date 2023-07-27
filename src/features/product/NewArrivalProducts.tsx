@@ -16,6 +16,12 @@ import Swal from "sweetalert2";
 const NewArrivalProducts = ({ passgrid }: any) => {
   const [isGrid, setIsGrid] = useState<String>();
   const [newArrivalProducts, setNewArrivalProducts] = useState([]);
+  const [favoriteProductIds, setFavoriteProductIds] = useState<string[]>([]);
+
+  let id: any;
+  if (typeof localStorage !== "undefined") {
+    id = localStorage.getItem("id");
+  }
   const products = useSelector(
     (state: RootState) => state.product.products
   ) as Product[];
@@ -66,6 +72,21 @@ const NewArrivalProducts = ({ passgrid }: any) => {
     (product) => product.isNewArrival === true
   );
   const displayedProducts = bestProducts.slice(0, 8);
+
+  useEffect(() => {
+    fetchFavouriteProducts();
+  }, []);
+
+  const fetchFavouriteProducts = async () => {
+    try {
+      const response = await axios.get(`${baseUrl}/users/getProduct/${id}`);
+      if (response) {
+        const favouriteProductIds = response.data.productIds;
+        setFavoriteProductIds(favouriteProductIds);
+      }
+    } catch (error: any) {}
+  };
+
   return (
     <div>
       <div className="mx-auto ">
@@ -76,6 +97,7 @@ const NewArrivalProducts = ({ passgrid }: any) => {
                 key={product.id}
                 product={product}
                 isGrid={passgrid}
+                isFavourite={favoriteProductIds.includes(product._id)}
               />
             );
           })}

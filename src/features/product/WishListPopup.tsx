@@ -76,3 +76,32 @@ export function WishListWrongPopup({ setModalWrongWishList, proId }: any) {
     </div>
   );
 }
+
+export function WishListDeletePopup({ setDeleteWishList, proId }: any) {
+  useEffect(() => {
+    console.log(proId);
+  });
+  const closeModal = () => {
+    setDeleteWishList(false);
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex justify-center items-center bg-slate-900 bg-opacity-50">
+      <div className="py-10 px-10 mx-2 flex flex-col items-center relative bg-white shadow-md  w-full lg:w-[400px]">
+        <FiHeart className="h-10 w-10 text-blue-900 mb-6" />
+        <p className="text-center font-medium">
+          {proId} has been removed from the wishlist.
+        </p>
+        <div className="mt-4 space-y-4">
+          <button
+            className="flex items-center justify-center text-white bg-blue-900 text-sm w-[300px] py-2 rounded-sm"
+            onClick={closeModal}
+          >
+            <RxCross2 className="mr-2 font-bold" />
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}

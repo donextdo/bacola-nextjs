@@ -104,7 +104,7 @@ const Checkout = () => {
       merchant_id: "ID15415",
       amount: "10.00",
       type: "ONE_TIME",
-      order_id: "CP123456789",
+      order_id: "CP123456785",
       currency: "LKR",
       response_url: "https://test.com/response-endpoint",
       first_name: "Thisara",
@@ -336,9 +336,7 @@ const Checkout = () => {
       setZipCode(data.billingAddress.zipCode);
       setPhone(data.billingAddress.billingPhone);
       setEmail(data.billingAddress.billingEmail);
-    } catch (error: any) {
-      
-    }
+    } catch (error: any) {}
   }
 
   useEffect(() => {
@@ -353,9 +351,7 @@ const Checkout = () => {
         },
       });
       setShip(res.data);
-    } catch (error: any) {
-     
-    }
+    } catch (error: any) {}
   }
 
   const [selectedRadio, setSelectedRadio] = useState(
@@ -1069,7 +1065,7 @@ const Checkout = () => {
         <div className="fixed inset-0 z-50 grid place-items-center bg-slate-300 bg-opacity-50">
           <div className="px-4 mx-2 flex gap-6 flex-col relative  rounded-md w-full lg:w-[1060px]">
             <div
-              id="card_container"
+              // id="card_container"
               className="w-full lg:w-[600px] mx-auto bg-gray-100 shadow-md rounded-md "
             >
               <div className="bg-gray-300 text-white p-2 flex justify-between h-11 ">

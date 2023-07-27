@@ -44,7 +44,6 @@ const NewsLettertwo = () => {
       // alert("Subscription successful");
       // Handle fetch error
       if (error?.response?.status == 500) {
-        console.log({ error });
         Swal.fire({
           width: 500,
           color: "black",

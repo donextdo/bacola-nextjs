@@ -15,6 +15,8 @@ import { BsArrowRight } from "react-icons/bs";
 import Image from "next/image";
 import banner from "../../../assets/home/banner-box2.png";
 import { ImageFour, ImageOne, ImageThree } from "@/components/Common/ImageList";
+import axios from "axios";
+import baseUrl from "../../../utils/baseUrl";
 
 interface ComponentProps {}
 
@@ -24,7 +26,12 @@ export const ProductList: FC<ComponentProps> = ({ passgrid }: any) => {
     (state: RootState) => state.product.products
   ) as Product[];
   const [isGrid, setIsGrid] = useState<String>();
+  const [favoriteProductIds, setFavoriteProductIds] = useState<string[]>([]);
 
+  let id: any;
+  if (typeof localStorage !== "undefined") {
+    id = localStorage.getItem("id");
+  }
   useEffect(() => {
     dispatch(fetchProducts());
   }, [dispatch]);
@@ -38,6 +45,20 @@ export const ProductList: FC<ComponentProps> = ({ passgrid }: any) => {
     }
   }, [passgrid]);
 
+  useEffect(() => {
+    fetchFavouriteProducts();
+  }, []);
+
+  const fetchFavouriteProducts = async () => {
+    try {
+      const response = await axios.get(`${baseUrl}/users/getProduct/${id}`);
+      if (response) {
+        const favouriteProductIds = response.data.productIds;
+        setFavoriteProductIds(favouriteProductIds);
+      }
+    } catch (error: any) {}
+  };
+
   const displayedProducts = products.slice(0, 8);
   return (
     <div>
@@ -49,6 +70,7 @@ export const ProductList: FC<ComponentProps> = ({ passgrid }: any) => {
                 key={product.id}
                 product={product}
                 isGrid={passgrid}
+                isFavourite={favoriteProductIds.includes(product._id)}
               />
             );
           })}

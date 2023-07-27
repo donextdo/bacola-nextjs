@@ -10,6 +10,7 @@ import { Product } from "@/features/product/product";
 import { useRouter } from "next/router";
 import Swal from "sweetalert2";
 import { logOut } from "../../utils/logout";
+import { WishListDeletePopup } from "@/features/product/WishListPopup";
 
 interface WIshlist {
   selected: boolean;
@@ -27,6 +28,8 @@ interface WIshlist {
 }
 const Wishlist = () => {
   const [data, setData] = useState<Array<WIshlist>>([]);
+  const [deleteWhishList, setDeleteWishList] = useState(false);
+  const [prodId, setProId] = useState();
   const dispatch = useDispatch();
   let token: any;
   if (typeof localStorage !== "undefined") {
@@ -75,6 +78,11 @@ const Wishlist = () => {
     setData(newData);
   };
 
+  const handleAnotherAction = (title: any) => {
+    setDeleteWishList(true);
+    setProId(title);
+  };
+
   const handleDelete = async (_id: any) => {
     const cartItemsString = localStorage.getItem("cartItems");
     const items = cartItemsString ? JSON.parse(cartItemsString) : [];
@@ -110,6 +118,7 @@ const Wishlist = () => {
           authorization: `Bearer ${token}`,
         },
       });
+
       const newItems = data.filter((item) => item.productId !== _id);
       setData(newItems);
     } catch (error: any) {
@@ -281,100 +290,126 @@ const Wishlist = () => {
   return (
     <div className="container mx-auto xl:px-40 px-5 mb-40">
       <h1 className="text-[32px] mt-14 mb-6">Default wishlist</h1>
-      <table className="table-auto w-full border-collapse border border-gray-400 ">
-        <thead>
-          <tr>
-            <th className="border px-4 py-2">
-              <input
-                type="checkbox"
-                className="form-checkbox h-5 w-5 text-blue-600"
-                checked={checkAll}
-                onChange={handleCheckAll}
-              />
-            </th>
-            <th className="border px-4 py-2 text-xs text-[#71778e]"></th>
-            <th className="border px-4 py-2 text-xs text-[#71778e]"></th>
-            <th className="border px-4 py-2 text-xs text-[#71778e]">
-              Product Name
-            </th>
-            <th className="border px-4 py-2 text-xs text-[#71778e]">
-              Unit Price
-            </th>
-            <th className="border px-4 py-2 text-xs text-[#71778e]">
-              Date Added
-            </th>
-            <th className="border px-4 py-2 text-xs text-[#71778e]">
-              Stock Status
-            </th>
-            <th className="border px-4 py-2 text-xs text-[#71778e]"></th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.map((item) => (
-            <tr key={item.productId}>
-              <td className="border px-4 py-2">
-                <input
-                  type="checkbox"
-                  className="form-checkbox h-5 w-5 text-blue-600"
-                  checked={item.checked}
-                  onChange={() => handleCheck(item.productId)}
-                />
-              </td>
-              <td className="border px-4 py-2">
-                <button
-                  className=""
-                  onClick={() => handleDelete(item.productId)}
-                >
-                  <IoClose />
-                </button>
-              </td>
-              <td className="border px-4 py-2">
-                <div className="w-[71px] h-[71px]">
-                  <img
-                    src={item.front}
-                    alt="Header Image"
-                    className="w-full "
-                    width={1200}
-                    height={800}
+      {data.length > 0 ? (
+        <div>
+          <table className="table-auto w-full border-collapse border border-gray-400 ">
+            <thead>
+              <tr>
+                <th className="border px-4 py-2">
+                  <input
+                    type="checkbox"
+                    className="form-checkbox h-5 w-5 text-blue-600"
+                    checked={checkAll}
+                    onChange={handleCheckAll}
                   />
-                </div>
-              </td>
-              <td className="border px-4 py-2">{item.title}</td>
-              <td className="border px-4 py-2">{item.price}</td>
-              <td className="border px-4 py-2">{item.date}</td>
-              <td className="border px-4 py-2">
-                {item.quantity > 0 ? "In Stock" : "Out of Stock"}
-              </td>
-              <td className="border px-4 py-2">
-                <button
-                  className=" bg-blue-900 text-white text-xs rounded-md px-5 py-3 "
-                  onClick={() => handleCart(item)}
-                >
-                  Add to cart
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <section className="flex justify-between p-3.5 border ">
-        <div className="inline-flex gap-2 w-full"></div>
+                </th>
+                <th className="border px-4 py-2 text-xs text-[#71778e]"></th>
+                <th className="border px-4 py-2 text-xs text-[#71778e]"></th>
+                <th className="border px-4 py-2 text-xs text-[#71778e]">
+                  Product Name
+                </th>
+                <th className="border px-4 py-2 text-xs text-[#71778e]">
+                  Unit Price
+                </th>
+                <th className="border px-4 py-2 text-xs text-[#71778e]">
+                  Date Added
+                </th>
+                <th className="border px-4 py-2 text-xs text-[#71778e]">
+                  Stock Status
+                </th>
+                <th className="border px-4 py-2 text-xs text-[#71778e]"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {data.map((item) => (
+                <tr key={item.productId}>
+                  <td className="border px-4 py-2">
+                    <input
+                      type="checkbox"
+                      className="form-checkbox h-5 w-5 text-blue-600"
+                      checked={item.checked}
+                      onChange={() => handleCheck(item.productId)}
+                    />
+                  </td>
+                  <td className="border px-4 py-2">
+                    <button
+                      className=""
+                      onClick={() => {
+                        handleDelete(item.productId);
+                        handleAnotherAction(item.title);
+                      }}
+                    >
+                      <IoClose />
+                    </button>
+                  </td>
+                  <td className="border px-4 py-2">
+                    <div className="w-[71px] h-[71px]">
+                      <img
+                        src={item.front}
+                        alt="Header Image"
+                        className="w-full "
+                        width={1200}
+                        height={800}
+                      />
+                    </div>
+                  </td>
+                  <td className="border px-4 py-2">{item.title}</td>
+                  <td className="border px-4 py-2">{item.price}</td>
+                  <td className="border px-4 py-2">{item.date}</td>
+                  <td className="border px-4 py-2">
+                    {item.quantity > 0 ? "In Stock" : "Out of Stock"}
+                  </td>
+                  <td className="border px-4 py-2">
+                    <button
+                      className=" bg-blue-900 text-white text-xs rounded-md px-5 py-3 "
+                      onClick={() => handleCart(item)}
+                    >
+                      Add to cart
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <section className="flex justify-between p-3.5 border ">
+            <div className="inline-flex gap-2 w-full"></div>
 
-        <div className="flex gap-2">
-          <button
-            className="bg-[#233a95] text-white py-2.5 px-4 rounded-md text-xs h-11 w-40 "
-            onClick={handleAddSelectedToCart}
-          >
-            Add Selected to Cart
-          </button>
-          <button
-            className="bg-[#233a95] text-white py-2.5 px-4 rounded-md text-xs h-11 w-40 "
-            onClick={handleAddCart}
-          >
-            Add All to Cart
-          </button>
+            <div className="flex gap-2">
+              <button
+                className="bg-[#233a95] text-white py-2.5 px-4 rounded-md text-xs h-11 w-40 "
+                onClick={handleAddSelectedToCart}
+              >
+                Add Selected to Cart
+              </button>
+              <button
+                className="bg-[#233a95] text-white py-2.5 px-4 rounded-md text-xs h-11 w-40 "
+                onClick={handleAddCart}
+              >
+                Add All to Cart
+              </button>
+            </div>
+          </section>
         </div>
-      </section>
+      ) : (
+        <>
+          <h1 className="text-sm mb-5">Your Wishlist is currently empty.</h1>
+          <button
+            className="bg-[#233a95] text-white py-2.5 px-4 rounded-md text-sm h-11 w-40 "
+            onClick={() => {
+              router.push("/shop");
+            }}
+          >
+            Return To Shop
+          </button>
+        </>
+      )}
+
+      {deleteWhishList && (
+        <WishListDeletePopup
+          setDeleteWishList={setDeleteWishList}
+          proId={prodId}
+        />
+      )}
     </div>
   );
 };
