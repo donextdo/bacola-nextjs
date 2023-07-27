@@ -15,6 +15,7 @@ import { useRouter } from "next/router";
 import SideNavBar from "../SideNavBar/SideNavbar";
 import { FiHeart, FiSearch } from "react-icons/fi";
 import { HiOutlineBuildingStorefront } from "react-icons/hi2";
+import { SearchItemMobileView } from "../Search/MobileSearch";
 
 const Header = () => {
   const [cart, setCart] = useState(false);
@@ -24,7 +25,7 @@ const Header = () => {
   const router = useRouter();
   const [totalPrice, setTotalPrice] = useState(0);
   const [totalQuantity, setTotalQuantity] = useState(0);
-
+  const [openSearch, setOpenSearch] = useState(false);
   useEffect(() => {
     const cartItemsString = localStorage.getItem("cartItems");
     const cartItemsArray = cartItemsString ? JSON.parse(cartItemsString) : [];
@@ -104,6 +105,10 @@ const Header = () => {
     setShowSideNavbar(!showSideNavbar);
   };
 
+  const handleSearch = () => {
+    setOpenSearch(true);
+  };
+
   return (
     <>
       <div className="container mx-auto hidden md:block">
@@ -150,13 +155,13 @@ const Header = () => {
                 </div>
               )}
             </div>
-            <div>{ }</div>
+            <div>{}</div>
           </div>
         </div>
       </div>
 
       {/* mobile version */}
-      <div className="md:hidden  sticky top-0  w-full bg-white z-50">
+      <div className="md:hidden  sticky top-0  w-full bg-white z-40">
         <div className="flex justify-between items-center h-14 px-2">
           <div>
             <button className="text-3xl" onClick={handleSideNavbar}>
@@ -207,30 +212,44 @@ const Header = () => {
       </div>
       <div className="md:hidden  fixed bottom-0  w-full bg-white z-50">
         <div className="flex justify-between items-center h-14 px-2">
-
           <div className="flex flex-col items-center space-y-1">
-            <button className="text-3xl" onClick={()=>{router.push("/shop")}}>
+            <button
+              className="text-3xl"
+              onClick={() => {
+                router.push("/shop");
+              }}
+            >
               <HiOutlineBuildingStorefront className="text-[#a7a7b5] w-[20px] h-[20px]" />
             </button>
             <h1 className="text-[#a7a7b5] text-[10px]">Search</h1>
           </div>
 
           <div className="flex flex-col items-center space-y-1">
-            <button className="text-3xl" onClick={handleSideNavbar}>
+            <button className="text-3xl" onClick={handleSearch}>
               <FiSearch className="text-[#a7a7b5] w-[20px] h-[20px]" />
             </button>
             <h1 className="text-[#a7a7b5] text-[10px]">Search</h1>
           </div>
 
           <div className="flex flex-col items-center space-y-1">
-            <button className="text-3xl" onClick={() => { router.push("/wishlist")}}>
+            <button
+              className="text-3xl"
+              onClick={() => {
+                router.push("/wishlist");
+              }}
+            >
               <FiHeart className="text-[#a7a7b5] w-[20px] h-[20px]" />
             </button>
             <h1 className="text-[#a7a7b5] text-[10px]">Wishllist</h1>
           </div>
 
           <div className="flex flex-col items-center space-y-1">
-            <button className="text-3xl" onClick={() => { router.push("/account")}}>
+            <button
+              className="text-3xl"
+              onClick={() => {
+                router.push("/account");
+              }}
+            >
               <AiOutlineUser className="fill-[#a7a7b5] w-[20px] h-[20px]" />
             </button>
             <h1 className="text-[#a7a7b5] text-[10px]">Account</h1>
@@ -242,9 +261,15 @@ const Header = () => {
             </button>
             <h1 className="text-[#a7a7b5] text-[10px]">Categories</h1>
           </div>
-
         </div>
       </div>
+      {openSearch && (
+        <div className="fixed inset-0 z-40 grid place-items-center bg-white ">
+          <div className=" pb-10 pt-2 mx-2 flex gap-2 flex-col relative  w-full h-full  ">
+            <SearchItemMobileView setOpenSearch={setOpenSearch} />
+          </div>
+        </div>
+      )}
     </>
   );
 };
