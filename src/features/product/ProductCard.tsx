@@ -95,10 +95,15 @@ export const ProductCard: FC<Props> = ({ product, isGrid, isFavourite }) => {
     if (recentlyAddedProductsString) {
       products = JSON.parse(recentlyAddedProductsString);
     }
-    products.push(product._id);
+
+    if (!products.includes(product._id)) {
+      products.push(product._id);
+    }
+
     if (products.length > 4) {
       products = products.slice(-4);
     }
+
     localStorage.setItem("recentlyAddedProducts", JSON.stringify(products));
   };
 

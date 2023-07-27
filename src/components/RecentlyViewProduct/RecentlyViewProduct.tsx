@@ -10,7 +10,6 @@ import Swal from "sweetalert2";
 
 export const RecentlyViewProduct = ({ passgrid }: any) => {
   const [product, setProduct] = useState<Product[]>([]);
-  const [matchWithProduct, setmatchWithProduct] = useState<Product[]>([]);
   const dispatch = useDispatch<AppDispatch>();
   const [favoriteProductIds, setFavoriteProductIds] = useState<string[]>([]);
 
@@ -18,12 +17,6 @@ export const RecentlyViewProduct = ({ passgrid }: any) => {
   if (typeof localStorage !== "undefined") {
     id = localStorage.getItem("id");
   }
-  const productsRidux = useSelector(
-    (state: RootState) => state.product.products
-  ) as Product[];
-  useEffect(() => {
-    dispatch(fetchProducts());
-  }, [dispatch]);
 
   useEffect(() => {
     fetchRecentlyViewedProducts();

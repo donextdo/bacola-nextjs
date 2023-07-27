@@ -41,6 +41,8 @@ const RelatedProduct = ({ passgrid, findcategory }: any) => {
       }
     } catch (error: any) {}
   };
+  const maxProductsToShow = 4;
+  const productsToShow = relatedProduct.slice(0, maxProductsToShow);
 
   return (
     <div className="container mx-auto">
@@ -48,7 +50,7 @@ const RelatedProduct = ({ passgrid, findcategory }: any) => {
         RELATED PRODUCTS
       </div>
       <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 mt-5">
-        {relatedProduct.map((product) => {
+        {productsToShow.map((product) => {
           return (
             <ProductCard
               key={product._id}
