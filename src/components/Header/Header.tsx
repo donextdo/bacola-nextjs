@@ -106,7 +106,7 @@ const Header = () => {
   };
 
   const handleSearch = () => {
-    setOpenSearch(true);
+    setOpenSearch(!openSearch);
   };
 
   return (

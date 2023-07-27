@@ -21,6 +21,7 @@ export const SearchItemMobileView = ({ setOpenSearch }: any) => {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
   const [isHide, setIsHide] = useState(false);
+  const [showAllResults, setShowAllResults] = useState(false);
 
   const router = useRouter();
 
@@ -70,6 +71,7 @@ export const SearchItemMobileView = ({ setOpenSearch }: any) => {
 
   const handleInputChange = (e: any) => {
     setQuery(e.target.value);
+    setShowAllResults(false);
   };
 
   const sendView = (itemId: any) => {
@@ -94,6 +96,12 @@ export const SearchItemMobileView = ({ setOpenSearch }: any) => {
     }
   };
 
+  const handleSeeAllClick = () => {
+    setOpenSearch(false);
+    router.push("/shop");
+  };
+  const displayedResults = showAllResults ? results : results.slice(0, 7);
+
   return (
     <div className="flex flex-col w-full place-content-center relative px-3">
       <div className="flex relative w-full ">
@@ -112,10 +120,10 @@ export const SearchItemMobileView = ({ setOpenSearch }: any) => {
         </div>
       </div>
 
-      {results.length > 0 && query !== "" && !isHide && (
+      {displayedResults.length > 0 && query !== "" && !isHide && (
         <div className="flex flex-col  ">
-          <ul className="z-50 bg-purple-500 border-2 border-gray-100  ">
-            {results.map((item: Item, index: number) => (
+          <ul className="z-50 bg-white border-2 border-gray-100  ">
+            {displayedResults.map((item: Item, index: number) => (
               <div
                 className="flex flex-row items-center justify-between py-1"
                 key={index}
@@ -141,7 +149,7 @@ export const SearchItemMobileView = ({ setOpenSearch }: any) => {
                   </li>
                 </div>
                 <div className="flex flex-col">
-                  <li className="cursor-pointer text-end text-sm text-gray-400 font-semibold line-through mr-2 text-[14px] font-ff-headings">
+                  <li className="cursor-pointer text-end text-xs text-gray-400 font-semibold line-through mr-2 text-[14px] font-ff-headings">
                     RS {item.price}
                   </li>
                   <li className="cursor-pointer text-end text-red-600 text-sm font-semibold mr-2 font-ff-headings">
@@ -154,6 +162,14 @@ export const SearchItemMobileView = ({ setOpenSearch }: any) => {
               </div>
             ))}
           </ul>
+          {results.length > 7 && !showAllResults && (
+            <button
+              className="text-black font-sm text-sm my-2 hover:underline cursor-pointer"
+              onClick={handleSeeAllClick}
+            >
+              See All Product ... ({results.length})
+            </button>
+          )}
         </div>
       )}
     </div>

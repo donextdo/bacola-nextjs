@@ -1029,10 +1029,13 @@ const ItemPages = () => {
           </div>
 
           <div className="container mx-auto xl:px-40 px-5">
-            <RelatedProduct findcategory={findcategory} />
+            <RelatedProduct
+              findcategory={findcategory}
+              passgrid={"layoutGrid"}
+            />
           </div>
           <div className="pb-20 pt-20 container mx-auto xl:px-40 px-5">
-            <RecentlyViewProduct />
+            <RecentlyViewProduct passgrid={"layoutGrid"} />
           </div>
 
           {/* mobile view */}
