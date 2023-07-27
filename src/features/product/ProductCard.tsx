@@ -26,10 +26,7 @@ interface Props {
 
 export const ProductCard: FC<Props> = ({ product, isGrid, isFavourite }) => {
   const [isDiscount, setIsdiscount] = useState(false);
-  // const [productPopup, setProductPopup] = useState(false);
-  const [wishlist, setWishlist] = useState([]);
   const dispatch = useDispatch();
-  // const cartItems = useSelector((state: RootState) => state.cart.cartItems);
   const [productPopup, setProductPopup] = useState(false);
   const [proId, setProId] = useState("");
   const [grid, setGrid] = useState<string>("");
@@ -38,7 +35,6 @@ export const ProductCard: FC<Props> = ({ product, isGrid, isFavourite }) => {
   const [modalWishList, setModalWishList] = useState(false);
   const [modalWrongWishList, setModalWrongWishList] = useState(false);
   const [favoriteStatus, setFavoriteStatus] = useState(false);
-  const [loading, setLoading] = useState(true);
 
   const totalAmountCal = useSelector(
     (state: RootState) => state.cart.totalAmount
@@ -72,6 +68,7 @@ export const ProductCard: FC<Props> = ({ product, isGrid, isFavourite }) => {
   useEffect(() => {
     handleGrid();
   }, [isGrid]);
+
   const handleGrid = () => {
     if (isGrid == "layoutGrid") {
       setGrid("layoutGrid");
@@ -419,9 +416,9 @@ export const ProductCard: FC<Props> = ({ product, isGrid, isFavourite }) => {
                   {product.quantity > 0 ? "In Stock" : "Out of Stock"}
                 </div>
                 <div className="text-xs pt-2 flex flex-row items-center my-1 ">
-                  {stars}
-                  {/* <p className="text-md text-yellow-400 flex">{yellowstars}</p>
-      <p className="text-md text-gray-400 flex">{graystars}</p> */}
+                  {/* {stars} */}
+                  <p className="text-md text-yellow-400 flex">{yellowstars}</p>
+                  <p className="text-md text-gray-400 flex">{graystars}</p>
                 </div>
                 <div className=" flex flex-row items-center">
                   {isDiscount && (
